@@ -57,6 +57,7 @@
           @csrf
         
           <p>Logout</p>
+        </form>
         </a>
         </li>
           
