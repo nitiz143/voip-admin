@@ -36,11 +36,21 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+            <a href="/home" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
-                
+
+              </p>
+            </a>
+          </li>
+
+
+          <li class="nav-item menu-open">
+            <a href="{{url('/users')}}" class="nav-link active">
+              <p>
+                Users
+
               </p>
             </a>
           </li>
@@ -52,15 +62,15 @@
                        <i class="nav-icon fa fa-sign-out text-info"></i>
           {{ __('Logout') }}
         </a>
-        
+
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
           @csrf
-        
+
           <p>Logout</p>
         </form>
         </a>
         </li>
-          
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
