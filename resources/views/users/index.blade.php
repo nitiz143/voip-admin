@@ -18,14 +18,14 @@
   </section>
 
 
-        <section class="content  ">
+        <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
                                 <h2 class="card-title">Users</h2>
-                                <a href="{{ route('users.create') }}" class="btn btn-primary mb-4 float-right w-10" id="createzoneModal">new</a>
+                                <a href="{{ route('users.create') }}" class="btn btn-primary mb-4 float-right w-10" id="createzoneModal">Create</a>
 
                             </div>
                             <!-- /.card-header -->

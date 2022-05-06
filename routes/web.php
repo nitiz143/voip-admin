@@ -24,4 +24,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('/call-history','App\Http\Controllers\CallController');
 Route::resource('/users','App\Http\Controllers\UserController');
-// Route::get('/user_edit/{id}','App\Http\Controllers\UserController@user_edit')->name('user_edit');
+Route::get('getUsers','App\Http\Controllers\UserController@getUsers')->name('getUsers');

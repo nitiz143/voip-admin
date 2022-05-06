@@ -24,16 +24,16 @@ class UserController extends Controller
             $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin');
         }
         if(Auth::user()->role == 'NOC Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin');
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','Billing Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive');
         }
         if(Auth::user()->role == 'Rate Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin');
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive');
         }
         if(Auth::user()->role == 'Sales Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin');
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive');;
         }
         if(Auth::user()->role == 'Billing Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin');
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive');
         }
         $users = $users->get();
         return view('users.index',compact('users'));
@@ -46,7 +46,7 @@ class UserController extends Controller
      */
     public function create()
     {
-       // $roles = Config::get('constants.ROLES');
+
         return view('users.create');
     }
 
@@ -96,6 +96,9 @@ class UserController extends Controller
         }else{
             $request['password'] = Hash::make($request->password);
         }
+        //dd(Auth::id());
+        //$request['parent_id']=Auth::id();
+
         $user =  User::updateOrCreate([
             'id'   => $request->id,
          ],$request->all());
@@ -103,6 +106,24 @@ class UserController extends Controller
         return response()->json(['message' =>  __('updated_successfully'),'data' => $user,'success'=>true,'redirect_url' => route('users.index')]);
     }
 
+
+    public function getUsers(Request $request){
+
+        $users = User::orderby('id','asc')->select('*')->get();
+
+        // Fetch all records
+        $response['data'] = $users;
+
+        $html = '';
+        if($users->isNotEmpty()){
+            foreach($users as $user)
+            if($user->role!='Admin' && $user->role!='Super Admin'){
+                $html .= '<option  value="'.$user->id.'">'.$user->role.'</option>';
+
+            }
+        }
+        return $html;
+      }
     /**
      * Display the specified resource.
      *

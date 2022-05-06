@@ -20,7 +20,7 @@
     <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <!-- left column -->
+
                     <div class="col-md-12">
                     <!-- general form elements -->
                     <div class="card card-primary">
@@ -50,9 +50,9 @@
                             </div> --}}
                             <div class="form-group">
                                 <label for="select_role">Role Select</label>
-                                <select class="custom-select form-control-border border-width-2" id="select_role" name="role">
+                                <select class="custom-select form-control-border border-width-2" id="select_role" name="role" >
                                   <option selected disabled>--select role--</option>
-                                    {{-- @foreach ( $roles as $key => $role ) --}}
+
                                         @if ( Auth::user()->role  == 'Admin')
                                             <option value="Super Admin"> Super Admin </option>
                                         @endif
@@ -74,9 +74,22 @@
                                         @if( Auth::user()->role  == 'Billing Admin')
                                         <option value="Billing Executive">Billing Executive</option>
                                         @endif
-                                    {{-- @endforeach --}}
+
                                 </select>
                             </div>
+
+                            @if( Auth::user()->role  == 'Super Admin')
+                                <div class="form-group">
+                                    <select class="custom-select form-control-border border-width-2" name="parent_id" id="parent">
+                                    </select>
+                                </div>
+                            @endif
+
+                            {{-- <div class="form-group d-none">
+                                <label for="select_role">Billing Executive</label>
+                                <select class="custom-select form-control-border border-width-2" id="select_role" name="role" >
+                                </select>
+                            </div> --}}
                         </div>
                         <!-- /.card-body -->
 
@@ -127,6 +140,7 @@
             }
     });
     }
+
     $('#submit').click(function (e) {
         //alert();
         e.preventDefault();
@@ -135,6 +149,45 @@
         save(formdata,url);
 
     });
+            // $(document).ready(function () {
+            //     //  var billing = ;
+            //     $("#select_role").change(function () {
+            //         var val = $(this).val();
+            //         if (val == "NOC Admin") {
+            //             $("#parent_id").html("<option value='"+{{Auth::user()->id }}+"'>NOC Executive</option>");
+            //         } else if (val == "Rate Admin") {
+            //             $("#parent_id").html("<option value='"+{{Auth::user()->id }}+"'>Rate Executive</option>");
+            //         } else if (val == "Sales Admin") {
+            //             $("#parent_id").html("<option value='"+{{Auth::user()->id }}+"'>Sales Executive</option>");
+            //         } else if (val == "Billing Admin") {
+            //             $("#parent_id").html("<option value='"+{{Auth::user()->id }}+"'></option>");
+            //         }
+            //     });
+            // });
+
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $(document).ready(function(){
+
+                // Fetch all records
+                $('#select_role').change(function() {
+                    //  alert();
+                    // AJAX GET request
+                    $.ajax({
+                    url: "{{ route('getUsers')}}",
+                    type: 'get',
+                    // dataType: 'json',
+                    success: function(response){
+
+                            $("#parent").html(response);
+
+
+// console.log(response);
+                    }
+                    });
+                });
+            });
+
+
     </script>
 
 @endsection

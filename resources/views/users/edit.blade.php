@@ -25,7 +25,7 @@
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
-                        <h3 class="card-title">Create Users</h3>
+                        <h3 class="card-title">Edit Users</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -56,26 +56,45 @@
                                 <select class="custom-select form-control-border border-width-2" id="select_role" name="role">
                                   <option selected disabled>--select role--</option>
                                     {{-- @foreach ( $roles as $key => $role ) --}}
-                                        @if ( Auth::user()->role  == 'Admin')
+
+                                            <!-------admin---------->
+                                        @if(Auth::user()->role  == 'Admin')
                                             <option value="Super Admin"  {{"Super Admin" == $user->role ? 'selected' : ''}}> Super Admin </option>
+                                            <option value="NOC Admin"  {{"NOC Admin" == $user->role ? 'selected' : ''}}>NOC Admin </option>
+                                            <option value="Rate Admin" {{"Rate Admin" == $user->role ? 'selected' : ''}}> Rate Admin </option>
+                                            <option value="Sales Admin"  {{"Sales Admin" == $user->role ? 'selected' : ''}}> Sales Admin </option>
+                                            <option value="Billing Admin" {{"Billing Admin" == $user->role ? 'selected' : ''}}> Billing Admin </option>
+                                            <option value="NOC Executive"{{"NOC Executive" == $user->role ? 'selected' : ''}}>NOC Executive</option>
+                                            <option value="Rate Executive" {{"Rate Executive" == $user->role ? 'selected' : ''}}>Rate Executive</option>
+                                            <option value="Sales Executive" {{"Sales Executive" == $user->role ? 'selected' : ''}}>Sales Executive</option>
+                                            <option value="Billing Executive" {{"Billing Executive" == $user->role ? 'selected' : ''}}>Billing Executive</option>
                                         @endif
-                                        @if( Auth::user()->role  == 'Super Admin')
-                                        <option value="NOC Admin"  {{"NOC Admin" == $user->role ? 'selected' : ''}}>NOC Admin </option>
-                                        <option value="Rate Admin" {{"Rate Admin" == $user->role ? 'selected' : ''}}> Rate Admin </option>
-                                        <option value="Sales Admin"  {{"Sales Admin" == $user->role ? 'selected' : ''}}> Sales Admin </option>
-                                        <option value="Billing Admin" {{"Billing Admin" == $user->role ? 'selected' : ''}}> Billing Admin </option>
+                                            <!-------Super Admin---------->
+                                        @if(Auth::user()->role  == 'Super Admin')
+                                            <option value="NOC Admin"  {{"NOC Admin" == $user->role ? 'selected' : ''}}>NOC Admin </option>
+                                            <option value="Rate Admin" {{"Rate Admin" == $user->role ? 'selected' : ''}}> Rate Admin </option>
+                                            <option value="Sales Admin"  {{"Sales Admin" == $user->role ? 'selected' : ''}}> Sales Admin </option>
+                                            <option value="Billing Admin" {{"Billing Admin" == $user->role ? 'selected' : ''}}> Billing Admin </option>
+                                            <option value="NOC Executive"{{"NOC Executive" == $user->role ? 'selected' : ''}}>NOC Executive</option>
+                                            <option value="Rate Executive" {{"Rate Executive" == $user->role ? 'selected' : ''}}>Rate Executive</option>
+                                            <option value="Sales Executive" {{"Sales Executive" == $user->role ? 'selected' : ''}}>Sales Executive</option>
+                                            <option value="Billing Executive" {{"Billing Executive" == $user->role ? 'selected' : ''}}>Billing Executive</option>
                                         @endif
-                                        @if( Auth::user()->role  == 'NOC Admin')
-                                        <option value="NOC Executive" {{"NOC Executive" == $user->role ? 'selected' : ''}}>NOC Executive</option>
+                                            <!-------NOC Admin---------->
+                                        @if(Auth::user()->role  == 'NOC Admin')
+                                            <option value="NOC Executive" {{"NOC Executive" == $user->role ? 'selected' : ''}}>NOC Executive</option>
                                         @endif
-                                        @if( Auth::user()->role  == 'Rate Admin')
-                                        <option value="Rate Executive" {{"Rate Executive" == $user->role ? 'selected' : ''}}>Rate Executive</option>
+                                            <!-------Rate Admin---------->
+                                        @if(Auth::user()->role  == 'Rate Admin')
+                                            <option value="Rate Executive" {{"Rate Executive" == $user->role ? 'selected' : ''}}>Rate Executive</option>
                                         @endif
-                                        @if( Auth::user()->role  == 'Sales Admin')
-                                        <option value="Sales Executive" {{"Sales Executive" == $user->role ? 'selected' : ''}}>Sales Executive</option>
+                                            <!-------Sales Admin---------->
+                                        @if(Auth::user()->role  == 'Sales Admin')
+                                            <option value="Sales Executive" {{"Sales Executive" == $user->role ? 'selected' : ''}}>Sales Executive</option>
                                         @endif
-                                        @if( Auth::user()->role  == 'Billing Admin')
-                                        <option value="Billing Executive" {{"Billing Executive" == $user->role ? 'selected' : ''}}>Billing Executive</option>
+                                            <!-------Billing Admin---------->
+                                        @if(Auth::user()->role  == 'Billing Admin')
+                                             <option value="Billing Executive" {{"Billing Executive" == $user->role ? 'selected' : ''}}>Billing Executive</option>
                                         @endif
                                     {{-- @endforeach --}}
                                 </select>
@@ -141,6 +160,7 @@
         save(formdata,url);
 
     });
+
 
 </script>
 @endsection
