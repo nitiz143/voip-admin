@@ -56,19 +56,19 @@
           </li>
 
           <li class="nav-item">
+                <i class="nav-icon fa fa-sign-out text-info"></i>
 
-            <a class=" nav-link fas fa-sign-out-alt" href="{{ route('logout') }}"
-          onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
-            <i class="nav-icon fa fa-sign-out text-info"></i>
-            {{ __('Logout') }}
+                <a class=" nav-link fas fa-sign-out-alt" href="{{ route('logout') }}"
+                onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                    <p>{{ __('Logout') }}</p>
 
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
 
-                    <p>Logout</p>
-                </form>
-        </a>
+                            <p>Logout</p>
+                        </form>
+                </a>
         </li>
 
         </ul>
