@@ -24,9 +24,13 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title">Users</h2>
-                                <a href="{{ route('users.create') }}" class="btn btn-primary mb-4 float-right w-10" id="createzoneModal">Create</a>
-
+                                <h1 class="card-title col-10">Users</h1>
+                                <a href="{{ route('users.create') }}" class="btn btn-primary mb-4  w-10 col-2" id="createzoneModal">Create</a>
+                            </div>
+                            <div class="form-inline d-flex justify-content-end mt-2 mr-4">
+                                <div class="input-group" data-widget="sidebar-search">
+                                  <input class="form-control search" type="text" value="{{@request()->name}}" placeholder="Search">
+                                </div>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -40,7 +44,7 @@
                                         <th>Action</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="Data">
                                         {{-- @if ( Auth::user()->role  == 'Admin') --}}
                                         @foreach($users as $user)
                                         <tr>
@@ -58,16 +62,10 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer clearfix">
-                                <ul class="pagination pagination-sm m-0 float-right">
-                                    <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                                </ul>
+                            <div class="d-flex justify-content-end mr-4">
+                                {!! $users->links() !!}
                             </div>
+                            <!-- /.card-body -->
                         </div>
             <!-- /.card -->
                     </div>
@@ -101,6 +99,23 @@ $(".Delete").click(function(){
         }
     });
 
+});
+
+var path = "{{ route('autocomplete') }}";
+// var route_id = "{{request()->route_id}}";
+$("input.search").keyup(function(){
+    $('.Data').html('');
+    $.ajax({
+        data: {'name':this.value},
+        url: path,
+        type: "GET",
+        // headers: {
+        // 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        // },
+        success: function (resp) {
+            $('.Data').html(resp);
+        }
+    });
 });
 </script>
 @endsection

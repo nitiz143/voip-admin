@@ -9,7 +9,7 @@
     <div class="card">
       <div class="card-body login-card-body">
         <p class="login-box-msg">Sign in to start your session</p>
-  
+
         <form method="POST" action="{{ route('login') }}">
             @csrf
           <div class="input-group mb-3">
@@ -54,18 +54,18 @@
             <!-- /.col -->
           </div>
         </form>
-  
-  
+
+
         <p class="mb-1">
             @if (Route::has('password.request'))
             <a href="{{ route('password.request') }}">
                 {{ __('I forgot my password') }}
             </a>
         @endif
-          
+
         </p>
         <p class="mb-0">
-          <a href="{{url('register')}}" class="text-center">Register a new membership</a>
+          {{-- <a href="{{url('register')}}" class="text-center">Register a new membership</a> --}}
         </p>
       </div>
       <!-- /.login-card-body -->

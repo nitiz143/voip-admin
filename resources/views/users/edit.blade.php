@@ -98,6 +98,21 @@
                                         @endif
                                     {{-- @endforeach --}}
                                 </select>
+                                @if (!empty($user->parent_id))
+                                    @if( Auth::user()->role  == 'Super Admin')
+                                        <div class="form-group" id="adminuser" >
+                                            <label for="select_role">Assign Admin</label>
+                                            <select class="custom-select form-control-border border-width-2" name="parent_id" id="parent">
+                                                @foreach($assigns as $assign)
+                                                    @if( $user->parent_id === $assign->id )
+                                                        <option value="{{$assign->id}}">{{$assign->name}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
+                                @endif
+
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -111,6 +126,7 @@
                 </div>
             </div>
         </section>
+</div>
 @endsection
 @section('page_js')
 <script>

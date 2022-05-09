@@ -30,12 +30,12 @@ class UserController extends Controller
             $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive');
         }
         if(Auth::user()->role == 'Sales Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive');;
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive');
         }
         if(Auth::user()->role == 'Billing Admin'){
             $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive');
         }
-        $users = $users->get();
+        $users = $users->paginate(10);
         return view('users.index',compact('users'));
     }
 
@@ -103,23 +103,23 @@ class UserController extends Controller
             'id'   => $request->id,
          ],$request->all());
 
-        return response()->json(['message' =>  __('updated_successfully'),'data' => $user,'success'=>true,'redirect_url' => route('users.index')]);
+        return response()->json(['message' =>  __('updated_successfully'),'data' => $user,'success'=>true,'redirect_url' => ('users.index')]);
     }
 
 
     public function getUsers(Request $request){
 
-        $users = User::orderby('id','asc')->select('*')->get();
+        $users = User::orderby('id','asc')->where('role',$request->role)->select('*')->get();
 
         // Fetch all records
         $response['data'] = $users;
 
         $html = '';
         if($users->isNotEmpty()){
+            $html.='<option selected disabled>--select role--</option>';
             foreach($users as $user)
             if($user->role!='Admin' && $user->role!='Super Admin'){
-                $html .= '<option  value="'.$user->id.'">'.$user->role.'</option>';
-
+                $html .= ' <option  value="'.$user->id.'">'.$user->name.'</option>';
             }
         }
         return $html;
@@ -145,7 +145,8 @@ class UserController extends Controller
     {
         // dd($id);
         $user = User::find($id);
-        return view('users.edit',compact('user'));
+         $assigns = user::query('')->get();
+        return view('users.edit',compact('user','assigns'));
     }
 
     /**
@@ -179,4 +180,126 @@ class UserController extends Controller
     //     //dd($user);
     //     return view('users.edit',compact('user'));
     // }
+
+    public function autocomplete(Request $request)
+    {
+
+        if(Auth::user()->role == 'Admin'){
+            $data = User::where('role','!=','Admin')
+                    ->where("name","LIKE","%{$request->name}%");
+                    $data = $data->paginate(10);
+                    $html = " ";
+                   if($data->isNotEmpty()){
+                        foreach ($data as $d) {
+                            $html.= '<tr>
+                            <td>'.$d->id.'</td>
+                            <td>'.$d->name.'</td>
+                            <td>'.$d->email.'</td>
+                            <td>'.$d->role.'</td>
+                            <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
+                        }
+                    }
+            return $html;
+                }
+
+                //for Super Admin
+
+        if(Auth::user()->role == 'Super Admin'){
+        $data = User::where('role','!=','Admin')->where('role','!=','Super Admin')
+                ->where("name","LIKE","%{$request->name}%");
+                $data = $data->paginate(10);
+                $html = " ";
+               if($data->isNotEmpty()){
+                    foreach ($data as $d) {
+                        $html.= '<tr>
+                        <td>'.$d->id.'</td>
+                        <td>'.$d->name.'</td>
+                        <td>'.$d->email.'</td>
+                        <td>'.$d->role.'</td>
+                        <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
+                    }
+                }
+        return $html;
+            }
+
+            //for NOC Admin
+
+        if(Auth::user()->role == 'NOC Admin'){
+        $data = User::where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','Billing Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')
+                ->where("name","LIKE","%{$request->name}%");
+                $data = $data->paginate(10);
+                $html = " ";
+                if($data->isNotEmpty()){
+                    foreach ($data as $d) {
+                        $html.= '<tr>
+                        <td>'.$d->id.'</td>
+                        <td>'.$d->name.'</td>
+                        <td>'.$d->email.'</td>
+                        <td>'.$d->role.'</td>
+                        <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
+                     }
+                }
+        return $html;
+            }
+
+                       //for Rate Admin
+
+                    if(Auth::user()->role == 'Rate Admin'){
+                        $data = User::where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive')
+                                ->where("name","LIKE","%{$request->name}%");
+                                $data = $data->paginate(10);
+                                $html = " ";
+                               if($data->isNotEmpty()){
+                                    foreach ($data as $d) {
+                                        $html.= '<tr>
+                                        <td>'.$d->id.'</td>
+                                        <td>'.$d->name.'</td>
+                                        <td>'.$d->email.'</td>
+                                        <td>'.$d->role.'</td>
+                                        <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
+                                    }
+                                }
+                        return $html;
+                            }
+
+                             //for Sales Admin
+
+                            if(Auth::user()->role == 'Sales Admin'){
+                                $data = User::where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive')
+                                        ->where("name","LIKE","%{$request->name}%");
+                                        $data = $data->paginate(10);
+                                        $html = " ";
+                                       if($data->isNotEmpty()){
+                                            foreach ($data as $d) {
+                                                $html.= '<tr>
+                                                <td>'.$d->id.'</td>
+                                                <td>'.$d->name.'</td>
+                                                <td>'.$d->email.'</td>
+                                                <td>'.$d->role.'</td>
+                                                <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
+                                            }
+                                        }
+                                return $html;
+                                }
+
+                                //for Billing Admin
+
+                        if(Auth::user()->role == 'Billing Admin'){
+                            $data = User::where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')
+                            ->where("name","LIKE","%{$request->name}%");
+                             $data = $data->paginate(10);
+                             $html = " ";
+                                if($data->isNotEmpty()){
+                                    foreach ($data as $d) {
+                                         $html.= '<tr>
+                                            <td>'.$d->id.'</td>
+                                            <td>'.$d->name.'</td>
+                                            <td>'.$d->email.'</td>
+                                            <td>'.$d->role.'</td>
+                                             <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
+                                                }
+                                            }
+                                    return $html;
+                                    }
+    }
 }

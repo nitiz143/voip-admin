@@ -61,6 +61,10 @@
                                         <option value="Rate Admin"> Rate Admin </option>
                                         <option value="Sales Admin"> Sales Admin </option>
                                         <option value="Billing Admin"> Billing Admin </option>
+                                        <option value="NOC Executive">NOC Executive</option>
+                                        <option value="Rate Executive">Rate Executive</option>
+                                        <option value="Sales Executive">Sales Executive</option>
+                                        <option value="Billing Executive">Billing Executive</option>
                                         @endif
                                         @if( Auth::user()->role  == 'NOC Admin')
                                         <option value="NOC Executive">NOC Executive</option>
@@ -79,8 +83,10 @@
                             </div>
 
                             @if( Auth::user()->role  == 'Super Admin')
-                                <div class="form-group">
+                                <div class="form-group" id="adminuser" style="display: none">
+                                    <label for="select_role">Assign Admin</label>
                                     <select class="custom-select form-control-border border-width-2" name="parent_id" id="parent">
+
                                     </select>
                                 </div>
                             @endif
@@ -167,24 +173,27 @@
 
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             $(document).ready(function(){
-
                 // Fetch all records
-                $('#select_role').change(function() {
-                    //  alert();
-                    // AJAX GET request
-                    $.ajax({
-                    url: "{{ route('getUsers')}}",
-                    type: 'get',
-                    // dataType: 'json',
-                    success: function(response){
+                        $('#select_role').change(function() {
+                            if(this.value != 'NOC Executive' && this.value != 'Rate Executive' && this.value != 'Billing Executive' && this.value != 'Sales Executive' ){
+                            $.ajax({
+                            url: "{{ route('getUsers')}}",
+                            data: {
+                            'role':this.value,
+                                '_token':'{{csrf_token()}}'
+                            },
+                            type: 'post',
+                            // dataType: 'json',
+                            success: function(response){
+                                $('#adminuser').show();
+                                $("#parent").html(response);
+                            }
+                            });
+                        }else{
+                            $('#adminuser').hide();
+                        }
+                        });
 
-                            $("#parent").html(response);
-
-
-// console.log(response);
-                    }
-                    });
-                });
             });
 
 
