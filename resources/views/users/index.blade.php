@@ -2,20 +2,20 @@
 
 @section('content')
 <div class="content-wrapper mt-3">
-<section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
 
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
 
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
 
 
         <section class="content">
@@ -45,20 +45,15 @@
                                     </tr>
                                     </thead>
                                     <tbody class="Data">
-                                        {{-- @if ( Auth::user()->role  == 'Admin') --}}
                                         @foreach($users as $user)
                                         <tr>
                                             <td>{{$user->id}}</td>
                                             <td>{{$user->name}}</td>
                                             <td>{{$user->email}}</td>
                                             <td>{{$user->role}}</td>
-
                                             <td><a href="{{route('users.edit',$user->id)}} " class="delete btn btn-primary btn-sm Edit"  data-id ="{{$user->id}}">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="{{$user->id}}">Delete</a></td>
-
                                         </tr>
-
                                         @endforeach
-                                        {{-- @endif --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -71,9 +66,8 @@
                     </div>
                 </div>
             </div>
-         </section>
+        </section>
 </div>
-
 @endsection
 @section('page_js')
 <script>
@@ -81,6 +75,7 @@
 $(".Delete").click(function(){
     var id = $(this).data("id");
     var token = "{{ csrf_token() }}";
+if(confirm("Are You sure want to delete !") == true){
 
     $.ajax(
     {
@@ -96,8 +91,14 @@ $(".Delete").click(function(){
             setTimeout(function () {
                 location.reload();
                  }, 1000);
-        }
+        },
+            error: function (resp) {
+                console.log('Error:', resp);
+            }
     });
+}else{
+    location.reload();
+}
 
 });
 

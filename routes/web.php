@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CallController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('/call-history','App\Http\Controllers\CallController');
+Route::resource('/call','App\Http\Controllers\CallController');
 Route::resource('/users','App\Http\Controllers\UserController');
 Route::post('getUsers','App\Http\Controllers\UserController@getUsers')->name('getUsers');
 Route::get('autocomplete','App\Http\Controllers\UserController@autocomplete')->name('autocomplete');

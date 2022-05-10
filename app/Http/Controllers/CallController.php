@@ -6,28 +6,29 @@ use Illuminate\Http\Request;
 use App\Models\CallHistory;
 use Illuminate\Support\Facades\Validator;
 use Rap2hpoutre\FastExcel\FastExcel;
+use File;
 
 class CallController extends Controller
 {
     public function index()
     {
-        return view('call-history');
+        $calls =CallHistory::query('')->paginate(10);
+        return view('call.call-history-index',compact('calls'));
     }
 
 
     public function store(Request $request)
     {
 
-        // // $request->validate([
-        // //     'file' => 'required',
-            
-        // // ]);
-  
+        // $request->validate([
+        //     'file' => 'required',
+
+        // ]);
+
         $file  = $request->file;
-        // dd($file);
+        //  dd($file);
         $name = time().'.'.$file->getClientOriginalExtension();
         $path = $file->storeAs('public/csv', $name);
-        // dd(public_path('storage/csv/'));
         $users = (new FastExcel)->import(public_path('storage/csv/' .$name), function ($line) {
             // dd($line['id']);
                 $checkHistory = CallHistory::whereCallerId($line['id'])->first();
@@ -76,7 +77,21 @@ class CallController extends Controller
                     ]);
                 }
          });
-        return redirect()->back();
+         return response()->json(['message' =>  __('updated_successfully'),'success'=>true]);
     }
-    
+
+    public function create()
+    {
+        return view('call.call-history');
+    }
+
+
+    public function destroy(Request $request)
+    {
+        //  dd($request->id);
+        CallHistory::find($request->id)->delete();
+        return response()->json(['message'=>__('deleted_successfully'),'success'=>true]);
+
+    }
+
 }

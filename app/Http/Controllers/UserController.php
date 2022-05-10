@@ -118,9 +118,9 @@ class UserController extends Controller
         if($users->isNotEmpty()){
             $html.='<option selected disabled>--select role--</option>';
             foreach($users as $user)
-            if($user->role!='Admin' && $user->role!='Super Admin'){
+            // if($user->role!='Admin' && $user->role!='Super Admin'){
                 $html .= ' <option  value="'.$user->id.'">'.$user->name.'</option>';
-            }
+            // }
         }
         return $html;
       }
@@ -145,7 +145,7 @@ class UserController extends Controller
     {
         // dd($id);
         $user = User::find($id);
-         $assigns = user::query('')->get();
+        $assigns = User::query('')->get();
         return view('users.edit',compact('user','assigns'));
     }
 

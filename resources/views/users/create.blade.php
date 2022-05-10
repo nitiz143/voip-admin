@@ -175,7 +175,7 @@
             $(document).ready(function(){
                 // Fetch all records
                         $('#select_role').change(function() {
-                            if(this.value != 'NOC Executive' && this.value != 'Rate Executive' && this.value != 'Billing Executive' && this.value != 'Sales Executive' ){
+                            if(this.value != 'NOC Executive' && this.value != 'Rate Executive' && this.value != 'Billing Executive' && this.value != 'Sales Executive'){
                             $.ajax({
                             url: "{{ route('getUsers')}}",
                             data: {
