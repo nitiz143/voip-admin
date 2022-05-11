@@ -26,4 +26,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('/call','App\Http\Controllers\CallController');
 Route::resource('/users','App\Http\Controllers\UserController');
 Route::post('getUsers','App\Http\Controllers\UserController@getUsers')->name('getUsers');
-Route::get('autocomplete','App\Http\Controllers\UserController@autocomplete')->name('autocomplete');
+// Route::get('autocomplete','App\Http\Controllers\UserController@autocomplete')->name('autocomplete');

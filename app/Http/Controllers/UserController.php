@@ -5,7 +5,7 @@ use App\Models\User;
 // use Config;
 use Illuminate\Support\Facades\Hash;
 use DB;
-use Datatables;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Auth;
@@ -16,9 +16,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // dd(Auth::user()->whereRole('Super Admin'));
+        if ($request->ajax()) {
         $users = User::where('role','!=','Admin');
         if(Auth::user()->role == 'Super Admin'){
             $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin');
@@ -35,8 +36,21 @@ class UserController extends Controller
         if(Auth::user()->role == 'Billing Admin'){
             $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive');
         }
-        $users = $users->paginate(10);
-        return view('users.index',compact('users'));
+        $data = $users->get();
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function($row){
+
+               $btn = '<a href="'.route('users.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
+
+                return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+
+
+    }
+        return view('users.index');
     }
 
     /**
@@ -103,7 +117,7 @@ class UserController extends Controller
             'id'   => $request->id,
          ],$request->all());
 
-        return response()->json(['message' =>  __('updated_successfully'),'data' => $user,'success'=>true,'redirect_url' => ('users.index')]);
+    return response()->json(['message' =>  __('updated_successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/users')]);
     }
 
 
@@ -169,137 +183,11 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
-        // dd($request->id);
+        //  dd($request->id);
         User::find($request->id)->delete();
         return response()->json(['message'=>__('deleted_successfully'),'success'=>true]);
 
     }
-    // public function user_edit()
-    // {
-    //     $user = User::('id','Asc')->get();
-    //     //dd($user);
-    //     return view('users.edit',compact('user'));
-    // }
 
-    public function autocomplete(Request $request)
-    {
 
-        if(Auth::user()->role == 'Admin'){
-            $data = User::where('role','!=','Admin')
-                    ->where("name","LIKE","%{$request->name}%");
-                    $data = $data->paginate(10);
-                    $html = " ";
-                   if($data->isNotEmpty()){
-                        foreach ($data as $d) {
-                            $html.= '<tr>
-                            <td>'.$d->id.'</td>
-                            <td>'.$d->name.'</td>
-                            <td>'.$d->email.'</td>
-                            <td>'.$d->role.'</td>
-                            <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
-                        }
-                    }
-            return $html;
-                }
-
-                //for Super Admin
-
-        if(Auth::user()->role == 'Super Admin'){
-        $data = User::where('role','!=','Admin')->where('role','!=','Super Admin')
-                ->where("name","LIKE","%{$request->name}%");
-                $data = $data->paginate(10);
-                $html = " ";
-               if($data->isNotEmpty()){
-                    foreach ($data as $d) {
-                        $html.= '<tr>
-                        <td>'.$d->id.'</td>
-                        <td>'.$d->name.'</td>
-                        <td>'.$d->email.'</td>
-                        <td>'.$d->role.'</td>
-                        <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
-                    }
-                }
-        return $html;
-            }
-
-            //for NOC Admin
-
-        if(Auth::user()->role == 'NOC Admin'){
-        $data = User::where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','Billing Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')
-                ->where("name","LIKE","%{$request->name}%");
-                $data = $data->paginate(10);
-                $html = " ";
-                if($data->isNotEmpty()){
-                    foreach ($data as $d) {
-                        $html.= '<tr>
-                        <td>'.$d->id.'</td>
-                        <td>'.$d->name.'</td>
-                        <td>'.$d->email.'</td>
-                        <td>'.$d->role.'</td>
-                        <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
-                     }
-                }
-        return $html;
-            }
-
-                       //for Rate Admin
-
-                    if(Auth::user()->role == 'Rate Admin'){
-                        $data = User::where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive')
-                                ->where("name","LIKE","%{$request->name}%");
-                                $data = $data->paginate(10);
-                                $html = " ";
-                               if($data->isNotEmpty()){
-                                    foreach ($data as $d) {
-                                        $html.= '<tr>
-                                        <td>'.$d->id.'</td>
-                                        <td>'.$d->name.'</td>
-                                        <td>'.$d->email.'</td>
-                                        <td>'.$d->role.'</td>
-                                        <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
-                                    }
-                                }
-                        return $html;
-                            }
-
-                             //for Sales Admin
-
-                            if(Auth::user()->role == 'Sales Admin'){
-                                $data = User::where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive')
-                                        ->where("name","LIKE","%{$request->name}%");
-                                        $data = $data->paginate(10);
-                                        $html = " ";
-                                       if($data->isNotEmpty()){
-                                            foreach ($data as $d) {
-                                                $html.= '<tr>
-                                                <td>'.$d->id.'</td>
-                                                <td>'.$d->name.'</td>
-                                                <td>'.$d->email.'</td>
-                                                <td>'.$d->role.'</td>
-                                                <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
-                                            }
-                                        }
-                                return $html;
-                                }
-
-                                //for Billing Admin
-
-                        if(Auth::user()->role == 'Billing Admin'){
-                            $data = User::where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')
-                            ->where("name","LIKE","%{$request->name}%");
-                             $data = $data->paginate(10);
-                             $html = " ";
-                                if($data->isNotEmpty()){
-                                    foreach ($data as $d) {
-                                         $html.= '<tr>
-                                            <td>'.$d->id.'</td>
-                                            <td>'.$d->name.'</td>
-                                            <td>'.$d->email.'</td>
-                                            <td>'.$d->role.'</td>
-                                             <td><a href="'.route('users.edit',$d->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$d->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$d->id.'">Delete</a> </td></tr>';
-                                                }
-                                            }
-                                    return $html;
-                                    }
-    }
 }

@@ -6,24 +6,42 @@ use Illuminate\Http\Request;
 use App\Models\CallHistory;
 use Illuminate\Support\Facades\Validator;
 use Rap2hpoutre\FastExcel\FastExcel;
+// use Datatables;
+use Yajra\DataTables\DataTables;
 use File;
 
 class CallController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $calls =CallHistory::query('')->paginate(10);
-        return view('call.call-history-index',compact('calls'));
+        if ($request->ajax()) {
+            $data = CallHistory::query('')->get();
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+
+                           $btn = '<a href="#" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
+
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+
+
+                }
+                // dd($data);
+        return view('call.call-history-index');
     }
+
 
 
     public function store(Request $request)
     {
 
-        // $request->validate([
-        //     'file' => 'required',
+        $request->validate([
+            'file' => 'required',
 
-        // ]);
+        ]);
 
         $file  = $request->file;
         //  dd($file);
@@ -88,7 +106,7 @@ class CallController extends Controller
 
     public function destroy(Request $request)
     {
-        //  dd($request->id);
+         //dd($request->id);
         CallHistory::find($request->id)->delete();
         return response()->json(['message'=>__('deleted_successfully'),'success'=>true]);
 

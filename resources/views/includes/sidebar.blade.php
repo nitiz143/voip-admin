@@ -46,7 +46,7 @@
             </a>
           </li>
 
-
+          {{-- @if (auth()->user()->role == 'Admin'||auth()->user()->role == 'Super Admin'||auth()->user()->role == 'NOC Admin'||auth()->user()->role == 'Sales Admin'||auth()->user()->role == 'Rate Admin'||auth()->user()->role == 'Billing Admin') --}}
           <li class="nav-item ">
             <a href="{{url('/users')}}" class="nav-link {{ Request::is('users','users/create') ? 'active' : '' }} ">
                 <i class="nav-icon fas fa-user-alt"></i>
@@ -55,6 +55,8 @@
               </p>
             </a>
           </li>
+          {{-- @endif --}}
+
           <li class="nav-item ">
             <a href="{{url('/call')}}" class="nav-link {{ Request::is('call') ? 'active' : '' }} ">
                 <i class="nav-icon fas fa-phone-alt"></i>

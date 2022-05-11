@@ -34,7 +34,7 @@
                             </div> --}}
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table class="table table-bordered ">
+                                <table class="table table-bordered data-table" >
                                     <thead>
                                     <tr>
                                         <th>ID</th>
@@ -81,59 +81,12 @@
                                         <th>Action</th>
                                     </tr>
                                     </thead>
-                                    <tbody class="Data">
-                                        @foreach($calls as $call)
-                                        <tr>
-                                            <td>{{$call->id}}</td>
-                                            <td>{{$call->caller_id}}</td>
-                                            <td>{{$call->callere164}}</td>
-                                            <td>{{$call->calleraccesse164}}</td>
-                                            <td>{{$call->calleee164}}</td>
-                                            <td>{{$call->calleeaccesse164}}</td>
-                                            <td>{{$call->callerip}}</td>
-                                            <td>{{$call->callergatewayh323id}}</td>
-                                            <td>{{$call->callerproductid}}</td>
-                                            <td>{{$call->callertogatewaye164}}</td>
-                                            <td>{{$call->calleeip}}</td>
-                                            <td>{{$call->calleegatewayh323id}}</td>
-                                            <td>{{$call->calleeproductid}}</td>
-                                            <td>{{$call->calleetogatewaye164}}</td>
-                                            <td>{{$call->billingmode}}</td>
-                                            <td>{{$call->calllevel}}</td>
-                                            <td>{{$call->agentfeetime}}</td>
-                                            <td>{{$call->starttime}}</td>
-                                            <td>{{$call->stoptime}}</td>
-                                            <td>{{$call->pdd}}</td>
-                                            <td>{{$call->holdtime}}</td>
-                                            <td>{{$call->feeprefix}}</td>
-                                            <td>{{$call->feetime}}</td>
-                                            <td>{{$call->fee}}</td>
-                                            <td>{{$call->suitefee}}</td>
-                                            <td>{{$call->suitefeetime}}</td>
-                                            <td>{{$call->incomefee}}</td>
-                                            <td>{{$call->customername}}</td>
-                                            <td>{{$call->agentfeeprefix}}</td>
-                                            <td>{{$call->agentfee}}</td>
-                                            <td>{{$call->agentsuitefee}}</td>
-                                            <td>{{$call->agentsuitefeetime}}</td>
-                                            <td>{{$call->agentaccount}}</td>
-                                            <td>{{$call->agentname}}</td>
-                                            <td>{{$call->flowno}}</td>
-                                            <td>{{$call->softswitchdn}}</td>
-                                            <td>{{$call->enddirection}}</td>
-                                            <td>{{$call->endreason}}</td>
-                                            <td>{{$call->calleebilling}}</td>
-                                            <td>{{$call->cdrlevel}}</td>
-                                            <td>{{$call->subcdr_id}}</td>
-                                            <td><a href="#" class="delete btn btn-primary btn-sm Edit"  data-id ="{{$call->id}}">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="{{$call->id}}">Delete</a></td>
-                                        </tr>
-                                        @endforeach
+                                    <tbody>
+
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-end mr-4">
-                                {!! $calls->links() !!}
-                            </div>
+
                             <!-- /.card-body -->
                         </div>
             <!-- /.card -->
@@ -146,35 +99,124 @@
 @section('page_js')
 <script>
 
-$(".Delete").click(function(){
-    var id = $(this).data("id");
-    var token = "{{ csrf_token() }}";
-if(confirm("Are You sure want to delete !") == true){
-
-    $.ajax(
-    {
-        url: "{{ route('call.destroy', ": id ") }}",
-        type: 'delete',
-         dataType: "JSON",
-        data: {
-            "id": id,
-            "_token": token,
-        },
-        success: function (resp){
-            $.notify(resp.message, 'success');
-            setTimeout(function () {
-                location.reload();
-                 }, 1000);
-        },
-            error: function (resp) {
-                console.log('Error:', resp);
-            }
+    var table = $('.data-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('call.index') }}",
+        columns: [
+            {data:'id',name:'id'},
+            {data:'caller_id',name:'caller_id'},
+            {data:'callere164',name:'callere164'},
+            {data:'calleraccesse164',name:'calleraccesse164'},
+            {data:'calleee164',name:'calleee164'},
+            {data:'calleeaccesse164',name:'calleeaccesse164'},
+            {data:'callerip',name:'callerip'},
+            {data:'callergatewayh323id',name:'callergatewayh323id'},
+            {data:'callerproductid',name:'callerproductid'},
+            {data:'callertogatewaye164',name:'callertogatewaye164'},
+            {data:'calleeip',name:'calleeip'},
+            {data:'calleegatewayh323id',name:'calleegatewayh323id'},
+            {data:'calleeproductid',name:'calleeproductid'},
+            {data:'calleetogatewaye164',name:'calleetogatewaye164'},
+            {data:'billingmode',name:'billingmode'},
+            {data:'calllevel',name:'calllevel'},
+            {data:'agentfeetime',name:'agentfeetime'},
+            {data:'starttime',name:'starttime'},
+            {data:'stoptime',name:'stoptime'},
+            {data:'pdd',name:'pdd'},
+            {data:'holdtime',name:'holdtime'},
+            {data:'feeprefix',name:'feeprefix'},
+            {data:'feetime',name:'feetime'},
+            {data:'fee',name:'fee'},
+            {data:'suitefee',name:'suitefee'},
+            {data:'suitefeetime',name:'suitefeetime'},
+            {data:'incomefee',name:'incomefee'},
+            {data:'customername',name:'customername'},
+            {data:'agentfeeprefix',name:'agentfeeprefix'},
+            {data:'agentfee',name:'agentfee'},
+            {data:'agentsuitefee',name:'agentsuitefee'},
+            {data:'agentsuitefeetime',name:'agentsuitefeetime'},
+            {data:'agentaccount',name:'agentaccount'},
+            {data:'agentname',name:'agentname'},
+            {data:'flowno',name:'flowno'},
+            {data:'softswitchdn',name:'softswitchdn'},
+            {data:'enddirection',name:'enddirection'},
+            {data:'endreason',name:'endreason'},
+            {data:'calleebilling',name:'calleebilling'},
+            {data:'cdrlevel',name:'cdrlevel'},
+            {data:'subcdr_id',name:'subcdr_id'},
+            {data:'action',name:'action', orderable: false, searchable: false},
+        ]
     });
-}else{
-    $.notify('Your data is not delete','success');
-}
 
-});
+
+
+
+
+$(document).on('click', '.Delete', function () {
+        let id = $(this).data('id');
+        var token = "{{ csrf_token() }}";
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons
+            .fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('call.destroy', ": id ") }}",
+                        type: 'delete', // replaced from put
+                        dataType: "JSON",
+                        data: {
+                            "id": id,// method and token not needed in data
+                            "_token": token,
+                        },
+                        success: function (response) {
+                            console.log(response)
+                            if (response.success == true) { //YAYA
+                                role.draw();
+                            } else { //Fail check?
+                                timeOutId = setTimeout(ajaxFn, 20000); //set the timeout again
+
+                            }
+                            // location.reload();
+                        },
+                        error: function (xhr) {
+                            console.log(xhr.responseText); // this line will save you tons of hours while debugging
+                            // do something here because of error
+                        }
+                    });
+                    swalWithBootstrapButtons.fire(
+                       ' deleted!',
+                       ' your file deleted',
+                        'success'
+                    )
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                       'cancelled',
+                       ' your imaginary file is safe',
+                        'error'
+                    )
+
+                }
+            });
+    });
+
 </script>
 
 @endsection

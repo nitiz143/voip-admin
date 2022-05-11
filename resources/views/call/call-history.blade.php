@@ -12,7 +12,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+              <li class="breadcrumb-item"><a href="{{route('call.index')}}">Call-history</a></li>
               <li class="breadcrumb-item active">Import CSV</li>
             </ol>
           </div>
@@ -25,8 +25,6 @@
                 <div class="row">
                     <!-- left column -->
                     <div class="col-md-6">
-
-
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
@@ -37,7 +35,6 @@
                         <form action="{{ route('call.store') }}" method="POST" id="form" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
-
                                 <div class="form-group">
                                 <label for="exampleInputFile">File input</label>
                                 <div class="input-group">
@@ -50,7 +47,6 @@
                                     </div> --}}
                                 </div>
                                 </div>
-
                             </div>
                             <!-- /.card-body -->
 

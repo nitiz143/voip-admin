@@ -82,7 +82,7 @@
                                 </select>
                             </div>
 
-                            @if( Auth::user()->role  == 'Super Admin')
+                            @if( Auth::user()->role  == 'Super Admin'|| Auth::user()->role  == 'Admin')
                                 <div class="form-group" id="adminuser" style="display: none">
                                     <label for="select_role">Assign Admin</label>
                                     <select class="custom-select form-control-border border-width-2" name="parent_id" id="parent">

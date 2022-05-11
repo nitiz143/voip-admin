@@ -27,14 +27,9 @@
                                 <h1 class="card-title col-10">Users</h1>
                                 <a href="{{ route('users.create') }}" class="btn btn-primary mb-4  w-10 col-2" id="createzoneModal">Create</a>
                             </div>
-                            <div class="form-inline d-flex justify-content-end mt-2 mr-4">
-                                <div class="input-group" data-widget="sidebar-search">
-                                  <input class="form-control search" type="text" value="{{@request()->name}}" placeholder="Search">
-                                </div>
-                            </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table class="table table-bordered ">
+                                <table class="table table-bordered data-table" style="width: 100%">
                                     <thead>
                                     <tr>
                                         <th>ID</th>
@@ -44,22 +39,12 @@
                                         <th>Action</th>
                                     </tr>
                                     </thead>
-                                    <tbody class="Data">
-                                        @foreach($users as $user)
-                                        <tr>
-                                            <td>{{$user->id}}</td>
-                                            <td>{{$user->name}}</td>
-                                            <td>{{$user->email}}</td>
-                                            <td>{{$user->role}}</td>
-                                            <td><a href="{{route('users.edit',$user->id)}} " class="delete btn btn-primary btn-sm Edit"  data-id ="{{$user->id}}">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="{{$user->id}}">Delete</a></td>
-                                        </tr>
-                                        @endforeach
+                                    <tbody>
+
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-end mr-4">
-                                {!! $users->links() !!}
-                            </div>
+
                             <!-- /.card-body -->
                         </div>
             <!-- /.card -->
@@ -72,51 +57,86 @@
 @section('page_js')
 <script>
 
-$(".Delete").click(function(){
-    var id = $(this).data("id");
-    var token = "{{ csrf_token() }}";
-if(confirm("Are You sure want to delete !") == true){
-
-    $.ajax(
-    {
-        url: "{{ route('users.destroy', ": id ") }}",
-        type: 'delete',
-         dataType: "JSON",
-        data: {
-            "id": id,
-            "_token": token,
-        },
-        success: function (resp){
-            $.notify(resp.message, 'success');
-            setTimeout(function () {
-                location.reload();
-                 }, 1000);
-        },
-            error: function (resp) {
-                console.log('Error:', resp);
-            }
+var table = $('.data-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('users.index') }}",
+        columns: [
+            {data: 'id', name: 'id'},
+            {data: 'name', name: 'name'},
+            {data: 'email', name: 'email'},
+            {data: 'role', name: 'role'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
     });
-}else{
-    location.reload();
-}
 
-});
 
-var path = "{{ route('autocomplete') }}";
-// var route_id = "{{request()->route_id}}";
-$("input.search").keyup(function(){
-    $('.Data').html('');
-    $.ajax({
-        data: {'name':this.value},
-        url: path,
-        type: "GET",
-        // headers: {
-        // 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-        // },
-        success: function (resp) {
-            $('.Data').html(resp);
-        }
+
+$(document).on('click', '.Delete', function () {
+        let id = $(this).data('id');
+        var token = "{{ csrf_token() }}";
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons
+            .fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('users.destroy', ": id ") }}",
+                        type: 'delete', // replaced from put
+                        dataType: "JSON",
+                        data: {
+                            "id": id ,// method and token not needed in data
+                            "_token": token,
+                        },
+                        success: function (response) {
+                            console.log(response)
+                            if (response.success == true) { //YAYA
+                                role.draw();
+                            } else { //Fail check?
+                                timeOutId = setTimeout(ajaxFn, 20000); //set the timeout again
+
+                            }
+                            // location.reload();
+                        },
+                        error: function (xhr) {
+                            console.log(xhr.responseText); // this line will save you tons of hours while debugging
+                            // do something here because of error
+                        }
+                    });
+                    swalWithBootstrapButtons.fire(
+                       ' deleted!',
+                       ' your file deleted',
+                        'success'
+                    )
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                       'cancelled',
+                       ' your imaginary file safe',
+                        'error'
+                    )
+
+                }
+            });
     });
-});
+
+
+
 </script>
 @endsection

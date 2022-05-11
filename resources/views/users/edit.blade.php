@@ -99,7 +99,7 @@
                                     {{-- @endforeach --}}
                                 </select>
                                 @if (!empty($user->parent_id))
-                                    @if( Auth::user()->role  == 'Super Admin')
+                                    @if( Auth::user()->role  == 'Super Admin'|| Auth::user()->role  == 'Admin')
                                         <div class="form-group" id="adminuser" >
                                             <label for="select_role">Assign Admin</label>
                                             <select class="custom-select form-control-border border-width-2" name="parent_id" id="parent">
@@ -176,6 +176,31 @@
         save(formdata,url);
 
     });
+
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $(document).ready(function(){
+                // Fetch all records
+                        $('#select_role').change(function() {
+                            if(this.value != 'NOC Executive' && this.value != 'Rate Executive' && this.value != 'Billing Executive' && this.value != 'Sales Executive'){
+                            $.ajax({
+                            url: "{{ route('getUsers')}}",
+                            data: {
+                            'role':this.value,
+                                '_token':'{{csrf_token()}}'
+                            },
+                            type: 'post',
+                            // dataType: 'json',
+                            success: function(response){
+                                $('#adminuser').show();
+                                $("#parent").html(response);
+                            }
+                            });
+                        }else{
+                            $('#adminuser').hide();
+                        }
+                        });
+
+            });
 
 
 </script>
