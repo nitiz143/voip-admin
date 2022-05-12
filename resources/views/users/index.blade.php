@@ -24,8 +24,8 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h1 class="card-title col-10">Users</h1>
-                                <a href="{{ route('users.create') }}" class="btn btn-primary mb-4  w-10 col-2" id="createzoneModal">Create</a>
+                                <h1 class="card-title">Users</h1>
+                                <a href="{{ route('users.create') }}" class="btn btn-primary mb-4  float-right" id="createzoneModal">Create</a>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -105,7 +105,7 @@ $(document).on('click', '.Delete', function () {
                         success: function (response) {
                             console.log(response)
                             if (response.success == true) { //YAYA
-                                role.draw();
+                                table.draw();
                             } else { //Fail check?
                                 timeOutId = setTimeout(ajaxFn, 20000); //set the timeout again
 

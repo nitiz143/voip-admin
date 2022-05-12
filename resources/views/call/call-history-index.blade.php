@@ -186,7 +186,7 @@ $(document).on('click', '.Delete', function () {
                         success: function (response) {
                             console.log(response)
                             if (response.success == true) { //YAYA
-                                role.draw();
+                                table.draw();
                             } else { //Fail check?
                                 timeOutId = setTimeout(ajaxFn, 20000); //set the timeout again
 

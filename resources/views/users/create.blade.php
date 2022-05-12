@@ -82,7 +82,7 @@
                                 </select>
                             </div>
 
-                            @if( Auth::user()->role  == 'Super Admin'|| Auth::user()->role  == 'Admin')
+                            @if( Auth::user()->role  == 'Super Admin')
                                 <div class="form-group" id="adminuser" style="display: none">
                                     <label for="select_role">Assign Admin</label>
                                     <select class="custom-select form-control-border border-width-2" name="parent_id" id="parent">
@@ -136,6 +136,11 @@
                 else{
                     $.notify(resp.message, 'success');
                     $("#form")[0].reset();
+                    setTimeout(function(){
+                        if(resp.redirect_url){
+                            window.location.href = resp.redirect_url;
+                        }
+                    }, 1000);
                 }
              }, error: function(r) {
                 $('#global-loader').hide();
