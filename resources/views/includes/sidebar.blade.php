@@ -66,6 +66,15 @@
             </a>
           </li>
 
+          <li class="nav-item ">
+            <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/create') ? 'active' : '' }} ">
+                <i class="nav-icon fas fa-user-alt"></i>
+              <p>
+                CRM
+              </p>
+            </a>
+          </li>
+
             <li class="nav-item">
                 <a class="nav-link " href="{{ route('logout') }}"
                 onclick="event.preventDefault();

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CallController;
+use App\Http\Controllers\CRMController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,4 @@ Route::resource('/call','App\Http\Controllers\CallController');
 Route::resource('/users','App\Http\Controllers\UserController');
 Route::post('getUsers','App\Http\Controllers\UserController@getUsers')->name('getUsers');
 // Route::get('autocomplete','App\Http\Controllers\UserController@autocomplete')->name('autocomplete');
+Route::resource('/crm','App\Http\Controllers\CRMController');
