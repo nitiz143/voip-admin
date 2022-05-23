@@ -42,42 +42,7 @@
                                         <th>Callere164</th>
                                         <th>Calleraccesse164</th>
                                         <th>Calleee164</th>
-                                        <th>Calleeaccesse164</th>
-                                        <th>Callerip</th>
-                                        <th>Callergatewayh323id</th>
-                                        <th>Callerproductid</th>
-                                        <th>Callertogatewaye164</th>
-                                        <th>Calleeip</th>
-                                        <th>Calleegatewayh323id</th>
-                                        <th>Calleeproductid</th>
-                                        <th>Calleetogatewaye164</th>
-                                        <th>Billingmode</th>
-                                        <th>Calllevel</th>
-                                        <th>Agentfeetime</th>
-                                        <th>Starttime</th>
-                                        <th>Stoptime</th>
-                                        <th>Pdd</th>
-                                        <th>Holdtime</th>
-                                        <th>Feeprefix</th>
-                                        <th>Feetime</th>
-                                        <th>Fee</th>
-                                        <th>Suitefee</th>
-                                        <th>Suitefeetime</th>
-                                        <th>Incomefee</th>
-                                        <th>Customername</th>
-                                        <th>Agentfeeprefix</th>
-                                        <th>Agentfee</th>
-                                        <th>Agentsuitefee</th>
-                                        <th>Agentsuitefeetime</th>
-                                        <th>Agentaccount</th>
-                                        <th>Agentname</th>
-                                        <th>Flowno</th>
-                                        <th>Softswitchdn</th>
-                                        <th>Enddirection</th>
-                                        <th>Endreason</th>
-                                        <th>Calleebilling</th>
-                                        <th>Cdrlevel</th>
-                                        <th>Subcdr_id</th>
+                                        
                                         <th>Action</th>
                                     </tr>
                                     </thead>
