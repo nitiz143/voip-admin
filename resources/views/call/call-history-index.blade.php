@@ -21,7 +21,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="">
+                    <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header">
                                 <h1 class="card-title ">Call History</h1>
