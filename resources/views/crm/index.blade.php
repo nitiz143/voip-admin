@@ -39,23 +39,6 @@
                                     <th>lastname</th>
                                     <th>email</th>
                                     <th>phone</th>
-                                    <th>fax</th>
-                                    <th>mobile</th>
-                                    <th>website</th>
-                                    <th>lead_source</th>
-                                    <th>lead_status</th>
-                                    <th>rating</th>
-                                    <th>employee</th>
-                                    <th>skype_id</th>
-                                    <th>status</th>
-                                    <th>vat_number</th>
-                                    <th>description</th>
-                                    <th>address_line1</th>
-                                    <th>city</th>
-                                    <th>address_line2</th>
-                                    <th>postzip</th>
-                                    <th>address_line3</th>
-                                    <th>country</th>
                                     <th>created_at</th>
                                     <th>updated_at</th>
                                     <th>Action</th>
@@ -93,23 +76,7 @@ var table = $('.data-table').DataTable({
             {data:'lastname',name:'lastname'},
             {data:'email',name:'email'},
             {data:'phone',name:'phone'},
-            {data:'fax',name:'fax'},
-            {data:'mobile',name:'mobile'},
-            {data:'website',name:'website'},
-            {data:'lead_source',name:'lead_source'},
-            {data:'lead_status',name:'lead_status'},
-            {data:'rating',name:'rating'},
-            {data:'employee',name:'employee'},
-            {data:'skype_id',name:'skype_id'},
-            {data:'status',name:'status'},
-            {data:'vat_number',name:'vat_number'},
-            {data:'description',name:'description'},
-            {data:'address_line1',name:'address_line1'},
-            {data:'city',name:'city'},
-            {data:'address_line2',name:'address_line2'},
-            {data:'postzip',name:'postzip'},
-            {data:'address_line3',name:'address_line3'},
-            {data:'country',name:'country'},
+
             {data:'created_at',name:'created_at'},
             {data:'updated_at',name:'updated_at'},
             {data:'action',name:'action', orderable: false, searchable: false},
