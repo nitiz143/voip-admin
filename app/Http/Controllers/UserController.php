@@ -117,7 +117,7 @@ class UserController extends Controller
             'id'   => $request->id,
          ],$request->all());
 
-    return response()->json(['message' =>  __('updated_successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/users')]);
+    return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/users')]);
     }
 
 
@@ -185,7 +185,7 @@ class UserController extends Controller
     {
         //  dd($request->id);
         User::find($request->id)->delete();
-        return response()->json(['message'=>__('deleted_successfully'),'success'=>true]);
+        return response()->json(['message'=>__('Deleted Successfully'),'success'=>true]);
 
     }
 

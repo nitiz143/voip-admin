@@ -129,7 +129,7 @@ class CRMController extends Controller
             'id'   => $request->id,
          ],$request->all());
 
-         return response()->json(['message' =>  __('updated_successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/crm')]);
+         return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/crm')]);
 
 
     }
@@ -180,6 +180,6 @@ class CRMController extends Controller
     {
         // dd($request->all());
         CRM::find($request->id)->delete();
-        return response()->json(['message'=>__('deleted_successfully'),'success'=>true]);
+        return response()->json(['message'=>__('Deleted Successfully'),'success'=>true]);
     }
 }

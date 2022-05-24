@@ -95,7 +95,7 @@ class CallController extends Controller
                     ]);
                 }
          });
-         return response()->json(['message' =>  __('updated_successfully'),'success'=>true]);
+         return response()->json(['message' =>  __('Updated Successfully'),'success'=>true]);
     }
 
     public function create()
@@ -108,7 +108,7 @@ class CallController extends Controller
     {
          //dd($request->id);
         CallHistory::find($request->id)->delete();
-        return response()->json(['message'=>__('deleted_successfully'),'success'=>true]);
+        return response()->json(['message'=>__('Deleted Successfully'),'success'=>true]);
 
     }
 
