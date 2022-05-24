@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<div class="content-wrapper mt-3" style="width:max-content">
+<div class="content-wrapper mt-3" >
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
