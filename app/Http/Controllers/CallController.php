@@ -15,7 +15,7 @@ class CallController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = CallHistory::query('')->get();
+            $data = CallHistory::query('');
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){

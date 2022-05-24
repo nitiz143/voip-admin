@@ -34,7 +34,7 @@
                             </div> --}}
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table class="table table-bordered data-table" >
+                                <table class="table table-bordered data-table" style="width:100%" >
                                     <thead>
                                     <tr>
                                         <th>ID</th>
@@ -42,42 +42,7 @@
                                         <th>Callere164</th>
                                         <th>Calleraccesse164</th>
                                         <th>Calleee164</th>
-                                        <th>Calleeaccesse164</th>
-                                        <th>Callerip</th>
-                                        <th>Callergatewayh323id</th>
-                                        <th>Callerproductid</th>
-                                        <th>Callertogatewaye164</th>
-                                        <th>Calleeip</th>
-                                        <th>Calleegatewayh323id</th>
-                                        <th>Calleeproductid</th>
-                                        <th>Calleetogatewaye164</th>
-                                        <th>Billingmode</th>
-                                        <th>Calllevel</th>
-                                        <th>Agentfeetime</th>
-                                        <th>Starttime</th>
-                                        <th>Stoptime</th>
-                                        <th>Pdd</th>
-                                        <th>Holdtime</th>
-                                        <th>Feeprefix</th>
-                                        <th>Feetime</th>
-                                        <th>Fee</th>
-                                        <th>Suitefee</th>
-                                        <th>Suitefeetime</th>
-                                        <th>Incomefee</th>
-                                        <th>Customername</th>
-                                        <th>Agentfeeprefix</th>
-                                        <th>Agentfee</th>
-                                        <th>Agentsuitefee</th>
-                                        <th>Agentsuitefeetime</th>
-                                        <th>Agentaccount</th>
-                                        <th>Agentname</th>
-                                        <th>Flowno</th>
-                                        <th>Softswitchdn</th>
-                                        <th>Enddirection</th>
-                                        <th>Endreason</th>
-                                        <th>Calleebilling</th>
-                                        <th>Cdrlevel</th>
-                                        <th>Subcdr_id</th>
+                                        
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -109,42 +74,7 @@
             {data:'callere164',name:'callere164'},
             {data:'calleraccesse164',name:'calleraccesse164'},
             {data:'calleee164',name:'calleee164'},
-            {data:'calleeaccesse164',name:'calleeaccesse164'},
-            {data:'callerip',name:'callerip'},
-            {data:'callergatewayh323id',name:'callergatewayh323id'},
-            {data:'callerproductid',name:'callerproductid'},
-            {data:'callertogatewaye164',name:'callertogatewaye164'},
-            {data:'calleeip',name:'calleeip'},
-            {data:'calleegatewayh323id',name:'calleegatewayh323id'},
-            {data:'calleeproductid',name:'calleeproductid'},
-            {data:'calleetogatewaye164',name:'calleetogatewaye164'},
-            {data:'billingmode',name:'billingmode'},
-            {data:'calllevel',name:'calllevel'},
-            {data:'agentfeetime',name:'agentfeetime'},
-            {data:'starttime',name:'starttime'},
-            {data:'stoptime',name:'stoptime'},
-            {data:'pdd',name:'pdd'},
-            {data:'holdtime',name:'holdtime'},
-            {data:'feeprefix',name:'feeprefix'},
-            {data:'feetime',name:'feetime'},
-            {data:'fee',name:'fee'},
-            {data:'suitefee',name:'suitefee'},
-            {data:'suitefeetime',name:'suitefeetime'},
-            {data:'incomefee',name:'incomefee'},
-            {data:'customername',name:'customername'},
-            {data:'agentfeeprefix',name:'agentfeeprefix'},
-            {data:'agentfee',name:'agentfee'},
-            {data:'agentsuitefee',name:'agentsuitefee'},
-            {data:'agentsuitefeetime',name:'agentsuitefeetime'},
-            {data:'agentaccount',name:'agentaccount'},
-            {data:'agentname',name:'agentname'},
-            {data:'flowno',name:'flowno'},
-            {data:'softswitchdn',name:'softswitchdn'},
-            {data:'enddirection',name:'enddirection'},
-            {data:'endreason',name:'endreason'},
-            {data:'calleebilling',name:'calleebilling'},
-            {data:'cdrlevel',name:'cdrlevel'},
-            {data:'subcdr_id',name:'subcdr_id'},
+     
             {data:'action',name:'action', orderable: false, searchable: false},
         ]
     });
