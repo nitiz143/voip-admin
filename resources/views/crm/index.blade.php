@@ -32,7 +32,7 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>lead_owner</th>
+                                    {{-- <th>lead_owner</th> --}}
                                     <th>company</th>
                                     <th>firstname</th>
                                     <th>lastname</th>
@@ -86,7 +86,7 @@ var table = $('.data-table').DataTable({
         ajax: "{{ route('crm.index') }}",
         columns: [
             {data:'id',name:'id'},
-            {data:'lead_owner',name:'lead_owner'},
+            // {data:'lead_owner',name:'lead_owner'},
             {data:'company',name:'company'},
             {data:'firstname',name:'firstname'},
             {data:'lastname',name:'lastname'},
