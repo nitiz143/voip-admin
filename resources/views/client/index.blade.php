@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<div class="content-wrapper mt-3" >
+<div class="content-wrapper mt-3">
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -16,57 +16,54 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h1 class="card-title ">CRM</h1>
-                            <a href="{{ route('crm.create') }}" class="btn btn-primary mb-4 float-right w-10" id="createzoneModal">create</a>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <table class="table table-bordered data-table">
-                                <thead>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            {{-- <div class="card-header">
+                                <h1 class="card-title">Users</h1>
+                                <a href="" class="btn btn-primary mb-4  float-right" id="createzoneModal">Create</a>
+                            </div> --}}
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table class="table table-bordered data-table" style="width: 100%">
+                                    <thead>
                                     <tr>
                                         <th>ID</th>
-                                        {{-- <th>lead_owner</th> --}}
-                                        <th>company</th>
-                                        <th>firstname</th>
-                                        <th>lastname</th>
-                                        <th>email</th>
-                                        <th>phone</th>
-                                        <th>created_at</th>
-                                        <th>updated_at</th>
+                                        <th>Company</th>
+                                        <th>Firstname</th>
+                                        <th>Lastname</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Created_at</th>
+                                        <th>Updated_at</th>
                                         <th>Action</th>
                                     </tr>
-                                </thead>
-                                <tbody>
+                                    </thead>
+                                    <tbody>
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- /.card-body -->
                         </div>
-
-                        <!-- /.card-body -->
+            <!-- /.card -->
                     </div>
-                     <!-- /.card -->
                 </div>
             </div>
-        </div>
-    </section>
-
+        </section>
 </div>
-
 @endsection
+
 @section('page_js')
 <script>
 
 var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('crm.index') }}",
+        ajax: "{{ route('client.index') }}",
         columns: [
             {data:'id',name:'id'},
             // {data:'lead_owner',name:'lead_owner'},

@@ -254,7 +254,7 @@
                 <a href="#" class="nav-link">
                 India
                 <span class="float-right text-success">
-                <i class="fas fa-arrow-up text-sm"></i> 4%
+                <i class="fas fa-arrow-up text-sm"></i> 90%
                 </span>
                 </a>
                 </li>
@@ -814,7 +814,7 @@ $(function(){'use strict'
     ],
     datasets: [
       {
-        data: [700, 500, 400, 600, 300, 100],
+        data: [700, 500, 400, 600, 400, 900],
         backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
       }
     ]

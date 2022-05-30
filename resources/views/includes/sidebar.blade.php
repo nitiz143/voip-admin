@@ -67,6 +67,16 @@
           </li>
 
           <li class="nav-item ">
+            <a href="{{url('/client')}}" class="nav-link {{ Request::is('client') ? 'active' : '' }} ">
+                {{-- <i class="nav-icon fas fa-phone-alt"></i> --}}
+                <i class="nav-icon fas fa-file-alt"></i>
+              <p>
+               Account
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item ">
             <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/create') ? 'active' : '' }} ">
                 <i class="nav-icon fas fa-user-alt"></i>
               <p>
