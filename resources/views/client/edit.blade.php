@@ -29,8 +29,9 @@
                                 <h3 class="card-title">Lead Information</h3>
                             </div>
 
-                            <form action="{{ route('client.update',$user->id) }}" method="POST" id="Clientform">
+                            <form action="{{ route('client.update',$user->id) }}" method="PUT" id="Clientform">
                                 @csrf
+                                @method('PUT')
                                 <div class="card-body">
                                     <div class="form-group">
                                         <input type="hidden" name="id" value="{{$user->id}}">
@@ -132,7 +133,7 @@
                                     <!----------5 row ---------->
                                     <div class="row">
                                         <div class="col-xl-6">
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                                 <label>Lead Source</label>
                                                 <select class="custom-select form-control-border border-width-2" name="lead_source" id="lead_source">
                                                     <option selected disabled>--Select Lead Source--</option>
@@ -145,11 +146,11 @@
                                                     <option value="Sales Mail Alias" {{"Sales Mail Alias" == $user->lead_source ? 'selected' : ''}}>Sales Mail Alias</option>
                                                     <option value="Saminer Partner" {{"Saminer Partner" == $user->lead_source ? 'selected' : ''}}>Saminer Partner</option>
                                                 </select>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label >Lead Status</label>
+                                                {{-- <label >Lead Status</label>
                                                 <select class="custom-select form-control-border border-width-2" name="lead_status" id="lead_status">
                                                     <option selected disabled>--Select Lead Status--</option>
                                                     <option value="Attempted to Contact" {{"Attempted to Contact" == $user->lead_status ? 'selected' : ''}}>Attempted to Contact</option>
@@ -158,7 +159,7 @@
                                                     <option value="Junk Leak" {{"Junk Leak" == $user->lead_status ? 'selected' : ''}}>Junk Leak</option>
                                                     <option value="Not Contacted " {{"Not Contacted" == $user->lead_status ? 'selected' : ''}}>Not Contacted</option>
                                                     <option value="Pre Qualified " {{"Pre Qualified" == $user->lead_status ? 'selected' : ''}}>Pre Qualified</option>
-                                                </select>
+                                                </select> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -166,7 +167,7 @@
                                     <div class="row">
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label for="rating">Rating</label>
+                                                {{-- <label for="rating">Rating</label>
                                                 <select class="custom-select form-control-border border-width-2" name="rating" id="rating">
                                                     <option selected disabled>--Select Rating--</option>
                                                     <option value="Aquired" {{"Aquired" == $user->rating ? 'selected' : ''}}>Aquired</option>
@@ -174,14 +175,14 @@
                                                     <option value="Market Failed" {{"Market Failed" == $user->rating ? 'selected' : ''}}>Market Failed</option>
                                                     <option value="Project Cencel" {{"Project Cencel" == $user->rating ? 'selected' : ''}}>Project Cencel</option>
                                                     <option value="Shutdown" {{"Shutdown" == $user->rating ? 'selected' : ''}}>Shutdown</option>
-                                                </select>
+                                                </select> --}}
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                                 <label for="employee">No. of Employees</label>
                                                 <input type="text" class="form-control" id="employee" name="employee" value="{{$user->employee}}">
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                     <!----------7 row ---------->
@@ -548,7 +549,7 @@ function save(formdata,url){
         $.ajax({
           data: formdata,
           url: url,
-          type: "POST",
+          type: "PUT",
           dataType: 'json',
         //   cache:false,
         //   contentType: false,

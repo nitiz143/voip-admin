@@ -221,7 +221,7 @@ class CRMController extends Controller
             ];
             if(Client::create($data)){
                if ($crm->delete()){
-                return redirect()->route('client.index');
+                return response()->json(['message' =>  __('Leads Converted Into Account'),'success'=>true,'redirect_url' => route('client.index')]);
                }
             }
         }

@@ -126,11 +126,11 @@ class ClientController extends Controller
             return $response;
         }
 
-        $user =  Client::update([
+        $user =  Client::updateOrCreate([
             'id'   => $request->id,
          ],$request->all());
 
-         return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/getClient')]);
+         return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => route('client.index')]);
 
 
     }
