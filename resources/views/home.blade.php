@@ -779,7 +779,7 @@
 @section('page_js')
 <script src="{{ asset('assets/plugins/raphael/raphael.min.js')}}"></script>
 <script src="{{asset('assets/plugins/jquery-mapael/jquery.mapael.min.js')}}"></script>
-<script src="{{asset('assets/plugins/jquery-mapael/maps/usa_states.min.js')}}"></script>
+<script src="{{asset('assets/plugins/jquery-mapael/maps/world_countries.min.js')}}"></script>
 <script>
 $(function(){'use strict'
 
