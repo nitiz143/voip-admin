@@ -26,67 +26,236 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3>150</h3>
-
-                <p>New Orders</p>
+          <div class="col-md-12">
+            <div class="card bg-gradient-info">
+              <div class="card-header">
+                {{-- <h3 class="card-title">US-Visitors Report</h3> --}}
+                {{-- <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+                </button>
+                </div> --}}
+                <div class="card-body p-0">
+                  <div class="d-md-flex">
+                    <div class="p-1 flex-fill" style="overflow: hidden">
+                      <div id="world-map-markers" style="height: 325px; overflow: hidden">
+                        <div class="map"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
 
-                <p>Bounce Rate</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>44</h3>
 
-                <p>User Registrations</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>65</h3>
-
-                <p>Unique Visitors</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
           </div>
           <!-- ./col -->
         </div>
+
+        {{-- <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Destination</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">Destination Break</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">Prefix</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">Trunk</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">Account</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">Gateway</a>
+          </li>
+        </ul> --}}
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+            <h5 class="card-title">Top 10 Destination Call-Count.</h5>
+            <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <i class="fas fa-times"></i>
+            </button>
+            </div>
+            </div>
+
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="chart-responsive">
+                   <canvas id="pieChart1" height="150"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {{-- card-body --}}
+
+            <div class="col-md-12">
+              <div class="card-footer p-0">
+                <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                United States of America
+                <span class="float-right text-danger">
+                <i class="fas fa-arrow-down text-sm"></i>
+                12%</span>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                India
+                <span class="float-right text-success">
+                <i class="fas fa-arrow-up text-sm"></i> 4%
+                </span>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                China
+                <span class="float-right text-warning">
+                <i class="fas fa-arrow-left text-sm"></i> 0%
+                </span>
+                </a>
+                </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          {{-- card --}}
+        </div>
+        {{-- col-md-4 --}}
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+            <h3 class="card-title">Top 10 Destination Call-Cost.</h3>
+            <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <i class="fas fa-times"></i>
+            </button>
+            </div>
+            </div>
+
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="chart-responsive">
+                   <canvas id="pieChart2" height="150"></canvas>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="card-footer p-0">
+                <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                United States of America
+                <span class="float-right text-danger">
+                <i class="fas fa-arrow-down text-sm"></i>
+                12%</span>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                India
+                <span class="float-right text-success">
+                <i class="fas fa-arrow-up text-sm"></i> 4%
+                </span>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                China
+                <span class="float-right text-warning">
+                <i class="fas fa-arrow-left text-sm"></i> 0%
+                </span>
+                </a>
+                </li>
+                </ul>
+              </div>
+            </div>
+            {{-- col-md-4 --}}
+          </div>
+          {{-- card --}}
+        </div>
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+            <h3 class="card-title">Top 10 Destination Call-Minutes.</h3>
+            <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <i class="fas fa-times"></i>
+            </button>
+            </div>
+            </div>
+
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="chart-responsive">
+                   <canvas id="pieChart3" height="150"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="card-footer p-0">
+                <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                United States of America
+                <span class="float-right text-danger">
+                <i class="fas fa-arrow-down text-sm"></i>
+                12%</span>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                India
+                <span class="float-right text-success">
+                <i class="fas fa-arrow-up text-sm"></i> 90%
+                </span>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                China
+                <span class="float-right text-warning">
+                <i class="fas fa-arrow-left text-sm"></i> 0%
+                </span>
+                </a>
+                </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
         <!-- /.row -->
         <!-- Main row -->
         {{-- <div class="row">
@@ -607,3 +776,108 @@
   </div>
   <!-- /.content-wrapper -->
 @endsection
+@section('page_js')
+<script src="{{ asset('assets/plugins/raphael/raphael.min.js')}}"></script>
+<script src="{{asset('assets/plugins/jquery-mapael/jquery.mapael.min.js')}}"></script>
+<script src="{{asset('assets/plugins/jquery-mapael/maps/world_countries.min.js')}}"></script>
+<script>
+$(function(){'use strict'
+
+  // Get context with jQuery - using jQuery's .get() method.
+  var pieChartCanvas = $('#pieChart1').get(0).getContext('2d')
+  var pieData = {
+
+    labels: [
+      'Chrome',
+      'IE',
+      'FireFox',
+      'Safari',
+      'Opera',
+      'Navigator'
+    ],
+    datasets: [
+      {
+        data: [700, 500, 400, 600, 400, 900],
+        backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
+      }
+    ]
+  }
+  var pieOptions = {
+    legend: {
+      display: false
+    }
+  }
+  // Create pie or douhnut chart
+  // You can switch between pie and douhnut using the method below.
+  // eslint-disable-next-line no-unused-vars
+  var pieChart = new Chart(pieChartCanvas, {
+    type: 'doughnut',
+    data: pieData,
+    options: pieOptions
+  })
+
+
+  // pie chat2
+  var pieChartCanvas2 = $('#pieChart2').get(0).getContext('2d')
+  var pieData2 = {
+
+    labels: [
+      'Chrome',
+      'IE',
+      'FireFox',
+      'Safari',
+      'Opera',
+      'Navigator'
+    ],
+    datasets: [
+      {
+        data: [700, 500, 400, 600, 300, 100],
+        backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
+      }
+    ]
+  }
+  var pieOptions2 = {
+    legend: {
+      display: false
+    }
+  }
+  var pieChart2 = new Chart(pieChartCanvas2, {
+    type: 'doughnut',
+    data: pieData2,
+    options: pieOptions2
+  })
+
+  // pie chat3
+  var pieChartCanvas3 = $('#pieChart3').get(0).getContext('2d')
+  var pieData3 = {
+
+    labels: [
+      'Chrome',
+      'IE',
+      'FireFox',
+      'Safari',
+      'Opera',
+      'Navigator'
+    ],
+    datasets: [
+      {
+        data: [700, 500, 400, 600, 300, 100],
+        backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
+      }
+    ]
+  }
+  var pieOptions3 = {
+    legend: {
+      display: false
+    }
+  }
+  var pieChart3 = new Chart(pieChartCanvas3, {
+    type: 'doughnut',
+    data: pieData3,
+    options: pieOptions3
+  })
+
+$('#world-map-markers').mapael({map:{name:'world_countries',zoom:{enabled:true,maxLevel:10}}})})</script>
+@endsection
+
+

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 use App\Models\Crm;
+use App\Models\Client;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class CRMController extends Controller
 {
@@ -24,18 +26,24 @@ class CRMController extends Controller
                 return  $row->status == 0 ? __('Active') : __('Inactive');
 
             })
-                    ->addIndexColumn()
-                    ->addColumn('action', function($row){
+            ->addColumn('created_at', function($row){
+                return Carbon::parse($row->created_at)->format('d/m/Y H:i:s');
 
-                           $btn = '<a href="'.route('crm.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
+            })
+            ->addColumn('updated_at', function($row){
+                return Carbon::parse($row->updated_at)->format('d/m/Y H:i:s');
 
-                            return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
+            })
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
 
+                        $btn = '<a href="'.route('crm.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;<a href="'.route('getClient',$row->id).'" class="create btn btn-info btn-xm Create"  data-id ="'.$row->id.'"><i class="fa-solid fa-file-invoice"></i></a><a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
 
-                }
+                        return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
         return view('crm.index');
     }
 
@@ -129,7 +137,7 @@ class CRMController extends Controller
             'id'   => $request->id,
          ],$request->all());
 
-         return response()->json(['message' =>  __('updated_successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/crm')]);
+         return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/crm')]);
 
 
     }
@@ -180,6 +188,44 @@ class CRMController extends Controller
     {
         // dd($request->all());
         CRM::find($request->id)->delete();
-        return response()->json(['message'=>__('deleted_successfully'),'success'=>true]);
+        return response()->json(['message'=>__('Deleted Successfully'),'success'=>true]);
     }
+
+    public function ImportClient(Request $request)
+    {
+        //  dd($request->id);
+        $crm = CRM::find($request->id);
+        if($crm){
+            $data = [
+                'id' => $crm->id,
+                'lead_owner'=>$crm->lead_owner,
+                'fax'=>$crm->fax,
+                'mobile'=>$crm->mobile,
+                'website'=>$crm->website,
+                'skype_id'=>$crm->skype_id,
+                'status'=>$crm->status,
+                'vat_number'=>$crm->vat_number,
+                'description'=>$crm->description,
+                'address_line1'=>$crm->address_line1,
+                'city'=>$crm->city,
+                'address_line2'=>$crm->address_line2,
+                'postzip'=>$crm->postzip,
+                'address_line3'=>$crm->address_line3,
+                'country'=>$crm->country,
+                'company' => $crm->company,
+                'firstname' => $crm->firstname,
+                'lastname' => $crm->lastname,
+                'email' => $crm->email,
+                'phone' => $crm->phone,
+
+            ];
+            if(Client::create($data)){
+               if ($crm->delete()){
+                return response()->json(['message' =>  __('Leads Converted Into Account'),'success'=>true,'redirect_url' => route('client.index')]);
+               }
+            }
+        }
+        
+    }
+
 }
