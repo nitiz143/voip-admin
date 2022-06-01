@@ -26,7 +26,7 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="card bg-gradient-info">
               <div class="card-header">
                 {{-- <h3 class="card-title">US-Visitors Report</h3> --}}
@@ -50,25 +50,8 @@
               </div>
             </div>
           </div>
-            
-          <div class="col-md-4">
-            <div class="info-box mb-3 bg-success">
-              <div class="info-box-content">
-              {{-- <span class="info-box-text">Sales</span> --}}
-              <h6>Sales 275.005415</h6>
-              {{-- <span class="info-box-number">92,050</span> --}}
-              <p><b>Today sale by hour</b></p>
-              </div>
-              <canvas id="myChart" style="width:70%;max-width:70px"></canvas>
-            </div>
-            
-            <div class="info-box mb-3 bg-info">
-            <div class="info-box-content">
-            <span class="info-box-text">Direct Messages</span>
-            <span class="info-box-number">163,921</span>
-            </div>
-            
-            </div>
+
+
           </div>
           <!-- ./col -->
         </div>
@@ -93,7 +76,7 @@
             <a class="nav-link" href="">Gateway</a>
           </li>
         </ul> --}}
-        
+
       <div class="row">
         <div class="col-md-4">
           <div class="card">
@@ -108,7 +91,7 @@
             </button>
             </div>
             </div>
-            
+
             <div class="card-body">
               <div class="row">
                 <div class="col-md-12">
@@ -119,7 +102,7 @@
               </div>
             </div>
             {{-- card-body --}}
-            
+
             <div class="col-md-12">
               <div class="card-footer p-0">
                 <ul class="nav nav-pills flex-column">
@@ -155,7 +138,7 @@
         </div>
         {{-- col-md-4 --}}
 
-        <div class="col-md-4"> 
+        <div class="col-md-4">
           <div class="card">
             <div class="card-header">
             <h3 class="card-title">Top 10 Destination Call-Cost.</h3>
@@ -168,18 +151,18 @@
             </button>
             </div>
             </div>
-            
+
             <div class="card-body">
               <div class="row">
                 <div class="col-md-12">
                   <div class="chart-responsive">
                    <canvas id="pieChart2" height="150"></canvas>
                   </div>
-                
+
                 </div>
               </div>
             </div>
-            
+
             <div class="col-md-12">
               <div class="card-footer p-0">
                 <ul class="nav nav-pills flex-column">
@@ -214,7 +197,7 @@
           </div>
           {{-- card --}}
         </div>
-              
+
         <div class="col-md-4">
           <div class="card">
             <div class="card-header">
@@ -228,7 +211,7 @@
             </button>
             </div>
             </div>
-            
+
             <div class="card-body">
               <div class="row">
                 <div class="col-md-12">
@@ -238,7 +221,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="col-md-12">
               <div class="card-footer p-0">
                 <ul class="nav nav-pills flex-column">
@@ -796,14 +779,14 @@
 @section('page_js')
 <script src="{{ asset('assets/plugins/raphael/raphael.min.js')}}"></script>
 <script src="{{asset('assets/plugins/jquery-mapael/jquery.mapael.min.js')}}"></script>
-<script src="{{asset('assets/plugins/jquery-mapael/maps/usa_states.min.js')}}"></script>
+<script src="{{asset('assets/plugins/jquery-mapael/maps/world_countries.min.js')}}"></script>
 <script>
 $(function(){'use strict'
 
   // Get context with jQuery - using jQuery's .get() method.
   var pieChartCanvas = $('#pieChart1').get(0).getContext('2d')
   var pieData = {
-    
+
     labels: [
       'Chrome',
       'IE',
@@ -837,7 +820,7 @@ $(function(){'use strict'
   // pie chat2
   var pieChartCanvas2 = $('#pieChart2').get(0).getContext('2d')
   var pieData2 = {
-    
+
     labels: [
       'Chrome',
       'IE',
@@ -867,7 +850,7 @@ $(function(){'use strict'
   // pie chat3
   var pieChartCanvas3 = $('#pieChart3').get(0).getContext('2d')
   var pieData3 = {
-    
+
     labels: [
       'Chrome',
       'IE',
@@ -894,7 +877,7 @@ $(function(){'use strict'
     options: pieOptions3
   })
 
-$('#world-map-markers').mapael({map:{name:'usa_states',zoom:{enabled:true,maxLevel:10}}})})</script>
+$('#world-map-markers').mapael({map:{name:'world_countries',zoom:{enabled:true,maxLevel:10}}})})</script>
 @endsection
 
 
