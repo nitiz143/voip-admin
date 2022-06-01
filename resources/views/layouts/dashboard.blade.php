@@ -86,6 +86,13 @@
 
 <!------sweetalert--------------->
 <script src="{{asset('//cdn.jsdelivr.net/npm/sweetalert2@11')}}"></script>
+<script>
+
+ @if(Session::has('success'))
+    $.notify("{{ Session::get('success') }}", 'success');
+@endif
+
+</script>
 @yield('page_js')
 </body>
 </html>

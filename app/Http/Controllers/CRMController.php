@@ -37,7 +37,9 @@ class CRMController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
 
-                        $btn = '<a href="'.route('crm.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;<a href="'.route('getClient',$row->id).'" class="create btn btn-info btn-xm Create"  data-id ="'.$row->id.'"><i class="fa-solid fa-file-invoice"></i></a><a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
+                        $btn = '<a href="'.route('crm.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit mb-2"  data-id ="'.$row->id.'">Edit</a>
+                        <a href="'.route('getClient',$row->id).'" class="create btn btn-info btn-sm Create mb-2"  data-id ="'.$row->id.'">Create<i class="bi bi-person-badge"></i></i></a>
+                        <a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
 
                         return $btn;
                 })
@@ -221,8 +223,9 @@ class CRMController extends Controller
             ];
             if(Client::create($data)){
                if ($crm->delete()){
-                return response()->json(['message' =>  __('Leads Converted Into Account'),'success'=>true,'redirect_url' => route('client.index')]);
-               }
+                // return response()->json(['message' =>  __('Leads Converted Into Account'),'success'=>true,'redirect_url' => route('client.index')]);
+                return redirect()->route('client.index')->with('success', 'Leads Converted Into Account');
+            }
             }
         }
         
