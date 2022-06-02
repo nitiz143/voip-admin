@@ -45,14 +45,14 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered border text-nowrap mb-0 w-100" id="pdstable">
+                                    <table class="table table-bordered border text-nowrap mb-0 w-100" id="table">
                                         <thead>
                                             <tr>
                                                 <th></th>
                                                 <th>PID/sqIPID</th>
                                                 <th>Title</th>
-                                                <th>Last Start</th>
-                                                <th>Last Finish</th>
+                                                <th>Running Since</th>
+                                                <th>Last Run Time</th>
                                                 <th>Next Run Time</th>
                                                 <th></th>
                                             </tr>
@@ -77,7 +77,7 @@
                             <h5 class="modal-title" id="exampleModalLabel">Add Cron Job</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="" method="POST" id="cronForm">
+                        <form action="{{route('cron.store')}}" method="POST" id="cronForm">
                             @csrf
                             <div class="modal-body">
                                 <input type="hidden" value="" name="id" id="id">
@@ -115,48 +115,35 @@
                                         <label>Alert Active Email Time</label>
                                         <input type="text" name="Alert" id="Alert" class="form-control">
                                     </div>
-                                    <div class="col-xl-6 mb-3">
-                                        <label>Success Email</label>
-                                        <input type="email" name="success_email" id="success_email"class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                        <div class="col-xl-6 mb-3">
-                                            <label>Error Email</label>
-                                            <input type="email" name="error_email" id="error_email" class="form-control">
-                                        </div>
-                                        <div class="col-xl-6 mb-3">
-                                            </div>
                                 </div>
                             </div>
                                 <div id="data" style="display:none">
                                     <div class="form-row">
                                         <div class="col-xl-6 mb-3">
                                             <label>Max File Download Limit</label>
-                                            <input type="text" name="download" id="download" class="form-control">
+                                            <input type="text" name="download_limit" id="download" class="form-control">
                                         </div>
                                         <div class="col-xl-6 mb-3">
                                             <label>Threshold Time(Minute)</label>
                                             <input type="text" name="threshold" id="threshold" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="form-row">
-                                        <div class="col-xl-6 mb-3">
-                                            <label>Success Email</label>
-                                            <input type="email" name="success_email" id="success_email"class="form-control">
-                                        </div>
-                                        <div class="col-xl-6 mb-3">
-                                            <label>Error Email</label>
-                                            <input type="email" name="error_email" id="error_email" class="form-control">
-                                        </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-xl-6 mb-3">
+                                        <label>Success Email</label>
+                                        <input type="email" name="success_email" id="success_email"class="form-control">
+                                    </div>
+                                    <div class="col-xl-6 mb-3">
+                                        <label>Error Email</label>
+                                        <input type="email" name="error_email" id="error_email" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="col-xl-6 mb-3">
                                         <label>Job Time</label>
-                                        <select class="form-control cron" name="cron_type" id="cron_type">
+                                        <select class="form-control cron" name="job_time" id="job_time">
                                             <option value="">Select Runtime</option>
-                                            ...
                                             <option value="Second">Second</option>
                                             <option value="Minute">Minute</option>
                                             <option value="Hourly">Hourly</option>
@@ -185,7 +172,7 @@
                                     </div>
                                     <div class="col-xl-6 mb-3 mb-3">
                                         <label>Job Start Time</label><br>
-                                        <input type="datetime-local" class="form-control" />
+                                        <input type="datetime-local" class="form-control" name="start_time" />
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -201,7 +188,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" id="savezone" class="btn btn-primary">Save</button>
+                                <button type="submit" id="save" class="btn btn-primary">Save</button>
                             </div>
                         </form>
                     </div>
@@ -214,6 +201,32 @@
 @section('page_js')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
+     var role = $('#table').DataTable({
+     ajax: "{{route('cron.index')}}",
+     serverSide: true,
+     processing: true,
+     aaSorting: [
+         [0, "desc"]
+     ],
+    //  columns: [{
+    //          data: 'id',
+    //      },
+    //      {
+    //          data: 'job_title',
+    //          name: 'job_title'
+    //      },
+    //      {
+    //          data: 'start_time',
+    //          name: 'start_time'
+    //      },
+    //      {
+    //          data: 'action',
+    //          name: 'action',
+    //          searchable: false,
+    //          orderable: false
+    //      },
+    //  ]
+});
 
 $('.cron').on('change', function() {
 
@@ -290,6 +303,42 @@ $(document).ready(function() {
   });
 });
 
+function save(formdata,url){
+        $('#global-loader').show();
+        $.ajax({
+          data: formdata,
+          url: url,
+          type: "POST",
+          dataType: 'json',
+          success: function (resp) {
+                $('#global-loader').hide();
+                if(resp.success == false){
+                    $.each(resp.errors, function(k, e) {
+                        $.notify(e, 'error');
+                    });
+                }
+                else{
+                    $.notify(resp.message, 'success');
+                    role.draw();
+                    $('#CronModal').modal('hide');
+                }
+             }, error: function(r) {
+                $('#global-loader').hide();
+                $.each(r.responseJSON.errors, function(k, e) {
+                    $.notify(e, 'error');
+                });
+                $('.blocker').hide();
+            }
+      });
+
+    }
+
+    $('#save').click(function (e) {
+        e.preventDefault();
+        let formdata = $('#cronForm').serialize();
+        let url =   $('#cronForm').attr('action');
+        save(formdata,url);
+    });
 
 
 
