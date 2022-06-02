@@ -40,7 +40,7 @@
                                             <div class="form-group">
                                                 <label>Lead Owner</label>
                                                 <select class="custom-select form-control-border border-width-2" name="lead_owner" id="lead_owner">
-                                                     @if (Auth::user()->role == 'Admin')
+                                                    @if (Auth::user()->role == 'Admin'||Auth::user()->role == 'Super Admin'||Auth::user()->role == 'NOC Admin'||Auth::user()->role == 'Rate Admin'||Auth::user()->role == 'Sales Admin'||Auth::user()->role == 'Billing Admin')
                                                      <optgroup label="Selected Option">
                                                         <option value="{{$user->lead_owner}}">{{$user->lead_owner}}</option>
                                                      </optgroup>

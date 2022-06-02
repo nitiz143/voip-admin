@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\CRMController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CronJobController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,4 @@ Route::post('getUsers','App\Http\Controllers\UserController@getUsers')->name('ge
 Route::resource('/crm','App\Http\Controllers\CRMController');
 Route::resource('/client','App\Http\Controllers\ClientController');
 Route::get('/getClient/{id}','App\Http\Controllers\CRMController@ImportClient')->name('getClient');
-
+Route::resource('/cron','App\Http\Controllers\CronJobController');
