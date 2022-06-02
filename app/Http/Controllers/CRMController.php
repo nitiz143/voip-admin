@@ -164,7 +164,7 @@ class CRMController extends Controller
     public function edit($id)
     {
         $data= User::query('')->get();
-        $user = Crm::find($id);
+        $user = Crm::find($id); 
         return view('crm.edit',compact('user','data'));
     }
 

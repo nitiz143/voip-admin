@@ -525,6 +525,287 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4>Authentication Rule</h4>
+                                        <div class="row border">
+                                            <div class="row">
+                                                <h5 style="padding:10px;">Customer Details</h5>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group d-flex">
+                                                    <label>Authentication Rule</label>
+                                                    <select class="custom-select form-control" name="" id="">
+                                                        <option selected disabled>--Select Lead Source--</option>
+                                                        <option value="Advertisment">Advertisment</option>
+                                                        <option value="Cold Call">Cold Call</option>
+                                                        <option value="Employee Referral">Employee Referral</option>
+                                                        <option value="Online Store">Online Store</option>
+                                                        <option value="Partner">Partner</option>
+                                                        <option value="Public Relations">Public Relations</option>
+                                                        <option value="Sales Mail Alias">Sales Mail Alias</option>
+                                                        <option value="Saminer Partner">Saminer Partner</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group d-flex">
+                                                    <label for="city" style="padding:10px;">Value</label>
+                                                    <input type="text" class="form-control" id="city" name="city" value="{{$user->city}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row border">
+                                            <div class="row">
+                                            <h5 style="padding:10px;">Vendor Details</h5>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group d-flex">
+                                                    <label>Authentication Rule</label>
+                                                    <select class="custom-select form-control" name="lead_source" id="lead_source">
+                                                        <option selected disabled>--Select Authentication Rule--</option>
+                                                        <option value="Advertisment">Account Name: Account Number</option>
+                                                        <option value="Cold Call">Cold Call</option>
+                                                        <option value="Employee Referral">Employee Referral</option>
+                                                        <option value="Online Store">Online Store</option>
+                                                        <option value="Partner">Partner</option>
+                                                        <option value="Public Relations">Public Relations</option>
+                                                        <option value="Sales Mail Alias">Sales Mail Alias</option>
+                                                        <option value="Saminer Partner">Saminer Partner</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group d-flex">
+                                                    <label for="value" style="padding:10px;">Value</label>
+                                                    <input type="text" class="form-control" id="value" name="value" value="">
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Account Details</h3>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="accountowner">Account Owner</label>
+                                                    <select class="custom-select form-control" name="account_owner" id="account_owner">
+                                                        <option selected disabled>--Select Authentication Rule--</option>
+                                                        <option value="Advertisment">Account Name: Account Number</option>
+                                                        <option value="Cold Call">Cold Call</option>
+                                                        <option value="Employee Referral">Employee Referral</option>
+                                                        <option value="Online Store">Online Store</option>
+                                                        <option value="Partner">Partner</option>
+                                                        <option value="Public Relations">Public Relations</option>
+                                                        <option value="Sales Mail Alias">Sales Mail Alias</option>
+                                                        <option value="Saminer Partner">Saminer Partner</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="ownership">Ownership</label>
+                                                    <select class="custom-select form-control" name="ownership" id="ownership">
+                                                        <option selected disabled>--Select Authentication Rule--</option>
+                                                        <option value="Advertisment">Account Name: Account Number</option>
+                                                        <option value="Cold Call">Cold Call</option>
+                                                        <option value="Employee Referral">Employee Referral</option>
+                                                        <option value="Online Store">Online Store</option>
+                                                        <option value="Partner">Partner</option>
+                                                        <option value="Public Relations">Public Relations</option>
+                                                        <option value="Sales Mail Alias">Sales Mail Alias</option>
+                                                        <option value="Saminer Partner">Saminer Partner</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="firstname">First Name</label>
+                                                    <input type="text" class="form-control" id="firstname" name="firstname" value="{{$user->firstname}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="lastname">Last Name</label>
+                                                    <input type="text" class="form-control" id="lastname" name="lastname" value="{{$user->lastname}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="account_number">Account Number</label>
+                                                    <input type="text" class="form-control" id="account_number" name="account_number" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="waccount_website">Website</label>
+                                                    <input type="text" class="form-control" id="account_website" name="account_website" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="account_name">Account Name</label>
+                                                    <input type="text" class="form-control" id="account_name" name="account_name" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="phone">Phone</label>
+                                                    <input type="number" class="form-control" id="phone" name="phone" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group mt-4">
+                                                    <label for="vendor">Vendor</label>
+                                                        <label class="switch">
+                                                        <input type="checkbox" name="vendor" checked>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="phone">Fax</label>
+                                                    <input type="text" class="form-control" id="fax" name="fax" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group mt-4">
+                                                    <label for="vendor">Customer</label>
+                                                        <label class="switch">
+                                                        <input type="checkbox" name="customer" checked>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="phone">Employee</label>
+                                                    <input type="text" class="form-control" id="employee" name="employee" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group mt-4">
+                                                    <label for="reseller">Reseller</label>
+                                                        <label class="switch">
+                                                        <input type="checkbox" name="reseller">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="website">Account Reseller</label>
+                                                    <select class="custom-select form-control" name="account_reseller" id="account_reseller">
+                                                        <option selected disabled>--Select Account Reseller--</option>
+                                                        <option value="Advertisment">Account Name: Account Number</option>
+                                                        <option value="Cold Call">Cold Call</option>
+                                                        <option value="Employee Referral">Employee Referral</option>
+                                                        <option value="Online Store">Online Store</option>
+                                                        <option value="Partner">Partner</option>
+                                                        <option value="Public Relations">Public Relations</option>
+                                                        <option value="Sales Mail Alias">Sales Mail Alias</option>
+                                                        <option value="Saminer Partner">Saminer Partner</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="email">Email</label>
+                                                    <input type="email" class="form-control" id="email" name="email" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="billingemail">Billing Email</label>
+                                                    <input type="email" class="form-control" id="billing_email" name="billing_email" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="reseller">Status</label>
+                                                        <label class="switch">
+                                                        <input type="checkbox" name="status"> 
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="accounttag">Account tags</label>
+                                                    <input type="text" class="form-control" id="account_tag" name="account_tag" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="vatnumber">Vat Number</label>
+                                                    <input type="text" class="form-control" id="vat_number" name="vat_number" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="currency">Currency</label>
+                                                    <input type="text" class="form-control" id="currency" name="currency" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="timezone">Timezone</label>
+                                                    <input type="time" class="form-control" id="Timezone" name="Timezone" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="verification_status">Verification Status</label>
+                                                    <input type="text" class="form-control" id="verification_status" name="verification_status" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="timezone">Norminal Code</label>
+                                                    <input type="text" class="form-control" id="norminal_code" name="norminal_code" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="language">Language</label>
+                                                    <input type="text" class="form-control" id="language" name="language" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
                                     <button type="submit" id="submit" class="btn btn-primary">Submit</button>
