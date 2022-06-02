@@ -85,6 +85,15 @@
             </a>
           </li>
 
+          <li class="nav-item ">
+            <a href="{{url('/cron')}}" class="nav-link {{ Request::is('cron') ? 'active' : '' }} ">
+                <i class="nav-icon fas fa-users-alt"></i>
+              <p>
+                Cron Job
+              </p>
+            </a>
+          </li>
+
             <li class="nav-item">
                 <a class="nav-link " href="{{ route('logout') }}"
                 onclick="event.preventDefault();
