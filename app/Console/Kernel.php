@@ -5,6 +5,8 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Spatie\ScheduleMonitor\Models\MonitoredScheduledTaskLogItem;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Models\CronJob;
+use Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -22,6 +24,18 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('Cron:job')
         ->everyMinute();
+
+        $tasks = CronJob::all();
+
+        foreach ($tasks as $task) {
+
+            $frequency = $task->job_time;
+
+            $schedule->call(function() use($task) {
+                /*  Run your task here */
+                Log::info($task->job_title.' '.\Carbon\Carbon::now());
+            })->monitorName($task->job_title)->$frequency();
+        }
     }
 
     /**

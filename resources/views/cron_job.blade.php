@@ -144,11 +144,11 @@
                                         <label>Job Time</label>
                                         <select class="form-control cron" name="job_time" id="job_time">
                                             <option value="">Select Runtime</option>
-                                            <option value="Second">Second</option>
-                                            <option value="Minute">Minute</option>
-                                            <option value="Hourly">Hourly</option>
-                                            <option value="Daily">Daily</option>
-                                            <option value="Monthly">Monthly</option>
+                                            {{-- <option value="Second">Second</option> --}}
+                                            <option value="everyMinute">everyMinute</option>
+                                            <option value="hourly">hourly</option>
+                                            <option value="daily">daily</option>
+                                            <option value="monthly">monthly</option>
                                         </select>
                                     </div>
                                     <div class="col-xl-6 mb-3">
@@ -234,7 +234,7 @@ $('.cron').on('change', function() {
     if (val == "Second") {
         $("#job_intervel").html('<option value="10">10 second</option><option value="20">20 second</option> <option value="30">30 second</option>');
     }
-    if (val == "Minute") {
+    if (val == "everyMinute") {
         var selectAge = document.getElementById("job_intervel");
         var contents;
 
@@ -244,7 +244,7 @@ $('.cron').on('change', function() {
 
         selectAge.innerHTML = contents;
     }
-    if (val == "Hourly") {
+    if (val == "hourly") {
         var selectAge = document.getElementById("job_intervel");
         var contents;
 
@@ -254,7 +254,7 @@ $('.cron').on('change', function() {
 
         selectAge.innerHTML = contents;
     }
-    if (val == "Daily") {
+    if (val == "daily") {
         var selectAge = document.getElementById("job_intervel");
         var contents;
 
@@ -264,7 +264,7 @@ $('.cron').on('change', function() {
 
         selectAge.innerHTML = contents;
     }
-    if (val == "Monthly") {
+    if (val == "monthly") {
         var selectAge = document.getElementById("job_intervel");
         var contents;
 
