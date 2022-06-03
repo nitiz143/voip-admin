@@ -96,7 +96,10 @@
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
-
+                                            <div class="form-group">
+                                                <label for="skype_id">Skype ID</label>
+                                                <input type="text" class="form-control" id="skype_id" name="skype_id" value="{{$user->skype_id}}">
+                                            </div>
                                         </div>
                                     </div>
                                      <!----------4 row ---------->
@@ -183,18 +186,6 @@
                                                 <label for="employee">No. of Employees</label>
                                                 <input type="text" class="form-control" id="employee" name="employee" value="{{$user->employee}}">
                                             </div> --}}
-                                        </div>
-                                    </div>
-                                    <!----------7 row ---------->
-                                    <div class="row">
-                                        <div class="col-xl-6">
-
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <div class="form-group">
-                                                <label for="skype_id">Skype ID</label>
-                                                <input type="text" class="form-control" id="skype_id" name="skype_id" value="{{$user->skype_id}}">
-                                            </div>
                                         </div>
                                     </div>
                                     <!----------8 row ---------->
@@ -535,23 +526,21 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group d-flex">
                                                     <label>Authentication Rule</label>
-                                                    <select class="custom-select form-control" name="" id="">
-                                                        <option selected disabled>--Select Lead Source--</option>
-                                                        <option value="Advertisment">Advertisment</option>
-                                                        <option value="Cold Call">Cold Call</option>
-                                                        <option value="Employee Referral">Employee Referral</option>
-                                                        <option value="Online Store">Online Store</option>
-                                                        <option value="Partner">Partner</option>
-                                                        <option value="Public Relations">Public Relations</option>
-                                                        <option value="Sales Mail Alias">Sales Mail Alias</option>
-                                                        <option value="Saminer Partner">Saminer Partner</option>
+                                                    <select class="custom-select form-control" name="customer_authentication_rule" id="customer_authentication_rule">
+                                                        <option selected disabled>--Select Authentication Rule--</option>
+                                                        <option value="0" {{$user->customer_authentication_rule == 0 ? 'selected' : ''}}>Account Name-Account Number</option>
+                                                        <option value="1" {{$user->customer_authentication_rule == 1 ? 'selected' : ''}}>Account Number-Account Name</option>
+                                                        <option value="2" {{$user->customer_authentication_rule == 2 ? 'selected' : ''}}>Account Name</option>
+                                                        <option value="3" {{$user->customer_authentication_rule == 3 ? 'selected' : ''}}>Account Number</option>
+                                                        <option value="4" {{$user->customer_authentication_rule == 4 ? 'selected' : ''}}>IP</option>
+                                                        <option value="5" {{$user->customer_authentication_rule == 5 ? 'selected' : ''}}>Cli</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group d-flex">
-                                                    <label for="city" style="padding:10px;">Value</label>
-                                                    <input type="text" class="form-control" id="city" name="city" value="{{$user->city}}">
+                                                    <label for="customer_authentication_value" style="padding:10px;">Value</label>
+                                                    <input type="text" class="form-control" id="city" name="customer_authentication_value" value="{{$user->customer_authentication_value}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -564,23 +553,21 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group d-flex">
                                                     <label>Authentication Rule</label>
-                                                    <select class="custom-select form-control" name="lead_source" id="lead_source">
+                                                    <select class="custom-select form-control" name="vendor_authentication_rule" id="vendor_authentication_rule">
                                                         <option selected disabled>--Select Authentication Rule--</option>
-                                                        <option value="Advertisment">Account Name: Account Number</option>
-                                                        <option value="Cold Call">Cold Call</option>
-                                                        <option value="Employee Referral">Employee Referral</option>
-                                                        <option value="Online Store">Online Store</option>
-                                                        <option value="Partner">Partner</option>
-                                                        <option value="Public Relations">Public Relations</option>
-                                                        <option value="Sales Mail Alias">Sales Mail Alias</option>
-                                                        <option value="Saminer Partner">Saminer Partner</option>
+                                                        <option value="0" {{$user->vendor_authentication_rule == 0 ? 'selected' : ''}}>Account Name-Account Number</option>
+                                                        <option value="1" {{$user->vendor_authentication_rule == 1 ? 'selected' : ''}}>Account Number-Account Name</option>
+                                                        <option value="2" {{$user->vendor_authentication_rule == 2 ? 'selected' : ''}}>Account Name</option>
+                                                        <option value="3" {{$user->vendor_authentication_rule == 3 ? 'selected' : ''}}>Account Number</option>
+                                                        <option value="4" {{$user->vendor_authentication_rule == 4 ? 'selected' : ''}}>IP</option>
+                                                        <option value="5" {{$user->vendor_authentication_rule == 5 ? 'selected' : ''}}>Cli</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group d-flex">
-                                                    <label for="value" style="padding:10px;">Value</label>
-                                                    <input type="text" class="form-control" id="value" name="value" value="">
+                                                    <label for="vendor_authentication_value" style="padding:10px;">Value</label>
+                                                    <input type="text" class="form-control" id="vendor_authentication_value" name="vendor_authentication_value" value="{{$user->vendor_authentication_value}}">
                                                 </div>
                                             </div>
                                         </div> 
@@ -597,14 +584,10 @@
                                                     <label for="accountowner">Account Owner</label>
                                                     <select class="custom-select form-control" name="account_owner" id="account_owner">
                                                         <option selected disabled>--Select Authentication Rule--</option>
-                                                        <option value="Advertisment">Account Name: Account Number</option>
-                                                        <option value="Cold Call">Cold Call</option>
-                                                        <option value="Employee Referral">Employee Referral</option>
-                                                        <option value="Online Store">Online Store</option>
-                                                        <option value="Partner">Partner</option>
-                                                        <option value="Public Relations">Public Relations</option>
-                                                        <option value="Sales Mail Alias">Sales Mail Alias</option>
-                                                        <option value="Saminer Partner">Saminer Partner</option>
+                                                        <option value="0" {{$user->account_owner==0 ? 'selected' : ''}}>Account Name: Account Number</option>
+                                                        <option value="1" {{$user->account_owner ==1 ? 'selected' : ''}}>Cold Call</option>
+                                                        <option value="2" {{$user->account_owner ==2  ? 'selected' : ''}}>Employee Referral</option>
+                                                        <option value="3" {{$user->account_owner ==3 ? 'selected' : ''}}>Online Store</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -613,14 +596,8 @@
                                                     <label for="ownership">Ownership</label>
                                                     <select class="custom-select form-control" name="ownership" id="ownership">
                                                         <option selected disabled>--Select Authentication Rule--</option>
-                                                        <option value="Advertisment">Account Name: Account Number</option>
-                                                        <option value="Cold Call">Cold Call</option>
-                                                        <option value="Employee Referral">Employee Referral</option>
-                                                        <option value="Online Store">Online Store</option>
-                                                        <option value="Partner">Partner</option>
-                                                        <option value="Public Relations">Public Relations</option>
-                                                        <option value="Sales Mail Alias">Sales Mail Alias</option>
-                                                        <option value="Saminer Partner">Saminer Partner</option>
+                                                        <option value="0" {{$user->ownership ==0 ? 'selected' : ''}}>Account Name: Account Number</option>
+                                                        <option value="1" {{$user->ownership ==1 ? 'selected' : ''}}>Cold Call</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -628,76 +605,63 @@
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label for="firstname">First Name</label>
-                                                    <input type="text" class="form-control" id="firstname" name="firstname" value="{{$user->firstname}}">
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label for="lastname">Last Name</label>
-                                                    <input type="text" class="form-control" id="lastname" name="lastname" value="{{$user->lastname}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
                                                     <label for="account_number">Account Number</label>
-                                                    <input type="text" class="form-control" id="account_number" name="account_number" value="">
+                                                    <input type="text" class="form-control" id="account_number" name="account_number" value="{{$user->account_number}}">
                                                 </div>
                                             </div>
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label for="waccount_website">Website</label>
-                                                    <input type="text" class="form-control" id="account_website" name="account_website" value="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
+                                        
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="account_name">Account Name</label>
-                                                    <input type="text" class="form-control" id="account_name" name="account_name" value="">
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label for="phone">Phone</label>
-                                                    <input type="number" class="form-control" id="phone" name="phone" value="">
+                                                    <input type="text" class="form-control" id="account_name" name="account_name" value="{{$user->account_name}}">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group mt-4">
-                                                    <label for="vendor">Vendor</label>
+                                                    <label for="Vendor">Vendor</label>
                                                         <label class="switch">
-                                                        <input type="checkbox" name="vendor" checked>
+                                                        <input type="checkbox" id="Vendor" name="Vendor" value="1" {{$user->Vendor==1 ? 'checked' : ''}}>
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label for="phone">Fax</label>
-                                                    <input type="text" class="form-control" id="fax" name="fax" value="">
+                                                    <label for="accounttag">Account tags</label>
+                                                    <input type="text" class="form-control" id="account_tag" name="account_tag" value="{{$user->account_tag}}">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group mt-4">
-                                                    <label for="vendor">Customer</label>
+                                                    <label for="customer">Customer</label>
                                                         <label class="switch">
-                                                        <input type="checkbox" name="customer" checked>
+                                                        <input type="checkbox" id="customer" name="customer" value="1" {{ $user->customer == 1 ? 'checked' : ''}}>
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label for="phone">Employee</label>
-                                                    <input type="text" class="form-control" id="employee" name="employee" value="">
+                                                    <label for="employee">Employee</label>
+                                                    <input type="text" class="form-control" id="employee" name="employee" value="{{$user->employee}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="billingemail">Billing Email</label>
+                                                    <input type="email" class="form-control" id="billing_email" name="billing_email" value="{{$user->billing_email}}">
+                                                </div>
+                                            </div>
+                                             <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="language">Language</label>
+                                                    <input type="text" class="form-control" id="language" name="language" value="{{$user->language}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -706,24 +670,19 @@
                                                 <div class="form-group mt-4">
                                                     <label for="reseller">Reseller</label>
                                                         <label class="switch">
-                                                        <input type="checkbox" name="reseller">
+                                                        <input type="checkbox" name="reseller" value="1" {{ $user->reseller == 1 ? 'checked' : ''}}>
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label for="website">Account Reseller</label>
+                                                    <label for="account_reseller">Account Reseller</label>
                                                     <select class="custom-select form-control" name="account_reseller" id="account_reseller">
                                                         <option selected disabled>--Select Account Reseller--</option>
-                                                        <option value="Advertisment">Account Name: Account Number</option>
-                                                        <option value="Cold Call">Cold Call</option>
-                                                        <option value="Employee Referral">Employee Referral</option>
-                                                        <option value="Online Store">Online Store</option>
-                                                        <option value="Partner">Partner</option>
-                                                        <option value="Public Relations">Public Relations</option>
-                                                        <option value="Sales Mail Alias">Sales Mail Alias</option>
-                                                        <option value="Saminer Partner">Saminer Partner</option>
+                                                        <option value="0" {{$user->account_reseller ==0 ? 'selected' : ''}}>Account Name: Account Number</option>
+                                                        <option value="1" {{$user->account_reseller ==1 ? 'selected' : ''}}>Cold Call</option>
+                                                        <option value="2" {{$user->account_reseller ==2 ? 'selected' : ''}}>Employee Referral</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -731,53 +690,18 @@
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label for="email">Email</label>
-                                                    <input type="email" class="form-control" id="email" name="email" value="">
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label for="billingemail">Billing Email</label>
-                                                    <input type="email" class="form-control" id="billing_email" name="billing_email" value="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label for="reseller">Status</label>
-                                                        <label class="switch">
-                                                        <input type="checkbox" name="status"> 
-                                                        <span class="slider round"></span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label for="accounttag">Account tags</label>
-                                                    <input type="text" class="form-control" id="account_tag" name="account_tag" value="">
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label for="vatnumber">Vat Number</label>
-                                                    <input type="text" class="form-control" id="vat_number" name="vat_number" value="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
                                                     <label for="currency">Currency</label>
-                                                    <input type="text" class="form-control" id="currency" name="currency" value="">
+                                                    <select class="custom-select form-control" name="currency" id="currency">
+                                                        <option value="0" {{$user->currency ==0 ? 'selected' : ''}}>USD</option>
+                                                        <option value="1" {{$user->currency ==1 ? 'selected' : ''}}>GBP</option>
+                                                        <option value="2" {{$user->currency ==2 ? 'selected' : ''}}>AED</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label for="timezone">Timezone</label>
-                                                    <input type="time" class="form-control" id="Timezone" name="Timezone" value="">
+                                                <label for="currency">Timezone</label>
+                                                <div class="form-group timepicker" twelvehour="true">
+                                                    <input id="timedemo" type="text" class="form-control" name="timezone" value="{{$user->timezone}}" placeholder="hh:mm am/pm">
                                                 </div>
                                             </div>
                                         </div>
@@ -785,21 +709,82 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="verification_status">Verification Status</label>
-                                                    <input type="text" class="form-control" id="verification_status" name="verification_status" value="">
+                                                    <input type="text" class="form-control" id="verification_status" name="verification_status" value="{{$user->verification_status}}">
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="timezone">Norminal Code</label>
-                                                    <input type="text" class="form-control" id="norminal_code" name="norminal_code" value="">
+                                                    <input type="text" class="form-control" id="norminal_code" name="norminal_code" value="{{$user->norminal_code}}">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label for="language">Language</label>
-                                                    <input type="text" class="form-control" id="language" name="language" value="">
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4>Account Credits</h4>
+                                        <div class="row border">
+                                            <div class="row">
+                                                <h5 style="padding:10px;">Credit Control</h5>
+                                            
+                                                <div class="col-xl-6">
+                                                    <div class="form-group d-flex">
+                                                        <label>Account Balance</label>
+                                                        <input type="text" class="form-control" id="account_balance" name="account_balance" value="{{$user->account_balance}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-4">
+                                                    <div class="form-group d-flex">
+                                                        <label>Customer Unbilled Ammount</label>
+                                                        <input type="text" class="form-control" id="customer_unbilled_ammount" name="customer_unbilled_ammount" value="{{$user->customer_unbilled_ammount}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4">
+                                                    <div class="form-group d-flex">
+                                                        <label>Vendor Unbilled Ammount</label>
+                                                        <input type="text" class="form-control" id="vendor_unbilled_ammount" name="vendor_unbilled_ammount" value="{{$user->vendor_unbilled_ammount}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4">
+                                                    <div class="form-group d-flex">
+                                                        <button type="button" class="btn btn-dark"><i class="fa fa-eye white-color pe-2"></i>View Report</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group d-flex">
+                                                        <label>Account Exposure</label>
+                                                        <input type="text" class="form-control" id="account_exposure" name="account_exposure" value="{{$user->account_exposure}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group d-flex">
+                                                        <label>Available Credit Limit</label>
+                                                        <input type="text" class="form-control" id="available_credit_limit" name="available_credit_limit" value="{{$user->available_credit_limit}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group d-flex">
+                                                        <label>Credit Limit</label>
+                                                        <input type="text" class="form-control" id="credit_limit" name="credit_limit" value="{{$user->credit_limit}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group d-flex">
+                                                        <label>Balance Threshold</label>
+                                                        <input type="text" class="form-control" id="balance_threshold" name="balance_threshold" value="{{$user->balance_threshold}}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -819,11 +804,31 @@
         </section>
 </div>
 
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
 @endsection
 
 @section('page_js')
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script>
+
+
+$(document).ready(function () {
+        // Time Picker Initialization
+        $('#timedemo').timepicker({
+    timeFormat: 'h:mm p',
+    interval: 60,
+    minTime: '10',
+    maxTime: '6:00pm',
+    defaultTime: '11',
+    startTime: '10:00',
+    dynamic: false,
+    dropdown: true,
+    scrollbar: true
+});
+
+    });
+   
 
 function save(formdata,url){
         $('#global-loader').show();
@@ -876,6 +881,8 @@ function save(formdata,url){
     $("#cancel").click(function(){
         location.reload();
     });
+
+
 
 </script>
 

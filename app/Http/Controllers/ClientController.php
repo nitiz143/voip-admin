@@ -125,6 +125,9 @@ class ClientController extends Controller
                 ]);
             return $response;
         }
+        $request['reseller'] = $request->reseller ? $request->reseller : 2;
+        $request['Vendor'] = $request->Vendor ? $request->Vendor : 2;
+        $request['customer'] = $request->customer ? $request->customer : 2;
 
         $user =  Client::updateOrCreate([
             'id'   => $request->id,
