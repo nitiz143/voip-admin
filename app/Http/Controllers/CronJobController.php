@@ -6,6 +6,7 @@ use App\Models\CronJob;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use DB;
 
 class CronJobController extends Controller
 {
@@ -90,6 +91,9 @@ class CronJobController extends Controller
 
                 return response()->json(['error'=>$validator->errors()]);
             }
+            // $inprogress =  DB::table('monitored_scheduled_tasks')->select('name')->get();
+            // $agent_arr = CronJob::where('job_title','=', $inprogress);
+            // dd($agent_arr->id);
             $data['job_day'] = json_encode($request->job_day);
             $data['job_title'] = $request->job_title;
             $data['cron_type'] = $request->cron_type;
@@ -105,7 +109,7 @@ class CronJobController extends Controller
             $data['status'] = $request->status;
             CronJob::updateOrCreate(['id' => $request->id],$data);
 
-            return response()->json(['message'=>__('common.updated_successfully'),'success'=>true]);
+            return response()->json(['message'=>'updated_successfully','success'=>true]);
     }
 
     /**

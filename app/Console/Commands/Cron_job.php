@@ -39,11 +39,15 @@ class Cron_job extends Command
     public function handle()
     {
 
-        $data = array();
 
-       echo  Carbon::now();
+    //    echo  Carbon::now();
+    //    $jobs = CronJob::all();
 
-       $cronjob = CronJob::select('*')->get();
-        \Log::info("Cron is working fine!");
+    //    foreach($jobs as $job)
+    //    {
+
+    //    \Log::info("Cron is working fine!");
+    //    }
+
     }
 }
