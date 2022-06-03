@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
         "rap2hpoutre/fast-excel": "^3.2",
+        "spatie/laravel-schedule-monitor": "^2",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
