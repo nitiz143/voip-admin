@@ -524,7 +524,7 @@
                                                 <h5 style="padding:10px;">Customer Details</h5>
                                             </div>
                                             <div class="col-xl-6">
-                                                <div class="form-group d-flex">
+                                                <div class="form-group">
                                                     <label>Authentication Rule</label>
                                                     <select class="custom-select form-control" name="customer_authentication_rule" id="customer_authentication_rule">
                                                         <option selected disabled>--Select Authentication Rule--</option>
@@ -538,8 +538,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
-                                                <div class="form-group d-flex">
-                                                    <label for="customer_authentication_value" style="padding:10px;">Value</label>
+                                                <div class="form-group">
+                                                    <label for="customer_authentication_value">Value</label>
                                                     <input type="text" class="form-control" id="city" name="customer_authentication_value" value="{{$user->customer_authentication_value}}">
                                                 </div>
                                             </div>
@@ -551,7 +551,7 @@
                                             <h5 style="padding:10px;">Vendor Details</h5>
                                             </div>
                                             <div class="col-xl-6">
-                                                <div class="form-group d-flex">
+                                                <div class="form-group">
                                                     <label>Authentication Rule</label>
                                                     <select class="custom-select form-control" name="vendor_authentication_rule" id="vendor_authentication_rule">
                                                         <option selected disabled>--Select Authentication Rule--</option>
@@ -565,8 +565,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
-                                                <div class="form-group d-flex">
-                                                    <label for="vendor_authentication_value" style="padding:10px;">Value</label>
+                                                <div class="form-group">
+                                                    <label for="vendor_authentication_value">Value</label>
                                                     <input type="text" class="form-control" id="vendor_authentication_value" name="vendor_authentication_value" value="{{$user->vendor_authentication_value}}">
                                                 </div>
                                             </div>
@@ -701,7 +701,7 @@
                                             <div class="col-xl-6">
                                                 <label for="currency">Timezone</label>
                                                 <div class="form-group timepicker" twelvehour="true">
-                                                    <input id="timedemo" type="text" class="form-control" name="timezone" value="{{$user->timezone}}" placeholder="hh:mm am/pm">
+                                                    <input  type="text" class="form-control timedemo" name="timezone" value="{{$user->timezone}}" placeholder="hh:mm am/pm">
                                                 </div>
                                             </div>
                                         </div>
@@ -730,7 +730,7 @@
                                                 <h5 style="padding:10px;">Credit Control</h5>
                                             
                                                 <div class="col-xl-6">
-                                                    <div class="form-group d-flex">
+                                                    <div class="form-group">
                                                         <label>Account Balance</label>
                                                         <input type="text" class="form-control" id="account_balance" name="account_balance" value="{{$user->account_balance}}">
                                                     </div>
@@ -738,26 +738,27 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-4">
-                                                    <div class="form-group d-flex">
+                                                    <div class="form-group">
                                                         <label>Customer Unbilled Ammount</label>
                                                         <input type="text" class="form-control" id="customer_unbilled_ammount" name="customer_unbilled_ammount" value="{{$user->customer_unbilled_ammount}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-4">
-                                                    <div class="form-group d-flex">
+                                                    <div class="form-group">
                                                         <label>Vendor Unbilled Ammount</label>
                                                         <input type="text" class="form-control" id="vendor_unbilled_ammount" name="vendor_unbilled_ammount" value="{{$user->vendor_unbilled_ammount}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-4">
-                                                    <div class="form-group d-flex">
-                                                        <button type="button" class="btn btn-dark"><i class="fa fa-eye white-color pe-2"></i>View Report</button>
-                                                    </div>
+                                                    {{-- <div class="form-group"> --}}
+                                                        {{-- <label> test</label> --}}
+                                                        <button type="button" class="btn btn-dark ms-4" style="margin-top: 31px";><i class="fa fa-eye white-color pe-2"></i>View Report</button>
+                                                    {{-- </div> --}}
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6">
-                                                    <div class="form-group d-flex">
+                                                    <div class="form-group">
                                                         <label>Account Exposure</label>
                                                         <input type="text" class="form-control" id="account_exposure" name="account_exposure" value="{{$user->account_exposure}}">
                                                     </div>
@@ -765,7 +766,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6">
-                                                    <div class="form-group d-flex">
+                                                    <div class="form-group">
                                                         <label>Available Credit Limit</label>
                                                         <input type="text" class="form-control" id="available_credit_limit" name="available_credit_limit" value="{{$user->available_credit_limit}}">
                                                     </div>
@@ -773,7 +774,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6">
-                                                    <div class="form-group d-flex">
+                                                    <div class="form-group">
                                                         <label>Credit Limit</label>
                                                         <input type="text" class="form-control" id="credit_limit" name="credit_limit" value="{{$user->credit_limit}}">
                                                     </div>
@@ -781,7 +782,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6">
-                                                    <div class="form-group d-flex">
+                                                    <div class="form-group">
                                                         <label>Balance Threshold</label>
                                                         <input type="text" class="form-control" id="balance_threshold" name="balance_threshold" value="{{$user->balance_threshold}}">
                                                     </div>
@@ -790,7 +791,145 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row border">
+                                            <div class="row">
+                                                <h5 style="padding:10px;">Billing</h5>
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="billing_class">Billing Class</label>
+                                                        <select class="custom-select form-control" name="billing_class" id="billing_class">
+                                                            <option value="1" {{$user->billing_class ==1 ? 'selected' : ''}}>Default</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="billing_type">Billing Type</label>
+                                                        <select class="custom-select form-control" name="billing_type" id="billing_type">
+                                                            <option value="1" {{$user->billing_type ==1 ? 'selected' : ''}}>Prepaid</option>
+                                                            <option value="2" {{$user->billing_type ==2 ? 'selected' : ''}}>Postpaid</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group" twelvehour="true">
+                                                        <label for="currency">Billing Timezone</label>
+                                                        
+                                                        <input  type="text" class="form-control timedemo timepicker" name="billing_timezone" value="{{$user->billing_timezone}}" placeholder="hh:mm am/pm">
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label>Billing Start Date</label>
+                                                        <input type="text" class="form-control" id="available_credit_limit" name="available_credit_limit" value="{{$user->available_credit_limit}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="billing_cycle">Billing Cycle</label>
+                                                        <select class="custom-select form-control" name="billing_cycle" id="billing_cycle" value="{{$user->billing_cycle}}">
+                                                            <option value="1">Weekly</option>
+                                                            <option value="2">Monthly</option>
+                                                            <option value="3">Yearly</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="billing_cycle_startday">Billing Cycle Start of Day</label>
+                                                        <select class="custom-select form-control" name="billing_cycle_startday" id="billing_cycle_startday" value="{{$user->billing_cycle_startday}}">
+                                                            <option value="1">Weekly</option>
+                                                            <option value="2">Monthly</option>
+                                                            <option value="3">Yearly</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="billing_cycle_startdate">Auto Pay</label>
+                                                        <select class="custom-select form-control" name="auto_pay" id="auto_pay" value="{{$user->auto_pay}}">
+                                                            <option value="1">Never</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="auto_pay_method">Auto Pay Method</label>
+                                                        <select class="custom-select form-control" name="auto_pay_method" id="auto_pay_method" value="{{$user->auto_pay_method}}">
+                                                            <option value="">Select</option>
+                                                            <option value="1">Never</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="send_invoice_via_email">Send Invoice By Email</label>
+                                                    <select class="custom-select form-control" name="send_invoice_via_email" id="send_invoice_via_email" value="{{$user->send_invoice_via_email}}">
+                                                        <option value="1">After Admin Review</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="last_invoice_date">Last Invoice Date</label>
+                                                    <select class="custom-select form-control" name="last_invoice_date" id="last_invoice_date" value="{{$user->last_invoice_date}}">
+                                                        <option value="1">Never</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="next_invoice_date">Next Invoice Date</label>
+                                                    <select class="custom-select form-control" name="next_invoice_date" id="next_invoice_date" value="{{$user->next_invoice_date}}">
+                                                        <option value="1">Never</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row border">
+                                            <div class="row">
+                                                <h5 style="padding:10px;">Discount</h5>
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="outbound_discount_plan">Outbound Discount Plan</label>
+                                                        <select class="custom-select form-control" name="outbound_discount_plan" id="outbound_discount_plan" value="{{$user->outbound_discount_plan}}">
+                                                            <option value="">Select</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="inbound_discount_plan">Inbound Discount Plan</label>
+                                                        <select class="custom-select form-control" name="inbound_discount_plan" id="inbound_discount_plan" value="{{$user->inbound_discount_plan}}">
+                                                            <option value="">Select</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
                                     <button type="submit" id="submit" class="btn btn-primary">Submit</button>
@@ -815,18 +954,17 @@
 
 $(document).ready(function () {
         // Time Picker Initialization
-        $('#timedemo').timepicker({
-    timeFormat: 'h:mm p',
-    interval: 60,
-    minTime: '10',
-    maxTime: '6:00pm',
-    defaultTime: '11',
-    startTime: '10:00',
-    dynamic: false,
-    dropdown: true,
-    scrollbar: true
-});
-
+                $('.timedemo').timepicker({
+            timeFormat: 'h:mm p',
+            interval: 60,
+            minTime: '10',
+            maxTime: '6:00pm',
+            defaultTime: '11',
+            startTime: '10:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true
+        });
     });
    
 

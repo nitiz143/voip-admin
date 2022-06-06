@@ -87,7 +87,7 @@
 
           <li class="nav-item ">
             <a href="{{url('/cron')}}" class="nav-link {{ Request::is('cron') ? 'active' : '' }} ">
-                <i class="nav-icon fas fa-users-alt"></i>
+                <i class="nav-icon fas fa-tasks"></i>
               <p>
                 Cron Job
               </p>
