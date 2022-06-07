@@ -33,13 +33,13 @@
                                     <tr>
                                         <th>ID</th>
                                         <!-- {{-- <th>lead_owner</th> --}} -->
-                                        <th>company</th>
-                                        <th>firstname</th>
-                                        <th>lastname</th>
-                                        <th>email</th>
-                                        <th>phone</th>
-                                        <th>created_at</th>
-                                        <th>updated_at</th>
+                                        <th>Company</th>
+                                        <th>Firstname</th>
+                                        <th>Lastname</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Created At</th>
+                                        <th>Updated At</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
