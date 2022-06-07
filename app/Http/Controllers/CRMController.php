@@ -38,7 +38,7 @@ class CRMController extends Controller
                 ->addColumn('action', function($row){
 
                         $btn = '<a href="'.route('crm.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit mb-2"  data-id ="'.$row->id.'">Edit</a>
-                        <a href="'.route('getClient',$row->id).'" class="create btn btn-info btn-sm Create mb-2"  data-id ="'.$row->id.'">Convert to account </a>
+                        <a href="'.route('getClient',$row->id).'" class="delete btn btn-info btn-sm Create mb-2"  data-id ="'.$row->id.'">Convert to account </a>
                         <a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
 
                         return $btn;
