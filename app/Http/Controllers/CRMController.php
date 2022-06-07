@@ -38,7 +38,7 @@ class CRMController extends Controller
                 ->addColumn('action', function($row){
 
                         $btn = '<a href="'.route('crm.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit mb-2"  data-id ="'.$row->id.'">Edit</a>
-                        <a href="'.route('getClient',$row->id).'" class="create btn btn-info btn-sm Create mb-2"  data-id ="'.$row->id.'">Create<i class="bi bi-person-badge"></i></i></a>
+                        <a href="'.route('getClient',$row->id).'" class="create btn btn-info btn-sm Create mb-2"  data-id ="'.$row->id.'">Convert to account </a>
                         <a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
 
                         return $btn;
@@ -152,7 +152,7 @@ class CRMController extends Controller
      */
     public function show($id)
     {
-        // 
+        //
     }
 
     /**
@@ -164,7 +164,7 @@ class CRMController extends Controller
     public function edit($id)
     {
         $data= User::query('')->get();
-        $user = Crm::find($id); 
+        $user = Crm::find($id);
         return view('crm.edit',compact('user','data'));
     }
 
@@ -228,7 +228,7 @@ class CRMController extends Controller
             }
             }
         }
-        
+
     }
 
 }
