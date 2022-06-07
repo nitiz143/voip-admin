@@ -14,6 +14,7 @@ class AddColumnsInClientsTable extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
+            $table->enum('billing_status',['active','deactive'])->default('active');
             $table->string('account_owner')->nullable();
             $table->string('ownership')->nullable();
             $table->string('account_number')->nullable(); 

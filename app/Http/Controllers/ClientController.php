@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Client;
+use App\Models\Billing;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
@@ -63,7 +64,8 @@ class ClientController extends Controller
     {
         $data= User::query('')->get();
         $user = Client::find($id);
-        return view('client.edit',compact('user','data'));
+        $billingdata = Billing::find($id);
+        return view('client.edit',compact('user','data','billingdata'));
     }
 
 
@@ -132,6 +134,25 @@ class ClientController extends Controller
         $user =  Client::updateOrCreate([
             'id'   => $request->id,
          ],$request->all());
+
+            $billingdata["account_id"] = $user->id;
+            $billingdata["billing_class"] = $request->billing_class;
+            $billingdata["billing_type"] = $request->billing_type;
+            $billingdata["billing_timezone"] = $request->billing_timezone;
+            $billingdata["billing_startdate"] = $request->billing_startdate;
+            $billingdata["billing_cycle"] = $request->billing_cycle;
+            $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
+            $billingdata["auto_pay"] = $request->auto_pay;
+            $billingdata["auto_pay_method"] = $request->auto_pay_method;
+            $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;
+            $billingdata["last_invoice_date"] = $request->last_invoice_date;
+            $billingdata["next_invoice_date"] = $request->next_invoice_date;
+            $billingdata["last_charge_date"] = $request->last_charge_date;
+            $billingdata["next_charge_date"] = $request->next_charge_date;
+            $billingdata["outbound_discount_plan"] = $request->outbound_discount_plan;
+            $billingdata["inbound_discount_plan"] = $request->inbound_discount_plan;
+            Billing::updateOrCreate(['id' => $request->id],$billingdata);
+
 
          return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => route('client.index')]);
 

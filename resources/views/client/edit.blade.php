@@ -166,6 +166,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="billing_id" value="{{@$user->billing_id}}">
                                     <!----------6 row ---------->
                                     <div class="row">
                                         <div class="col-xl-6">
@@ -794,79 +795,90 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row border">
-                                            <div class="row">
-                                                <h5 style="padding:10px;">Billing</h5>
-                                                <div class="col-xl-6">
-                                                    <div class="form-group">
-                                                        <label for="billing_class">Billing Class</label>
-                                                        <select class="custom-select form-control" name="billing_class" id="billing_class">
-                                                            <option value="1" {{$user->billing_class ==1 ? 'selected' : ''}}>Default</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-6">
-                                                    <div class="form-group">
-                                                        <label for="billing_type">Billing Type</label>
-                                                        <select class="custom-select form-control" name="billing_type" id="billing_type">
-                                                            <option value="1" {{$user->billing_type ==1 ? 'selected' : ''}}>Prepaid</option>
-                                                            <option value="2" {{$user->billing_type ==2 ? 'selected' : ''}}>Postpaid</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                            <div class="col-xl-6">
+                                             <h5 style="padding:10px;">Billing</h5>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-xl-6">
-                                                    <div class="form-group" twelvehour="true">
-                                                        <label for="currency">Billing Timezone</label>
-                                                        
-                                                        <input  type="text" class="form-control timedemo timepicker" name="billing_timezone" value="{{$user->billing_timezone}}" placeholder="hh:mm am/pm">
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-6">
-                                                    <div class="form-group">
-                                                        <label>Billing Start Date</label>
-                                                        <input type="text" class="form-control" id="available_credit_limit" name="available_credit_limit" value="{{$user->available_credit_limit}}">
-                                                    </div>
-                                                </div>
+                                            <div class="col-xl-6">
+                                                <label class="float-end mt-3 switch">
+                                                    <input type="checkbox" id="switch" class="textbox1" name="billing_status" checked="checked" value="{{$user->billing_status}}">
+                                                    <span class="slider round"></span>
+                                                </label> 
                                             </div>
-                                            <div class="row">
-                                                <div class="col-xl-6">
-                                                    <div class="form-group">
-                                                        <label for="billing_cycle">Billing Cycle</label>
-                                                        <select class="custom-select form-control" name="billing_cycle" id="billing_cycle" value="{{$user->billing_cycle}}">
-                                                            <option value="1">Weekly</option>
-                                                            <option value="2">Monthly</option>
-                                                            <option value="3">Yearly</option>
-                                                        </select>
+                                            <div class="product">
+                                                <div class="row">
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <label for="billing_class">Billing Class</label>
+                                                            <select class="custom-select form-control" name="billing_class" id="billing_class" value="{{$billingdata->billing_class}}">
+                                                                <option value="">Select</option>
+                                                                <option value="1" {{$billingdata->billing_class ==1 ? 'selected' : ''}}>Default</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <label for="billing_type">Billing Type</label>
+                                                            <select class="custom-select form-control" name="billing_type" id="billing_type" value="{{$billingdata->billing_type}}">
+                                                                <option value="1" {{$billingdata->billing_type ==1 ? 'selected' : ''}}>Prepaid</option>
+                                                                <option value="2" {{$billingdata->billing_type ==2 ? 'selected' : ''}}>Postpaid</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-xl-6">
-                                                    <div class="form-group">
-                                                        <label for="billing_cycle_startday">Billing Cycle Start of Day</label>
-                                                        <select class="custom-select form-control" name="billing_cycle_startday" id="billing_cycle_startday" value="{{$user->billing_cycle_startday}}">
-                                                            <option value="1">Weekly</option>
-                                                            <option value="2">Monthly</option>
-                                                            <option value="3">Yearly</option>
-                                                        </select>
+                                                <div class="row">
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group" twelvehour="true">
+                                                            <label for="currency">Billing Timezone</label>
+                                                            
+                                                            <input  type="text" class="form-control timedemo timepicker" name="billing_timezone" value="{{$user->billing_timezone}}" placeholder="hh:mm am/pm">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <label>Billing Start Date</label>
+                                                            <input type="text" class="form-control" id="available_credit_limit" name="available_credit_limit" value="{{$user->available_credit_limit}}">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xl-6">
-                                                    <div class="form-group">
-                                                        <label for="billing_cycle_startdate">Auto Pay</label>
-                                                        <select class="custom-select form-control" name="auto_pay" id="auto_pay" value="{{$user->auto_pay}}">
-                                                            <option value="1">Never</option>
-                                                        </select>
+                                                <div class="row">
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <label for="billing_cycle">Billing Cycle</label>
+                                                            <select class="custom-select form-control" name="billing_cycle" id="billing_cycle" value="{{$user->billing_cycle}}">
+                                                                <option value="1">Weekly</option>
+                                                                <option value="2">Monthly</option>
+                                                                <option value="3">Yearly</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <label for="billing_cycle_startday">Billing Cycle Start of Day</label>
+                                                            <select class="custom-select form-control" name="billing_cycle_startday" id="billing_cycle_startday" value="{{$user->billing_cycle_startday}}">
+                                                                <option value="1">Weekly</option>
+                                                                <option value="2">Monthly</option>
+                                                                <option value="3">Yearly</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-xl-6">
-                                                    <div class="form-group">
-                                                        <label for="auto_pay_method">Auto Pay Method</label>
-                                                        <select class="custom-select form-control" name="auto_pay_method" id="auto_pay_method" value="{{$user->auto_pay_method}}">
-                                                            <option value="">Select</option>
-                                                            <option value="1">Never</option>
-                                                        </select>
+                                                <div class="row">
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <label for="billing_cycle_startdate">Auto Pay</label>
+                                                            <select class="custom-select form-control" name="auto_pay" id="auto_pay" value="{{$user->auto_pay}}">
+                                                                <option value="1">Never</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <label for="auto_pay_method">Auto Pay Method</label>
+                                                            <select class="custom-select form-control" name="auto_pay_method" id="auto_pay_method" value="{{$user->auto_pay_method}}">
+                                                                <option value="">Select</option>
+                                                                <option value="1">Never</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -951,6 +963,14 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script>
 
+
+$('#switch').change(function() {
+        if(this.checked) {
+            $(".product").show();
+        }else{
+            $(".product").hide();       
+        }
+    });
 
 $(document).ready(function () {
         // Time Picker Initialization

@@ -14,6 +14,7 @@ class CreateBillingsTable extends Migration
     public function up()
     {
         Schema::create('billings', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('account_id');
             $table->string('billing_class')->nullable();
             $table->string('billing_type')->nullable();
@@ -30,7 +31,6 @@ class CreateBillingsTable extends Migration
             $table->string('next_charge_date')->nullable();
             $table->string('outbound_discount_plan')->nullable();
             $table->string('inbound_discount_plan')->nullable();
-
             $table->timestamps();
         });
     }
