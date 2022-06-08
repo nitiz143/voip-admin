@@ -702,7 +702,7 @@
                                             <div class="col-xl-6">
                                                 <label for="currency">Timezone</label>
                                                 <div class="form-group timepicker" twelvehour="true">
-                                                    <input  type="text" class="form-control timedemo" name="timezone" value="{{$user->timezone}}" placeholder="hh:mm am/pm">
+                                                    <input  type="timezone" class="form-control timedemo" name="timezone" value="{{$user->timezone}}" placeholder="hh:mm am/pm">
                                                 </div>
                                             </div>
                                         </div>
@@ -715,7 +715,7 @@
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label for="timezone">Norminal Code</label>
+                                                    <label for="norminal_code">Norminal Code</label>
                                                     <input type="text" class="form-control" id="norminal_code" name="norminal_code" value="{{$user->norminal_code}}">
                                                 </div>
                                             </div>
@@ -828,15 +828,16 @@
                                                 <div class="row">
                                                     <div class="col-xl-6">
                                                         <div class="form-group" twelvehour="true">
-                                                            <label for="currency">Billing Timezone</label>
-                                                            
-                                                            <input  type="text" class="form-control timedemo timepicker" name="billing_timezone" value="{{$user->billing_timezone}}" placeholder="hh:mm am/pm">
+                                                            <label for="billing_timezone">Billing Timezone</label>
+                                                            <div class="form-group timepicker" twelvehour="true">
+                                                                <input  type="text" class="form-control timedemo" name="billing_timezone" value="{{$billingdata->billing_timezone}}" placeholder="hh:mm am/pm">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label>Billing Start Date</label>
-                                                            <input type="text" class="form-control" id="available_credit_limit" name="available_credit_limit" value="{{$user->available_credit_limit}}">
+                                                            <input type="text" class="form-control" id="billing_startdate" name="billing_startdate" value="{{$billingdata->billing_startdate}}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -844,7 +845,7 @@
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label for="billing_cycle">Billing Cycle</label>
-                                                            <select class="custom-select form-control" name="billing_cycle" id="billing_cycle" value="{{$user->billing_cycle}}">
+                                                            <select class="custom-select form-control" name="billing_cycle" id="billing_cycle" value="{{$billingdata->billing_cycle}}">
                                                                 <option value="1">Weekly</option>
                                                                 <option value="2">Monthly</option>
                                                                 <option value="3">Yearly</option>
@@ -854,7 +855,7 @@
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label for="billing_cycle_startday">Billing Cycle Start of Day</label>
-                                                            <select class="custom-select form-control" name="billing_cycle_startday" id="billing_cycle_startday" value="{{$user->billing_cycle_startday}}">
+                                                            <select class="custom-select form-control" name="billing_cycle_startday" id="billing_cycle_startday" value="{{$billingdata->billing_cycle_startday}}">
                                                                 <option value="1">Weekly</option>
                                                                 <option value="2">Monthly</option>
                                                                 <option value="3">Yearly</option>
@@ -866,7 +867,7 @@
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label for="billing_cycle_startdate">Auto Pay</label>
-                                                            <select class="custom-select form-control" name="auto_pay" id="auto_pay" value="{{$user->auto_pay}}">
+                                                            <select class="custom-select form-control" name="auto_pay" id="auto_pay" value="{{$billingdata->auto_pay}}">
                                                                 <option value="1">Never</option>
                                                             </select>
                                                         </div>
@@ -874,7 +875,7 @@
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label for="auto_pay_method">Auto Pay Method</label>
-                                                            <select class="custom-select form-control" name="auto_pay_method" id="auto_pay_method" value="{{$user->auto_pay_method}}">
+                                                            <select class="custom-select form-control" name="auto_pay_method" id="auto_pay_method" value="{{$billingdata->auto_pay_method}}">
                                                                 <option value="">Select</option>
                                                                 <option value="1">Never</option>
                                                             </select>
@@ -891,7 +892,7 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="send_invoice_via_email">Send Invoice By Email</label>
-                                                    <select class="custom-select form-control" name="send_invoice_via_email" id="send_invoice_via_email" value="{{$user->send_invoice_via_email}}">
+                                                    <select class="custom-select form-control" name="send_invoice_via_email" id="send_invoice_via_email" value="{{$billingdata->send_invoice_via_email}}">
                                                         <option value="1">After Admin Review</option>
                                                     </select>
                                                 </div>
@@ -901,7 +902,7 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="last_invoice_date">Last Invoice Date</label>
-                                                    <select class="custom-select form-control" name="last_invoice_date" id="last_invoice_date" value="{{$user->last_invoice_date}}">
+                                                    <select class="custom-select form-control" name="last_invoice_date" id="last_invoice_date">
                                                         <option value="1">Never</option>
                                                     </select>
                                                 </div>
@@ -909,8 +910,29 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="next_invoice_date">Next Invoice Date</label>
-                                                    <select class="custom-select form-control" name="next_invoice_date" id="next_invoice_date" value="{{$user->next_invoice_date}}">
-                                                        <option value="1">Never</option>
+                                                    <select class="custom-select form-control" name="next_invoice_date" id="next_invoice_date">
+                                                        <option value="">Never</option>
+                                                        <option value="1"{{$billingdata->next_invoice_date==1 ? 'selected' : ''}}>Test</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="last_charge_date">Last Charge Date</label>
+                                                    <select class="custom-select form-control" name="last_charge_date" id="last_charge_date">
+                                                        <option value="">Never</option>
+                                                        <option value="1"{{$billingdata->last_charge_date==1 ? 'selected' : ''}}>Test</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="next_charge_date">Next Charge Date</label>
+                                                    <select class="custom-select form-control" name="next_charge_date" id="next_charge_date">
+                                                        <option value="">Never</option>
+                                                        <option value="1"{{$billingdata->next_charge_date==1 ? 'selected' : ''}}>Test</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -925,16 +947,18 @@
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
                                                         <label for="outbound_discount_plan">Outbound Discount Plan</label>
-                                                        <select class="custom-select form-control" name="outbound_discount_plan" id="outbound_discount_plan" value="{{$user->outbound_discount_plan}}">
+                                                        <select class="custom-select form-control" name="outbound_discount_plan" id="outbound_discount_plan">
                                                             <option value="">Select</option>
+                                                            <option value="1"{{$billingdata->outbound_discount_plan==1 ? 'selected' : ''}}>Test</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
                                                         <label for="inbound_discount_plan">Inbound Discount Plan</label>
-                                                        <select class="custom-select form-control" name="inbound_discount_plan" id="inbound_discount_plan" value="{{$user->inbound_discount_plan}}">
+                                                        <select class="custom-select form-control" name="inbound_discount_plan" id="inbound_discount_plan">
                                                             <option value="">Select</option>
+                                                            <option value="1"{{$billingdata->inbound_discount_plan==1 ? 'selected' : ''}}>Test</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -974,13 +998,12 @@ $('#switch').change(function() {
 
 $(document).ready(function () {
         // Time Picker Initialization
-                $('.timedemo').timepicker({
+            $('.timedemo').timepicker({
             timeFormat: 'h:mm p',
             interval: 60,
-            minTime: '10',
-            maxTime: '6:00pm',
-            defaultTime: '11',
-            startTime: '10:00',
+            // minTime: '1',
+            // maxTime: '12:00pm',
+            startTime: '1:00',
             dynamic: false,
             dropdown: true,
             scrollbar: true

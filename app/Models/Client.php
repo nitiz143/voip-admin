@@ -22,6 +22,7 @@ class Client extends Model
         'rating',
         'employee',
         'skype_id',
+        'timezone',
         'status',
         'vat_number',
         'description',
