@@ -130,6 +130,7 @@ class ClientController extends Controller
         $request['reseller'] = $request->reseller ? $request->reseller : 2;
         $request['Vendor'] = $request->Vendor ? $request->Vendor : 2;
         $request['customer'] = $request->customer ? $request->customer : 2;
+        $request['billing_status'] =  $request->billing_status ? $request->billing_status : 'inactive';
         // dd($request->all());
 
         $user =  Client::updateOrCreate([
@@ -142,7 +143,14 @@ class ClientController extends Controller
             $billingdata["billing_timezone"] = $request->billing_timezone;
             $billingdata["billing_startdate"] = $request->billing_startdate;
             $billingdata["billing_cycle"] = $request->billing_cycle;
-            $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
+            if($request->billing_cycle == 'weekly'){
+                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_weekly;
+            }elseif($request->billing_cycle == 'monthly'){
+                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
+            }else{
+                $billingdata["billing_cycle_startday"] = Null;
+            }
+            
             $billingdata["auto_pay"] = $request->auto_pay;
             $billingdata["auto_pay_method"] = $request->auto_pay_method;
             $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;

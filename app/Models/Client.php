@@ -59,6 +59,6 @@ class Client extends Model
         'available_credit_limit',
         'credit_limit',
         'balance_threshold',
-
+        'billing_status',
      ];
 }
