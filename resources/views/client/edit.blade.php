@@ -1,7 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('content')
-
+<style>
+    .form-check {
+        padding-left: 0.25rem !important;
+    }
+</style>
 <div class="content-wrapper mt-3">
     <section class="content-header">
         <div class="container-fluid">
@@ -620,12 +624,9 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-xl-6">
-                                                <div class="form-group mt-4">
+                                                <div class="form-check form-switch">
                                                     <label for="Vendor">Vendor</label>
-                                                        <label class="switch">
-                                                        <input type="checkbox" id="Vendor" name="Vendor" value="1" {{$user->Vendor==1 ? 'checked' : ''}}>
-                                                        <span class="slider round"></span>
-                                                    </label>
+                                                    <input class="form-check-input mt-5" type="checkbox" id="Vendor" name="Vendor" value="1" {{$user->Vendor==1 ? 'checked' : ''}}>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
@@ -637,12 +638,9 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-xl-6">
-                                                <div class="form-group mt-4">
+                                                <div class="form-check form-switch">
                                                     <label for="customer">Customer</label>
-                                                        <label class="switch">
-                                                        <input type="checkbox" id="customer" name="customer" value="1" {{ $user->customer == 1 ? 'checked' : ''}}>
-                                                        <span class="slider round"></span>
-                                                    </label>
+                                                    <input  class="form-check-input mt-5" style="margin-left: -3.5em;" type="checkbox" id="customer" name="customer" value="1" {{ $user->customer == 1 ? 'checked' : ''}}>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
@@ -668,11 +666,9 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-xl-6">
-                                                <div class="form-group mt-4">
+                                                <div class="form-check form-switch">
                                                     <label for="reseller">Reseller</label>
-                                                        <label class="switch">
-                                                        <input type="checkbox" name="reseller" value="1" {{ $user->reseller == 1 ? 'checked' : ''}}>
-                                                        <span class="slider round"></span>
+                                                        <input class="form-check-input mt-5" style="margin-left: -3em;" type="checkbox" name="reseller" value="1" {{ $user->reseller == 1 ? 'checked' : ''}}>
                                                     </label>
                                                 </div>
                                             </div>
@@ -799,17 +795,16 @@
                                              <h5 style="padding:10px;">Billing</h5>
                                             </div>
                                             <div class="col-xl-6">
-                                                <label class="float-end mt-3 switch">
-                                                    <input type="checkbox" id="switch" class="textbox1" name="billing_status" value="active" {{$user->billing_status=='active' ? 'checked' : ''}}>
-                                                    <span class="slider round"></span>
-                                                </label> 
+                                                <label class="float-end form-check form-switch">
+                                                    <input class="form-check-input mt-3 textbox1" type="checkbox" id="switch" name="billing_status" value="active" {{$user->billing_status=='active' ? 'checked' : ''}}>
+                                                </label>
                                             </div>
                                             <div class="product {{$user->billing_status == 'inactive' ? 'd-none' : ''}}">
                                                 <div class="row">
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label for="billing_class">Billing Class</label>
-                                                            <select class="custom-select form-control" name="billing_class" id="billing_class" value="{{$billingdata->billing_class}}">
+                                                            <select class="custom-select form-control" name="billing_class" id="billing_class">
                                                                 <option value="">Select</option>
                                                                 <option value="1" {{$billingdata->billing_class ==1 ? 'selected' : ''}}>Default</option>
                                                             </select>
@@ -818,7 +813,7 @@
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label for="billing_type">Billing Type</label>
-                                                            <select class="custom-select form-control" name="billing_type" id="billing_type" value="{{$billingdata->billing_type}}">
+                                                            <select class="custom-select form-control" name="billing_type" id="billing_type">
                                                                 <option value="1" {{$billingdata->billing_type ==1 ? 'selected' : ''}}>Prepaid</option>
                                                                 <option value="2" {{$billingdata->billing_type ==2 ? 'selected' : ''}}>Postpaid</option>
                                                             </select>
@@ -889,17 +884,19 @@
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label for="billing_cycle_startdate">Auto Pay</label>
-                                                            <select class="custom-select form-control" name="auto_pay" id="auto_pay" value="{{$billingdata->auto_pay}}">
-                                                                <option value="1">Never</option>
+                                                            <select class="custom-select form-control" name="auto_pay" id="auto_pay">
+                                                                <option value="0"{{$billingdata->auto_pay==1 ? 'selected' : ''}}>Never</option>
+                                                                <option value="1"{{$billingdata->auto_pay==1 ? 'selected' : ''}}>Test1</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label for="auto_pay_method">Auto Pay Method</label>
-                                                            <select class="custom-select form-control" name="auto_pay_method" id="auto_pay_method" value="{{$billingdata->auto_pay_method}}">
+                                                            <select class="custom-select form-control" name="auto_pay_method" id="auto_pay_method">
                                                                 <option value="">Select</option>
-                                                                <option value="1" {{$billingdata->auto_pay_method==1 ? 'selected' : ''}}>Never</option>
+                                                                <option value="0" {{$billingdata->auto_pay_method==1 ? 'selected' : ''}}>Never</option>
+                                                                <option value="1" {{$billingdata->auto_pay_method==1 ? 'selected' : ''}}>test1</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -914,8 +911,9 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="send_invoice_via_email">Send Invoice By Email</label>
-                                                    <select class="custom-select form-control" name="send_invoice_via_email" id="send_invoice_via_email" value="{{$billingdata->send_invoice_via_email}}">
-                                                        <option value="1">After Admin Review</option>
+                                                    <select class="custom-select form-control" name="send_invoice_via_email" id="send_invoice_via_email">
+                                                        <option value="0"{{$billingdata->send_invoice_via_email==0 ? "selected" : ''}}>After Admin Review</option>
+                                                        <option value="1"{{$billingdata->send_invoice_via_email==1 ? "selected" : ''}}>Test</option>
                                                     </select>
                                                 </div>
                                             </div>
