@@ -94,6 +94,17 @@
             </a>
           </li>
 
+          @if(Auth::user()->role  == 'Admin')
+                <li class="nav-item ">
+                    <a href="{{url('/company')}}" class="nav-link {{ Request::is('company','company/create') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-building"></i>
+                        <p>
+                        Company
+                        </p>
+                    </a>
+                </li>
+          @endif
+
             <li class="nav-item">
                 <a class="nav-link " href="{{ route('logout') }}"
                 onclick="event.preventDefault();
