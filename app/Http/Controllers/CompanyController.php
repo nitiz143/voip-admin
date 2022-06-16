@@ -16,22 +16,21 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $data = Company::query('')->get();
-            return Datatables::of($data)
+        // if ($request->ajax()) {
+        //     $data = Company::query('')->get();
+        //     return Datatables::of($data)
 
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
+        //         ->addIndexColumn()
+        //         ->addColumn('action', function($row){
 
-                        $btn = '<a href="'.route('company.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>  ';
-                        $btn1 = '<a href="" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
-
-                        return $btn.$btn1;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-        return view('company.index');
+        //                 $btn = '<a href="'.route('company.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>';
+        //                 return $btn;
+        //         })
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
+        $users = Company::query('')->get();
+        return view('company.index',compact('users'));
     }
 
     /**
@@ -51,6 +50,23 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+    {
+
+    }
+    public function edit($id)
+    {
+        $user = Company::find($id);
+        return view('company.edit',compact('user'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
     {
         // dd($request->all());
         if(!empty($request->id)){
@@ -198,51 +214,5 @@ class CompanyController extends Controller
 
         return response()->json(['message' =>'updated_successfully','data' => $user,'success'=>true,'redirect_url' => ('/company')]);
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $user = Company::find($id);
-        return view('company.edit',compact('user'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

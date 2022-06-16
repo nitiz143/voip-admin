@@ -7,14 +7,15 @@
       border: none;
       color: white;
       cursor: pointer;
-      font-size: 10px;
+      font-size: 12px;
         width: 100px;
         height: 30px;
     }
 
     /* Darker background on mouse-over */
     #your_sheet:hover {
-      background-color: RoyalBlue;
+      background-color: lightblue;
+      color: black
     }
 
     #sample_sheet {
@@ -22,7 +23,7 @@
       border: none;
       color: white;
       cursor: pointer;
-      font-size: 10px;
+      font-size: 12px;
         width: 100px;
         height: 30px;
     }
@@ -30,6 +31,7 @@
     /* Darker background on mouse-over */
     #sample_sheet:hover {
       background-color: greenyellow;
+      color:black
     }
 
 
@@ -109,8 +111,9 @@
                             <h3 class="card-title">Company</h3>
                         </div>
 
-                        <form action="{{ route('company.store') }}" method="POST" id="form">
+                        <form action="{{ route('company.update',$user->id) }}" method="PUT" id="form">
                             @csrf
+                            @method('PUT')
                             <div class="card-body">
                                 <div class="card-header">
                                     <h5>Company Information</h5>
@@ -160,7 +163,7 @@
                                     <div class="col-xl-6">
                                         <label for="currency">Timezone</label>
                                         <div class="form-group timepicker" twelvehour="true">
-                                            <input  type="text" class="form-control timedemo" name="timezone" placeholder="hh:mm am/pm" value="{{$user->timezone}}" >
+                                            <input  type="text" class="form-control timedemo" name="timezone" placeholder="hh:mm am/pm" value="{{$user->timezone}}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -723,7 +726,7 @@ $(document).ready(function () {
             interval: 60,
             minTime: '10',
             maxTime: '6:00pm',
-            defaultTime: '11',
+            //defaultTime: '11',
             startTime: '10:00',
             dynamic: false,
             dropdown: true,

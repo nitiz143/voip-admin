@@ -96,7 +96,7 @@
 
           @if(Auth::user()->role  == 'Admin')
                 <li class="nav-item ">
-                    <a href="{{url('/company')}}" class="nav-link {{ Request::is('company','company/create') ? 'active' : '' }}">
+                    <a href="{{url('/company')}}" class="nav-link {{ Request::is('company') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-building"></i>
                         <p>
                         Company
