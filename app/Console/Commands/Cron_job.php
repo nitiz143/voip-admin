@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 use App\Models\CronJob;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-
 class Cron_job extends Command
 {
     /**
@@ -40,13 +39,13 @@ class Cron_job extends Command
     {
 
 
-    //    echo  Carbon::now();
+       echo  Carbon::now();
     //    $jobs = CronJob::all();
 
     //    foreach($jobs as $job)
     //    {
 
-    //    \Log::info("Cron is working fine!");
+       \Log::info("Cron is working fine!");
     //    }
 
     }
