@@ -94,6 +94,15 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="{{url('/setting')}}" class="nav-link {{ Request::is('setting') ? 'active' : '' }} ">
+                <i class="nav-icon fa fa-cog"></i>
+              <p>
+                Settings
+              </p>
+            </a>
+          </li>
+
           @if(Auth::user()->role  == 'Admin')
                 <li class="nav-item ">
                     <a href="{{url('/company')}}" class="nav-link {{ Request::is('company') ? 'active' : '' }}">

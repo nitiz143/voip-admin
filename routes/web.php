@@ -7,6 +7,7 @@ use App\Http\Controllers\CRMController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CronJobController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\SettingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,4 +35,5 @@ Route::resource('/crm','App\Http\Controllers\CRMController');
 Route::resource('/client','App\Http\Controllers\ClientController');
 Route::get('/getClient/{id}','App\Http\Controllers\CRMController@ImportClient')->name('getClient');
 Route::resource('/cron','App\Http\Controllers\CronJobController');
+Route::resource('/setting','App\Http\Controllers\SettingController');
 Route::resource('/company','App\Http\Controllers\CompanyController');
