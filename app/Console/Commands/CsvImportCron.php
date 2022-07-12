@@ -74,13 +74,13 @@ class CsvImportCron extends Command
                         ]);
                         
                     }
+                    // get latest file
                     $newest = $fileData->sortByDesc('date')->first();
-                    // dd($customerArr);
                     if(!empty($newest)){
                         if (!file_exists( public_path() . '/'. $setting->csv_path . $newest['file'])) {
                             Storage::disk('public')->put(str_replace("/".$setting->csv_path, "", $newest['file']), Storage::disk('ftp')->get($newest['file']));
                             // check if file already exist
-                            $csvImport = CsvImport::where('csv_file',$newest['file'])->first();
+                            $csvImport = CsvImport::where('csv_file',$newest['file'])->where('status',2)->first();
                             $data = [
                                 'status' => 1,
                                 'csv_file' => $newest['file'],
@@ -90,8 +90,6 @@ class CsvImportCron extends Command
                                 CsvImport::create($data);
                                 for ($i = 0; $i < count($customerArr); $i ++)
                                 {
-                                    // echo "<pre>";
-                                    //  dd(count($customerArr[$i]));
                                     $history = [
                                         'caller_id' => $customerArr[$i] ?  $customerArr[$i][0] : '',
                                         'callere164' => $customerArr[$i] ? $customerArr[$i][1] : '',
@@ -135,8 +133,18 @@ class CsvImportCron extends Command
                                     ];
                                     $getcsv = CsvImport::latest()->first();
                                     if(!empty($getcsv)){
-                                        if(CallHistory::create($history)){
-                                            $getcsv->update(['status' => 2]);
+                                        if(!empty($customerArr[$i][0])){
+                                            // check if call history already exist
+                                            $call_history = CallHistory::where('caller_id',$customerArr[$i][0])->first();
+                                            if(!empty($call_history)){
+                                                if($call_history->update($history)){
+                                                    $getcsv->update(['status' => 2]);
+                                                }
+                                            }else{
+                                                if(CallHistory::create($history)){
+                                                    $getcsv->update(['status' => 2]);
+                                                }
+                                            }
                                         }
                                     }
                                 }
