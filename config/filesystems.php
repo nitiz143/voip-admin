@@ -53,6 +53,18 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => 'ftp.mindgraptechnologies.com',
+            'username' => 'csv@mindgrap.com',
+            'password' => '143@Mindgrap',
+            'passive' => true,
+            'ssl' => true,
+            'passive' => true,
+            'timeout' => 30,
+            'port' => 21,
+        ],
+
     ],
 
     /*

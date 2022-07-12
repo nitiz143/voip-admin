@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
 
     protected $commands = [
         Commands\Cron_job::class,
+        Commands\CsvImportCron::class,
     ];
     /**
      * Define the application's command schedule.
@@ -30,11 +31,13 @@ class Kernel extends ConsoleKernel
         foreach ($tasks as $task) {
 
             $frequency = $task->job_time;
-
-            $schedule->call(function() use($task) {
-                /*  Run your task here */
-                Log::info($task->job_title.' '.\Carbon\Carbon::now());
-            })->monitorName($task->job_title)->$frequency();
+            if($task->cron_type == 'Download VOS SFTP File'){
+                $schedule->command('csvImport:cron')->$frequency();
+            }
+            // $schedule->call(function() use($task) {
+            //     /*  Run your task here */
+            //     Log::info($task->job_title.' '.\Carbon\Carbon::now());
+            // })->monitorName($task->job_title)->$frequency();
         }
     }
 
