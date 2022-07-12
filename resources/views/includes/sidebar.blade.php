@@ -91,7 +91,7 @@
               <p>
                 Cron Job
               </p>
-            </a>
+            </a>  
           </li>
 
           <li class="nav-item">
