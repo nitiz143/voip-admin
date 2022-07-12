@@ -48,12 +48,11 @@
                                     <table class="table table-bordered border text-nowrap mb-0 w-100" id="table">
                                         <thead>
                                             <tr>
-                                                <th></th>
-                                                <th>PID/sqIPID</th>
+                                                <th>PID</th>
                                                 <th>Title</th>
                                                 <th>Running Since</th>
-                                                <th>Last Run Time</th>
-                                                <th>Next Run Time</th>
+                                                {{-- <th>Last Run Time</th>
+                                                <th>Next Run Time</th> --}}
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -208,24 +207,24 @@
      aaSorting: [
          [0, "desc"]
      ],
-    //  columns: [{
-    //          data: 'id',
-    //      },
-    //      {
-    //          data: 'job_title',
-    //          name: 'job_title'
-    //      },
-    //      {
-    //          data: 'start_time',
-    //          name: 'start_time'
-    //      },
-    //      {
-    //          data: 'action',
-    //          name: 'action',
-    //          searchable: false,
-    //          orderable: false
-    //      },
-    //  ]
+     columns: [{
+             data: 'id',
+         },
+         {
+             data: 'job_title',
+             name: 'job_title'
+         },
+         {
+             data: 'start_time',
+             name: 'start_time'
+         },
+         {
+             data: 'action',
+             name: 'action',
+             searchable: false,
+             orderable: false
+         },
+     ]
 });
 
 $('.cron').on('change', function() {
