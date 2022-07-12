@@ -1,6 +1,9 @@
 @extends('layouts.login')
 
 @section('content')
+@if(!empty(auth()->user()))
+<script>window.location = "/home";</script>
+@endif
 <div class="login-box">
     <div class="login-logo">
       <a href="../../index2.html">{{env('APP_NAME')}}</a>
