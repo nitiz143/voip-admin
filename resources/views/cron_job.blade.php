@@ -16,6 +16,9 @@
     .select2-container--default .select2-search--inline .select2-search__field {
         height: 25px;
     }
+    .swal2-cancel{
+       margin-right:20px;
+    }
     </style>
 <div class="content-wrapper mt-3">
         <section class="content-header">
@@ -171,7 +174,7 @@
                                     </div>
                                     <div class="col-xl-6 mb-3 mb-3">
                                         <label>Job Start Time</label><br>
-                                        <input type="datetime-local" class="form-control" name="start_time" />
+                                        <input type="datetime-local" class="form-control" name="start_time" id="start_time" />
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -227,18 +230,55 @@
      ]
 });
 
+$('#createCronModal').click(function (e) {
+    e.preventDefault();
+    var val = $(this).val();
+    if (val == 'Download VOS SFTP File') {
+        $("#gate").show();
+        $("#data").show();
+        $("#display").hide();
+    }
+    if (val == 'Active job Cron Email') {
+        $("#gate").hide();
+        $("#data").hide();
+        $("#display").show();
+    }
+    if (val == '') {
+        $("#gate").hide();
+        $("#data").hide();
+        $("#display").hide();
+    }
+    $('#id').val('');
+    $('#job_title').val('');
+    $('#cron_type').val('');
+    $('#gateway').val('');
+    $('#Alert').val('');
+    $('#download').val('');
+    $('#threshold').val('');
+    $('#success_email').val('');
+    $('#error_email').val('');
+    $('#job_time').val('');
+    $('#job_intervel').val('');
+    $('#job_day').val('').trigger('change');
+    $('#start_time').val('');
+    $('#status').val('');
+    $('#save').text('{{ __('save') }}');
+    $('#exampleModalLabel').text('{{ __('Cron job') }}');
+    $('#CronModal').modal('show');
+
+ });
+
+
 $('.cron').on('change', function() {
 
  var val = $(this).val();
-    if (val == "Second") {
-        $("#job_intervel").html('<option value="10">10 second</option><option value="20">20 second</option> <option value="30">30 second</option>');
-    }
+
     if (val == "everyMinute") {
         var selectAge = document.getElementById("job_intervel");
         var contents;
 
         for (let i = 1; i <=60; i++) {
-        contents += "<option>" + i + " MINUTE</option>";
+        contents += "<option>" + i + "MINUTE</option>";
         }
 
         selectAge.innerHTML = contents;
@@ -248,7 +288,7 @@ $('.cron').on('change', function() {
         var contents;
 
         for (let i = 1; i <=24 ; i++) {
-        contents += "<option>" + i + " HOUR</option>";
+        contents += "<option>" + i + "HOUR</option>";
         }
 
         selectAge.innerHTML = contents;
@@ -258,7 +298,7 @@ $('.cron').on('change', function() {
         var contents;
 
         for (let i = 1; i <=31 ; i++) {
-        contents += "<option>" + i + " DAY</option>";
+        contents += "<option>" + i + "DAY</option>";
         }
 
         selectAge.innerHTML = contents;
@@ -268,28 +308,38 @@ $('.cron').on('change', function() {
         var contents;
 
         for (let i = 1; i <=12 ; i++) {
-        contents += "<option>" + i + " MONTH</option>";
+        contents += "<option>" + i + "MONTH</option>";
         }
 
         selectAge.innerHTML = contents;
     }
 });
+
+
 $('.cron_type').on('change', function() {
     var val = $(this).val();
     if (val == 'Download VOS SFTP File') {
         $("#gate").show();
         $("#data").show();
         $("#display").hide();
+        $('#Alert').val('').trigger('change');
    }
    if (val == 'Active job Cron Email') {
     $("#gate").hide();
     $("#data").hide();
     $("#display").show();
+    $('#gateway').val('').trigger('change');
+    $('#download').val('').trigger('change');
+    $('#threshold').val('').trigger('change');
    }
    if (val == '') {
     $("#gate").hide();
     $("#data").hide();
     $("#display").hide();
+    $('#Alert').val('').trigger('change');
+    $('#gateway').val('').trigger('change');
+    $('#download').val('').trigger('change');
+    $('#threshold').val('').trigger('change');
    }
 });
 
@@ -301,6 +351,114 @@ $(document).ready(function() {
     allowClear: true
   });
 });
+
+$(document).on('click', '.Edit', function (e) {
+        e.preventDefault();
+        $('#save').text('{{ __('Update') }}');
+        $('#exampleModalLabel').text('{{ __('Update Cron job') }}');
+        $('#global-loader').show();
+
+        let id = $(this).data('id');
+
+        $.ajax({
+            url: "{{ route('cron.edit', ":id") }}",
+            type: 'get', // replaced from put
+            data: {
+                "id": id // method and token not needed in data
+            },
+            success: function (data)
+            {
+                $('#CronModal').modal('show');
+                if (data.job_time == "everyMinute") {
+                    var selectAge = document.getElementById("job_intervel");
+                    var contents;
+                    contents += "<option>" + data.job_intervel + "</option>";
+
+                    for (let i = 1; i <=60; i++) {
+                    contents += "<option>" + i + "MINUTE</option>";
+                    }
+
+                    selectAge.innerHTML = contents;
+                }
+                if (data.job_time == "hourly") {
+                    var selectAge = document.getElementById("job_intervel");
+                    var contents;
+                    contents += "<option>" +  data.job_intervel + "</option>";
+                    for (let i = 1; i <=24 ; i++) {
+                    contents += "<option>" +i + "HOUR</option>";
+                    }
+
+                    selectAge.innerHTML = contents;
+                }
+                if (data.job_time == "daily") {
+                    var selectAge = document.getElementById("job_intervel");
+                    var contents;
+                    contents += "<option>" + data.job_intervel+ "</option>";
+
+                    for (let i = 1; i <=31 ; i++) {
+                        contents += "<option>" + i+ " DAY</option>";
+                    }
+
+
+                    selectAge.innerHTML = contents;
+                }
+                if (data.job_time == "monthly") {
+                    var selectAge = document.getElementById("job_intervel");
+                    var contents;
+                    contents += "<option>" + data.job_intervel+ " </option>";
+
+                    for (let i = 1; i <=12 ; i++) {
+                    contents += "<option>" + i+ "MONTH </option>";
+                    }
+
+                    selectAge.innerHTML = contents;
+                }
+
+                if (data.cron_type == 'Download VOS SFTP File') {
+                    $("#gate").show();
+                    $("#data").show();
+                    $("#display").hide();
+                }
+                if (data.cron_type == 'Active job Cron Email') {
+                    $("#gate").hide();
+                    $("#data").hide();
+                    $("#display").show();
+                }
+                if (data.cron_type == '') {
+                    $("#gate").hide();
+                    $("#data").hide();
+                    $("#display").hide();
+                }
+
+
+
+                $('#id').val(data.id);
+                $('#job_title').val(data.job_title);
+                $('#cron_type').val(data.cron_type);
+                $('#gateway').val(data.gateway);
+                $('#Alert').val(data.Alert);
+                $('#download').val(data.download_limit);
+                $('#threshold').val(data.threshold);
+                $('#success_email').val(data.success_email);
+                $('#error_email').val(data.error_email);
+                $('#job_time').val(data.job_time);
+                $('#job_day').val($.parseJSON(data.job_day)).trigger('change');
+                $('#start_time').val(data.start_time);
+                $('#status').val(data.status);
+                $('#global-loader').hide();
+
+            },
+
+                    error: function(xhr) {
+                    $('#global-loader').hide();
+                    $.notify(xhr.responseText,'error'); // this line will save you tons of hours while debugging
+                    // do something here because of error
+                }
+        });
+
+
+    });
+
 
 function save(formdata,url){
         $('#global-loader').show();
@@ -339,6 +497,73 @@ function save(formdata,url){
         save(formdata,url);
     });
 
+
+    $(document).on('click', '.Delete', function () {
+        let id = $(this).data('id');
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons
+            .fire({
+                title: '{{ __('title') }}',
+                text: '{{ __('text') }}',
+                icon: '{{ __('icon') }}',
+                showCancelButton: true,
+                confirmButtonText: '{{ __('Confirm') }}',
+
+                cancelButtonText: '{{ __('Cancel') }}',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+
+                    $.ajax({
+                        url: "{{ route('cron.destroy', ": id ") }}",
+                        type: 'delete', // replaced from put
+                        dataType: "JSON",
+                        data: {
+                            "id": id, // method and token not needed in data
+                            "_token": "{{ csrf_token() }}",
+                        },
+
+                        success: function (response) {
+                            console.log(response)
+                            if (response.success == true) { //YAYA
+                                role.draw();
+                            } else { //Fail check?
+                                timeOutId = setTimeout(ajaxFn, 20000); //set the timeout again
+
+                            }
+                            // location.reload();
+                        },
+                        error: function (xhr) {
+                            console.log(xhr.responseText); // this line will save you tons of hours while debugging
+                            // do something here because of error
+                        }
+                    });
+                    swalWithBootstrapButtons.fire(
+                        '{{ __('deleted') }}!',
+                        '{{ __('your_file_deleted') }}',
+                        '{{ __('success') }}'
+                    )
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    // swalWithBootstrapButtons.fire(
+                    //     '{{ __('common.cancelled') }}',
+                    //     '{{ __('common.your_imaginary_file_safe') }}',
+                    //     'error'
+                    // )
+
+                }
+            });
+    });
 
 
 </script>
