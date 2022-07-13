@@ -25,7 +25,7 @@ class SettingController extends Controller
                 return Datatables::of($data)
                 ->addColumn('protocol', function($row){
                     return  $row->protocol == 1 ? __('FTP - File Transfer Protocol') : __('SFTP - SSH File Transfer Protocol');
-    
+
                 })
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -94,7 +94,7 @@ class SettingController extends Controller
         }
         if(!empty($request->id)){
             $setting = Setting::find($request->id);
-            $request['password'] = $request->password ? Hash::make($request->password) : $setting->password;
+            $request['password'] = $request->password;
             //DB::table('users')->where('id',$request->id)->delete();
         }else{
             $request['password'] = Hash::make($request->password);
@@ -105,7 +105,7 @@ class SettingController extends Controller
         $setting =  Setting::updateOrCreate([
             'id'   => $request->id,
          ],$request->all());
-         
+
 
     return response()->json(['message' =>  __('Updated Successfully'),'success'=>true,'redirect_url' => ('/setting')]);
     }
@@ -127,7 +127,7 @@ class SettingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Setting $setting)
-    {  
+    {
             //   dd($request->all());
             // $user = User::
        $setting = Setting::find($setting->id);
