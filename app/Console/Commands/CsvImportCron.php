@@ -156,9 +156,10 @@ class CsvImportCron extends Command
                                     ];
                                     $getcsv = CsvImport::find($csv_import_id->id);
                                     if(!empty($getcsv)){
-
-                                        if(CallHistory::create($history)){
-                                            $getcsv->update(['status' => 2]);
+                                        if(!empty($customerArr[$i][0])){
+                                            if(CallHistory::create($history)){
+                                                $getcsv->update(['status' => 2]);
+                                            }
                                         }
                                         $updated_at  = Carbon::now();
                                         CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at));
