@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Config;
 use App\Models\CallHistory;
 use App\Models\CsvImport;
-
+use Carbon\Carbon;
 class CsvImportCron extends Command
 {
     /**
@@ -54,6 +54,9 @@ class CsvImportCron extends Command
 
     public function handle()
     {
+        $tasks = CronJob::where('cron_type','Download VOS SFTP File')->first();
+        $created_at  = Carbon::now();
+        CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at));
         $settings = Setting::all();
         if($settings->isNotEmpty()){
             foreach ($settings as $setting) {
@@ -167,6 +170,8 @@ class CsvImportCron extends Command
                                             }
                                         }
                                     }
+                                    $updated_at  = Carbon::now();
+                                    CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at));
                                 }
                             }
                         }
