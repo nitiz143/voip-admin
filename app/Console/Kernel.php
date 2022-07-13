@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
 {
 
     protected $commands = [
-        Commands\Cron_job::class,
+        //Commands\Cron_job::class,
         Commands\CsvImportCron::class,
     ];
     /**
@@ -23,8 +23,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('Cron:job')
-        ->everyMinute();
+       // $schedule->command('Cron:job')->everyMinute();
 
         $tasks = CronJob::all();
 
@@ -33,12 +32,13 @@ class Kernel extends ConsoleKernel
             $frequency = $task->job_time;
             if($task->cron_type == 'Download VOS SFTP File'){
                 $schedule->command('csvImport:cron')->$frequency();
-            }else{
-                $schedule->call(function() use($task) {
-                    /*  Run your task here */
-                    Log::info($task->job_title.' '.\Carbon\Carbon::now());
-                })->monitorName($task->job_title)->$frequency();
             }
+            //else{
+            //     $schedule->call(function() use($task) {
+            //         /*  Run your task here */
+            //         Log::info($task->job_title.' '.\Carbon\Carbon::now());
+            //     })->monitorName($task->job_title)->$frequency();
+            // }
         }
     }
 
