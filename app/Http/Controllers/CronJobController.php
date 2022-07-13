@@ -160,7 +160,7 @@ class CronJobController extends Controller
         //dd($request->id);
         if($request->ajax()){
             CronJob::find($request->id)->delete();
-            return response()->json(['msg'=>__('common.deleted_successfully'),'success'=>true]);
+            return response()->json(['msg'=>__('deleted_successfully'),'success'=>true]);
         }
     }
 }
