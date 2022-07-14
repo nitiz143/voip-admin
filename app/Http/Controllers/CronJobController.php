@@ -129,9 +129,12 @@ class CronJobController extends Controller
      * @param  \App\Models\CronJob  $cronJob
      * @return \Illuminate\Http\Response
      */
-    public function edit(CronJob $cronJob)
+    public function edit(Request $request)
     {
-        //
+        if($request->ajax()){
+            $agent = CronJob::find($request->id);
+            return $agent;
+        }
     }
 
     /**
@@ -152,8 +155,12 @@ class CronJobController extends Controller
      * @param  \App\Models\CronJob  $cronJob
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CronJob $cronJob)
+    public function destroy(Request $request)
     {
-        //
+        //dd($request->id);
+        if($request->ajax()){
+            CronJob::find($request->id)->delete();
+            return response()->json(['msg'=>__('deleted_successfully'),'success'=>true]);
+        }
     }
 }
