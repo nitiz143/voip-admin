@@ -55,15 +55,23 @@ return [
 
         'ftp' => [
             'driver' => 'ftp',
-            'host' => 'ftp.mindgraptechnologies.com',
-            'username' => 'csv@mindgrap.com',
-            'password' => '143@Mindgrap',
+            'host' => env('SFTP_HOST','192.168.10.10'),
+            'username' => env('SFTP_USER','myName'),
+            'password' => env('SFTP_PW','myPass'),
             'passive' => true,
             'ssl' => true,
-            'passive' => true,
             'timeout' => 30,
-            'port' => 21,
+            'port' =>  env('SFTP_PORT',22),
         ],
+        'sftp' => [
+            'driver' =>'sftp',
+            'host' => env('SFTP_HOST','192.168.10.10'),
+            'port' => env('SFTP_PORT',22),
+            'username' => env('SFTP_USER','myName'),
+            'password' => env('SFTP_PW','myPass'),
+            'root' =>  env('SFTP_PATH','/'),
+            'timeout' => 10,
+          ],
 
     ],
 

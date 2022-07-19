@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Config;
 use App\Models\CallHistory;
 use App\Models\CsvImport;
-
+use Carbon\Carbon;
 class CsvImportCron extends Command
 {
     /**
@@ -54,31 +54,54 @@ class CsvImportCron extends Command
 
     public function handle()
     {
+        $tasks = CronJob::where('cron_type','Download VOS SFTP File')->first();
+        $created_at  = Carbon::now();
+        CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at));
         $settings = Setting::all();
         if($settings->isNotEmpty()){
             foreach ($settings as $setting) {
-                $set = Setting::find($setting->id);
-                Config::set('filesystems.host', $setting->host);
-                Config::set('filesystems.username', $setting->username);
-                Config::set('filesystems.password', $setting->password);
-                Config::set('filesystems.port', $setting->port);
+                if($setting->protocol == 1){
+                    Config::set('filesystems.disks.ftp.host', $setting->host);
+                    Config::set('filesystems.disks.ftp.username', $setting->username);
+                    Config::set('filesystems.disks.ftp.password', $setting->password);
+                    Config::set('filesystems.disks.ftp.port', $setting->port);
+                    Config::set('filesystems.disks.ftp.root', $setting->csv_path);
+                    $disk = Storage::disk('ftp');
+
+                }else{
+                    Config::set('filesystems.disks.sftp.host', $setting->host);
+                    Config::set('filesystems.disks.sftp.username', $setting->username);
+                    Config::set('filesystems.disks.sftp.password', $setting->password);
+                    Config::set('filesystems.disks.sftp.port', $setting->port);
+                    Config::set('filesystems.disks.sftp.root', $setting->csv_path);
+                    $disk = Storage::disk('sftp');
+                }
+
                 // import file
-                $disk = Storage::disk('ftp');
-                $files = $disk->files($setting->csv_path."/");
+                $files = $disk->files("/");
+
                 $fileData = collect();
+
                 if(!empty($files)){
-                    foreach ($files as $key => $value) {
-                        $fileData->push([
-                            'file' => str_replace("/".$setting->csv_path, "", $value),
-                            'date' => $disk->lastModified(str_replace("/".$setting->csv_path, "", $value) )
-                        ]);
-                        
+                    foreach ($files as $value) {
+                        if($value != 'cdr.column'){
+                            $fileData->push([
+                                'file' => $value,
+                                'date' => $disk->lastModified($value)
+                            ]);
+                        }
                     }
+
                     // get latest file
                     $newest = $fileData->sortByDesc('date')->first();
+
                     if(!empty($newest)){
-                        if (!file_exists( public_path() . '/'. $setting->csv_path . $newest['file'])) {
-                            Storage::disk('public')->put(str_replace("/".$setting->csv_path, "", $newest['file']), Storage::disk('ftp')->get($newest['file']));
+                        if (!file_exists(public_path() . '/'. $setting->csv_path . $newest['file'])) {
+                            if($setting->protocol == 1){
+                                Storage::disk('public')->put($newest['file'], Storage::disk('ftp')->get($newest['file']));
+                            }else{
+                                Storage::disk('public')->put($newest['file'], Storage::disk('sftp')->get($newest['file']));
+                            }
                             // check if file already exist
                             $csvImport = CsvImport::where('csv_file',$newest['file'])->where('status',2)->first();
                             $data = [
@@ -86,8 +109,8 @@ class CsvImportCron extends Command
                                 'csv_file' => $newest['file'],
                             ];
                             if(empty($csvImport)){
-                                $customerArr  = $this->readCSV(str_replace("/".$setting->csv_path, "", $newest['file']),array('delimiter' => ','));
-                                CsvImport::create($data);
+                                $customerArr  = $this->readCSV($newest['file'],array('delimiter' => ','));
+                                $csv_import_id = CsvImport::create($data);
                                 for ($i = 0; $i < count($customerArr); $i ++)
                                 {
                                     $history = [
@@ -100,7 +123,7 @@ class CsvImportCron extends Command
                                         'callergatewayh323id' => $customerArr[$i] ? $customerArr[$i][6] : '',
                                         'callerproductid' => $customerArr[$i] ? $customerArr[$i][7] : '',
                                         'callertogatewaye164' => $customerArr[$i] ? $customerArr[$i][8] : '',
-                                        'calleeip' => $customerArr[$i] ? $customerArr[$i][9] : '', 
+                                        'calleeip' => $customerArr[$i] ? $customerArr[$i][9] : '',
                                         'calleegatewayh323id' => $customerArr[$i] ? $customerArr[$i][10] : '',
                                         'calleetogatewaye164' => $customerArr[$i] ? $customerArr[$i][11] : '',
                                         'billingmode' => $customerArr[$i] ? $customerArr[$i][12] : '',
@@ -129,27 +152,23 @@ class CsvImportCron extends Command
                                         'endreason' => $customerArr[$i] ? $customerArr[$i][35] : '',
                                         'calleebilling' => $customerArr[$i] ? $customerArr[$i][36] : '',
                                         'cdrlevel' => $customerArr[$i] ? $customerArr[$i][37] : '',
-                                        'subcdr_id' => $customerArr[$i] ? $customerArr[$i][38] : '', 
+                                        'subcdr_id' => $customerArr[$i] ? $customerArr[$i][38] : '',
                                     ];
-                                    $getcsv = CsvImport::latest()->first();
+                                    $getcsv = CsvImport::find($csv_import_id->id);
                                     if(!empty($getcsv)){
                                         if(!empty($customerArr[$i][0])){
-                                            // check if call history already exist
-                                            $call_history = CallHistory::where('caller_id',$customerArr[$i][0])->first();
-                                            if(!empty($call_history)){
-                                                if($call_history->update($history)){
-                                                    $getcsv->update(['status' => 2]);
-                                                }
-                                            }else{
-                                                if(CallHistory::create($history)){
-                                                    $getcsv->update(['status' => 2]);
-                                                }
+                                            if(CallHistory::create($history)){
+                                                $getcsv->update(['status' => 2]);
                                             }
                                         }
+                                        $updated_at  = Carbon::now();
+                                        CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at));
+
                                     }
+
                                 }
                             }
-                        } 
+                        }
                     }
                 }
             }
