@@ -212,7 +212,7 @@ class CompanyController extends Controller
        $user = Company::updateOrCreate(['id' => $request->id],$data);
 
 
-        return response()->json(['message' =>'updated_successfully','data' => $user,'success'=>true,'redirect_url' => ('/company')]);
+        return response()->json(['message' =>'updated_successfully','data' => $user,'success'=>true,'redirect_url' => route('company.edit',$request->id)]);
 
     }
 }

@@ -703,7 +703,7 @@
                             </div>
                             <div class="card-footer">
                                 <button type="submit" id="submit" class="btn btn-primary">Submit</button>
-                                <a href="{{url('/company')}}" type="button"  id="cancel" class="btn btn-danger">Cancel</a>
+                                <a href="{{route('company.edit',$user->id)}}" type="button"  id="cancel" class="btn btn-danger">Cancel</a>
                             </div>
                         </form>
                     </div>

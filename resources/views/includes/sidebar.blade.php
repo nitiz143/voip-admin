@@ -104,8 +104,11 @@
           </li>
 
           @if(Auth::user()->role  == 'Admin')
+              @php
+                $company = App\Models\Company::first();
+              @endphp
                 <li class="nav-item ">
-                    <a href="{{url('/company')}}" class="nav-link {{ Request::is('company') ? 'active' : '' }}">
+                    <a href="{{route('company.edit',$company->id)}}" class="nav-link {{ Request::is('company') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-building"></i>
                         <p>
                         Company

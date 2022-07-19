@@ -20,7 +20,7 @@ class CallController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
 
-                           $btn = '<a href="#" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
+                           $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>';
 
                             return $btn;
                     })
@@ -111,5 +111,15 @@ class CallController extends Controller
         return response()->json(['message'=>__('Deleted Successfully'),'success'=>true]);
 
     }
+
+
+    public function getCallhistory(Request $request)
+    {
+         $callhistory =  CallHistory::find($request->id);
+        //  dd($request->all());
+         return view('call.viewcallhistory',compact('callhistory'));
+
+    }
+    
 
 }

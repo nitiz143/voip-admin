@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::resource('/call','App\Http\Controllers\CallController');
+    Route::get('/getCallhistory','App\Http\Controllers\CallController@getCallhistory')->name('getCallhistory');
     Route::resource('/users','App\Http\Controllers\UserController');
     Route::post('getUsers','App\Http\Controllers\UserController@getUsers')->name('getUsers');
     // Route::get('autocomplete','App\Http\Controllers\UserController@autocomplete')->name('autocomplete');

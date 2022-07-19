@@ -41,7 +41,6 @@
                                     <th>Callere164</th>
                                     <th>Calleraccesse164</th>
                                     <th>Calleee164</th>
-
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -53,7 +52,15 @@
 
                         <!-- /.card-body -->
                     </div>
-        <!-- /.card -->
+                    <!-- /.card -->
+                </div>
+
+                <div class="modal fade" id="ajaxModel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content" id="callForm">
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,73 +85,22 @@
         ]
     });
 
-
-
-
-
-$(document).on('click', '.Delete', function () {
-        let id = $(this).data('id');
-        var token = "{{ csrf_token() }}";
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-primary',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        })
-
-        swalWithBootstrapButtons
-            .fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: "{{ route('call.destroy', ": id ") }}",
-                        type: 'delete', // replaced from put
-                        dataType: "JSON",
-                        data: {
-                            "id": id,// method and token not needed in data
-                            "_token": token,
-                        },
-                        success: function (response) {
-                            console.log(response)
-                            if (response.success == true) { //YAYA
-                                table.draw();
-                            } else { //Fail check?
-                                timeOutId = setTimeout(ajaxFn, 20000); //set the timeout again
-
-                            }
-                            // location.reload();
-                        },
-                        error: function (xhr) {
-                            console.log(xhr.responseText); // this line will save you tons of hours while debugging
-                            // do something here because of error
-                        }
-                    });
-                    swalWithBootstrapButtons.fire(
-                       ' deleted!',
-                       ' your file deleted',
-                        'success'
-                    )
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    swalWithBootstrapButtons.fire(
-                       'cancelled',
-                       ' your imaginary file is safe',
-                        'error'
-                    )
-
-                }
-            });
+    $(document).on('click','.callhistoryForm',function(e){
+        // $("#ajaxModel").modal();
+        var id = $(this).data('id')
+        $.ajax({
+           type:'get',
+           url:"{{ route('getCallhistory') }}",
+           data:{id,id},
+           success:function(data){
+              console.log(data);
+              $('#callForm').html(data);
+              $("#ajaxModel").modal('show');
+           }
+        });
     });
+
+
 
 </script>
 
