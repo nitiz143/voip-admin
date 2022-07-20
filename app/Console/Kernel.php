@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
             $frequency = $task->job_time;
             if($task->cron_type == 'Download VOS SFTP File'){
                 $schedule->command('csvImport:cron')->$frequency();
-                $schedule->command('download:cron')->$frequency();
+               // $schedule->command('download:cron')->$frequency();
             }
 
             //else{
