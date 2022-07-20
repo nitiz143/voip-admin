@@ -109,7 +109,7 @@ class DownloadCsvImportCron extends Command
                     'subcdr_id' => $customerArr[$i] ? $customerArr[$i][38] : '',
                 ];
                 $getcsv = CsvImport::find($csvImport->id);
-                Response::download($csvImport->csv_file);
+
                 if(!empty($getcsv)){
                     if(!empty($customerArr[$i][0])){
                         if(CallHistory::create($history)){
