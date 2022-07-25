@@ -104,8 +104,11 @@
           </li>
 
           @if(Auth::user()->role  == 'Admin')
+              @php
+                $company = App\Models\Company::first();
+              @endphp
                 <li class="nav-item ">
-                    <a href="{{url('/company')}}" class="nav-link {{ Request::is('company') ? 'active' : '' }}">
+                    <a href="{{route('company.edit',$company->id)}}" class="nav-link {{ Request::is('company') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-building"></i>
                         <p>
                         Company
@@ -116,17 +119,13 @@
 
             <li class="nav-item">
                 <a class="nav-link " href="{{ route('logout') }}"
-                onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();">
-                                 <i class="nav-icon fas fa-sign-out-alt"></i>
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="nav-icon fas fa-sign-out-alt"></i>
                     <p>{{ __('Logout') }}</p>
-
-                  </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-
-                            <p>Logout</p>
-                        </form>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                    <p>Logout</p>
+                </form>
             </li>
 
         </ul>
