@@ -150,7 +150,7 @@ class ClientController extends Controller
             }else{
                 $billingdata["billing_cycle_startday"] = Null;
             }
-            
+
             $billingdata["auto_pay"] = $request->auto_pay;
             $billingdata["auto_pay_method"] = $request->auto_pay_method;
             $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;

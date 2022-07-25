@@ -24,6 +24,7 @@ class Client extends Model
         'skype_id',
         'timezone',
         'status',
+        'country',
         'vat_number',
         'description',
         'address_line1',

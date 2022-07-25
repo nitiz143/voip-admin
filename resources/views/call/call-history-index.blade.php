@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
- 
+
                     </ol>
                 </div>
             </div>
@@ -56,9 +56,9 @@
                 </div>
 
                 <div class="modal fade" id="ajaxModel" aria-hidden="true">
-                    <div class="modal-dialog"> 
+                    <div class="modal-dialog modal-lg">
                         <div class="modal-content" id="callForm">
-                            
+
                         </div>
                     </div>
                 </div>

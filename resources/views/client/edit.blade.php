@@ -575,7 +575,7 @@
                                                     <input type="text" class="form-control" id="vendor_authentication_value" name="vendor_authentication_value" value="{{$user->vendor_authentication_value}}">
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card">
@@ -614,7 +614,7 @@
                                                     <input type="text" class="form-control" id="account_number" name="account_number" value="{{$user->account_number}}">
                                                 </div>
                                             </div>
-                                        
+
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="account_name">Account Name</label>
@@ -725,7 +725,7 @@
                                         <div class="row border">
                                             <div class="row">
                                                 <h5 style="padding:10px;">Credit Control</h5>
-                                            
+
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
                                                         <label>Account Balance</label>
@@ -806,7 +806,7 @@
                                                             <label for="billing_class">Billing Class</label>
                                                             <select class="custom-select form-control" name="billing_class" id="billing_class">
                                                                 <option value="">Select</option>
-                                                                <option value="1" {{$billingdata->billing_class ==1 ? 'selected' : ''}}>Default</option>
+                                                                <option value="1" @if(!empty($billingdata->billing_class)) {{$billingdata->billing_class ==1 ? 'selected' : ''}} @endif >Default</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -814,8 +814,8 @@
                                                         <div class="form-group">
                                                             <label for="billing_type">Billing Type</label>
                                                             <select class="custom-select form-control" name="billing_type" id="billing_type">
-                                                                <option value="1" {{$billingdata->billing_type ==1 ? 'selected' : ''}}>Prepaid</option>
-                                                                <option value="2" {{$billingdata->billing_type ==2 ? 'selected' : ''}}>Postpaid</option>
+                                                                <option value="1" @if(!empty($billingdata->billing_type))  {{$billingdata->billing_type ==1 ? 'selected' : ''}} @endif>Prepaid</option>
+                                                                <option value="2" @if(!empty($billingdata->billing_type))  {{$billingdata->billing_type ==2 ? 'selected' : ''}} @endif>Postpaid</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -825,14 +825,14 @@
                                                         <div class="form-group" twelvehour="true">
                                                             <label for="billing_timezone">Billing Timezone</label>
                                                             <div class="form-group timepicker" twelvehour="true">
-                                                                <input  type="text" class="form-control timedemo" name="billing_timezone" value="{{$billingdata->billing_timezone}}" placeholder="hh:mm am/pm">
+                                                                <input  type="text" class="form-control timedemo" name="billing_timezone" value="@if(!empty($billingdata->billing_timezone))  {{$billingdata->billing_timezone}} @endif" placeholder="hh:mm am/pm">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label>Billing Start Date</label>
-                                                            <input type="date" class="form-control" id="billing_startdate" name="billing_startdate" value="{{$billingdata->billing_startdate}}">
+                                                            <input type="date" class="form-control" id="billing_startdate" name="billing_startdate" value="@if(!empty($billingdata->billing_startdate)){{$billingdata->billing_startdate}} @endif">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -841,41 +841,41 @@
                                                         <div class="form-group">
                                                             <label for="billing_cycle">Billing Cycle</label>
                                                             <select class="custom-select form-control" name="billing_cycle" id="billing_cycle" >
-                                                                <option value="daily" {{$billingdata->billing_cycle=='daily' ? 'selected' : ''}}>Daily</option>
-                                                                <option value="weekly"{{$billingdata->billing_cycle=='weekly' ? 'selected' : ''}}>Weekly</option>
-                                                                <option value="monthly"{{$billingdata->billing_cycle=='monthly' ? 'selected' : ''}}>Monthly</option>
-                                                                <option value="yearly"{{$billingdata->billing_cycle=='yearly' ? 'selected' : ''}}>Yearly</option>
+                                                                <option value="daily"@if(!empty($billingdata->billing_cycle)) {{$billingdata->billing_cycle=='daily' ? 'selected' : ''}} @endif>Daily</option>
+                                                                <option value="weekly" @if(!empty($billingdata->billing_cycle)){{$billingdata->billing_cycle=='weekly' ? 'selected' : ''}} @endif>Weekly</option>
+                                                                <option value="monthly" @if(!empty($billingdata->billing_cycle)){{$billingdata->billing_cycle=='monthly' ? 'selected' : ''}} @endif>Monthly</option>
+                                                                <option value="yearly" @if(!empty($billingdata->billing_cycle)){{$billingdata->billing_cycle=='yearly' ? 'selected' : ''}} @endif>Yearly</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6">
-                                                        <div class="form-group {{$billingdata->billing_cycle !='weekly' ? 'd-none' : ''}}" id="week">
+                                                        <div class="form-group  @if(!empty($billingdata->billing_cycle))  {{$billingdata->billing_cycle !='weekly' ? 'd-none' : ''}} @endif " id="week">
                                                             <label for="billing_cycle_startday">Billing Cycle Start of Day</label>
                                                             <select class="custom-select form-control" name="billing_cycle_startday_weekly" id="billing_cycle_startday">
-                                                                <option value="Sunday"{{$billingdata->billing_cycle_startday=='Sunday' ? 'selected' : ''}}>Sunday</option>
-                                                                <option value="Monday" {{$billingdata->billing_cycle_startday=='Monday' ? 'selected' : ''}}>Monday</option>
-                                                                <option value="Tuesday"{{$billingdata->billing_cycle_startday=='Tuesday' ? 'selected' : ''}}>Tuesday</option>
-                                                                <option value="Wednesday"{{$billingdata->billing_cycle_startday=='Wednesday' ? 'selected' : ''}}>Wednesday</option>
-                                                                <option value="Thursday"{{$billingdata->billing_cycle_startday=='Thursday' ? 'selected' : ''}}>Thursday</option>
-                                                                <option value="Friday"{{$billingdata->billing_cycle_startday=='Friday' ? 'selected' : ''}}>Friday</option>
-                                                                <option value="Saturday"{{$billingdata->billing_cycle_startday=='Saturday' ? 'selected' : ''}}>Saturday</option>
+                                                                <option value="Sunday" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Sunday' ? 'selected' : ''}} @endif>Sunday</option>
+                                                                <option value="Monday"@if(!empty($billingdata->billing_cycle_startday))  {{$billingdata->billing_cycle_startday=='Monday' ? 'selected' : ''}} @endif>Monday</option>
+                                                                <option value="Tuesday"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Tuesday' ? 'selected' : ''}}@endif>Tuesday</option>
+                                                                <option value="Wednesday"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Wednesday' ? 'selected' : ''}}@endif>Wednesday</option>
+                                                                <option value="Thursday"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Thursday' ? 'selected' : ''}}@endif>Thursday</option>
+                                                                <option value="Friday"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Friday' ? 'selected' : ''}} @endif>Friday</option>
+                                                                <option value="Saturday"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Saturday' ? 'selected' : ''}}@endif>Saturday</option>
                                                             </select>
                                                         </div>
-                                                        <div class="form-group {{$billingdata->billing_cycle !='monthly' ? 'd-none' : ''}}" id="month">
+                                                        <div class="form-group @if(!empty($billingdata->billing_cycle_startday))  {{$billingdata->billing_cycle !='monthly' ? 'd-none' : ''}} @endif" id="month">
                                                             <label for="billing_cycle_startday">Billing Cycle Start of Day</label>
                                                             <select class="custom-select form-control" name="billing_cycle_startday" id="billing_cycle_startday">
-                                                                <option value="January"{{$billingdata->billing_cycle_startday=='January' ? 'selected' : ''}}>January</option>
-                                                                <option value="February"{{$billingdata->billing_cycle_startday=='February' ? 'selected' : ''}}>February</option>
-                                                                <option value="March"{{$billingdata->billing_cycle_startday=='March' ? 'selected' : ''}}>March</option>
-                                                                <option value="April"{{$billingdata->billing_cycle_startday=='April' ? 'selected' : ''}}>April</option>
-                                                                <option value="May"{{$billingdata->billing_cycle_startday=='May' ? 'selected' : ''}}> May </option>
-                                                                <option value="June"{{$billingdata->billing_cycle_startday=='June' ? 'selected' : ''}}> June </option>
-                                                                <option value="July"{{$billingdata->billing_cycle_startday=='July' ? 'selected' : ''}}> July </option>
-                                                                <option value="August"{{$billingdata->billing_cycle_startday=='August' ? 'selected' : ''}}> August </option>
-                                                                <option value="September"{{$billingdata->billing_cycle_startday=='September' ? 'selected' : ''}}> September </option>
-                                                                <option value="October"{{$billingdata->billing_cycle_startday=='October' ? 'selected' : ''}}> October </option>
-                                                                <option value="November"{{$billingdata->billing_cycle_startday=='November' ? 'selected' : ''}}> November </option>
-                                                                <option value="December"{{$billingdata->billing_cycle_startday=='December' ? 'selected' : ''}}> December </option>
+                                                                <option value="January" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='January' ? 'selected' : ''}} @endif>January</option>
+                                                                <option value="February"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='February' ? 'selected' : ''}}@endif>February</option>
+                                                                <option value="March" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='March' ? 'selected' : ''}} @endif>March</option>
+                                                                <option value="April" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='April' ? 'selected' : ''}} @endif>April</option>
+                                                                <option value="May" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='May' ? 'selected' : ''}} @endif> May </option>
+                                                                <option value="June" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='June' ? 'selected' : ''}} @endif> June </option>
+                                                                <option value="July" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='July' ? 'selected' : ''}} @endif> July </option>
+                                                                <option value="August" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='August' ? 'selected' : ''}} @endif> August </option>
+                                                                <option value="September"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='September' ? 'selected' : ''}} @endif> September </option>
+                                                                <option value="October" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='October' ? 'selected' : ''}} @endif> October </option>
+                                                                <option value="November" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='November' ? 'selected' : ''}} @endif> November </option>
+                                                                <option value="December"@if(!empty($billingdata->billing_cycle_startday))  {{$billingdata->billing_cycle_startday=='December' ? 'selected' : ''}} @endif> December </option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -885,8 +885,8 @@
                                                         <div class="form-group">
                                                             <label for="billing_cycle_startdate">Auto Pay</label>
                                                             <select class="custom-select form-control" name="auto_pay" id="auto_pay">
-                                                                <option value="0"{{$billingdata->auto_pay==1 ? 'selected' : ''}}>Never</option>
-                                                                <option value="1"{{$billingdata->auto_pay==1 ? 'selected' : ''}}>Test1</option>
+                                                                <option value="0" @if(!empty($billingdata->auto_pay))  {{$billingdata->auto_pay==1 ? 'selected' : ''}} @endif>Never</option>
+                                                                <option value="1" @if(!empty($billingdata->auto_pay))  {{$billingdata->auto_pay==1 ? 'selected' : ''}} @endif>Test1</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -895,8 +895,8 @@
                                                             <label for="auto_pay_method">Auto Pay Method</label>
                                                             <select class="custom-select form-control" name="auto_pay_method" id="auto_pay_method">
                                                                 <option value="">Select</option>
-                                                                <option value="0" {{$billingdata->auto_pay_method==1 ? 'selected' : ''}}>Never</option>
-                                                                <option value="1" {{$billingdata->auto_pay_method==1 ? 'selected' : ''}}>test1</option>
+                                                                <option value="0" @if(!empty($billingdata->auto_pay_method)) {{$billingdata->auto_pay_method==1 ? 'selected' : ''}} @endif>Never</option>
+                                                                <option value="1" @if(!empty($billingdata->auto_pay_method))   {{$billingdata->auto_pay_method==1 ? 'selected' : ''}} @endif>test1</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -912,8 +912,8 @@
                                                 <div class="form-group">
                                                     <label for="send_invoice_via_email">Send Invoice By Email</label>
                                                     <select class="custom-select form-control" name="send_invoice_via_email" id="send_invoice_via_email">
-                                                        <option value="0"{{$billingdata->send_invoice_via_email==0 ? "selected" : ''}}>After Admin Review</option>
-                                                        <option value="1"{{$billingdata->send_invoice_via_email==1 ? "selected" : ''}}>Test</option>
+                                                        <option value="0" @if(!empty($billingdata->send_invoice_via_email)) {{$billingdata->send_invoice_via_email==0 ? "selected" : ''}} @endif>After Admin Review</option>
+                                                        <option value="1" @if(!empty($billingdata->send_invoice_via_email)){{$billingdata->send_invoice_via_email==1 ? "selected" : ''}} @endif>Test</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -922,13 +922,13 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="last_invoice_date">Last Invoice Date</label>
-                                                    <input type="date" class="form-control" name="last_invoice_date" value="{{$billingdata->last_invoice_date}}">
+                                                    <input type="date" class="form-control" name="last_invoice_date" value=" @if(!empty($billingdata->last_invoice_date)) {{$billingdata->last_invoice_date}} @endif">
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="next_invoice_date">Next Invoice Date</label>
-                                                    <input type="date" class="form-control" name="next_invoice_date" value="{{$billingdata->next_invoice_date}}">
+                                                    <input type="date" class="form-control" name="next_invoice_date" value="@if(!empty($billingdata->next_invoice_date)) {{$billingdata->next_invoice_date}} @endif">
                                                 </div>
                                             </div>
                                         </div>
@@ -936,13 +936,13 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="last_charge_date">Last Charge Date</label>
-                                                    <input type="date" class="form-control" name="last_charge_date" value="{{$billingdata->last_charge_date}}">
+                                                    <input type="date" class="form-control" name="last_charge_date" value="@if(!empty($billingdata->last_charge_date)) {{$billingdata->last_charge_date}} @endif">
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="next_charge_date">Next Charge Date</label>
-                                                    <input type="date" class="form-control" name="next_charge_date" value="{{$billingdata->next_charge_date}}">
+                                                    <input type="date" class="form-control" name="next_charge_date" value="@if(!empty($billingdata->next_charge_date)) {{$billingdata->next_charge_date}} @endif">
                                                 </div>
                                             </div>
                                         </div>
@@ -958,7 +958,7 @@
                                                         <label for="outbound_discount_plan">Outbound Discount Plan</label>
                                                         <select class="custom-select form-control" name="outbound_discount_plan" id="outbound_discount_plan">
                                                             <option value="">Select</option>
-                                                            <option value="1"{{$billingdata->outbound_discount_plan==1 ? 'selected' : ''}}>Test</option>
+                                                            <option value="1" @if(!empty($billingdata->outbound_discount_plan)){{$billingdata->outbound_discount_plan==1 ? 'selected' : ''}}@endif>Test</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -967,7 +967,7 @@
                                                         <label for="inbound_discount_plan">Inbound Discount Plan</label>
                                                         <select class="custom-select form-control" name="inbound_discount_plan" id="inbound_discount_plan">
                                                             <option value="">Select</option>
-                                                            <option value="1"{{$billingdata->inbound_discount_plan==1 ? 'selected' : ''}}>Test</option>
+                                                            <option value="1" @if(!empty($billingdata->inbound_discount_plan)){{$billingdata->inbound_discount_plan==1 ? 'selected' : ''}} @endif>Test</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -1002,7 +1002,7 @@ $('#switch').change(function() {
         if(this.checked) {
             $(".product").removeClass('d-none');
         }else{
-            $(".product").addClass('d-none');       
+            $(".product").addClass('d-none');
         }
     });
 
@@ -1019,7 +1019,7 @@ $(document).ready(function () {
             scrollbar: true
         });
     });
-   
+
 
 function save(formdata,url){
         $('#global-loader').show();
@@ -1093,7 +1093,7 @@ function save(formdata,url){
             $('#month').addClass('d-none');
 
        }
-    });    
+    });
 
 
 </script>
