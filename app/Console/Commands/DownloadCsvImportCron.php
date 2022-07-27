@@ -7,6 +7,8 @@ use App\Models\CsvImport;
 use App\Models\CronJob;
 use Illuminate\Console\Command;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 
 
 class DownloadCsvImportCron extends Command
@@ -123,6 +125,20 @@ class DownloadCsvImportCron extends Command
 
             }
         }
+        if(!empty($getcsv)){
+            Mail::raw("This Job is run Sucessfully", function($message) use ($tasks)
+                {
+                    $message->from('TestSucess@gmail.com');
+                    $message->to($tasks->success_email)->subject('Sucessfully');
+                });
+        }
+        else{
+                Mail::raw("There is a Error", function($message) use ($tasks)
+                {
+                    $message->from('TestError@gmail.com');
+                    $message->to($tasks->error_email)->subject('Error');
+                });
+            }
         // return 0;
     }
 }
