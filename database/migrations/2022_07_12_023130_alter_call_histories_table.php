@@ -20,7 +20,6 @@ class AlterCallHistoriesTable extends Migration
             $table->string('calleee164')->nullable()->change();
             $table->string('calleeaccesse164')->nullable()->change();
             $table->string('callerip')->nullable()->change();
-            $table->string('callergatewayh323id')->nullable()->change();
             $table->string('callerproductid')->nullable()->change();
             $table->string('callertogatewaye164')->nullable()->change();
             $table->string('calleeip')->nullable()->change();
@@ -72,7 +71,6 @@ class AlterCallHistoriesTable extends Migration
             $table->string('calleee164')->nullable(false)->change();
             $table->string('calleeaccesse164')->nullable(false)->change();
             $table->string('callerip')->nullable(false)->change();
-            $table->string('callergatewayh323id')->nullable(false)->change();
             $table->string('callerproductid')->nullable(false)->change();
             $table->string('callertogatewaye164')->nullable(false)->change();
             $table->string('calleeip')->nullable()->change(false);

@@ -21,7 +21,6 @@ class CreateCallHistoriesTable extends Migration
             $table->string('calleee164');
             $table->string('calleeaccesse164');
             $table->string('callerip');
-            $table->string('callergatewayh323id');
             $table->string('callerproductid');
             $table->string('callertogatewaye164');
             $table->string('calleeip');

@@ -31,10 +31,6 @@
         <td>{{$callhistory->callerip}}</td>
     </tr>
     <tr>
-        <td> Callergatewayh323 Id</td>
-        <td>{{$callhistory->callergatewayh323id}}</td>
-    </tr>
-    <tr>
         <td>Callerproductid</td>
         <td>{{$callhistory->callerproductid}}</td>
     </tr>
@@ -164,7 +160,7 @@
     </tr>
     <tr>
         <td>Subcdr Id</td>
-        <td>{{$callhistory->Subcdr_id}}</td>
+        <td>{{$callhistory->subcdr_id}}</td>
     </tr>
   </tbody>
 </table>
