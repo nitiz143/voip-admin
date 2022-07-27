@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Billing;
 use App\Models\User;
+use App\Models\CallHistory;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -78,7 +79,7 @@ class ClientController extends Controller
             'company'=>'required',
             'firstname'=>'required',
             'lastname'=>'required',
-            'email' => ['required', 'string', 'email', 'max:255','regex:/(.+)@(.+)\.(.+)/i','unique:users,email,'.$request->id],
+            'email' => ['required', 'string', 'email', 'max:255','regex:/(.+)@(.+)\.(.+)/i','unique:clients,email,'.$request->id],
             'phone'=>'required',
             'fax'=>'required',
             'mobile'=>'required',
@@ -100,7 +101,7 @@ class ClientController extends Controller
                 'company'=>'required',
                 'firstname'=>'required',
                 'lastname'=>'required',
-                'email' => ['required', 'string', 'email', 'max:255','regex:/(.+)@(.+)\.(.+)/i','unique:users,email'],
+                'email' => ['required', 'string', 'email', 'max:255','regex:/(.+)@(.+)\.(.+)/i','unique:clients,email'],
                 'phone'=>'required|numeric',
                 'fax'=>'required',
                 'mobile'=>'required',
@@ -130,12 +131,16 @@ class ClientController extends Controller
         $request['reseller'] = $request->reseller ? $request->reseller : 2;
         $request['Vendor'] = $request->Vendor ? $request->Vendor : 2;
         $request['customer'] = $request->customer ? $request->customer : 2;
-        $request['billing_status'] =  $request->billing_status ? $request->billing_status : 'inactive';
-        // dd($request->all());
-
-        $user =  Client::updateOrCreate([
-            'id'   => $request->id,
-         ],$request->all());
+        $request['billing_status'] =  $request->billing_status ? $request->billing_status : 'inactive';;
+        $calls = CallHistory::where('callercodec',$request->vendor_authentication_value)->get();
+        if(!empty($calls)){
+            $data = array();
+            foreach ($calls as $call) {
+                $data[] =json_encode($call->id);
+            }
+        }
+        $request['call_id'] = $data;
+        $user =  Client::updateOrCreate(['id'   => $request->id,],$request->all());
 
             $billingdata["account_id"] = $user->id;
             $billingdata["billing_class"] = $request->billing_class;
