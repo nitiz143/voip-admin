@@ -14,7 +14,8 @@ class AddPaidToClientsTable extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->longText('call_id')->nullable();
+            $table->longText('customer_call_id')->nullable();
+            $table->longText('vender_call_id')->nullable();
         });
     }
 
@@ -26,7 +27,8 @@ class AddPaidToClientsTable extends Migration
     public function down()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->dropColumn('call_id');
+            $table->dropColumn('customer_call_id');
+            $table->dropColumn('vender_call_id');
         });
     }
 }

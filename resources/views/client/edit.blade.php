@@ -538,7 +538,8 @@
                                                         <option value="2" {{$user->customer_authentication_rule == 2 ? 'selected' : ''}}>Account Name</option>
                                                         <option value="3" {{$user->customer_authentication_rule == 3 ? 'selected' : ''}}>Account Number</option>
                                                         <option value="4" {{$user->customer_authentication_rule == 4 ? 'selected' : ''}}>IP</option>
-                                                        <option value="5" {{$user->customer_authentication_rule == 5 ? 'selected' : ''}}>Cli</option>
+                                                        <option value="5" {{$user->customer_authentication_rule == 5 ? 'selected' : ''}}>CLI</option>
+                                                        <option value="6" {{$user->vendor_authentication_rule == 6 ? 'selected' : ''}}>Other</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -565,7 +566,8 @@
                                                         <option value="2" {{$user->vendor_authentication_rule == 2 ? 'selected' : ''}}>Account Name</option>
                                                         <option value="3" {{$user->vendor_authentication_rule == 3 ? 'selected' : ''}}>Account Number</option>
                                                         <option value="4" {{$user->vendor_authentication_rule == 4 ? 'selected' : ''}}>IP</option>
-                                                        <option value="5" {{$user->vendor_authentication_rule == 5 ? 'selected' : ''}}>Cli</option>
+                                                        <option value="5" {{$user->vendor_authentication_rule == 5 ? 'selected' : ''}}>CLI</option>
+                                                        <option value="6" {{$user->vendor_authentication_rule == 6 ? 'selected' : ''}}>Other</option>
                                                     </select>
                                                 </div>
                                             </div>
