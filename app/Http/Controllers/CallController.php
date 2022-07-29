@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CallHistory;
+use App\Models\Client;
 use Illuminate\Support\Facades\Validator;
 use Rap2hpoutre\FastExcel\FastExcel;
 // use Datatables;
@@ -15,8 +16,11 @@ class CallController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = CallHistory::query('');
+            $data = CallHistory::select('call_histories.*','clients.firstname')->where('clients.customer_authentication_rule',2)->leftjoin('clients', 'call_histories.customername','=','clients.customer_authentication_value',)->get();
+
+
             return Datatables::of($data)
+
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
 
@@ -115,11 +119,12 @@ class CallController extends Controller
 
     public function getCallhistory(Request $request)
     {
+
          $callhistory =  CallHistory::find($request->id);
         //  dd($request->all());
          return view('call.viewcallhistory',compact('callhistory'));
 
     }
-    
+
 
 }
