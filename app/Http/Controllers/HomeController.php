@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\CallHistory;
+
 
 class HomeController extends Controller
 {
@@ -23,6 +25,19 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $ips = CallHistory::select('callerip')->get();
+        // foreach ($ips as $ip) {
+        //     $data[]= \Location::get($ip->callerip);
+        // }
+        // foreach ($data as $dat) {
+        //     if($dat->countryCode == 'FR'){
+        //             $value[]=$dat;
+        //     }
+        // }
+
+
+
+
         return view('home');
     }
 }
