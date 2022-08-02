@@ -101,39 +101,45 @@
                 </div>
               </div>
             </div>
-            {{-- card-body --}}
+             {{-- card-body --}}
+            @foreach($data as $index => $dat)
+                <div class="col-md-12">
+                <div class="card-footer p-0">
+                    <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="country">
+                                {{$dat->countryName}}
+                            <span class="float-right text-success">
+                    <i class="fas fa-arrow-up text-sm"></i>
+                                @if(!empty($france_call))
+                                    {{$france_call[$index]}}
+                                @endif
+                            </span>
+                        </a>
+                    </li>
 
-            <div class="col-md-12">
-              <div class="card-footer p-0">
-                <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                United States of America
-                <span class="float-right text-danger">
-                <i class="fas fa-arrow-down text-sm"></i>
-                12%</span>
-                </a>
-                </li>
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                India
-                <span class="float-right text-success">
-                <i class="fas fa-arrow-up text-sm"></i> 4%
-                </span>
-                </a>
-                </li>
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                China
-                <span class="float-right text-warning">
-                <i class="fas fa-arrow-left text-sm"></i> 0%
-                </span>
-                </a>
-                </li>
-                </ul>
-              </div>
+                    {{-- <li class="nav-item">
+                    <a href="#" class="nav-link">
+                    England
+                    <span class="float-right text-success">
+                    <i class="fas fa-arrow-up text-sm"></i> @if(!empty($england_call)) {{$england_call ?? 0}}@endif
+                    </span>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="#" class="nav-link">
+                    China
+                    <span class="float-right text-warning">
+                    <i class="fas fa-arrow-left text-sm"></i> 0%
+                    </span>
+                    </a>
+                    </li> --}}
+                    </ul>
+                </div>
+                </div>
+            @endforeach
             </div>
-          </div>
+
           {{-- card --}}
         </div>
         {{-- col-md-4 --}}
@@ -781,23 +787,31 @@
 <script src="{{asset('assets/plugins/jquery-mapael/jquery.mapael.min.js')}}"></script>
 <script src="{{asset('assets/plugins/jquery-mapael/maps/world_countries.min.js')}}"></script>
 <script>
+
+
 $(function(){'use strict'
 
   // Get context with jQuery - using jQuery's .get() method.
+
+  var call = "{{ json_encode($data)}}";
+
+
+
   var pieChartCanvas = $('#pieChart1').get(0).getContext('2d')
-  var pieData = {
+  var pieData ={
+
 
     labels: [
-      'Chrome',
-      'IE',
-      'FireFox',
+      'France',
+      'Firefox',
+      'United Kingdom',
       'Safari',
       'Opera',
       'Navigator'
     ],
     datasets: [
       {
-        data: [700, 500, 400, 600, 400, 900],
+        data: {{ json_encode($france_call)}},
         backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
       }
     ]
@@ -877,7 +891,9 @@ $(function(){'use strict'
     options: pieOptions3
   })
 
-$('#world-map-markers').mapael({map:{name:'world_countries',zoom:{enabled:true,maxLevel:10}}})})</script>
+ $('#world-map-markers').mapael({map:{name:'world_countries',zoom:{enabled:true,maxLevel:10}}})
+})
+</script>
 @endsection
 
 

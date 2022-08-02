@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CallHistory;
-
+use Location;
 
 class HomeController extends Controller
 {
@@ -25,19 +25,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $ips = CallHistory::select('callerip')->get();
-        // foreach ($ips as $ip) {
-        //     $data[]= \Location::get($ip->callerip);
-        // }
-        // foreach ($data as $dat) {
-        //     if($dat->countryCode == 'FR'){
-        //             $value[]=$dat;
-        //     }
-        // }
+
+        $call_history = CallHistory::select('callerip')->get()->unique('callerip');
 
 
+        foreach($call_history as $h){
+            $data[]= \Location::get($h->callerip);
+        }
+        foreach( $data as $d){
+            $ips[] = CallHistory::where('callerip', $d->ip)->get();
+        }
+        foreach ($ips as $i) {
+            $france_call[] =  count($i);
+        }
 
+        // dd($data);
 
-        return view('home');
+        return view('home',compact('france_call','data'));
     }
 }
