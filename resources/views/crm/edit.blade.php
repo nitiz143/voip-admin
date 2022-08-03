@@ -39,28 +39,14 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Lead Owner</label>
-                                                <select class="custom-select form-control-border border-width-2" name="lead_owner" id="lead_owner">
-                                                    @if (Auth::user()->role == 'Admin'||Auth::user()->role == 'Super Admin'||Auth::user()->role == 'NOC Admin'||Auth::user()->role == 'Rate Admin'||Auth::user()->role == 'Sales Admin'||Auth::user()->role == 'Billing Admin')
-                                                     <optgroup label="Selected Option">
-                                                        <option value="{{$user->lead_owner}}">{{$user->lead_owner}}</option>
-                                                     </optgroup>
-                                                     <optgroup label="Select option">
-                                                        @foreach ($data as $dat )
-                                                            <option value="{{$dat->name}}{{$dat->role}} ">{{$dat->name}}{{$dat->role}}</option>
-                                                        @endforeach
-                                                     </optgroup>
-                                                    @endif
-
-                                                        @if (Auth::user()->role == 'NOC Executive'||Auth::user()->role == 'Rate Executive'||Auth::user()->role == 'Sales Executive'||Auth::user()->role == 'Billing Executive')
-                                                        <optgroup label="Selected Option">
-                                                            <option value="{{$user->lead_owner}}">{{$user->lead_owner}}</option>
-                                                         </optgroup>
-                                                         <optgroup label="Select option">
+                                                <select class="custom-select form-control-border border-width-2" name="lead_owner" id="lead_owner" disabled>
+                                                    <optgroup label="Selected option">
+                                                        @if($data->isNotEmpty())
                                                             @foreach ($data as $dat )
-                                                                <option value="{{$dat->name}}{{$dat->role}}" disabled>{{$dat->name}}{{$dat->role}}</option>
+                                                                <option value="{{$dat->id}}" {{$user->lead_owner == $dat->id ? 'selected' : ''}}>{{$dat->name}}&nbsp;&nbsp;({{$dat->role}})</option>
                                                             @endforeach
-                                                         </optgroup>
                                                         @endif
+                                                    </optgroup>
                                                 </select>
                                             </div>
                                         </div>

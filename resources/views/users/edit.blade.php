@@ -53,21 +53,13 @@
                             </div> --}}
                             <div class="form-group">
                                 <label for="select_role">Role Select</label>
-                                <select class="custom-select form-control-border border-width-2" id="select_role" name="role">
+                                <select class="custom-select form-control-border border-width-2" id="select_role" name="role" disabled>
                                   <option selected disabled>--select role--</option>
                                     {{-- @foreach ( $roles as $key => $role ) --}}
 
                                             <!-------admin---------->
                                         @if(Auth::user()->role  == 'Admin')
                                             <option value="Super Admin"  {{"Super Admin" == $user->role ? 'selected' : ''}}> Super Admin </option>
-                                            <option value="NOC Admin"  {{"NOC Admin" == $user->role ? 'selected' : ''}}>NOC Admin </option>
-                                            <option value="Rate Admin" {{"Rate Admin" == $user->role ? 'selected' : ''}}> Rate Admin </option>
-                                            <option value="Sales Admin"  {{"Sales Admin" == $user->role ? 'selected' : ''}}> Sales Admin </option>
-                                            <option value="Billing Admin" {{"Billing Admin" == $user->role ? 'selected' : ''}}> Billing Admin </option>
-                                            <option value="NOC Executive"{{"NOC Executive" == $user->role ? 'selected' : ''}}>NOC Executive</option>
-                                            <option value="Rate Executive" {{"Rate Executive" == $user->role ? 'selected' : ''}}>Rate Executive</option>
-                                            <option value="Sales Executive" {{"Sales Executive" == $user->role ? 'selected' : ''}}>Sales Executive</option>
-                                            <option value="Billing Executive" {{"Billing Executive" == $user->role ? 'selected' : ''}}>Billing Executive</option>
                                         @endif
                                             <!-------Super Admin---------->
                                         @if(Auth::user()->role  == 'Super Admin')
@@ -99,10 +91,10 @@
                                     {{-- @endforeach --}}
                                 </select>
                                 @if (!empty($user->parent_id))
-                                    @if( Auth::user()->role  == 'Super Admin'|| Auth::user()->role  == 'Admin')
+                                    @if( $user->role  == 'NOC Executive'|| $user->role  == 'Rate Executive' || $user->role  == 'Sales Executive' || $user->role  == 'Billing Executive')
                                         <div class="form-group" id="adminuser" >
                                             <label for="select_role">Assign Admin</label>
-                                            <select class="custom-select form-control-border border-width-2" name="parent_id" id="parent">
+                                            <select class="custom-select form-control-border border-width-2" name="parent_id" id="parent" disabled>
                                                 @foreach($assigns as $assign)
                                                     @if( $user->parent_id === $assign->id )
                                                         <option value="{{$assign->id}}">{{$assign->name}}</option>
@@ -176,32 +168,5 @@
         save(formdata,url);
 
     });
-
-    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-            $(document).ready(function(){
-                // Fetch all records
-                        $('#select_role').change(function() {
-                            if(this.value != 'NOC Executive' && this.value != 'Rate Executive' && this.value != 'Billing Executive' && this.value != 'Sales Executive'){
-                            $.ajax({
-                            url: "{{ route('getUsers')}}",
-                            data: {
-                            'role':this.value,
-                                '_token':'{{csrf_token()}}'
-                            },
-                            type: 'post',
-                            // dataType: 'json',
-                            success: function(response){
-                                $('#adminuser').show();
-                                $("#parent").html(response);
-                            }
-                            });
-                        }else{
-                            $('#adminuser').hide();
-                        }
-                        });
-
-            });
-
-
 </script>
 @endsection

@@ -9,8 +9,20 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Auth;
+use Redirect;
+
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (auth()->user()->role == 'NOC Executive'||auth()->user()->role == 'Rate Executive'||auth()->user()->role == 'Sales Executive'||auth()->user()->role == 'Billing Executive'){
+                Redirect::to('home')->send();
+            }
+            return $next($request);
+        });
+     
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,23 +30,22 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        // dd(Auth::user()->whereRole('Super Admin'));
         if ($request->ajax()) {
         $users = User::where('role','!=','Admin');
         if(Auth::user()->role == 'Super Admin'){
             $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin');
         }
         if(Auth::user()->role == 'NOC Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','Billing Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive');
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','Billing Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id());
         }
         if(Auth::user()->role == 'Rate Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive');
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id());
         }
         if(Auth::user()->role == 'Sales Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive');
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id());
         }
         if(Auth::user()->role == 'Billing Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive');
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id());
         }
         $data = $users->get();
         return Datatables::of($data)
@@ -72,7 +83,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
 
         if(!empty($request->id)){
 
@@ -122,9 +133,19 @@ class UserController extends Controller
 
 
     public function getUsers(Request $request){
+        // dd($request->role);
 
-        $users = User::orderby('id','asc')->where('role',$request->role)->select('*')->get();
-
+        $users = User::orderby('id','asc');
+        if($request->role == 'NOC Executive'){
+            $users = $users->where('role','NOC Admin');
+        }elseif($request->role == 'Rate Executive'){
+            $users = $users->where('role','Rate Admin');
+        }elseif($request->role == 'Sales Executive'){
+            $users = $users->where('role','Sales Admin');
+        }elseif($request->role == 'Billing Executive'){
+            $users = $users->where('role','Billing Admin');
+        }
+        $users = $users->select('*')->get();
         // Fetch all records
         $response['data'] = $users;
 
@@ -133,7 +154,7 @@ class UserController extends Controller
             $html.='<option selected disabled>--select role--</option>';
             foreach($users as $user)
             // if($user->role!='Admin' && $user->role!='Super Admin'){
-                $html .= ' <option  value="'.$user->id.'">'.$user->name.'</option>';
+                $html .= ' <option  value="'.$user->id.'">'.$user->name.' ('.$user->role.')</option>';
             // }
         }
         return $html;

@@ -9,6 +9,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Auth;
 
 class CRMController extends Controller
 {
@@ -20,7 +21,11 @@ class CRMController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Crm::query('')->get();
+            $data = Crm::query('');
+            $getUsers = $this->getUser();
+            if(Auth::user()->role != 'Admin'){
+                $data = $data->whereIn('lead_owner',$getUsers);
+            }
             return Datatables::of($data)
             ->addColumn('status', function($row){
                 return  $row->status == 0 ? __('Active') : __('Inactive');
@@ -34,17 +39,17 @@ class CRMController extends Controller
                 return Carbon::parse($row->updated_at)->format('d/m/Y H:i:s');
 
             })
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
 
-                        $btn = '<a href="'.route('crm.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit mb-2"  data-id ="'.$row->id.'">Edit</a>
-                        <a href="'.route('getClient',$row->id).'" class="delete btn btn-info btn-sm Create mb-2"  data-id ="'.$row->id.'">Convert to account </a>
-                        <a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
+                    $btn = '<a href="'.route('crm.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit mb-2"  data-id ="'.$row->id.'">Edit</a>
+                    <a href="'.route('getClient',$row->id).'" class="delete btn btn-info btn-sm Create mb-2"  data-id ="'.$row->id.'">Convert to account </a>
+                    <a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
 
-                        return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+                    return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
         }
         return view('crm.index');
     }
@@ -56,7 +61,27 @@ class CRMController extends Controller
      */
     public function create()
     {
-        $users= User::query('')->get();
+
+        $users= User::query('');
+        if(Auth::user()->role == 'Super Admin'){
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin');
+        }
+        if(Auth::user()->role == 'NOC Admin'){
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','Billing Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id());
+        }
+        if(Auth::user()->role == 'Rate Admin'){
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id());
+        }
+        if(Auth::user()->role == 'Sales Admin'){
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id());
+        }
+        if(Auth::user()->role == 'Billing Admin'){
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id());
+        }
+        if(Auth::user()->role == 'NOC Executive' || Auth::user()->role == 'Rate Executive' || Auth::user()->role == 'Sales Executive' || Auth::user()->role == 'Billing Executive' ){
+            $users = $users->where('id',Auth::id());
+        }
+        $users = $users->get();
         return view('crm.create',compact('users'));
     }
 
@@ -188,7 +213,6 @@ class CRMController extends Controller
      */
     public function destroy(Request $request)
     {
-        // dd($request->all());
         CRM::find($request->id)->delete();
         return response()->json(['message'=>__('Deleted Successfully'),'success'=>true]);
     }
@@ -199,7 +223,7 @@ class CRMController extends Controller
         $crm = CRM::find($request->id);
         if($crm){
             $data = [
-                'id' => $crm->id,
+                // 'id' => $crm->id,
                 'lead_owner'=>$crm->lead_owner,
                 'fax'=>$crm->fax,
                 'mobile'=>$crm->mobile,
@@ -230,6 +254,38 @@ class CRMController extends Controller
             }
         }
 
+    }
+
+    public function getUser()
+    {
+        $users = User::query('');
+        if(Auth::user()->role == 'Super Admin'){
+
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin');
+        }
+        if(Auth::user()->role == 'NOC Admin'){
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','Billing Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id());
+        }
+        if(Auth::user()->role == 'Rate Admin'){
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id());
+        }
+        if(Auth::user()->role == 'Sales Admin'){
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id());
+        }
+        if(Auth::user()->role == 'Billing Admin'){
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id());
+        }
+        if(Auth::user()->role == 'NOC Executive' || Auth::user()->role == 'Rate Executive' || Auth::user()->role == 'Sales Executive' || Auth::user()->role == 'Billing Executive' ){
+            $users = $users->where('id',Auth::id());
+        }
+        $users = $users->get();
+        $user_ids = [];
+        if($users->isNotEmpty()){
+            foreach ($users as $user) {
+                $user_ids[] = $user->id;
+            }
+        }
+        return $user_ids;
     }
 
 }

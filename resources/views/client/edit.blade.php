@@ -30,7 +30,7 @@
                                 <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Lead Information</h3>
+                                <h3 class="card-title">Client Information</h3>
                             </div>
 
                             <form action="{{ route('client.update',$user->id) }}" method="PUT" id="Clientform">
@@ -41,34 +41,18 @@
                                         <input type="hidden" name="id" value="{{$user->id}}">
                                     </div>
                                     <div class="row">
-                                        <div class="col-xl-6">
+                                        {{-- <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Lead Owner</label>
+                                                <label>Account Owner</label>
                                                 <select class="custom-select form-control-border border-width-2" name="lead_owner" id="lead_owner">
-                                                     @if (Auth::user()->role == 'Admin')
-                                                     <optgroup label="Selected Option">
-                                                        <option value="{{$user->lead_owner}}">{{$user->lead_owner}}</option>
-                                                     </optgroup>
                                                      <optgroup label="Select option">
                                                         @foreach ($data as $dat )
-                                                            <option value="{{$dat->name}}{{$dat->role}} ">{{$dat->name}}{{$dat->role}}</option>
+                                                            <option value="{{$dat->id}}" {{$dat->id == $user->lead_owner}}>{{$dat->name}} ({{$dat->role}})</option>
                                                         @endforeach
                                                      </optgroup>
-                                                    @endif
-
-                                                        @if (Auth::user()->role == 'NOC Executive'||Auth::user()->role == 'Rate Executive'||Auth::user()->role == 'Sales Executive'||Auth::user()->role == 'Billing Executive')
-                                                        <optgroup label="Selected Option">
-                                                            <option value="{{$user->lead_owner}}">{{$user->lead_owner}}</option>
-                                                         </optgroup>
-                                                         <optgroup label="Select option">
-                                                            @foreach ($data as $dat )
-                                                                <option value="{{$dat->name}}{{$dat->role}}" disabled>{{$dat->name}}{{$dat->role}}</option>
-                                                            @endforeach
-                                                         </optgroup>
-                                                        @endif
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label for="company">Company</label>
@@ -539,6 +523,8 @@
                                                         <option value="3" {{$user->customer_authentication_rule == 3 ? 'selected' : ''}}>Account Number</option>
                                                         <option value="4" {{$user->customer_authentication_rule == 4 ? 'selected' : ''}}>IP</option>
                                                         <option value="5" {{$user->customer_authentication_rule == 5 ? 'selected' : ''}}>Cli</option>
+                                                        <option value="6" {{$user->customer_authentication_rule == 6 ? 'selected' : ''}}>Other</option>
+
                                                     </select>
                                                 </div>
                                             </div>
@@ -566,6 +552,7 @@
                                                         <option value="3" {{$user->vendor_authentication_rule == 3 ? 'selected' : ''}}>Account Number</option>
                                                         <option value="4" {{$user->vendor_authentication_rule == 4 ? 'selected' : ''}}>IP</option>
                                                         <option value="5" {{$user->vendor_authentication_rule == 5 ? 'selected' : ''}}>Cli</option>
+                                                        <option value="6" {{$user->vendor_authentication_rule == 6 ? 'selected' : ''}}>Other</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -587,13 +574,22 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="accountowner">Account Owner</label>
-                                                    <select class="custom-select form-control" name="account_owner" id="account_owner">
+                                                   
+                                                    <select class="custom-select form-control-border border-width-2" name="lead_owner" id="lead_owner">
+                                                            <optgroup label="Select option">
+                                                            @foreach ($data as $dat )
+                                                                <option value="{{$dat->id}}" {{$dat->id == $user->lead_owner}}>{{$dat->name}} ({{$dat->role}})</option>
+                                                            @endforeach
+                                                            </optgroup>
+                                                    </select>
+ 
+                                                    {{-- <select class="custom-select form-control" name="account_owner" id="account_owner">
                                                         <option selected disabled>--Select Authentication Rule--</option>
                                                         <option value="0" {{$user->account_owner==0 ? 'selected' : ''}}>Account Name: Account Number</option>
                                                         <option value="1" {{$user->account_owner ==1 ? 'selected' : ''}}>Cold Call</option>
                                                         <option value="2" {{$user->account_owner ==2  ? 'selected' : ''}}>Employee Referral</option>
                                                         <option value="3" {{$user->account_owner ==3 ? 'selected' : ''}}>Online Store</option>
-                                                    </select>
+                                                    </select> --}}
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
@@ -601,8 +597,12 @@
                                                     <label for="ownership">Ownership</label>
                                                     <select class="custom-select form-control" name="ownership" id="ownership">
                                                         <option selected disabled>--Select Authentication Rule--</option>
-                                                        <option value="0" {{$user->ownership ==0 ? 'selected' : ''}}>Account Name: Account Number</option>
-                                                        <option value="1" {{$user->ownership ==1 ? 'selected' : ''}}>Cold Call</option>
+                                                        <option value="" >None</option>
+                                                        <option value="Private" {{$user->ownership == 'Private' ? 'selected' : ''}}>Private</option>
+                                                        <option value="Public" {{$user->ownership == 'Public' ? 'selected' : ''}}>Public</option>
+                                                        <option value="Subsidiary" {{$user->ownership == 'Subsidiary' ? 'selected' : ''}}>Subsidiary</option>
+                                                        <option value="Other" {{$user->ownership ==4 ? 'Other' : ''}}>Other</option>
+
                                                     </select>
                                                 </div>
                                             </div>
@@ -885,8 +885,10 @@
                                                         <div class="form-group">
                                                             <label for="billing_cycle_startdate">Auto Pay</label>
                                                             <select class="custom-select form-control" name="auto_pay" id="auto_pay">
-                                                                <option value="0" @if(!empty($billingdata->auto_pay))  {{$billingdata->auto_pay==1 ? 'selected' : ''}} @endif>Never</option>
-                                                                <option value="1" @if(!empty($billingdata->auto_pay))  {{$billingdata->auto_pay==1 ? 'selected' : ''}} @endif>Test1</option>
+                                                                <option value="">Never</option>
+                                                                <option value="1" @if(!empty($billingdata->auto_pay))  {{$billingdata->auto_pay==1 ? 'selected' : ''}} @endif>On Invoice Date</option>
+                                                                <option value="2" @if(!empty($billingdata->auto_pay))  {{$billingdata->auto_pay==2 ? 'selected' : ''}} @endif>On Due Date</option>
+
                                                             </select>
                                                         </div>
                                                     </div>
@@ -895,8 +897,9 @@
                                                             <label for="auto_pay_method">Auto Pay Method</label>
                                                             <select class="custom-select form-control" name="auto_pay_method" id="auto_pay_method">
                                                                 <option value="">Select</option>
-                                                                <option value="0" @if(!empty($billingdata->auto_pay_method)) {{$billingdata->auto_pay_method==1 ? 'selected' : ''}} @endif>Never</option>
-                                                                <option value="1" @if(!empty($billingdata->auto_pay_method))   {{$billingdata->auto_pay_method==1 ? 'selected' : ''}} @endif>test1</option>
+                                                                <option value="">Select</option>
+                                                                <option value="1" @if(!empty($billingdata->auto_pay_method))   {{$billingdata->auto_pay_method==1 ? 'selected' : ''}} @endif>Account Balance</option>
+                                                                <option value="2" @if(!empty($billingdata->auto_pay_method))   {{$billingdata->auto_pay_method==2 ? 'selected' : ''}} @endif>Preferred Method</option>
                                                             </select>
                                                         </div>
                                                     </div>

@@ -81,14 +81,16 @@
 
                                 </select>
                             </div>
-
                             @if( Auth::user()->role  == 'Super Admin')
+                                <input type="hidden" id="parent_id" name="parent_id" value="">
                                 <div class="form-group" id="adminuser" style="display: none">
                                     <label for="select_role">Assign Admin</label>
                                     <select class="custom-select form-control-border border-width-2" name="parent_id" id="parent">
 
                                     </select>
                                 </div>
+                            @else
+                                <input type="hidden" name="parent_id" value="{{Auth::id()}}">
                             @endif
 
                             {{-- <div class="form-group d-none">
@@ -179,25 +181,26 @@
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             $(document).ready(function(){
                 // Fetch all records
-                        $('#select_role').change(function() {
-                            if(this.value != 'NOC Executive' && this.value != 'Rate Executive' && this.value != 'Billing Executive' && this.value != 'Sales Executive'){
-                            $.ajax({
-                            url: "{{ route('getUsers')}}",
-                            data: {
-                            'role':this.value,
-                                '_token':'{{csrf_token()}}'
-                            },
-                            type: 'post',
-                            // dataType: 'json',
-                            success: function(response){
-                                $('#adminuser').show();
-                                $("#parent").html(response);
-                            }
-                            });
-                        }else{
-                            $('#adminuser').hide();
+                    $('#select_role').change(function() {
+                        if(this.value == 'NOC Executive' || this.value == 'Rate Executive' || this.value == 'Billing Executive' || this.value == 'Sales Executive'){
+                        $.ajax({
+                        url: "{{ route('getUsers')}}",
+                        data: {
+                        'role':this.value,
+                            '_token':'{{csrf_token()}}'
+                        },
+                        type: 'post',
+                        // dataType: 'json',
+                        success: function(response){
+                            $('#adminuser').show();
+                            $("#parent").html(response);
                         }
                         });
+                    }else{
+                        $('#parent_id').val('{{Auth::id()}}');
+                        $('#adminuser').hide();
+                    }
+                    });
 
             });
 

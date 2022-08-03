@@ -39,17 +39,10 @@
                                         <div class="form-group">
                                             <label>Lead Owner</label>
                                             <select class="custom-select form-control-border border-width-2" name="lead_owner" id="lead_owner">
-                                                @if (Auth::user()->role == 'Admin')
-                                                @foreach ($users as $user )
-                                                    <option value="{{$user->name}}{{$user->role}}">{{$user->name}}&nbsp;&nbsp;{{$user->role}}</option>
-                                                @endforeach
-
-                                                @endif
-                                                @if (Auth::user()->role == 'NOC Executive'||Auth::user()->role == 'Rate Executive'||Auth::user()->role == 'Sales Executive'||Auth::user()->role == 'Billing Executive')
-                                                @foreach ($users as $user )
-                                                    <option value="{{$user->name}}{{$user->role}}">{{$user->name}}&nbsp;&nbsp;{{$user->role}}</option>
-                                                @endforeach
-
+                                                @if($users->isNotEmpty())
+                                                    @foreach ($users as $user )
+                                                        <option value="{{$user->id}}">{{$user->name}}&nbsp;&nbsp;({{$user->role}})</option>
+                                                    @endforeach
                                                 @endif
                                             </select>
                                         </div>
