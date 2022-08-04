@@ -102,10 +102,11 @@
               </div>
             </div>
              {{-- card-body --}}
-            @foreach($data as $index => $dat)
+           
                 <div class="col-md-12">
                 <div class="card-footer p-0">
                     <ul class="nav nav-pills flex-column">
+                @foreach($data as $index => $dat)
                     <li class="nav-item">
                         <a href="#" class="nav-link" id="country">
                                 {{$dat->countryName}}
@@ -117,7 +118,7 @@
                             </span>
                         </a>
                     </li>
-
+                @endforeach
                     {{-- <li class="nav-item">
                     <a href="#" class="nav-link">
                     England
@@ -137,7 +138,7 @@
                     </ul>
                 </div>
                 </div>
-            @endforeach
+          
             </div>
 
           {{-- card --}}
