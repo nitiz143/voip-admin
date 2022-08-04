@@ -34,6 +34,7 @@ class HomeController extends Controller
         }
         foreach( $data as $d){
             $ips[] = CallHistory::where('callerip', $d->ip)->get();
+            $name[] =$d->countryName;
         }
         foreach ($ips as $i) {
             $france_call[] =  count($i);
@@ -41,6 +42,6 @@ class HomeController extends Controller
 
         // dd($data);
 
-        return view('home',compact('france_call','data'));
+        return view('home',compact('france_call','data','name'));
     }
 }

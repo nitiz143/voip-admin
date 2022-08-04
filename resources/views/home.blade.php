@@ -793,22 +793,13 @@ $(function(){'use strict'
 
   // Get context with jQuery - using jQuery's .get() method.
 
-  var call = "{{ json_encode($data)}}";
-
-
+ 
 
   var pieChartCanvas = $('#pieChart1').get(0).getContext('2d')
   var pieData ={
 
 
-    labels: [
-      'France',
-      'Firefox',
-      'United Kingdom',
-      'Safari',
-      'Opera',
-      'Navigator'
-    ],
+    labels:@json($name),
     datasets: [
       {
         data: {{ json_encode($france_call)}},
