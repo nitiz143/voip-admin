@@ -528,7 +528,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-6">
+                                            <div class="col-xl-6 {{$user->customer_authentication_rule != 6 ? 'd-none' : ''}}" id="customer_authentication_value_div">
                                                 <div class="form-group">
                                                     <label for="customer_authentication_value">Value</label>
                                                     <input type="text" class="form-control" id="city" name="customer_authentication_value" value="{{$user->customer_authentication_value}}">
@@ -556,7 +556,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-6">
+                                            <div class="col-xl-6 {{$user->vendor_authentication_rule != 6 ? 'd-none' : ''}}" id="vendor_authentication_value_div">
                                                 <div class="form-group">
                                                     <label for="vendor_authentication_value">Value</label>
                                                     <input type="text" class="form-control" id="vendor_authentication_value" name="vendor_authentication_value" value="{{$user->vendor_authentication_value}}">
@@ -660,7 +660,9 @@
                                              <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="language">Language</label>
-                                                    <input type="text" class="form-control" id="language" name="language" value="{{$user->language}}">
+                                                    <select id="language" class="form-control" name="language">
+                                                        <option value="english" {{ $user->language == 'english' ? 'selected' : '' }}>English</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -698,7 +700,9 @@
                                             <div class="col-xl-6">
                                                 <label for="currency">Timezone</label>
                                                 <div class="form-group timepicker" twelvehour="true">
-                                                    <input  type="timezone" class="form-control timedemo" name="timezone" value="{{$user->timezone}}" placeholder="hh:mm am/pm">
+                                                    <select class="selectpicker" data-live-search="true"></select>
+
+                                                    {{-- <input  type="timezone" class="form-control timedemo" name="timezone" value="{{$user->timezone}}" placeholder="hh:mm am/pm"> --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -799,6 +803,7 @@
                                                     <input class="form-check-input mt-3 textbox1" type="checkbox" id="switch" name="billing_status" value="active" {{$user->billing_status=='active' ? 'checked' : ''}}>
                                                 </label>
                                             </div>
+                                            <input type="hidden" name="billing_id" value="{{@$billingdata->id}}">
                                             <div class="product {{$user->billing_status == 'inactive' ? 'd-none' : ''}}">
                                                 <div class="row">
                                                     <div class="col-xl-6">
@@ -841,17 +846,31 @@
                                                         <div class="form-group">
                                                             <label for="billing_cycle">Billing Cycle</label>
                                                             <select class="custom-select form-control" name="billing_cycle" id="billing_cycle" >
+                                                                <option value="">Select</option>
                                                                 <option value="daily"@if(!empty($billingdata->billing_cycle)) {{$billingdata->billing_cycle=='daily' ? 'selected' : ''}} @endif>Daily</option>
-                                                                <option value="weekly" @if(!empty($billingdata->billing_cycle)){{$billingdata->billing_cycle=='weekly' ? 'selected' : ''}} @endif>Weekly</option>
+                                                                <option value="fortnightly"@if(!empty($billingdata->billing_cycle)) {{$billingdata->billing_cycle=='fortnightly' ? 'selected' : ''}} @endif>Fortnightly</option>
+                                                                <option value="in_specific_days" @if(!empty($billingdata->billing_cycle)){{$billingdata->billing_cycle=='in_specific_days' ? 'selected' : ''}} @endif>In Specific days</option>
+                                                                <option value="manual" @if(!empty($billingdata->billing_cycle)){{$billingdata->billing_cycle=='manual' ? 'selected' : ''}} @endif>Manual</option>
                                                                 <option value="monthly" @if(!empty($billingdata->billing_cycle)){{$billingdata->billing_cycle=='monthly' ? 'selected' : ''}} @endif>Monthly</option>
+                                                                <option value="monthly_anniversary" @if(!empty($billingdata->billing_cycle)){{$billingdata->billing_cycle=='monthly_anniversary' ? 'selected' : ''}} @endif>Monthly anniversary</option>
+                                                                <option value="quarterly" @if(!empty($billingdata->billing_cycle)){{$billingdata->billing_cycle=='quarterly' ? 'selected' : ''}} @endif>Quarterly</option>
+                                                                <option value="weekly" @if(!empty($billingdata->billing_cycle)){{$billingdata->billing_cycle=='weekly' ? 'selected' : ''}} @endif>Weekly</option>
                                                                 <option value="yearly" @if(!empty($billingdata->billing_cycle)){{$billingdata->billing_cycle=='yearly' ? 'selected' : ''}} @endif>Yearly</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6">
-                                                        <div class="form-group  @if(!empty($billingdata->billing_cycle))  {{$billingdata->billing_cycle !='weekly' ? 'd-none' : ''}} @endif " id="week">
+                                                        <div class="form-group  {{@$billingdata->billing_cycle !='in_specific_days' ? 'd-none' : ''}} " id="in_specific_days">
+                                                            <label for="billing_cycle_startday">Billing Cycle - for Days*</label>
+                                                            <input type="text" name="billing_cycle_startday" class="form-control" id="number_only">
+                                                        </div>
+                                                        <div class="form-group  {{@$billingdata->billing_cycle !='monthly_anniversary' ? 'd-none' : ''}} " id="monthly_anniversary">
+                                                            <label for="billing_cycle_startday">Billing Cycle - Monthly Anniversary Date*</label>
+                                                            <input type="date" name="billing_cycle_startday" class="form-control">
+                                                        </div>
+                                                        <div class="form-group  {{@$billingdata->billing_cycle !='weekly' ? 'd-none' : ''}} " id="week">
                                                             <label for="billing_cycle_startday">Billing Cycle Start of Day</label>
-                                                            <select class="custom-select form-control" name="billing_cycle_startday_weekly" id="billing_cycle_startday">
+                                                            <select class="custom-select form-control" name="billing_cycle_startday" id="billing_cycle_startday">
                                                                 <option value="Sunday" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Sunday' ? 'selected' : ''}} @endif>Sunday</option>
                                                                 <option value="Monday"@if(!empty($billingdata->billing_cycle_startday))  {{$billingdata->billing_cycle_startday=='Monday' ? 'selected' : ''}} @endif>Monday</option>
                                                                 <option value="Tuesday"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Tuesday' ? 'selected' : ''}}@endif>Tuesday</option>
@@ -859,23 +878,6 @@
                                                                 <option value="Thursday"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Thursday' ? 'selected' : ''}}@endif>Thursday</option>
                                                                 <option value="Friday"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Friday' ? 'selected' : ''}} @endif>Friday</option>
                                                                 <option value="Saturday"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Saturday' ? 'selected' : ''}}@endif>Saturday</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group @if(!empty($billingdata->billing_cycle_startday))  {{$billingdata->billing_cycle !='monthly' ? 'd-none' : ''}} @endif" id="month">
-                                                            <label for="billing_cycle_startday">Billing Cycle Start of Day</label>
-                                                            <select class="custom-select form-control" name="billing_cycle_startday" id="billing_cycle_startday">
-                                                                <option value="January" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='January' ? 'selected' : ''}} @endif>January</option>
-                                                                <option value="February"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='February' ? 'selected' : ''}}@endif>February</option>
-                                                                <option value="March" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='March' ? 'selected' : ''}} @endif>March</option>
-                                                                <option value="April" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='April' ? 'selected' : ''}} @endif>April</option>
-                                                                <option value="May" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='May' ? 'selected' : ''}} @endif> May </option>
-                                                                <option value="June" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='June' ? 'selected' : ''}} @endif> June </option>
-                                                                <option value="July" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='July' ? 'selected' : ''}} @endif> July </option>
-                                                                <option value="August" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='August' ? 'selected' : ''}} @endif> August </option>
-                                                                <option value="September"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='September' ? 'selected' : ''}} @endif> September </option>
-                                                                <option value="October" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='October' ? 'selected' : ''}} @endif> October </option>
-                                                                <option value="November" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='November' ? 'selected' : ''}} @endif> November </option>
-                                                                <option value="December"@if(!empty($billingdata->billing_cycle_startday))  {{$billingdata->billing_cycle_startday=='December' ? 'selected' : ''}} @endif> December </option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -915,8 +917,9 @@
                                                 <div class="form-group">
                                                     <label for="send_invoice_via_email">Send Invoice By Email</label>
                                                     <select class="custom-select form-control" name="send_invoice_via_email" id="send_invoice_via_email">
-                                                        <option value="0" @if(!empty($billingdata->send_invoice_via_email)) {{$billingdata->send_invoice_via_email==0 ? "selected" : ''}} @endif>After Admin Review</option>
-                                                        <option value="1" @if(!empty($billingdata->send_invoice_via_email)){{$billingdata->send_invoice_via_email==1 ? "selected" : ''}} @endif>Test</option>
+                                                        <option value="">Please select an Option</option>
+                                                        <option value="1" @if(!empty($billingdata->send_invoice_via_email)){{$billingdata->send_invoice_via_email==1 ? "selected" : ''}} @endif>Automatically</option>
+                                                        <option value="2" @if(!empty($billingdata->send_invoice_via_email)) {{$billingdata->send_invoice_via_email==2 ? "selected" : ''}} @endif>After Admin Review</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -925,7 +928,7 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="last_invoice_date">Last Invoice Date</label>
-                                                    <input type="date" class="form-control" name="last_invoice_date" value=" @if(!empty($billingdata->last_invoice_date)) {{$billingdata->last_invoice_date}} @endif">
+                                                    <span>{{@$billingdata->last_invoice_date}}2022-08-01</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
@@ -939,13 +942,13 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="last_charge_date">Last Charge Date</label>
-                                                    <input type="date" class="form-control" name="last_charge_date" value="@if(!empty($billingdata->last_charge_date)) {{$billingdata->last_charge_date}} @endif">
+                                                    <span>{{@$billingdata->last_charge_date}}</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="next_charge_date">Next Charge Date</label>
-                                                    <input type="date" class="form-control" name="next_charge_date" value="@if(!empty($billingdata->next_charge_date)) {{$billingdata->next_charge_date}} @endif">
+                                                    <span>{{@$billingdata->next_charge_date}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -992,15 +995,21 @@
 </div>
 {{-- Timepicker --}}
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
 
 @endsection
 
 @section('page_js')
 {{-- Timepicker --}}
-<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.10/moment-timezone-with-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
 <script type="text/javascript">
-
+$('#number_only').bind('keyup paste', function(){
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
 $('#switch').change(function() {
         if(this.checked) {
             $(".product").removeClass('d-none');
@@ -1010,18 +1019,23 @@ $('#switch').change(function() {
     });
 
 $(document).ready(function () {
-        // Time Picker Initialization
-            $('.timedemo').timepicker({
-            timeFormat: 'h:mm p',
-            interval: 60,
-            // minTime: '1',
-            // maxTime: '12:00pm',
-            startTime: '1:00',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: true
-        });
-    });
+        // // Time Picker Initialization
+        //     $('.timedemo').timepicker({
+        //     timeFormat: 'h:mm p',
+        //     interval: 60,
+        //     // minTime: '1',
+        //     // maxTime: '12:00pm',
+        //     startTime: '1:00',
+        //     dynamic: false,
+        //     dropdown: true,
+        //     scrollbar: true
+        // });
+var timezone = moment.tz.names();
+  for (var i = 0; i < timezone.length; i++) {
+    $('.selectpicker').append('<option value="' + timezone[i] + '">' + timezone[i] + '</option>');
+  }
+  $('.selectpicker').selectpicker();
+});
 
 
 function save(formdata,url){
@@ -1079,25 +1093,52 @@ function save(formdata,url){
 
     $("#billing_cycle").change(function() {
         // alert($(this).val());
-       if($(this).val() == 'daily'){
-            $('#week').addClass('d-none');
-            $('#month').addClass('d-none');
-        }else if($(this).val() == 'weekly'){
+        if($(this).val() == 'weekly'){
             $('#week').removeClass('d-none');
-            $('#month').addClass('d-none');
-            $('#year').addClass('d-none');
+            $('#in_specific_days').addClass('d-none');
+            $('#monthly_anniversary').addClass('d-none');
+
        }else if($(this).val() == 'monthly'){
             $('#week').addClass('d-none');
-            $('#month').removeClass('d-none');
-            $('#year').addClass('d-none');
+            $('#in_specific_days').addClass('d-none');
+            $('#monthly_anniversary').addClass('d-none');
 
        }else if($(this).val() == 'yearly'){
             $('#week').addClass('d-none');
-            $('#month').addClass('d-none');
+            $('#in_specific_days').addClass('d-none');
+            $('#monthly_anniversary').addClass('d-none');
 
+       }else if($(this).val() == 'in_specific_days'){
+            $('#week').addClass('d-none');
+            $('#monthly_anniversary').removeClass('d-none');
+            $('#in_specific_days').addClass('d-none');
+       }else if($(this).val() == 'monthly_anniversary'){
+            $('#week').addClass('d-none');
+            $('#in_specific_days').addClass('d-none');
+            $('#monthly_anniversary').removeClass('d-none');
+       }else{
+            $('#week').addClass('d-none');
+            $('#in_specific_days').addClass('d-none');
+            $('#monthly_anniversary').addClass('d-none');
        }
+       
     });
 
+    $("#customer_authentication_rule").change(function() {
+        if($(this).val() == 6){
+            $('#customer_authentication_value_div').removeClass('d-none');
+        }else{
+            $('#customer_authentication_value_div').addClass('d-none');
+        }
+    });
+
+    $("#vendor_authentication_rule").change(function() {
+        if($(this).val() == 6){
+            $('#vendor_authentication_value_div').removeClass('d-none');
+        }else{
+            $('#vendor_authentication_value_div').addClass('d-none');
+        }
+    });
 
 </script>
 

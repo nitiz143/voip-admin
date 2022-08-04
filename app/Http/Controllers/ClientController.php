@@ -88,7 +88,7 @@ class ClientController extends Controller
         }
         $data = $users->get();
         $user = Client::find($id);
-        $billingdata = Billing::find($id);
+        $billingdata = Billing::where('account_id',$user->id)->first();
         return view('client.edit',compact('user','data','billingdata'));
     }
 
@@ -118,6 +118,17 @@ class ClientController extends Controller
             'address_line3'=>'required',
             'country'=>'required',
                 );
+            if($request->customer_authentication_rule == 6){
+                $rules['customer_authentication_value'] = 'required';
+            }
+            if($request->vendor_authentication_rule == 6){
+                $rules['vendor_authentication_value'] = 'required';
+            }
+            if(!empty($request->billing_cycle)){
+                if($request->billing_cycle == 'in_specific_days' || $request->billing_cycle == 'monthly_anniversary' || $request->billing_cycle == 'weekly'){
+                    $rules['billing_cycle_startday'] = 'required';
+                }
+            }
         }else{
             $rules = array(
                 'lead_owner'=>'required',
@@ -167,14 +178,7 @@ class ClientController extends Controller
             $billingdata["billing_timezone"] = $request->billing_timezone;
             $billingdata["billing_startdate"] = $request->billing_startdate;
             $billingdata["billing_cycle"] = $request->billing_cycle;
-            if($request->billing_cycle == 'weekly'){
-                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_weekly;
-            }elseif($request->billing_cycle == 'monthly'){
-                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
-            }else{
-                $billingdata["billing_cycle_startday"] = Null;
-            }
-
+            $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
             $billingdata["auto_pay"] = $request->auto_pay;
             $billingdata["auto_pay_method"] = $request->auto_pay_method;
             $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;
@@ -184,7 +188,7 @@ class ClientController extends Controller
             $billingdata["next_charge_date"] = $request->next_charge_date;
             $billingdata["outbound_discount_plan"] = $request->outbound_discount_plan;
             $billingdata["inbound_discount_plan"] = $request->inbound_discount_plan;
-            Billing::updateOrCreate(['id' => $request->id],$billingdata);
+            Billing::updateOrCreate(['id' => $request->billing_id],$billingdata);
 
 
          return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => route('client.index')]);
