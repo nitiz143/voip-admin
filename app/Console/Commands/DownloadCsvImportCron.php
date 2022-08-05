@@ -59,7 +59,6 @@ class DownloadCsvImportCron extends Command
         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at));
 
         $csvImport = CsvImport::where('status',1)->first();
-        //dd($csvImport);
         // $data = [
         //     'status' => 1,
         //     'csv_file' => $newest['file'],

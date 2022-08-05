@@ -7,6 +7,7 @@ use Spatie\ScheduleMonitor\Models\MonitoredScheduledTaskLogItem;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\CronJob;
 use Log;
+use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -28,11 +29,32 @@ class Kernel extends ConsoleKernel
         $tasks = CronJob::all();
 
         foreach ($tasks as $task) {
-
             $frequency = $task->job_time;
+            $minute = 0;
+            $hour = 0;
+            $day = 0;
+            $month = 0;
+            if($frequency == 'everyMinute'){
+                $minute = $task->job_intervel;
+            }elseif ($frequency == 'hourly') {
+                $hour = $task->job_intervel;
+            }elseif ($frequency == 'daily') {
+                $day = $task->job_intervel;
+            }elseif ($frequency == 'monthly') {
+                $month = $task->job_intervel;
+            }
+            $weeks = json_decode($tasks->job_day);
             if($task->cron_type == 'Download VOS SFTP File'){
-                $schedule->command('csvImport:cron')->$frequency();
-                $schedule->command('download:cron')->$frequency();
+                // $schedule->command('csvImport:cron')->$frequency();
+                // $schedule->command('download:cron')->$frequency();
+                if(!empty($weeks)){
+                    $week_day = (Carbon::now()->format('D'));
+                    if(in_array($week_day,$weeks)){
+                        $schedule->command('csvImport:cron')->cron( $minute,$hour, $day, $month,$week_day,'*');	
+                        $schedule->command('download:cron')->cron( $minute,$hour, $day, $month,$week_day,'*');	
+                    }
+                    
+                }
             }
 
             //else{

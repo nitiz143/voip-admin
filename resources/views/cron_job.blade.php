@@ -152,8 +152,8 @@
                                             <option value="daily">daily</option>
                                             <option value="monthly">monthly</option>
                                         </select>
-                                    </div>
-                                    <div class="col-xl-6 mb-3">
+                                    </div> 
+                                    <div class="col-xl-6 mb-3  job_intervel">
                                         <label>Job Interval</label>
                                         <select class="form-control intervel" name="job_intervel" id="job_intervel">
                                         </select>
@@ -163,18 +163,14 @@
                                     <div class="col-xl-6 mb-3">
                                         <label>Job Day</label><br>
                                         <select class="form-control js-example-basic-multiple" name="job_day[]"  id="job_day" data-placeholder="Choose day" multiple="multiple">
-                                            <option value="Monday">Monday</option>
-                                            <option value="Tuesday">Tuesday</option>
-                                            <option value="Wednesday">Wednesday</option>
-                                            <option value="Thursday">Thursday</option>
-                                            <option value="Friday">Friday</option>
-                                            <option value="Saturday">Saturday</option>
-                                            <option value="Sunday">Sunday</option>
+                                            <option value="Mon">Monday</option>
+                                            <option value="Tue">Tuesday</option>
+                                            <option value="Wedn">Wednesday</option>
+                                            <option value="Thu">Thursday</option>
+                                            <option value="Fri">Friday</option>
+                                            <option value="Sat">Saturday</option>
+                                            <option value="Sun">Sunday</option>
                                         </select>
-                                    </div>
-                                    <div class="col-xl-6 mb-3 mb-3">
-                                        <label>Job Start Time</label><br>
-                                        <input type="datetime-local" class="form-control" name="start_time" id="start_time" />
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -270,15 +266,18 @@ $('#createCronModal').click(function (e) {
 
 
 $('.cron').on('change', function() {
-
  var val = $(this).val();
-
+    if(!val){
+        $('.job_intervel').addClass('d-none');
+    }else{
+        $('.job_intervel').removeClass('d-none');
+    }
     if (val == "everyMinute") {
         var selectAge = document.getElementById("job_intervel");
         var contents;
 
         for (let i = 1; i <=60; i++) {
-        contents += "<option>" + i + "MINUTE</option>";
+        contents += "<option value="+i+">" + i + "  MINUTE</option>";
         }
 
         selectAge.innerHTML = contents;
@@ -288,7 +287,7 @@ $('.cron').on('change', function() {
         var contents;
 
         for (let i = 1; i <=24 ; i++) {
-        contents += "<option>" + i + "HOUR</option>";
+        contents += "<option value="+i+">" + i + "  HOUR</option>";
         }
 
         selectAge.innerHTML = contents;
@@ -298,7 +297,7 @@ $('.cron').on('change', function() {
         var contents;
 
         for (let i = 1; i <=31 ; i++) {
-        contents += "<option>" + i + "DAY</option>";
+        contents += "<option value="+i+">" + i + "  DAY</option>";
         }
 
         selectAge.innerHTML = contents;
@@ -308,7 +307,7 @@ $('.cron').on('change', function() {
         var contents;
 
         for (let i = 1; i <=12 ; i++) {
-        contents += "<option>" + i + "MONTH</option>";
+        contents += "<option value="+i+">" + i + "  MONTH</option>";
         }
 
         selectAge.innerHTML = contents;
@@ -372,10 +371,12 @@ $(document).on('click', '.Edit', function (e) {
                 if (data.job_time == "everyMinute") {
                     var selectAge = document.getElementById("job_intervel");
                     var contents;
-                    contents += "<option>" + data.job_intervel + "</option>";
-
                     for (let i = 1; i <=60; i++) {
-                    contents += "<option>" + i + "MINUTE</option>";
+                        let selected = '';
+                        if(i == data.job_intervel){
+                            selected = 'selected';
+                        }
+                        contents += "<option value="+i+" "+selected+">" + i + " MINUTE</option>";
                     }
 
                     selectAge.innerHTML = contents;
@@ -383,9 +384,12 @@ $(document).on('click', '.Edit', function (e) {
                 if (data.job_time == "hourly") {
                     var selectAge = document.getElementById("job_intervel");
                     var contents;
-                    contents += "<option>" +  data.job_intervel + "</option>";
                     for (let i = 1; i <=24 ; i++) {
-                    contents += "<option>" +i + "HOUR</option>";
+                        let selected = '';
+                        if(i == data.job_intervel){
+                            selected = 'selected';
+                        }
+                        contents += "<option value="+i+" "+selected+">" +i + " HOUR</option>";
                     }
 
                     selectAge.innerHTML = contents;
@@ -393,10 +397,12 @@ $(document).on('click', '.Edit', function (e) {
                 if (data.job_time == "daily") {
                     var selectAge = document.getElementById("job_intervel");
                     var contents;
-                    contents += "<option>" + data.job_intervel+ "</option>";
-
                     for (let i = 1; i <=31 ; i++) {
-                        contents += "<option>" + i+ " DAY</option>";
+                        let selected = '';
+                        if(i == data.job_intervel){
+                            selected = 'selected';
+                        }
+                        contents += "<option value="+i+" "+selected+">" + i+ " DAY</option>";
                     }
 
 
@@ -405,10 +411,12 @@ $(document).on('click', '.Edit', function (e) {
                 if (data.job_time == "monthly") {
                     var selectAge = document.getElementById("job_intervel");
                     var contents;
-                    contents += "<option>" + data.job_intervel+ " </option>";
-
                     for (let i = 1; i <=12 ; i++) {
-                    contents += "<option>" + i+ "MONTH </option>";
+                        let selected = '';
+                        if(i == data.job_intervel){
+                            selected = 'selected';
+                        }
+                        contents += "<option value=" + i + " "+selected+">" + i+ "  MONTH </option>";
                     }
 
                     selectAge.innerHTML = contents;

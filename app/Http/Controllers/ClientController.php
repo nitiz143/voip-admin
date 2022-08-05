@@ -167,7 +167,7 @@ class ClientController extends Controller
         $request['customer'] = $request->customer ? $request->customer : 2;
         $request['billing_status'] =  $request->billing_status ? $request->billing_status : 'inactive';
         // dd($request->all());
-
+        // $now = \Carbon\Carbon::now();
         $user =  Client::updateOrCreate([
             'id'   => $request->id,
          ],$request->all());
@@ -178,7 +178,16 @@ class ClientController extends Controller
             $billingdata["billing_timezone"] = $request->billing_timezone;
             $billingdata["billing_startdate"] = $request->billing_startdate;
             $billingdata["billing_cycle"] = $request->billing_cycle;
-            $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
+            if($request->billing_cycle == 'in_specific_days'){
+                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;   
+            }elseif ($request->billing_cycle == 'monthly_anniversary') {
+                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_monthly;
+            }elseif ($request->billing_cycle == 'weekly') {
+                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
+            }else{
+                $billingdata["billing_cycle_startday"] = NULL;
+            }
+            // $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
             $billingdata["auto_pay"] = $request->auto_pay;
             $billingdata["auto_pay_method"] = $request->auto_pay_method;
             $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;

@@ -700,8 +700,8 @@
                                             <div class="col-xl-6">
                                                 <label for="currency">Timezone</label>
                                                 <div class="form-group timepicker" twelvehour="true">
-                                                    <select class="selectpicker" data-live-search="true"></select>
-
+                                                    {{-- <div class="selectpicker"></div> --}}
+                                                    <select class="form-control selectpicker" id="timezone" name="timezone"></select>
                                                     {{-- <input  type="timezone" class="form-control timedemo" name="timezone" value="{{$user->timezone}}" placeholder="hh:mm am/pm"> --}}
                                                 </div>
                                             </div>
@@ -830,7 +830,8 @@
                                                         <div class="form-group" twelvehour="true">
                                                             <label for="billing_timezone">Billing Timezone</label>
                                                             <div class="form-group timepicker" twelvehour="true">
-                                                                <input  type="text" class="form-control timedemo" name="billing_timezone" value="@if(!empty($billingdata->billing_timezone))  {{$billingdata->billing_timezone}} @endif" placeholder="hh:mm am/pm">
+                                                                <select class="form-control selectpicker" name="billing_timezone" id="billing_timezone"></select>
+                                                                {{-- <input  type="text" class="form-control selectpicker" name="billing_timezone" value="@if(!empty($billingdata->billing_timezone))  {{$billingdata->billing_timezone}} @endif" placeholder="hh:mm am/pm"> --}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -862,15 +863,15 @@
                                                     <div class="col-xl-6">
                                                         <div class="form-group  {{@$billingdata->billing_cycle !='in_specific_days' ? 'd-none' : ''}} " id="in_specific_days">
                                                             <label for="billing_cycle_startday">Billing Cycle - for Days*</label>
-                                                            <input type="text" name="billing_cycle_startday" class="form-control" id="number_only">
+                                                            <input type="text" name="billing_cycle_startday_for_days" class="form-control billing_cycle_startday" id="number_only" value="{{ @$billingdata->billing_cycle_startday }}">
                                                         </div>
                                                         <div class="form-group  {{@$billingdata->billing_cycle !='monthly_anniversary' ? 'd-none' : ''}} " id="monthly_anniversary">
                                                             <label for="billing_cycle_startday">Billing Cycle - Monthly Anniversary Date*</label>
-                                                            <input type="date" name="billing_cycle_startday" class="form-control">
+                                                            <input type="date" name="billing_cycle_startday_for_monthly" class="form-control billing_cycle_startday" value="{{ @$billingdata->billing_cycle_startday}}">
                                                         </div>
                                                         <div class="form-group  {{@$billingdata->billing_cycle !='weekly' ? 'd-none' : ''}} " id="week">
                                                             <label for="billing_cycle_startday">Billing Cycle Start of Day</label>
-                                                            <select class="custom-select form-control" name="billing_cycle_startday" id="billing_cycle_startday">
+                                                            <select class="custom-select form-control billing_cycle_startday" name="billing_cycle_startday" id="billing_cycle_startday">
                                                                 <option value="Sunday" @if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Sunday' ? 'selected' : ''}} @endif>Sunday</option>
                                                                 <option value="Monday"@if(!empty($billingdata->billing_cycle_startday))  {{$billingdata->billing_cycle_startday=='Monday' ? 'selected' : ''}} @endif>Monday</option>
                                                                 <option value="Tuesday"@if(!empty($billingdata->billing_cycle_startday)) {{$billingdata->billing_cycle_startday=='Tuesday' ? 'selected' : ''}}@endif>Tuesday</option>
@@ -1001,11 +1002,11 @@
 
 @section('page_js')
 {{-- Timepicker --}}
+{{-- <script src="https://cdn.jsdelivr.net/npm/timezone-picker@2.0.0-1/dist/timezone-picker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.10/moment-timezone-with-data.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script> --}}
+<script src="{{asset('js/timezones.full.js')}}"></script>
+
 <script type="text/javascript">
 $('#number_only').bind('keyup paste', function(){
     this.value = this.value.replace(/[^0-9]/g, '');
@@ -1019,22 +1020,19 @@ $('#switch').change(function() {
     });
 
 $(document).ready(function () {
-        // // Time Picker Initialization
-        //     $('.timedemo').timepicker({
-        //     timeFormat: 'h:mm p',
-        //     interval: 60,
-        //     // minTime: '1',
-        //     // maxTime: '12:00pm',
-        //     startTime: '1:00',
-        //     dynamic: false,
-        //     dropdown: true,
-        //     scrollbar: true
-        // });
-var timezone = moment.tz.names();
-  for (var i = 0; i < timezone.length; i++) {
-    $('.selectpicker').append('<option value="' + timezone[i] + '">' + timezone[i] + '</option>');
-  }
-  $('.selectpicker').selectpicker();
+$('.selectpicker').timezones();
+var timezone = "{{@$user->timezone}}";
+$('#timezone > option').each(function() {
+    if($(this).val() == timezone) {
+        $(this).attr('selected', 'selected');
+    }
+});
+var billing_timezone = "{{@$billingdata->billing_timezone}}"
+$('#billing_timezone > option').each(function() {
+    if($(this).val() == billing_timezone) {
+        $(this).attr('selected', 'selected');
+    }
+});
 });
 
 
@@ -1090,9 +1088,9 @@ function save(formdata,url){
         location.reload();
     });
 
-
     $("#billing_cycle").change(function() {
         // alert($(this).val());
+        $('.billing_cycle_startday').val('');
         if($(this).val() == 'weekly'){
             $('#week').removeClass('d-none');
             $('#in_specific_days').addClass('d-none');
@@ -1110,8 +1108,8 @@ function save(formdata,url){
 
        }else if($(this).val() == 'in_specific_days'){
             $('#week').addClass('d-none');
-            $('#monthly_anniversary').removeClass('d-none');
-            $('#in_specific_days').addClass('d-none');
+            $('#monthly_anniversary').addClass('d-none');
+            $('#in_specific_days').removeClass('d-none');
        }else if($(this).val() == 'monthly_anniversary'){
             $('#week').addClass('d-none');
             $('#in_specific_days').addClass('d-none');
