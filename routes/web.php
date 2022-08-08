@@ -38,4 +38,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/cron','App\Http\Controllers\CronJobController');
     Route::resource('/setting','App\Http\Controllers\SettingController');
     Route::resource('/company','App\Http\Controllers\CompanyController');
+    Route::get('/rate-upload', [App\Http\Controllers\RateController::class, 'index'])->name('rate-upload');
+    Route::post('/rate-upload', [App\Http\Controllers\RateController::class, 'store'])->name('post-rate-upload');
+
 });

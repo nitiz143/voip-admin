@@ -75,7 +75,15 @@
               </p>
             </a>
           </li>
-
+          <li class="nav-item ">
+            <a href="{{route('rate-upload')}}" class="nav-link {{ Request::is('rate-upload') ? 'active' : '' }} ">
+                {{-- <i class="nav-icon fas fa-phone-alt"></i> --}}
+                <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+               Rate Management
+              </p>
+            </a>
+          </li>
           <li class="nav-item ">
             <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/create') ? 'active' : '' }} ">
                 <i class="nav-icon fas fa-user-alt"></i>
