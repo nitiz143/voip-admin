@@ -14,7 +14,7 @@
           <img src="{{asset('assets/dist/img/avatar5.png')}}" class="img-circle " >
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{auth()->user()->name}}</a>
+          <a href="{{ route('profile') }}" class="d-block">{{auth()->user()->name}}</a>
           <p><span class="brand-text font-weight-light" style="color:white">{{auth()->user()->role}}</span></p>
         </div>
       </div>
@@ -75,14 +75,27 @@
               </p>
             </a>
           </li>
-          <li class="nav-item ">
-            <a href="{{route('rate-upload')}}" class="nav-link {{ Request::is('rate-upload') ? 'active' : '' }} ">
-                {{-- <i class="nav-icon fas fa-phone-alt"></i> --}}
-                <i class="nav-icon fas fa-calendar-alt"></i>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
               <p>
-               Rate Management
+                Rate Management
+                <i class="fas fa-angle-left right"></i>
+                <span class="badge badge-info right"></span>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('rate-upload')}}" class="nav-link {{ Request::is('rate-upload') ? 'active' : '' }}">
+                  <p>Upload Rates</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('rate-table') }}" class="nav-link {{ Request::is('rate-table') ? 'active' : '' }}">
+                  <p>Rate Tables</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item ">
             <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/create') ? 'active' : '' }} ">

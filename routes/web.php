@@ -40,5 +40,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/company','App\Http\Controllers\CompanyController');
     Route::get('/rate-upload', [App\Http\Controllers\RateController::class, 'index'])->name('rate-upload');
     Route::post('/rate-upload', [App\Http\Controllers\RateController::class, 'store'])->name('post-rate-upload');
+    Route::get('/rate-table', [App\Http\Controllers\RateController::class, 'rateIndex'])->name('rate-table');
+    Route::get('/rate-table-create', [App\Http\Controllers\RateController::class, 'create'])->name('rate-table.create');
+    Route::post('/rate-table-post', [App\Http\Controllers\RateController::class, 'tableStore'])->name('rate-table.store');
+    Route::delete('/rate-table-delete', [App\Http\Controllers\RateController::class, 'destroy'])->name('rate-table.delete');
+    Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
+    Route::post('/profile-update', [App\Http\Controllers\HomeController::class, 'profileUpdate'])->name('profile-update');
 
 });

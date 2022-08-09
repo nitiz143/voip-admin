@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\RateUpload;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Validator;
+use App\Models\RateTable;
+use Yajra\DataTables\DataTables;
 
 class RateController extends Controller
 {
@@ -24,9 +26,13 @@ class RateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $table = '';
+        if($request->id){
+            $table = RateTable::find($request->id);
+        }
+        return view('rate.rate-table.crateTable',compact('table'));
     }
 
     /**
@@ -114,8 +120,51 @@ class RateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $table = RateTable::find($request->id);
+        if(!empty($table)){
+            if($table->delete()){
+                return response()->json(['message' =>'Data Deleted Successfully']);
+            }
+        }
+
+    }
+
+    public function rateIndex(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = RateTable::all();
+            return Datatables::of($data)
+            ->addIndexColumn()
+            ->editColumn('updated_at',function($row){
+                $updated_at = \Carbon\Carbon::parse($row->updated_at)->format('Y-m-d h:m:s');
+                return $updated_at;
+            })
+            ->addColumn('action', function($row){
+
+                $btn = '<a href="#" class="delete btn btn-primary btn-sm editTable"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;
+                <a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
+
+                    return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+        return view('rate.rate-table.index');
+    }
+
+    public function tableStore(Request $request)
+    {
+        $request->validate([
+            'codeDeckId' => 'required',
+            'trunkId' => 'required',
+            'currency' => 'required',
+            'name' => 'required',
+            'RoundChargedAmount' => 'required',
+        ]);
+        if(RateTable::updateOrCreate(['id' => $request->id], $request->all())){
+            return response()->json(['message' =>'Data Saved Successfully']);
+        }
     }
 }

@@ -47,7 +47,7 @@ class UserController extends Controller
         if(Auth::user()->role == 'Billing Admin'){
             $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id());
         }
-        $data = $users->get();
+        $data = $users;
         return Datatables::of($data)
         ->addIndexColumn()
         ->addColumn('action', function($row){
