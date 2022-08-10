@@ -54,8 +54,8 @@
                                                 <th>PID</th>
                                                 <th>Title</th>
                                                 <th>Running Since</th>
-                                                {{-- <th>Last Run Time</th>
-                                                <th>Next Run Time</th> --}}
+                                                <th>Start Time</th>
+                                                <th>End Time</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -218,6 +218,14 @@
              name: 'start_time'
          },
          {
+             data: 'created_at',
+             name: 'created_at'
+         },
+         {
+             data: 'updated_at',
+             name: 'updated_at'
+         },
+         {
              data: 'action',
              name: 'action',
              searchable: false,
@@ -225,6 +233,11 @@
          },
      ]
 });
+
+setInterval(function () {
+    role.ajax.reload();
+  }, 10000);
+
 
 $('#createCronModal').click(function (e) {
     e.preventDefault();

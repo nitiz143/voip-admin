@@ -21,7 +21,21 @@ class CronJobController extends Controller
         $data = CronJob::query('');
             return Datatables::of($data)
 
-
+            ->editColumn('created_at', function($row){
+                return \Carbon\Carbon::parse($row->created_at)->format('Y-m-d h:i:s');
+            })
+            ->editColumn('updated_at', function($row){
+                return \Carbon\Carbon::parse($row->updated_at)->format('Y-m-d h:i:s');
+            })
+            ->editColumn('start_time', function($row){
+                $created_at = strtotime(\Carbon\Carbon::parse($row->created_at)->format('h:i:s'));
+                $now = strtotime(\Carbon\Carbon::now()->format('h:i:s'));
+                $diff = $now - $created_at;
+                $start_time = date('H:i:s', $diff);
+                if(!empty($row->start_time)){
+                    return $start_time;
+                }
+            })
             ->addColumn('action', function($row){
                 $actionBtn = '<a href="" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
 

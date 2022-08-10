@@ -56,7 +56,7 @@ class DownloadCsvImportCron extends Command
     {
         $tasks = CronJob::where('cron_type','Download VOS SFTP File')->first();
         $created_at  = Carbon::now();
-        CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at));
+        CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
 
         $csvImport = CsvImport::where('status',1)->first();
         // $data = [
@@ -118,7 +118,7 @@ class DownloadCsvImportCron extends Command
                         }
                     }
                     $updated_at  = Carbon::now();
-                    CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at));
+                    CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at,'start_time' => ''));
 
                 }
 
