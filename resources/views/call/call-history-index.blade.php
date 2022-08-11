@@ -37,9 +37,7 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Caller_id</th>
                                     <th>Callere164</th>
-                                    <th>Calleraccesse164</th>
                                     <th>Calleee164</th>
                                     <th>Action</th>
                                 </tr>
@@ -76,9 +74,7 @@
         ajax: "{{ route('call.index') }}",
         columns: [
             {data:'id',name:'id'},
-            {data:'caller_id',name:'caller_id'},
             {data:'callere164',name:'callere164'},
-            {data:'calleraccesse164',name:'calleraccesse164'},
             {data:'calleee164',name:'calleee164'},
 
             {data:'action',name:'action', orderable: false, searchable: false},
