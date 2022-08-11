@@ -62,7 +62,7 @@ class CsvImportCron extends Command
         $tasks = CronJob::where('cron_type','Download VOS SFTP File')->first();
         $created_at  = Carbon::now();
         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-         try{
+       //  try{
              $settings = Setting::all();
                 if($settings->isNotEmpty()){
                     foreach ($settings as $setting) {
@@ -205,22 +205,22 @@ class CsvImportCron extends Command
                         $disk->getDriver()->getAdapter()->disconnect();
                     }
                 }
-            }
-        catch (Throwable $exception) {
-            $content= [];
-            if(!empty($tasks->error_email)){
-                $content['message'] = $exception->getMessage();
-                $content['file'] = $exception->getFile();
-                $content['line'] = $exception->getLine();
-                $content['trace'] = $exception->getTrace();
+        //     }
+        // catch (Throwable $exception) {
+        //     $content= [];
+        //     if(!empty($tasks->error_email)){
+        //         $content['message'] = $exception->getMessage();
+        //         $content['file'] = $exception->getFile();
+        //         $content['line'] = $exception->getLine();
+        //         $content['trace'] = $exception->getTrace();
 
-                $content['url'] = request()->url();
-                $content['body'] = request()->all();
-                $content['ip'] = request()->ip();
+        //         $content['url'] = request()->url();
+        //         $content['body'] = request()->all();
+        //         $content['ip'] = request()->ip();
 
-                Mail::to($tasks->error_email)->send(new ExceptionOccured($content));
-            }
-        }
+        //         Mail::to($tasks->error_email)->send(new ExceptionOccured($content));
+        //     }
+        // }
 
     }
 }
