@@ -43,17 +43,17 @@ class Kernel extends ConsoleKernel
             }elseif ($frequency == 'monthly') {
                 $month = $task->job_intervel;
             }
-            $weeks = json_decode($tasks->job_day);
+            $weeks = json_decode($task->job_day);
             if($task->cron_type == 'Download VOS SFTP File'){
                 // $schedule->command('csvImport:cron')->$frequency();
                 // $schedule->command('download:cron')->$frequency();
                 if(!empty($weeks)){
                     $week_day = (Carbon::now()->format('D'));
                     if(in_array($week_day,$weeks)){
-                        $schedule->command('csvImport:cron')->cron( $minute,$hour, $day, $month,$week_day,'*');	
-                        $schedule->command('download:cron')->cron( $minute,$hour, $day, $month,$week_day,'*');	
+                        $schedule->command('csvImport:cron')->cron( $minute,$hour, $day, $month,$week_day,'*');
+                        $schedule->command('download:cron')->cron( $minute,$hour, $day, $month,$week_day,'*');
                     }
-                    
+
                 }
             }
 
