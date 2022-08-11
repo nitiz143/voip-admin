@@ -62,7 +62,7 @@ class CsvImportCron extends Command
         $tasks = CronJob::where('cron_type','Download VOS SFTP File')->first();
         $created_at  = Carbon::now();
         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-       //  try{
+        try{
              $settings = Setting::all();
                 if($settings->isNotEmpty()){
                     foreach ($settings as $setting) {
@@ -87,7 +87,6 @@ class CsvImportCron extends Command
                         $files = $disk->files("/");
 
                         $fileData = collect();
-
                         if(!empty($files)){
                             foreach ($files as $value) {
                                 if($value != 'cdr.column'){
@@ -97,12 +96,11 @@ class CsvImportCron extends Command
                                     ]);
                                 }
                             }
-
                             // get latest file
                          $newest = $fileData->sortByDesc('date')->first();
 
                             if(!empty($newest)){
-                                if (!file_exists(public_path() . '/'. $setting->csv_path . $newest['file'])) {
+                                if (!file_exists(public_path() . '/storage/'. $newest['file'])) {
                                     if($setting->protocol == 1){
                                         Storage::disk('public')->put($newest['file'], Storage::disk('ftp')->get($newest['file']));
                                     }else{
@@ -110,10 +108,13 @@ class CsvImportCron extends Command
                                     }
                                     // check if file already exist
                                     $csvImport = CsvImport::where('csv_file',$newest['file'])->where('status',2)->first();
-                                    $data = [
-                                        'status' => 1,
-                                        'csv_file' => $newest['file'],
-                                    ];
+                                    if(empty($csvImport)){
+                                        $data = [
+                                            'status' => 1,
+                                            'csv_file' => $newest['file'],
+                                        ];
+                                        CsvImport::create($data);
+                                    }
                                     // if(empty($csvImport)){
                                     //     $customerArr  = $this->readCSV($newest['file'],array('delimiter' => ','));
                                     //     $csv_import_id = CsvImport::create($data);
@@ -205,22 +206,22 @@ class CsvImportCron extends Command
                         $disk->getDriver()->getAdapter()->disconnect();
                     }
                 }
-        //     }
-        // catch (Throwable $exception) {
-        //     $content= [];
-        //     if(!empty($tasks->error_email)){
-        //         $content['message'] = $exception->getMessage();
-        //         $content['file'] = $exception->getFile();
-        //         $content['line'] = $exception->getLine();
-        //         $content['trace'] = $exception->getTrace();
+            }
+        catch (Throwable $exception) {
+            $content= [];
+            if(!empty($tasks->error_email)){
+                $content['message'] = $exception->getMessage();
+                $content['file'] = $exception->getFile();
+                $content['line'] = $exception->getLine();
+                $content['trace'] = $exception->getTrace();
 
-        //         $content['url'] = request()->url();
-        //         $content['body'] = request()->all();
-        //         $content['ip'] = request()->ip();
+                $content['url'] = request()->url();
+                $content['body'] = request()->all();
+                $content['ip'] = request()->ip();
 
-        //         Mail::to($tasks->error_email)->send(new ExceptionOccured($content));
-        //     }
-        // }
+                Mail::to($tasks->error_email)->send(new ExceptionOccured($content));
+            }
+        }
 
     }
 }
