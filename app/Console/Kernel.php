@@ -44,8 +44,8 @@ class Kernel extends ConsoleKernel
         //         $month = $task->job_intervel;
         //     }
           //  $weeks = json_decode($task->job_day);
-            $schedule->command('download:cron')->cron('0 */7 * * *');
-            $schedule->command('csvImport:cron')->cron('0 */8 * * *');
+            $schedule->command('download:cron')->everyFiveMinutes('0 */7 * * *');
+            $schedule->command('csvImport:cron')->everyTenMinutes('0 */8 * * *');
         //     if($task->cron_type == 'Download VOS SFTP File'){
         //         // $schedule->command('csvImport:cron')->$frequency();
         //         // $schedule->command('download:cron')->$frequency();
