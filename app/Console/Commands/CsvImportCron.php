@@ -187,7 +187,7 @@ class CsvImportCron extends Command
                                     //         }
 
                                     //     }
-                                        
+
                                     // }
 
                                     if(!empty($tasks->success_email)){
@@ -202,6 +202,7 @@ class CsvImportCron extends Command
                                 }
                             }
                         }
+                        $disk->getDriver()->getAdapter()->disconnect();
                     }
                 }
             }
