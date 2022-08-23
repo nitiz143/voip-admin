@@ -779,13 +779,7 @@
                                                 <label for="account_reseller">Account Reseller</label>
                                                 <select class="custom-select form-control" name="account_reseller"
                                                     id="account_reseller">
-                                                    <option selected disabled>--Select Account Reseller--</option>
-                                                    <option value="0" {{$user->account_reseller ==0 ? 'selected' :
-                                                        ''}}>Account Name: Account Number</option>
-                                                    <option value="1" {{$user->account_reseller ==1 ? 'selected' :
-                                                        ''}}>Cold Call</option>
-                                                    <option value="2" {{$user->account_reseller ==2 ? 'selected' :
-                                                        ''}}>Employee Referral</option>
+                                                    <option value="" >Select</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -1102,7 +1096,6 @@
                                                         <select class="custom-select form-control"
                                                             name="auto_pay_method" id="auto_pay_method">
                                                             <option value="">Select</option>
-                                                            <option value="">Select</option>
                                                             <option value="1" @if(!empty($billingdata->auto_pay_method))
                                                                 {{$billingdata->auto_pay_method==1 ? 'selected' : ''}}
                                                                 @endif>Account Balance</option>
@@ -1140,7 +1133,7 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label for="last_invoice_date">Last Invoice Date</label>
-                                                <span>{{@$billingdata->last_invoice_date}}2022-08-01</span>
+                                                <span>{{@$billingdata->last_invoice_date}}</span>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
@@ -1220,138 +1213,33 @@
 
 @section('page_js')
 <script src="{{asset('js/timezones.full.js')}}"></script>
+<script src="{{asset('js/account_custom.js')}}"></script>
+
 
 <script type="text/javascript">
-    $('#number_only').bind('keyup paste', function(){
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-$('#switch').change(function() {
-        if(this.checked) {
-            $(".product").removeClass('d-none');
-        }else{
-            $(".product").addClass('d-none');
-        }
-    });
-
-$(document).ready(function () {
-$('.selectpicker').timezones();
-var timezone = "{{@$user->timezone}}";
-$('#timezone > option').each(function() {
-    if($(this).val() == timezone) {
-        $(this).attr('selected', 'selected');
-    }
-});
-var billing_timezone = "{{@$billingdata->billing_timezone}}"
-$('#billing_timezone > option').each(function() {
-    if($(this).val() == billing_timezone) {
-        $(this).attr('selected', 'selected');
-    }
-});
-});
-
-
-function save(formdata,url){
-        $('#global-loader').show();
-        $.ajax({
-          data: formdata,
-          url: url,
-          type: "PUT",
-          dataType: 'json',
-        //   cache:false,
-        //   contentType: false,
-        //   processData: false,
-        //   headers: {
-        //     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-        //   },
-          success: function (resp) {
-                $('#global-loader').hide();
-                if(resp.success == false){
-                    $.each(resp.errors, function(k, e) {
-                        $.notify(e, 'error');
-                    });
-                }
-                else{
-                    $.notify(resp.message, 'success');
-                    $("#Clientform")[0].reset();
-                    setTimeout(function(){
-                        if(resp.redirect_url){
-                            window.location.href = resp.redirect_url;
-                        }
-                    }, 1000);
-                }
-             }, error: function(r) {
-                $('#global-loader').hide();
-                $.each(r.responseJSON.errors, function(k, e) {
-                    $.notify(e, 'error');
-                });
-                $('.blocker').hide();
+    $(document).ready(function () {
+        var timezone = "{{@$user->timezone}}";
+        $('#timezone > option').each(function() {
+            if($(this).val() == timezone) {
+                $(this).attr('selected', 'selected');
             }
+        });
+        var billing_timezone = "{{@$billingdata->billing_timezone}}"
+        $('#billing_timezone > option').each(function() {
+            if($(this).val() == billing_timezone) {
+                $(this).attr('selected', 'selected');
+            }
+        }); 
     });
-    }
 
     $('#submit').click(function (e) {
-        //alert();
         e.preventDefault();
         let formdata = $('#Clientform').serialize();
         let url =   $('#Clientform').attr('action');
-        save(formdata,url);
+        let method =   $('#Clientform').attr('method');
+        save(formdata,url,method);
 
-    });
-
-    $("#cancel").click(function(){
-        location.reload();
-    });
-
-    $("#billing_cycle").change(function() {
-        // alert($(this).val());
-        $('.billing_cycle_startday').val('');
-        if($(this).val() == 'weekly'){
-            $('#week').removeClass('d-none');
-            $('#in_specific_days').addClass('d-none');
-            $('#monthly_anniversary').addClass('d-none');
-
-       }else if($(this).val() == 'monthly'){
-            $('#week').addClass('d-none');
-            $('#in_specific_days').addClass('d-none');
-            $('#monthly_anniversary').addClass('d-none');
-
-       }else if($(this).val() == 'yearly'){
-            $('#week').addClass('d-none');
-            $('#in_specific_days').addClass('d-none');
-            $('#monthly_anniversary').addClass('d-none');
-
-       }else if($(this).val() == 'in_specific_days'){
-            $('#week').addClass('d-none');
-            $('#monthly_anniversary').addClass('d-none');
-            $('#in_specific_days').removeClass('d-none');
-       }else if($(this).val() == 'monthly_anniversary'){
-            $('#week').addClass('d-none');
-            $('#in_specific_days').addClass('d-none');
-            $('#monthly_anniversary').removeClass('d-none');
-       }else{
-            $('#week').addClass('d-none');
-            $('#in_specific_days').addClass('d-none');
-            $('#monthly_anniversary').addClass('d-none');
-       }
-       
-    });
-
-    $("#customer_authentication_rule").change(function() {
-        if($(this).val() == 6){
-            $('#customer_authentication_value_div').removeClass('d-none');
-        }else{
-            $('#customer_authentication_value_div').addClass('d-none');
-        }
-    });
-
-    $("#vendor_authentication_rule").change(function() {
-        if($(this).val() == 6){
-            $('#vendor_authentication_value_div').removeClass('d-none');
-        }else{
-            $('#vendor_authentication_value_div').addClass('d-none');
-        }
     });
 
 </script>
-
 @endsection

@@ -65,6 +65,29 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="company">Company</label>
+                                            <input type="text" class="form-control" id="company" name="company"
+                                                value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="mobile">Mobile</label>
+                                            <input type="text" class="form-control number_only" id="mobile" name="mobile"
+                                                value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="skype_id">Skype ID</label>
+                                            <input type="text" class="form-control" id="skype_id" name="skype_id"
+                                                value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
                                             <label for="firstname">First Name</label>
@@ -226,8 +249,10 @@
                                     <div class="col-xl-6">
                                         <div class="form-group">
                                             <label for="verification_status">Verification Status</label>
-                                            <input type="text" class="form-control" id="verification_status"
-                                                name="verification_status" value="">
+                                                <select class="form-control" name="verification_status" disabled>
+                                                    <option value="1">Not verified</option>
+                                                    <option value="0">Verified</option>
+                                                </select>
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
@@ -574,7 +599,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="product">
+                                    <div class="product d-none">
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
@@ -679,7 +704,7 @@
                                                 <div class="form-group">
                                                     <label for="next_charge_date">Next Charge Date</label>
                                                     <input type="date" class="form-control" name="next_charge_date"
-                                                        value="" disabled>
+                                                        value="" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -722,8 +747,11 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                                <button type="button" id="cancel" class="btn btn-danger">Cancel</button>
                             </div>
                         </form>
                     </div>
@@ -735,10 +763,17 @@
 @endsection
 @section('page_js')
 <script src="{{asset('js/timezones.full.js')}}"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.selectpicker').timezones();
-    });
+<script src="{{asset('js/account_custom.js')}}"></script>
 
+
+<script>
+    $('#submit').click(function (e) {
+        e.preventDefault();
+        let formdata = $('#Clientform').serialize();
+        let url =   $('#Clientform').attr('action');
+        let method =   $('#Clientform').attr('method');
+        save(formdata,url,method);
+
+    });
 </script>
 @endsection
