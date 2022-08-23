@@ -21,10 +21,10 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            {{-- <div class="card-header">
-                                <h1 class="card-title">Users</h1>
-                                <a href="" class="btn btn-primary mb-4  float-right" id="createzoneModal">Create</a>
-                            </div> --}}
+                            <div class="card-header">
+                                <h1 class="card-title">Accounts</h1>
+                                <a href="{{ route('client.create') }}" class="btn btn-primary mb-4  float-right">Add New</a>
+                            </div>
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <table class="table table-bordered data-table" style="width: 100%">

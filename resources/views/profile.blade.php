@@ -4,70 +4,75 @@
 <div class="content-wrapper mt-3">
     <section class="content-header">
         <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6">
+            <div class="row mb-2">
+                <div class="col-sm-6">
 
-            </div>
-            <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
 
-              </ol>
+                    </ol>
+                </div>
             </div>
-          </div>
         </div><!-- /.container-fluid -->
-      </section>
+    </section>
 
     <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <!-- left column -->
-                    <div class="col-md-12">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
-                        <h3 class="card-title">Profile</h3>
+                            <h3 class="card-title">Profile</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form action="{{ route('profile-update') }}" method="POST" id="form">
                             @csrf
-                        <div class="card-body">
-                            <div class="form-group">
-                                <input type="hidden" name="id" value="{{$user->id}}">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input type="hidden" name="id" value="{{$user->id}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Name </label>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        value="{{$user->name}}" placeholder="Enter Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email </label>
+                                    <input type="text" class="form-control" id="email" name="email"
+                                        value="{{$user->email}}" placeholder="Enter email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" value=""
+                                        placeholder="Password" autocomplete="new-password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Confirm Password</label>
+                                    <input type="password" class="form-control" id="password"
+                                        name="password_confirmation" value="" placeholder="Confirm Password"
+                                        autocomplete="new-password">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="name">Name </label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{$user->name}}" placeholder="Enter Name">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email </label>
-                                <input type="text" class="form-control" id="email" name="email" value="{{$user->email}}" placeholder="Enter email">
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" value="" placeholder="Password" autocomplete="new-password">
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Confirm Password</label>
-                                <input type="password" class="form-control" id="password" name="password_confirmation" value="" placeholder="Confirm Password" autocomplete="new-password">
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
+                            <!-- /.card-body -->
 
-                        <div class="card-footer">
-                            <button type="submit" id="submit" class="btn btn-primary">Submit</button>
-                        </div>
+                            <div class="card-footer">
+                                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                            </div>
                         </form>
-                    </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 </div>
 @endsection
 @section('page_js')
 <script>
-     function save(formdata,url){
+    function save(formdata,url){
         $('#global-loader').show();
         $.ajax({
           data: formdata,
