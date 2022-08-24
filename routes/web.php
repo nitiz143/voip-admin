@@ -24,7 +24,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::resource('/call','App\Http\Controllers\CallController');
