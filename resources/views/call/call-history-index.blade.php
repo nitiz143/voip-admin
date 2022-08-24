@@ -58,7 +58,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                               <h5 class="modal-title">Modal title</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <button type="button" id="btnModeClose" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
@@ -75,7 +75,10 @@
 @endsection
 @section('page_js')
 <script>
-
+$("#btnModeClose").on("click", function (e) {
+        e.preventDefault();
+        $("#ajaxModel").modal("hide");
+    });
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
