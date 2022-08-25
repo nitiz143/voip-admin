@@ -29,15 +29,15 @@ if (Request::is('activity/cleared')) {
                     </span>
                 </th>
                 <th>
-                    <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-clock fa-fw" aria-hidden="true"></i>
                     {!! trans('LaravelLogger::laravel-logger.dashboard.labels.time') !!}
                 </th>
                 <th>
-                    <i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-file fa-fw" aria-hidden="true"></i>
                     {!! trans('LaravelLogger::laravel-logger.dashboard.labels.description') !!}
                 </th>
                 <th>
-                    <i class="fa fa-user-o fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-user fa-fw" aria-hidden="true"></i>
                     {!! trans('LaravelLogger::laravel-logger.dashboard.labels.user') !!}
                 </th>
                 <th>
@@ -47,7 +47,7 @@ if (Request::is('activity/cleared')) {
                     </span>
                 </th>
                 <th>
-                    <i class="fa fa-map-o fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-map fa-fw" aria-hidden="true"></i>
                     {!! trans('LaravelLogger::laravel-logger.dashboard.labels.route') !!}
                 </th>
                 <th>
@@ -60,7 +60,7 @@ if (Request::is('activity/cleared')) {
                 </th>
                 @if(Request::is('activity/cleared'))
                     <th>
-                        <i class="fa fa-trash-o fa-fw" aria-hidden="true"></i>
+                        <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
                         {!! trans('LaravelLogger::laravel-logger.dashboard.labels.deleteDate') !!}
                     </th>
                 @endif

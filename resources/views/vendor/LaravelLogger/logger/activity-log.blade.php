@@ -57,7 +57,7 @@
 
 @section('content')
 
-    <div class="content-wrapper mt-3 ">
+    <div class="content-wrapper mt-3 " style="background-color:#fff;">
        @if(config('LaravelLogger.enableSearch'))
        @include('LaravelLogger::partials.form-search')
        @endif
