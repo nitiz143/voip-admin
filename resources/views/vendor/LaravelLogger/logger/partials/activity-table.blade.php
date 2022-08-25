@@ -14,9 +14,12 @@ if (Request::is('activity/cleared')) {
 }
 
 @endphp
-
+<style>
+    table {border-collapse:collapse; table-layout:fixed; width:310px;}
+    table td {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+</style>
 <div class="table-responsive activity-table">
-    <table class="table table-striped table-condensed table-sm @if(config('LaravelLogger.enableDrillDown') && $hoverable) table-hover @endif data-table">
+    <table class="table table-striped table-condensed table-sm @if(config('LaravelLogger.enableDrillDown') && $hoverable) table-hover @endif data-table" id="data-table">
         <thead>
             <tr>
                 <th>
@@ -136,7 +139,7 @@ if (Request::is('activity/cleared')) {
                             {{ $activity->methodType }}
                         </span>
                     </td>
-                    <td>
+                    <td class="content-wrapper">
                         @if($hoverable)
                             {{ showCleanRoutUrl($activity->route) }}
                         @else

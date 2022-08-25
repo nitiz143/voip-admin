@@ -161,7 +161,7 @@
 @endphp
 
 @section('content')
-<div class="container-fluid">
+<div class="content-wrapper mt-3 ">
 
     @if(config('LaravelLogger.enablePackageFlashMessageBlade'))
         @include('LaravelLogger::partials.form-status')
