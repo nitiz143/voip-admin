@@ -6,7 +6,6 @@
     @push(config('LaravelLogger.bladePlacementCss'))
 @endif
 
-        @include('LaravelLogger::partials.styles')
 
 @if(config('LaravelLogger.bladePlacement') == 'yield')
     @endsection
@@ -20,14 +19,9 @@
     @push(config('LaravelLogger.bladePlacementJs'))
 @endif
 
-        @include('LaravelLogger::partials.scripts', ['activities' => $activities])
-        @include('LaravelLogger::scripts.confirm-modal', ['formTrigger' => '#confirmDelete'])
-        @include('LaravelLogger::scripts.confirm-modal', ['formTrigger' => '#confirmRestore'])
 
-        @if(config('LaravelLogger.enableDrillDown'))
-            @include('LaravelLogger::scripts.clickable-row')
-            @include('LaravelLogger::scripts.tooltip')
-        @endif
+
+
 
 @if(config('LaravelLogger.bladePlacement') == 'yield')
     @endsection
@@ -57,6 +51,7 @@
 @endphp
 
 @section('content')
+     @include('LaravelLogger::partials.styles')
 
     <div class="content-wrapper mt-3 ">
 
@@ -128,5 +123,12 @@
 
     @include('LaravelLogger::modals.confirm-modal', ['formTrigger' => 'confirmDelete', 'modalClass' => 'danger', 'actionBtnIcon' => 'fa-trash-o'])
     @include('LaravelLogger::modals.confirm-modal', ['formTrigger' => 'confirmRestore', 'modalClass' => 'success', 'actionBtnIcon' => 'fa-check'])
+    @include('LaravelLogger::partials.scripts', ['activities' => $activities])
+    @include('LaravelLogger::scripts.confirm-modal', ['formTrigger' => '#confirmDelete'])
+    @include('LaravelLogger::scripts.confirm-modal', ['formTrigger' => '#confirmRestore'])
 
+    @if(config('LaravelLogger.enableDrillDown'))
+    @include('LaravelLogger::scripts.clickable-row')
+    @include('LaravelLogger::scripts.tooltip')
+    @endif
 @endsection

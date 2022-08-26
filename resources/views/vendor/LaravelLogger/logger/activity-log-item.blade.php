@@ -10,7 +10,7 @@
     @push(config('LaravelLogger.bladePlacementCss'))
 @endif
 
-@include('LaravelLogger::partials.styles')
+
 
 @if(config('LaravelLogger.bladePlacement') == 'yield')
     @endsection
@@ -24,7 +24,6 @@
     @push(config('LaravelLogger.bladePlacementJs'))
 @endif
 
-@include('LaravelLogger::partials.scripts', ['activities' => $userActivities])
 
 @if(config('LaravelLogger.bladePlacement') == 'yield')
     @endsection
@@ -161,6 +160,7 @@
 @endphp
 
 @section('content')
+@include('LaravelLogger::partials.styles')
 <div class="content-wrapper mt-3 ">
 
     @if(config('LaravelLogger.enablePackageFlashMessageBlade'))
@@ -355,4 +355,6 @@
         </div>
     </div>
   </div>
+  {{-- @include('LaravelLogger::partials.scripts', ['activities' => $userActivities]) --}}
+
 @endsection

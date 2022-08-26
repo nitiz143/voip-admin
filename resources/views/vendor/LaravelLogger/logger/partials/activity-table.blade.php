@@ -261,7 +261,7 @@ if (Request::is('activity/cleared')) {
         <div class="d-flex justify-content-center">
             {!! $activities->render() !!}
         </div>
-        <p>
+        <p class="mt-3">
             {!! trans('LaravelLogger::laravel-logger.pagination.countText', ['firstItem' => $activities->firstItem(), 'lastItem' => $activities->lastItem(), 'total' => $activities->total(), 'perPage' => $activities->perPage()]) !!}
         </p>
     </div>
