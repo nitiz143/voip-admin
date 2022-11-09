@@ -37,8 +37,8 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Callere164</th>
-                                    <th>Calleee164</th>
+                                    <th>Callere</th>
+                                    <th>Calleee</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>

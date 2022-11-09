@@ -152,7 +152,7 @@ class SettingController extends Controller
      * @param  \App\Models\Setting  $setting
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Setting $setting, $id)
+    public function destroy(Request $request)
     {
 
         $setting = Setting::find($id);

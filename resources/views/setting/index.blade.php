@@ -99,7 +99,7 @@ $(document).on('click', '.Delete', function () {
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        // url: "{{ route('users.destroy', ": id ") }}",
+                        url: "{{ route('setting.destroy', ": id ") }}",
                         type: 'delete', // replaced from put
                         dataType: "JSON",
                         data: {
