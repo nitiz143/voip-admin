@@ -42,10 +42,17 @@ class ClientController extends Controller
             })
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
+                    $customer ="";
+                    $Vendor = "";
+                    if($row->customer == 1){
+                        $customer = '<a href="'.route('client.customer',$row->id).'" class=" btn btn-warning btn-sm Customer"  data-id ="'.$row->id.'"><i class="fa fa-user"></i></a> ';
+                    }
+                    if($row->Vendor == 1){
+                        $Vendor = '<a href="'.route('client.vendor',$row->id).'" class=" btn btn-info btn-sm Vendor"  data-id ="'.$row->id.'"><i class="fab fa-slideshare"></i></a> ';
+                    }
+                        $btn = '<a href="'.route('client.edit',$row->id).'" class=" btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;';
 
-                        $btn = '<a href="'.route('client.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;';
-
-                        return $btn;
+                        return $btn.$customer.$Vendor;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -107,7 +114,7 @@ class ClientController extends Controller
             'address_line3'=>'required',
             'country'=>'required',
         );
-        
+
         if(!empty($request->billing_status) && $request->billing_status == 'active'){
             $rules['billing_class'] = 'required';
             $rules['billing_type'] = 'required';
@@ -152,7 +159,7 @@ class ClientController extends Controller
             $billingdata["billing_startdate"] = $request->billing_startdate;
             $billingdata["billing_cycle"] = $request->billing_cycle;
             if($request->billing_cycle == 'in_specific_days'){
-                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;   
+                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;
             }elseif ($request->billing_cycle == 'monthly_anniversary') {
                 $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_monthly;
             }elseif ($request->billing_cycle == 'weekly') {
@@ -165,7 +172,7 @@ class ClientController extends Controller
             $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;
             $billingdata["next_invoice_date"] = $request->next_invoice_date;
             $billingdata["next_charge_date"] = $request->next_charge_date;
-            
+
             if(Billing::create($billingdata)){
                 return response()->json(['message' =>  __('Account Created Successfully'),'success'=>true,'redirect_url' => route('client.index')]);
             }
@@ -291,7 +298,7 @@ class ClientController extends Controller
             $billingdata["billing_startdate"] = $request->billing_startdate;
             $billingdata["billing_cycle"] = $request->billing_cycle;
             if($request->billing_cycle == 'in_specific_days'){
-                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;   
+                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;
             }elseif ($request->billing_cycle == 'monthly_anniversary') {
                 $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_monthly;
             }elseif ($request->billing_cycle == 'weekly') {
@@ -346,4 +353,50 @@ class ClientController extends Controller
         }
         return $user_ids;
     }
+
+    public function customer(Request $request)
+    {
+        return view('client.customer.index');
+    }
+    public function customers(Request $request)
+    {
+        if($request->name == "Customer Rate"){
+            return view('client.customer.customer_rate');
+        }
+        if($request->name == "Settings"){
+            return view('client.customer.setting');
+        }
+        if($request->name == "Download Rate Sheet"){
+            return view('client.customer.download');
+        }
+        if($request->name == "History"){
+            return view('client.customer.history');
+        }
+    }
+
+    public function vendor(Request $request)
+    {
+        return view('client.vendor.index');
+    }
+    public function vendors(Request $request){
+        if($request->name == "Vendor Rate"){
+            return view('client.vendor.vendor_rate');
+        }
+        if($request->name == "Settings"){
+            return view('client.vendor.setting');
+        }
+        if($request->name == "Vender Rate Download"){
+            return view('client.vendor.download');
+        }
+        if($request->name == "Vendor Rate History"){
+            return view('client.vendor.history');
+        }
+        if($request->name == "Blocking"){
+            return view('client.vendor.blocking');
+        }
+        if($request->name == "Preference"){
+            return view('client.vendor.preference');
+        }
+    }
+
 }

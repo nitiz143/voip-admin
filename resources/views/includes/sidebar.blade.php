@@ -67,7 +67,7 @@
           </li>
 
           <li class="nav-item ">
-            <a href="{{url('/client')}}" class="nav-link {{ Request::is('client') ? 'active' : '' }} ">
+            <a href="{{url('/client')}}" class="nav-link {{ Request::is('client','client/*','client-customer/*','client-vendor/*') ? 'active' : '' }} ">
                 {{-- <i class="nav-icon fas fa-phone-alt"></i> --}}
                 <i class="nav-icon fas fa-file-alt"></i>
               <p>
@@ -112,11 +112,11 @@
               <p>
                 Cron Job
               </p>
-            </a>  
+            </a>
           </li>
 
           <li class="nav-item">
-            <a href="{{url('/setting')}}" class="nav-link {{ Request::is('setting') ? 'active' : '' }} ">
+            <a href="{{url('/setting')}}" class="nav-link {{ Request::is('setting','setting/*') ? 'active' : '' }} ">
                 <i class="nav-icon fa fa-cog"></i>
               <p>
                 Settings

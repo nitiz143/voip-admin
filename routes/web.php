@@ -34,6 +34,10 @@ Route::group(['middleware' => ['auth','activity']], function () {
     // Route::get('autocomplete','App\Http\Controllers\UserController@autocomplete')->name('autocomplete');
     Route::resource('/crm','App\Http\Controllers\CRMController');
     Route::resource('/client','App\Http\Controllers\ClientController');
+    Route::get('client-customer/{id}','App\Http\Controllers\ClientController@customer')->name('client.customer');
+    Route::get('client-vendor/{id}','App\Http\Controllers\ClientController@vendor')->name('client.vendor');
+    Route::get('customers','App\Http\Controllers\ClientController@customers')->name('customers');
+    Route::get('vendors','App\Http\Controllers\ClientController@vendors')->name('Vendors');
     Route::get('/getClient/{id}','App\Http\Controllers\CRMController@ImportClient')->name('getClient');
     Route::resource('/cron','App\Http\Controllers\CronJobController');
     Route::resource('/setting','App\Http\Controllers\SettingController');
