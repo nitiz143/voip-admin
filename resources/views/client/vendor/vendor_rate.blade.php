@@ -44,7 +44,9 @@
                             </div>
                             <label for="field-1" class="col-sm-2 ">Trunk</label>
                             <div class="col-sm-2">
-                                <select class="custom-select form-control" id="ct_trunk" name="Trunk"></select>
+                                <select class="custom-select form-control" id="ct_trunk" name="Trunk">
+
+                                </select>
                             </div>
                             <label for="field-2" class="col-sm-2">Discontinued Codes</label>
                             <div class="col-sm-1">

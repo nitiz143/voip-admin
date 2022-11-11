@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Trunk;
+use App\Models\VendorTrunk;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -315,7 +317,7 @@ class ClientController extends Controller
             $billingdata["next_charge_date"] = $request->next_charge_date;
             $billingdata["outbound_discount_plan"] = $request->outbound_discount_plan;
             $billingdata["inbound_discount_plan"] = $request->inbound_discount_plan;
-            Billing::updateOrCreate(['id' => $request->billing_id],$billingdata);
+            Billing::updateOrCreate();
 
          return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => route('client.index')]);
 
@@ -380,10 +382,17 @@ class ClientController extends Controller
     }
     public function vendors(Request $request){
         if($request->name == "Vendor Rate"){
+            $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
+            // $trunks =[];
+            // foreach ($vender_trunks as $key => $value) {
+            //     $trunks = Trunk::where('id',$value->trunkid)->first();
+            // }
             return view('client.vendor.vendor_rate');
         }
         if($request->name == "Settings"){
-            return view('client.vendor.setting');
+            $trunks = Trunk::with('vendors')->get();
+            $vender_trunk = VendorTrunk::where('vendor_id',$request->id)->get();
+            return view('client.vendor.setting',compact('trunks','vender_trunk'));
         }
         if($request->name == "Vender Rate Download"){
             return view('client.vendor.download');
@@ -397,6 +406,20 @@ class ClientController extends Controller
         if($request->name == "Preference"){
             return view('client.vendor.preference');
         }
+    }
+    public function vendortrunk(Request $request){
+        foreach($request->VendorTrunk as $trunk){
+           if(!empty($trunk['status'])){
+            $data['prefix'] = $trunk['prefix'] ?? "";
+            $data['status'] = $trunk['status'] ?? "";
+            $data['vendor_id'] = $request->id ?? "";
+            $data['codedeck'] = $trunk['codedeck'] ?? "" ;
+            $data['prefix_cdr'] = $trunk['prefix_cdr'] ?? "";
+            $data['trunkid'] = $trunk['trunkid'];
+            VendorTrunk::updateOrCreate(['id' => $trunk['vendor_trunk_id']],$data);
+           }
+        }
+        return back();
     }
 
 }

@@ -90,7 +90,6 @@
                                                 </div>
                                             </li>
                                         </ul>
-
                                     </div>
                                 </div>
                                 <div class="panel-body tabs-menu-body">
@@ -241,13 +240,13 @@
     $(document).ready(function(){
 
         $('#tab5').show();
-        $('#vendor').addClass('active');
-        $('#setting').removeClass('active');
+        $('#vendor').removeClass('active');
+        $('#setting').addClass('active');
         $('#download').removeClass('active');
         $('#history').removeClass('active');
         $('#blocking').removeClass('active');
         $('#preference').removeClass('active');
-        var name = $('#vendor').data('name');
+        var name = $('#setting').data('name');
         $.ajax({
                 url:"{{route('Vendors')}}",
                 method:"get",
