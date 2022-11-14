@@ -1,13 +1,19 @@
+<style>
+    .datatable tr.selected{
+         background:#EDC171;
+     }
+ </style>
 <div class="row">
     <div class="col-md-12">
-        <form  id="CustomerTrunk-form" method="post" action="" >
+        <form  id="CustomerTrunk-form" method="post" action="{{route('Customer.trunk',@request()->id)}}">
+            @csrf
         <div class="card card-primary" data-collapsed="0">
             <div class="card-header">
                 <div class="card-title">
                     Outgoing
                 </div>
-                <div class="card-options float-right">
-                    <a href="#" data-rel="collapse"><i class="fas fa-angle-down"></i></a>
+                <div class="form-check form-switch float-right">
+                    <a href="#" data-rel="collapse" id="switch"><i class="fas fa-angle-down"></i></a>
                 </div>
             </div>
             <div class="card-body">
@@ -25,6 +31,67 @@
                             <th width="4%">Status</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @if(!empty($trunks))
+                            @foreach ( $trunks as $index=>$trunk )
+                                <tr class="odd gradeX @if(!$trunk->customers->isEmpty()) @if($trunk->customers[0]->customer_id == @request()->id) selected @endif @endif">
+                                    <td>
+                                        <input type="checkbox" name="CustomerTrunk[{{$trunk->id}}][status]" class="rowcheckbox" value="1" @if(!$trunk->customers->isEmpty()) @if($trunk->customers[0]->customer_id == @request()->id) checked @endif @endif>
+                                    </td>
+                                    <td>
+                                        {{$trunk->title}}
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="CustomerTrunk[{{$trunk->id}}][prefix]" value="@if(!$trunk->customers->isEmpty()) @if($trunk->customers[0]->customer_id == @request()->id) {{$trunk->customers[0]->prefix}} @endif @endif"/>
+                                    </td>
+                                    <td class="center" style="text-align:center">
+                                        <input type="checkbox" value="1" name="CustomerTrunk[{{$trunk->id}}][includePrefix]" @if(!$trunk->customers->isEmpty()) @if($trunk->customers[0]->customer_id == @request()->id)  @if($trunk->customers[0]->includePrefix == 1)
+                                        checked
+                                        @endif  @endif @endif>
+                                    </td>
+                                    <td class="center" style="text-align:center">
+                                        <input type="checkbox" value="1" name="CustomerTrunk[{{$trunk->id}}][prefix_cdr]"  @if(!$trunk->customers->isEmpty()) @if($trunk->customers[0]->customer_id == @request()->id)  @if($trunk->customers[0]->prefix_cdr == 1)
+                                        checked
+                                        @endif  @endif @endif>
+                                    </td>
+                                    <td class="center" style="text-align:center">
+                                        <input type="checkbox" value="1" name="CustomerTrunk[{{$trunk->id}}][routine_plan_status]"  @if(!$trunk->customers->isEmpty()) @if($trunk->customers[0]->customer_id == @request()->id)  @if($trunk->customers[0]->routine_plan_status == 1)
+                                        checked
+                                        @endif  @endif @endif>
+                                    </td>
+                                    <td>
+                                        <select class=" codedeckid custom-select form-control" name="CustomerTrunk[{{$trunk->id}}][codedeck]">
+                                            <option value="">Select</option>
+                                            <option value="3" @if(!$trunk->customers->isEmpty())  @if($trunk->customers[0]->customer_id == @request()->id) {{$trunk->customers[0]->codedeck == '3' ? "selected" : ""}} @endif @endif>Customer Codedeck</option>
+                                            <option value="2" @if(!$trunk->customers->isEmpty())  @if($trunk->customers[0]->customer_id == @request()->id) {{$trunk->customers[0]->codedeck == '2' ? "selected" : ""}} @endif  @endif>Customer Codes</option>
+                                            <option value="1" @if(!$trunk->customers->isEmpty())  @if($trunk->customers[0]->customer_id == @request()->id) {{$trunk->customers[0]->codedeck == '1' ? "selected" : ""}} @endif  @endif>Vendor Codes</option>
+                                        </select>
+                                        <input type="hidden" name="codedeckid" value=" @if(!$trunk->customers->isEmpty())  @if($trunk->customers[0]->customer_id == @request()->id) {{$trunk->customers[0]->codedeck}} @endif  @endif">
+                                        <input type="hidden" id="trunkid" name="CustomerTrunk[{{$trunk->id}}][trunkid]" value="{{$trunk->id}}">
+                                    </td>
+                                    <td>
+                                        <select class="ratetableid custom-select form-control" id="ratetableid" name="CustomerTrunk[{{$trunk->id}}][rate_table_id]">
+                                            <option value="">Select</option>
+                                        <input type="hidden" name="ratetableid" value="">
+                                    </td>
+                                    <td>
+                                        @if(!$trunk->customers->isEmpty())
+                                            @if($trunk->customers[0]->customer_id == @request()->id)
+                                                @if($trunk->customers[0]->status == 1)
+                                                    Active
+                                                @endif
+                                            @else
+                                                Inactive
+                                            @endif
+                                        @else
+                                            Inactive
+                                        @endif
+                                    </td>
+                                    <input type="hidden" id="customer_trunk_id" name="CustomerTrunk[{{$trunk->id}}][customer_trunk_id]" value="@if(!$trunk->customers->isEmpty())  @if($trunk->customers[0]->customer_id == @request()->id) {{$trunk->customers[0]->id}} @endif  @endif">
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
 
                 </table>
                 <p class="float-right mt-4" >
@@ -69,5 +136,112 @@
         </form>
     </div>
 </div>
-</div>
-</div>
+
+<script>
+//    var  ratabale = @json($ratetable);
+//    console.log(ratabale)
+ $(document).ready(function ($) {
+        // Replace Checboxes
+        $(".pagination a").click(function (ev) {
+        replaceCheckboxes();
+        });
+        $('#table-4 tbody .rowcheckbox').click(function () {
+            if( $(this).prop("checked")){
+                $(this).parent().parent().addClass('selected');
+            }else{
+                $(this).parent().parent().removeClass('selected');
+            }
+        });
+        $("#selectall").click(function (ev) {
+
+            var is_checked = $(this).is(':checked');
+
+            $('#table-4 tbody tr').each(function (i, el) {
+                if(is_checked){
+                    $(this).find('.rowcheckbox').prop("checked",true);
+                    $(this).addClass('selected');
+                }else{
+                    $(this).find('.rowcheckbox').prop("checked",false);
+                    $(this).removeClass('selected');
+                }
+            });
+        });
+
+
+            $("#customer-trunks-submit").click(function () {
+                $("#CustomerTrunk-form").submit();
+                return false;
+            });
+
+        // var prev_val;
+        // $('.codedeckid').on('select2-open',function(e){
+        //     prev_val = $(this).val();
+
+        // }).on('change',function (e) {
+        //     var self = $(this);
+        //     var current_obj = self;
+	    //     var trunkid = self.parent().children('[name="trunkid"]').val();
+	    //     //var RateTableID = self.parent().next().find('[name="[CustomerTrunk['+trunkid+'][RateTableID]"]');
+        //     var RateTableID = self.parent().next().find('select.ratetableid');
+
+        //     var json = JSON.parse(ratabale);
+
+        //     //if( typeof  json[trunkid] != 'undefined'){
+        //         var filtereddata = [];
+        //         /*if(typeof json[trunkid][self.val()] !='undefined'){
+        //             filtereddata = json[trunkid][self.val()];
+        //         }*/
+
+        //         filtereddata = json[self.val()];
+
+        //         //convert json
+        //         if(filtereddata.length != 0) {
+        //             filtereddata= filtereddata.map(({id, text}) =>  ({[id]: text}));
+        //             var filtereddata = Object.assign(...filtereddata);
+        //         }
+
+        //         self.parent().next().find('select.ratetableid').select2('destroy');
+        //         rebuildSelect2(RateTableID,filtereddata,'Select');
+        //         opts = {
+        //             allowClear: false,
+        //             minimumResultsForSearch:Infinity,
+        //             dropdownCssClass:'no-search'
+        //         };
+        //         self.parent().next().find('select.ratetableid').select2(opts);
+        //         self.select2('container').find('.select2-search').addClass ('hidden') ;
+        //         RateTableID = self.parent().next().find('select.ratetableid');
+        //     });
+
+                $('.codedeckid').on('change',function (e) {
+                    codedeckid = $(this).val();
+                   var id = $('#trunkid').val();
+
+                $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                        });
+                    $.ajax({
+                        type: "post",
+                        url: "{{ route('customerCodedeckid.update') }}",
+                        data: {
+                        id: id,
+                        codedeckid: codedeckid
+                        },
+
+                        success: function(res) {
+                            $.each(res.rate_table, function (key, value) {
+
+                                $("#ratetableid").app('<option value="' + value
+                                    .id + '">' + value.name + '</option>');
+
+                            });
+                        }
+                    });
+            });
+
+    });
+
+
+
+</script>

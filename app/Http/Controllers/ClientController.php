@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Trunk;
+use App\Models\RateTable;
 use App\Models\VendorTrunk;
+use App\Models\CustomerTrunk;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -317,7 +319,7 @@ class ClientController extends Controller
             $billingdata["next_charge_date"] = $request->next_charge_date;
             $billingdata["outbound_discount_plan"] = $request->outbound_discount_plan;
             $billingdata["inbound_discount_plan"] = $request->inbound_discount_plan;
-            Billing::updateOrCreate();
+            Billing::updateOrCreate(['id' => $request->billing_id],$billingdata);
 
          return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => route('client.index')]);
 
@@ -363,17 +365,61 @@ class ClientController extends Controller
     public function customers(Request $request)
     {
         if($request->name == "Customer Rate"){
-            return view('client.customer.customer_rate');
+
+            $vender_trunks = CustomerTrunk::where('customer_id',$request->id)->get();
+            $trunks =array();
+            if(!empty($vender_trunks)){
+                foreach ($vender_trunks as $key => $value) {
+                    $trunks[] = Trunk::where('id',$value->trunkid)->first();
+                }
+            }
+            return view('client.customer.customer_rate',compact('trunks'));
         }
         if($request->name == "Settings"){
-            return view('client.customer.setting');
+           $collect=  RateTable::select("id" ,"name")->get();
+           $ratetable = json_encode($collect);
+            $value = $request->id;
+            $trunks = Trunk::with(['customers' => function($q) use($value) {
+                $q->where('customer_id', '=', $value); // '=' is optional
+            }])->get();
+            return view('client.customer.setting',compact('trunks','ratetable'));
         }
         if($request->name == "Download Rate Sheet"){
-            return view('client.customer.download');
+            $vender_trunks = CustomerTrunk::where('customer_id',$request->id)->get();
+            $trunks =array();
+            if(!empty($vender_trunks)){
+                foreach ($vender_trunks as $key => $value) {
+                    $trunks[] = Trunk::where('id',$value->trunkid)->first();
+                }
+            }
+            return view('client.customer.download',compact('trunks'));
         }
         if($request->name == "History"){
             return view('client.customer.history');
         }
+    }
+
+    public function customertrunk(Request $request){
+
+        foreach($request->CustomerTrunk as $trunk){
+            if(!empty($trunk['status'])){
+
+                $data['prefix'] = $trunk['prefix'] ?? "";
+                $data['status'] = $trunk['status'] ?? "";
+                $data['customer_id'] = $request->id ?? "";
+                $data['codedeck'] = $trunk['codedeck'] ?? "" ;
+                $data['rate_table_id'] = $trunk['rate_table_id'] ?? "" ;
+                $data['prefix_cdr'] = $trunk['prefix_cdr'] ?? "0";
+                $data['includePrefix'] = $trunk['includePrefix'] ?? "0";
+                $data['routine_plan_status'] = $trunk['routine_plan_status'] ?? "0";
+                $data['trunkid'] = $trunk['trunkid'];
+                CustomerTrunk::updateOrCreate(['id' => $trunk['customer_trunk_id']],$data);
+            }
+            if(empty($trunk['status'])){
+                CustomerTrunk::where('id' , $trunk['customer_trunk_id'])->delete();
+            }
+        }
+        return back();
     }
 
     public function vendor(Request $request)
@@ -382,29 +428,64 @@ class ClientController extends Controller
     }
     public function vendors(Request $request){
         if($request->name == "Vendor Rate"){
+
             $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
-            // $trunks =[];
-            // foreach ($vender_trunks as $key => $value) {
-            //     $trunks = Trunk::where('id',$value->trunkid)->first();
-            // }
-            return view('client.vendor.vendor_rate');
+            $trunks =array();
+            if(!empty($vender_trunks)){
+                foreach ($vender_trunks as $key => $value) {
+                    $trunks[] = Trunk::where('id',$value->trunkid)->first();
+                }
+            }
+
+
+            return view('client.vendor.vendor_rate',compact('trunks'));
         }
         if($request->name == "Settings"){
-            $trunks = Trunk::with('vendors')->get();
-            $vender_trunk = VendorTrunk::where('vendor_id',$request->id)->get();
-            return view('client.vendor.setting',compact('trunks','vender_trunk'));
+
+            $value = $request->id;
+            $trunks = Trunk::with(['vendors' => function($q) use($value) {
+                $q->where('vendor_id', '=', $value); // '=' is optional
+            }])->get();
+            return view('client.vendor.setting',compact('trunks'));
         }
         if($request->name == "Vender Rate Download"){
-            return view('client.vendor.download');
+
+            $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
+            $trunks =array();
+            if(!empty($vender_trunks)){
+                foreach ($vender_trunks as $key => $value) {
+                    $trunks[] = Trunk::where('id',$value->trunkid)->first();
+                }
+            }
+
+            return view('client.vendor.download',compact('trunks'));
         }
         if($request->name == "Vendor Rate History"){
             return view('client.vendor.history');
         }
         if($request->name == "Blocking"){
-            return view('client.vendor.blocking');
+
+            $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
+            $trunks =array();
+            if(!empty($vender_trunks)){
+                foreach ($vender_trunks as $key => $value) {
+                    $trunks[] = Trunk::where('id',$value->trunkid)->first();
+                }
+            }
+
+            return view('client.vendor.blocking ',compact('trunks'));
         }
         if($request->name == "Preference"){
-            return view('client.vendor.preference');
+
+            $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
+            $trunks =array();
+            if(!empty($vender_trunks)){
+                foreach ($vender_trunks as $key => $value) {
+                    $trunks[] = Trunk::where('id',$value->trunkid)->first();
+                }
+            }
+
+            return view('client.vendor.preference',compact('trunks'));
         }
     }
     public function vendortrunk(Request $request){
@@ -414,7 +495,7 @@ class ClientController extends Controller
             $data['status'] = $trunk['status'] ?? "";
             $data['vendor_id'] = $request->id ?? "";
             $data['codedeck'] = $trunk['codedeck'] ?? "" ;
-            $data['prefix_cdr'] = $trunk['prefix_cdr'] ?? "";
+            $data['prefix_cdr'] = $trunk['prefix_cdr'] ?? "0";
             $data['trunkid'] = $trunk['trunkid'];
             VendorTrunk::updateOrCreate(['id' => $trunk['vendor_trunk_id']],$data);
            }
@@ -423,6 +504,12 @@ class ClientController extends Controller
            }
         }
         return back();
+    }
+
+    public function fetchRateTable(Request $request)
+    {
+        $data['rate_table'] = RateTable::where("codeDeckId",$request->codedeckid)->get();
+        return response()->json($data);
     }
 
 }

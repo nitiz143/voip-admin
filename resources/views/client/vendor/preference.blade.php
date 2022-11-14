@@ -33,7 +33,14 @@
 
                         <label for="field-1" class="col-sm-1 control-label">Trunk</label>
                         <div class="col-sm-3">
-                            <select class=" form-control select2" name="Trunk"><option value="">Select</option><option value="2" selected="selected">CLI</option><option value="3">NCLI</option><option value="4">Call Center</option></select>
+                            <select class=" form-control select2" name="Trunk">
+                                <option value="">Select</option>
+                                @if(!empty($trunks))
+                                    @foreach ( $trunks as $trunk)
+                                        <option value="{{$trunk->id}}">{{$trunk->title}} </option>
+                                    @endforeach
+                                @endif
+                            </select>
                         </div>
 
                         <label class="col-sm-1 control-label">Timezone</label>

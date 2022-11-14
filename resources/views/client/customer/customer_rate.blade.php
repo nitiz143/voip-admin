@@ -47,7 +47,14 @@
 
                             <label for="field-1" class="col-sm-1 ">Trunk</label>
                             <div class="col-sm-2">
-                                <select class="custom-select form-control" id="ct_trunk" name="Trunk"></select>
+                                <select class="custom-select form-control" id="ct_trunk" name="Trunk">
+                                    @if(!empty($trunks))
+                                        @foreach ( $trunks as $trunk)
+                                            <option value="{{$trunk->id}}">{{$trunk->title}} </option>
+                                        @endforeach
+                                    @endif
+                                </select>
+
                             </div>
 
                             <label for="field-1" class="col-sm-1">Effective</label>

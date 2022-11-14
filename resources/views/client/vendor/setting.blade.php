@@ -43,7 +43,7 @@
                                         </td>
                                         <td class="center" style="text-align:center">
                                             <input type="checkbox" value="1" name="VendorTrunk[{{$trunk->id}}][prefix_cdr]"
-                                            @if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->prefix}}  @if($trunk->vendors[0]->prefix_cdr == 1)
+                                            @if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id)  @if($trunk->vendors[0]->prefix_cdr == 1)
                                             checked
                                             @endif  @endif  @endif>
                                         </td>
@@ -54,7 +54,7 @@
                                                 <option value="2" @if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->codedeck == '2' ? "selected" : ""}} @endif  @endif>Customer Codes</option>
                                                 <option value="1" @if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->codedeck == '1' ? "selected" : ""}} @endif  @endif>Vendor Codes</option>
                                             </select>
-                                            <input type="hidden" name="prev_codedeckid" value="">
+                                            <input type="hidden" name="prev_codedeckid" value="@if(!$trunk->vendors->isEmpty())@if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->codedeck}}@endif @endif">
                                             <input type="hidden" name="VendorTrunk[{{$trunk->id}}][trunkid]" value="{{$trunk->id}}">
                                         </td>
                                         <td>
@@ -70,7 +70,7 @@
                                                 Inactive
                                             @endif
                                         </td>
-                                        <input type="hidden" name="VendorTrunk[{{$trunk->id}}][vendor_trunk_id]" value="@if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->id}}  @endif  @endif"/>
+                                        <input type="hidden" name="VendorTrunk[{{$trunk->id}}][vendor_trunk_id]" value="@if(!$trunk->vendors->isEmpty())@if($trunk->vendors[0]->vendor_id == @request()->id){{$trunk->vendors[0]->id}}@endif @endif"/>
                                     </tr>
                                 @endforeach
                             @endif

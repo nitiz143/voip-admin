@@ -141,11 +141,11 @@
     $(document).ready(function(){
 
         $('#tab5').show();
-        $('#customer').addClass('active');
-        $('#Setting').removeClass('active');
+        $('#customer').removeClass('active');
+        $('#Setting').addClass('active');
         $('#Download').removeClass('active');
         $('#History').removeClass('active');
-        var name = $('#customer').data('name');
+        var name = $('#Setting').data('name');
         $.ajax({
                 url:"{{route('customers')}}",
                 method:"get",

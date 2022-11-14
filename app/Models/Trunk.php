@@ -17,4 +17,8 @@ class Trunk extends Model
     {
         return $this->hasMany(VendorTrunk::class,'trunkid');
     }
+    public function customers()
+    {
+        return $this->hasMany(CustomerTrunk::class,'trunkid');
+    }
 }

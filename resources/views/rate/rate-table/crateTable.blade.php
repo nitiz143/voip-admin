@@ -10,7 +10,9 @@
                     <label for="field-5" class="control-label">Codedeck</label>
                     <select class="form-control select2" name="codeDeckId">
                         <option value="" selected="selected">Select Codedeck</option>
-                        <option value="1" {{@$table->codeDeckId == 1 ? 'selected' : ''}}>test</option>
+                        <option value="3" {{@$table->codeDeckId == 3 ? 'selected' : ''}}>Customer Codedeck</option>
+                        <option value="2" {{@$table->codeDeckId == 2 ? 'selected' : ''}}>Customer Codes</option>
+                        <option value="1" {{@$table->codeDeckId == 1 ? 'selected' : ''}}>Vendor Codes</option>
                     </select>
                 </div>
             </div>
@@ -19,7 +21,11 @@
                     <label for="field-5" class="control-label">Trunk</label>
                     <select class="select2 form-control  " data-modal="add-new-modal-trunk" data-active="0" data-type="trunk" name="trunkId">
                         <option value="" selected="selected">Select</option>
-                        <option value="1" {{@$table->trunkId == 1 ? 'selected' : ''}}>test</option>
+                        @if(!empty($trunks))
+                            @foreach ($trunks as $trunk )
+                            <option value="{{$trunk->id}}"  {{@$table->trunkId == $trunk->id ? 'selected' : ''}}>{{$trunk->title}}</option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
@@ -31,7 +37,7 @@
                     <label for="field-5" class="control-label">Currency</label>
                     <select class="form-control select2" name="currency">
                         <option value="" selected="selected">Select Currency</option>
-                        <option value="1" {{@$table->currency == 1 ? 'selected' : ''}}>test</option>
+                        <option value="USD" {{@$table->currency == "USD" ? 'selected' : ''}}>USD</option>
                     </select>
                 </div>
             </div>
@@ -39,7 +45,7 @@
                 <div class="form-group ">
                     <label for="field-5" class="control-label">RateTable Name</label>
                     <input type="text" name="name" class="form-control" value="{{@$table->name}}">
-                    
+
                 </div>
             </div>
         </div>
@@ -48,7 +54,7 @@
                 <div class="form-group ">
                     <label for="field-5" class="control-label">Round Charged Amount </label>
                     <input type="number" name="RoundChargedAmount" min="1" class="form-control" value="{{@$table->RoundChargedAmount}}">
-                    
+
                 </div>
             </div>
         </div>

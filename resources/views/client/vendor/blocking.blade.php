@@ -44,6 +44,11 @@
                                                                 <div class="col-sm-3">
                                                                     <select class="custom-select form-control select2" name="Trunk">
                                                                         <option value="">Select</option>
+                                                                        @if(!empty($trunks))
+                                                                            @foreach ( $trunks as $trunk)
+                                                                                <option value="{{$trunk->id}}">{{$trunk->title}} </option>
+                                                                            @endforeach
+                                                                        @endif
                                                                     </select>
                                                                 </div>
                                                                 <label class="col-sm-2 control-label float-right">Timezone</label>
@@ -110,6 +115,11 @@
                                                                 <div class="col-sm-3">
                                                                     <select class="custom-select form-control select2" name="Trunk">
                                                                         <option value="">Select</option>
+                                                                        @if(!empty($trunks))
+                                                                            @foreach ( $trunks as $trunk)
+                                                                                <option value="{{$trunk->id}}">{{$trunk->title}} </option>
+                                                                            @endforeach
+                                                                        @endif
                                                                     </select>
                                                                 </div>
                                                                 <label class="col-sm-2 control-label float-right">Timezone</label>

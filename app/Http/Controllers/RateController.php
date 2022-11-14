@@ -7,6 +7,7 @@ use App\Models\RateUpload;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Validator;
 use App\Models\RateTable;
+use App\Models\Trunk;
 use Yajra\DataTables\DataTables;
 
 class RateController extends Controller
@@ -32,7 +33,8 @@ class RateController extends Controller
         if($request->id){
             $table = RateTable::find($request->id);
         }
-        return view('rate.rate-table.crateTable',compact('table'));
+        $trunks = Trunk::select('*')->get();
+        return view('rate.rate-table.crateTable',compact('table','trunks'));
     }
 
     /**
@@ -42,9 +44,9 @@ class RateController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {        
+    {
         $rules = array('csv_file' => 'required|mimes:csv,xlsx,txt');
-        
+
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails())
         {

@@ -18,7 +18,11 @@
                     <div class="col-sm-3">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="Trunks[]" value="2" >CLI
+                                @if(!empty($trunks))
+                                    @foreach ( $trunks as $trunk)
+                                        <input type="checkbox" name="Trunks[]" value="{{$trunk->id}}" >{{$trunk->title}}
+                                    @endforeach
+                                @endif
                             </label>
                         </div>
                     </div>
