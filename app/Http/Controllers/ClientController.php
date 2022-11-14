@@ -418,6 +418,9 @@ class ClientController extends Controller
             $data['trunkid'] = $trunk['trunkid'];
             VendorTrunk::updateOrCreate(['id' => $trunk['vendor_trunk_id']],$data);
            }
+           if(empty($trunk['status'])){
+            VendorTrunk::where('id' , $trunk['vendor_trunk_id'])->delete();
+           }
         }
         return back();
     }

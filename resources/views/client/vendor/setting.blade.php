@@ -31,23 +31,46 @@
                         <tbody>
                             @if(!empty($trunks))
                                 @foreach ( $trunks as $index=>$trunk )
-                                    <tr class="odd gradeX @if(!$trunk->vendors->isEmpty())  selected  @endif">
-                                        <td><input type="checkbox" name="VendorTrunk[{{$trunk->id}}][status]" class="rowcheckbox" value="1" @if(!$trunk->vendors->isEmpty())  checked  @endif></td>
-                                        <td>{{$trunk->title}}</td>
-                                        <td><input type="text" class="form-control" name="VendorTrunk[{{$trunk->id}}][prefix]" value="@if(!$trunk->vendors->isEmpty()) {{$trunk->vendors[0]->prefix}}   @endif"/></td>
-                                        <td class="center" style="text-align:center"><input type="checkbox" value="1" name="VendorTrunk[{{$trunk->id}}][prefix_cdr]"></td>
+                                    <tr class="odd gradeX @if(!$trunk->vendors->isEmpty()) @if($trunk->vendors[0]->vendor_id == @request()->id) selected @endif @endif">
+                                        <td>
+                                            <input type="checkbox" name="VendorTrunk[{{$trunk->id}}][status]" class="rowcheckbox" value="1" @if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id)  checked @endif @endif>
+                                        </td>
+                                        <td>
+                                            {{$trunk->title}}
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="VendorTrunk[{{$trunk->id}}][prefix]" value="@if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->prefix}}  @endif  @endif"/>
+                                        </td>
+                                        <td class="center" style="text-align:center">
+                                            <input type="checkbox" value="1" name="VendorTrunk[{{$trunk->id}}][prefix_cdr]"
+                                            @if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->prefix}}  @if($trunk->vendors[0]->prefix_cdr == 1)
+                                            checked
+                                            @endif  @endif  @endif>
+                                        </td>
                                         <td>
                                             <select class="custom-select form-control" name="VendorTrunk[{{$trunk->id}}][codedeck]">
                                                 <option value="">Select</option>
-                                                <option value="3" @if(!$trunk->vendors->isEmpty()) {{$trunk->vendors[0]->codedeck == '3' ? "selected" : ""}} @endif>Customer Codedeck</option>
-                                                <option value="2" @if(!$trunk->vendors->isEmpty()) {{$trunk->vendors[0]->codedeck == '2' ? "selected" : ""}}  @endif>Customer Codes</option>
-                                                <option value="1" @if(!$trunk->vendors->isEmpty()) {{$trunk->vendors[0]->codedeck == '1' ? "selected" : ""}}  @endif>Vendor Codes</option>
+                                                <option value="3" @if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->codedeck == '3' ? "selected" : ""}} @endif @endif>Customer Codedeck</option>
+                                                <option value="2" @if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->codedeck == '2' ? "selected" : ""}} @endif  @endif>Customer Codes</option>
+                                                <option value="1" @if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->codedeck == '1' ? "selected" : ""}} @endif  @endif>Vendor Codes</option>
                                             </select>
                                             <input type="hidden" name="prev_codedeckid" value="">
                                             <input type="hidden" name="VendorTrunk[{{$trunk->id}}][trunkid]" value="{{$trunk->id}}">
                                         </td>
-                                        <td>@if(!$trunk->vendors->isEmpty())  Active @else InActive  @endif </td>
-                                        <input type="hidden" name="VendorTrunk[{{$trunk->id}}][vendor_trunk_id]" value=""/>
+                                        <td>
+                                            @if(!$trunk->vendors->isEmpty())
+                                                @if($trunk->vendors[0]->vendor_id == @request()->id)
+                                                    @if($trunk->vendors[0]->status == 1)
+                                                        Active
+                                                    @endif
+                                                @else
+                                                    Inactive
+                                                @endif
+                                            @else
+                                                Inactive
+                                            @endif
+                                        </td>
+                                        <input type="hidden" name="VendorTrunk[{{$trunk->id}}][vendor_trunk_id]" value="@if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->id}}  @endif  @endif"/>
                                     </tr>
                                 @endforeach
                             @endif

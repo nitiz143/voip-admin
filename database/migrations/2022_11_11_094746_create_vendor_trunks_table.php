@@ -19,7 +19,7 @@ class CreateVendorTrunksTable extends Migration
             $table->string('prefix');
             $table->integer('codedeck');
             $table->integer('trunkid');
-            $table->tinyInteger('prefix_cdr');
+            $table->integer('prefix_cdr');
             $table->tinyInteger('status');
             $table->timestamps();
         });
