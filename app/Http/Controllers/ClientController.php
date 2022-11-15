@@ -376,13 +376,18 @@ class ClientController extends Controller
             return view('client.customer.customer_rate',compact('trunks'));
         }
         if($request->name == "Settings"){
-           $collect=  RateTable::select("id" ,"name")->get();
-           $ratetable = json_encode($collect);
             $value = $request->id;
             $trunks = Trunk::with(['customers' => function($q) use($value) {
                 $q->where('customer_id', '=', $value); // '=' is optional
             }])->get();
-            return view('client.customer.setting',compact('trunks','ratetable'));
+            $data =array();
+            foreach ($trunks as  $trunk) {
+                if(!$trunk->customers->isEmpty()){
+                    // $rate[]  = RateTable::where("id",$trunk->customers[0]->rate_table_id)->select('name')->get();
+                    $data[] = $trunk->customers[0];
+                }
+            }
+            return view('client.customer.setting',compact('trunks','data'));
         }
         if($request->name == "Download Rate Sheet"){
             $vender_trunks = CustomerTrunk::where('customer_id',$request->id)->get();
@@ -506,9 +511,15 @@ class ClientController extends Controller
         return back();
     }
 
+    public function updatecodeckid(Request $request)
+    {
+        VendorTrunk::where("id",$request->id)->update(['codedeck' => $request->codedeckid ]);
+        return response()->json(['message' =>  'change sucessfully']);
+    }
+
     public function fetchRateTable(Request $request)
     {
-        $data['rate_table'] = RateTable::where("codeDeckId",$request->codedeckid)->get();
+        $data['rate_table']= RateTable::where("codeDeckId",$request->codedeckid)->get();
         return response()->json($data);
     }
 

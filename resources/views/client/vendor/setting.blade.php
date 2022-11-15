@@ -48,7 +48,7 @@
                                             @endif  @endif  @endif>
                                         </td>
                                         <td>
-                                            <select class="custom-select form-control" name="VendorTrunk[{{$trunk->id}}][codedeck]">
+                                            <select class=" codedeckid custom-select form-control" name="VendorTrunk[{{$trunk->id}}][codedeck]">
                                                 <option value="">Select</option>
                                                 <option value="3" @if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->codedeck == '3' ? "selected" : ""}} @endif @endif>Customer Codedeck</option>
                                                 <option value="2" @if(!$trunk->vendors->isEmpty())  @if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->codedeck == '2' ? "selected" : ""}} @endif  @endif>Customer Codes</option>
@@ -56,6 +56,7 @@
                                             </select>
                                             <input type="hidden" name="prev_codedeckid" value="@if(!$trunk->vendors->isEmpty())@if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->codedeck}}@endif @endif">
                                             <input type="hidden" name="VendorTrunk[{{$trunk->id}}][trunkid]" value="{{$trunk->id}}">
+                                            <input type="hidden" name="vendor_trunk_id" value="@if(!$trunk->vendors->isEmpty())@if($trunk->vendors[0]->vendor_id == @request()->id) {{$trunk->vendors[0]->id}} @endif @endif">
                                         </td>
                                         <td>
                                             @if(!$trunk->vendors->isEmpty())
@@ -70,7 +71,8 @@
                                                 Inactive
                                             @endif
                                         </td>
-                                        <input type="hidden" name="VendorTrunk[{{$trunk->id}}][vendor_trunk_id]" value="@if(!$trunk->vendors->isEmpty())@if($trunk->vendors[0]->vendor_id == @request()->id){{$trunk->vendors[0]->id}}@endif @endif"/>
+                                        <input type="hidden" id="vendor_trunk_id" name="VendorTrunk[{{$trunk->id}}][vendor_trunk_id]" value="@if(!$trunk->vendors->isEmpty())@if($trunk->vendors[0]->vendor_id == @request()->id){{$trunk->vendors[0]->id}}@endif @endif"/>
+
                                     </tr>
                                 @endforeach
                             @endif
@@ -121,6 +123,42 @@ $(document).ready(function ($) {
         $("#vendor-trunks-submit").click(function () {
             $("#VendorTrunk-form").submit();
             return false;
+        });
+
+        $('.codedeckid').on('change',function (e) {
+            codedeckid = $(this).val();
+            var self = $(this);
+            var current_obj = self;
+            var id = self.parent().children('[name="vendor_trunk_id"]').val();
+            changeConfirmation = confirm("Are you sure? Related Rates will be deleted");
+                if(changeConfirmation){
+                    $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                    });
+                        $.ajax({
+                            type: "post",
+                            url: "{{route('vendorCodedeckid.update')}}",
+                            data: {
+                            id: id,
+                            codedeckid: codedeckid
+                            },
+                            success: function(response) {
+                                $('#global-loader').hide();
+                                if(response.success == false){
+                                    $.each(response.errors, function(k, e) {
+                                        $.notify(e, 'error');
+                                    });
+                                }
+                                else{
+                                    $.notify(response.message, 'success');
+                                }
+                            }
+                        });
+                }else{
+
+                }
         });
 
 });

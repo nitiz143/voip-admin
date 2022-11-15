@@ -75,7 +75,7 @@
                 <div class="row">
                     <label for="field-1" class="col-sm-3 control-label">Date</label>
                     <div class="col-sm-5">
-                        <input class="form-control datepicker" data-date-format="yyyy-mm-dd" placeholder="2022-11-10" data-startdate="2022-11-10" name="CustomDate" type="text" value="2022-11-10">
+                        <input type="date" class="form-control datepicker" data-date-format="yyyy-mm-dd" placeholder="2022-11-10" data-startdate="2022-11-10" name="CustomDate" type="text" value="2022-11-10">
                     </div>
                 </div>
             </div>
@@ -93,14 +93,14 @@
                 </div>
             </div>
             <h4 >Click <span class="label btn-info" onclick="$('.my_account_table-5').toggle();$('#table-5').toggle();"    style="cursor: pointer">here</span> to select additional customer accounts for bulk ratesheet download.</h4>
-            <div style="max-height: 500px; overflow-y: auto; overflow-x: hidden;" >
-                <div class="row my_account_table-5">
+            <div style="max-height: 500px; overflow-y: auto; overflow-x: hidden; " >
+                <div class="row my_account_table-5" style="display:none">
                     <div class="col-sm-4" style="float: right">
                         <select id="account_owners" class="custom-select form-control" name="account_owners">
                         </select>
                     </div>
                 </div>
-                <table class="table table-bordered datatable mt-4" id="table-5">
+                <table class="table table-bordered datatable mt-4" style="display:none" id="table-5">
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="selectallcust" name="customer[]" class="" /></th>
@@ -125,3 +125,28 @@
         </p>
     </div>
 </div>
+
+<script>
+        $(document).ready(function () {
+            $('#fileformat').on('change', function () {
+                var value = $(this).val();
+                if(value != "Vos 2.0" && value != "Vos 3.2" ){
+                    $("#filetype").html('<option value="">Select</option>');
+                }else{
+                    $("#filetype").html('<option value="">Select</option><option value="Text">Text</option><option value="Excel">Excel</option><option value="CSV">CSV</option>');
+                }
+
+            });
+            $("#fileeffective").on("change", function() {
+                if($(this).val() == "CustomDate") {
+                    $(".DateFilter").show();
+                } else {
+                    $(".DateFilter").hide();
+                }
+            });
+
+
+        });
+
+
+</script>

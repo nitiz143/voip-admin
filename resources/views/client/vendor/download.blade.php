@@ -76,7 +76,7 @@
                 <div class="row">
                     <label for="field-1" class="col-sm-3 control-label">Date</label>
                     <div class="col-sm-5">
-                        <input class="form-control datepicker" data-date-format="yyyy-mm-dd" placeholder="2022-11-10" data-startdate="2022-11-10" name="CustomDate" type="text" value="2022-11-10">
+                        <input type="date" class="form-control datepicker" data-date-format="yyyy-mm-dd" placeholder="2022-11-10" data-startdate="2022-11-10" name="CustomDate" type="text" value="2022-11-10">
                     </div>
                 </div>
             </div>
@@ -107,3 +107,21 @@
         </p>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('#fileformat').on('change', function () {
+            $("#filetype").html('<option value="">Select</option><option value="Text">TXT</option><option value="Excel">Excel</option><option value="CSV">CSV</option>');
+
+        });
+    });
+
+    $("#fileeffective").on("change", function() {
+        if($(this).val() == "CustomDate") {
+            $(".DateFilter").show();
+        } else {
+            $(".DateFilter").hide();
+        }
+    });
+
+</script>
