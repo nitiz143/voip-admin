@@ -75,6 +75,7 @@
                                         <input type="hidden" name="codedeckid" value=" @if(!$trunk->customers->isEmpty())  @if($trunk->customers[0]->customer_id == @request()->id) {{$trunk->customers[0]->codedeck}} @endif  @endif">
                                         <input type="hidden" name="trunkid" value="{{$trunk->id}}">
                                         <input type="hidden" name="CustomerTrunk[{{$trunk->id}}][trunkid]" value="{{$trunk->id}}">
+                                        <input type="hidden"  name="ratetable_codekid" value=" @if(!$trunk->customers->isEmpty()) @if($trunk->customers[0]->customer_id == @request()->id) {{$trunk->customers[0]->rate_table_id}} @endif @endif">
                                     </td>
 
                                     <td>
@@ -105,10 +106,10 @@
 
                 </table>
                 <p class="float-right mt-4" >
-                    <a href="#" id="customer-trunks-submit" class="btn save btn-primary btn-sm btn-icon icon-left">
+                    <button type="submit" id="customer-trunks-submit" class="btn save btn-primary btn-sm btn-icon icon-left">
                         <i class="entypo-floppy"></i>
                         Save
-                    </a>
+                    </button>
                 </p>
             </div>
         </div>
@@ -175,10 +176,54 @@ var data = @json($data);
         });
 
 
-            $("#customer-trunks-submit").click(function () {
-                $("#CustomerTrunk-form").submit();
-                return false;
+        function save(formdata,url){
+            $('#global-loader').show();
+            $.ajax({
+                data: formdata,
+                url: url,
+                type: "POST",
+                 // dataType: 'json',
+                cache:false,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (resp) {
+                    $('#global-loader').hide();
+                    if(resp.success == false){
+                        $.each(resp.errors, function(k, e) {
+                            $.notify(e, 'error');
+                        });
+                    }
+                    else{
+                        $.notify(resp.message, 'success');
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1000);
+                    }
+                }, error: function(r) {
+                    $('#global-loader').hide();
+                    $.each(r.responseJSON.errors, function(k, e) {
+                        $.notify(e, 'error');
+                    });
+                    $('.blocker').hide();
+                }
             });
+        }
+        $("body").delegate("#CustomerTrunk-form", "submit", function(e) {
+            e.preventDefault();
+            var form = $('#CustomerTrunk-form'),
+            url = form.attr('action');
+            var formData = new FormData(this);
+            save(formData,url);
+
+        });
+
+            // $("#customer-trunks-submit").click(function () {
+            //     $("#CustomerTrunk-form").submit();
+            //     return false;
+            // });
 
             $('.codedeckid').on('select2-open',function(e){
 
@@ -224,6 +269,7 @@ var data = @json($data);
         var self = $(this);
         var current_obj = self;
         var id = self.parent().children('[name="trunkid"]').val();
+        var ratetable = self.parent().children('[name="ratetable_codekid"]').val();
         $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -238,16 +284,21 @@ var data = @json($data);
                 },
                 success: function(res) {
 
-                    $('#ratetableid'+id).empty();
                     if($.isEmptyObject(res.rate_table)) {
                         $('#ratetableid'+id).html('<option value="">Select</option>');
 
                     }else{
                         $.each(res.rate_table, function (key, value) {
+                            if(ratetable == value.id){
+                                $('#ratetableid'+id).append('<option value="' + value
+                                .id + '" selected>' + value.name + '</option>');
+                            }else{
+                                $('#ratetableid'+id).append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                            }
 
-                        $('#ratetableid'+id).append('<option value="' + value
-                            .id + '">' + value.name + '</option>');
                         });
+
                     }
                 }
             });

@@ -408,7 +408,20 @@ class ClientController extends Controller
 
         foreach($request->CustomerTrunk as $trunk){
             if(!empty($trunk['status'])){
+                $validator = Validator::make($trunk, [
+                    'prefix' => ['required'],
+                    'codedeck'=>['required'],
+                    'rate_table_id'=>['required'],
+                ]);
 
+                if ($validator->fails())
+                {
+                    $response = \Response::json([
+                            'success' => false,
+                            'errors' => $validator->getMessageBag()->toArray()
+                        ]);
+                    return $response;
+                }
                 $data['prefix'] = $trunk['prefix'] ?? "";
                 $data['status'] = $trunk['status'] ?? "";
                 $data['customer_id'] = $request->id ?? "";
@@ -424,7 +437,7 @@ class ClientController extends Controller
                 CustomerTrunk::where('id' , $trunk['customer_trunk_id'])->delete();
             }
         }
-        return back();
+        return response()->json(['message' =>  'Update sucessfully']);
     }
 
     public function vendor(Request $request)
@@ -496,6 +509,20 @@ class ClientController extends Controller
     public function vendortrunk(Request $request){
         foreach($request->VendorTrunk as $trunk){
            if(!empty($trunk['status'])){
+            $validator = Validator::make($trunk, [
+                'prefix' => ['required'],
+                'codedeck'=>['required'],
+                'rate_table_id'=>['required'],
+            ]);
+
+            if ($validator->fails())
+            {
+                $response = \Response::json([
+                        'success' => false,
+                        'errors' => $validator->getMessageBag()->toArray()
+                    ]);
+                return $response;
+            }
             $data['prefix'] = $trunk['prefix'] ?? "";
             $data['status'] = $trunk['status'] ?? "";
             $data['vendor_id'] = $request->id ?? "";
@@ -508,7 +535,7 @@ class ClientController extends Controller
             VendorTrunk::where('id' , $trunk['vendor_trunk_id'])->delete();
            }
         }
-        return back();
+        return response()->json(['message' =>  'Update sucessfully']);
     }
 
     public function updatecodeckid(Request $request)

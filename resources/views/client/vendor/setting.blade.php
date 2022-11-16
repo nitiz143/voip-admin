@@ -79,10 +79,10 @@
                         </tbody>
                     </table>
                     <p class="float-right mt-4" >
-                        <a  id="vendor-trunks-submit" class="btn save btn-primary btn-sm btn-icon icon-left">
+                        <button type="submit" id="vendor-trunks-submit" class="btn save btn-primary btn-sm btn-icon icon-left">
                             <i class="entypo-floppy"></i>
                             Save
-                        </a>
+                        </button>
                     </p>
                 </div>
             </div>
@@ -120,9 +120,48 @@ $(document).ready(function ($) {
     });
 
 
-        $("#vendor-trunks-submit").click(function () {
-            $("#VendorTrunk-form").submit();
-            return false;
+    function save(formdata,url){
+            $('#global-loader').show();
+            $.ajax({
+                data: formdata,
+                url: url,
+                type: "POST",
+                 // dataType: 'json',
+                cache:false,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (resp) {
+                    $('#global-loader').hide();
+                    if(resp.success == false){
+                        $.each(resp.errors, function(k, e) {
+                            $.notify(e, 'error');
+                        });
+                    }
+                    else{
+                        $.notify(resp.message, 'success');
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1000);
+                    }
+                }, error: function(r) {
+                    $('#global-loader').hide();
+                    $.each(r.responseJSON.errors, function(k, e) {
+                        $.notify(e, 'error');
+                    });
+                    $('.blocker').hide();
+                }
+            });
+        }
+        $("body").delegate("#VendorTrunk-form", "submit", function(e) {
+            e.preventDefault();
+            var form = $('#VendorTrunk-form'),
+            url = form.attr('action');
+            var formData = new FormData(this);
+            save(formData,url);
+
         });
 
         $('.codedeckid').on('change',function (e) {
