@@ -13,10 +13,10 @@
                         Trunks
                     </div>
                     <div class="card-options float-right">
-                        <a href="#" data-rel="collapse"><i class="fas fa-angle-down"></i></a>
+                        <a href="#" data-rel="collapse" onclick="myFunction()"><i class="fas fa-angle-down"></i></a>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" id="myDIV">
                     <table class="table table-bordered datatable" id="table-4">
                         <thead>
                             <tr>
@@ -201,4 +201,13 @@ $(document).ready(function ($) {
         });
 
 });
+
+function myFunction() {
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
 </script>

@@ -30,8 +30,8 @@
                                                             <div class="card-title">
                                                                 Filter
                                                             </div>
-                                                            <div class="card-options">
-                                                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                            <div class="card-options float-right">
+                                                                <a href="#" class=" float-end" data-rel="collapse"><i class="fas fa-angle-down"></i></a>
                                                             </div>
                                                         </div>
                                                         <div class="card-body">
@@ -88,8 +88,8 @@
                                                             <div class="card-title">
                                                                 Filter
                                                             </div>
-                                                            <div class="card-options">
-                                                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                            <div class="card-options float-right">
+                                                                <a href="#" class=" float-end" data-rel="collapse"><i class="fas fa-angle-down"></i></a>
                                                             </div>
                                                         </div>
                                                         <div class="card-body">

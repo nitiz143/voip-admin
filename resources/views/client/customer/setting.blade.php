@@ -13,10 +13,10 @@
                     Outgoing
                 </div>
                 <div class="form-check form-switch float-right">
-                    <a href="#" data-rel="collapse" id="switch"><i class="fas fa-angle-down"></i></a>
+                    <a href="#" data-rel="collapse" id="switch" onclick="myFunction()"><i class="fas fa-angle-down"></i></a>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="myDIV">
                 <table class="table table-bordered datatable" id="table-4">
                     <thead>
                         <tr>
@@ -127,10 +127,10 @@
                     Incoming
                 </div>
                 <div class="card-title float-right">
-                    <a href="#" class="" data-rel="collapse"><i class="fas fa-angle-down"></i></a>
+                    <a href="#" id="switch" data-rel="collapse" onclick="myFunction1()"><i class="fas fa-angle-down"></i></a>
                 </div>
             </div>
-            <div class="card-body mt-4">
+            <div class="card-body mt-4" id="myDIV1">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-2 control-label">Inbound Rate Table</label>
@@ -304,4 +304,23 @@ var data = @json($data);
             });
         });
     });
+
+
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+function myFunction1() {
+  var x = document.getElementById("myDIV1");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
 </script>
