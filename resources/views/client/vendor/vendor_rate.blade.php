@@ -7,11 +7,11 @@
                        Search
                    </div>
                    <div class="card-options float-right">
-                       <a href="#" class=" float-end" data-rel="collapse"><i class="fas fa-angle-down"></i></a>
+                       <a href="#" class=" float-end" data-rel="collapse" onclick="myFunction()"><i class="fas fa-angle-down"></i></a>
                    </div>
                </div>
 
-               <div class="card-body">
+               <div class="card-body" id="myDIV">
                     <div class="form-group">
                         <div class="row">
                             <label for="field-1" class="col-sm-1">Code</label>
@@ -131,5 +131,14 @@ $("#DiscontinuedRates").on('change', function (event, state) {
         $(".EffectiveBox").show();
     }
 });
+
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
 </script>
 

@@ -1,3 +1,8 @@
+<style>
+    .datatable tr.selected{
+         background:#EDC171;
+     }
+ </style>
 <div class="card card-primary" data-collapsed="0">
 
     <div class="card-header">
@@ -6,11 +11,11 @@
         </div>
 
         <div class="card-options float-right">
-            <a href="#" data-rel="collapse"><i class="fas fa-angle-down"></i></a>
+            <a href="#" data-rel="collapse" onclick="myFunction()"><i class="fas fa-angle-down" ></i></a>
         </div>
     </div>
 
-    <div class="card-body">
+    <div class="card-body" id="myDIV">
         <form id="form-download" action="" role="form" class="form-horizontal form-groups-bordered">
             <div class="form-group">
                 <div class="row">
@@ -92,11 +97,17 @@
                     </div>
                 </div>
             </div>
-            <h4 >Click <span class="label btn-info" onclick="$('.my_account_table-5').toggle();$('#table-5').toggle();"    style="cursor: pointer">here</span> to select additional customer accounts for bulk ratesheet download.</h4>
+            <h4 >Click <span class="label btn-info" onclick="$('.my_account_table-5').toggle();$('#table-5').toggle();"    style="cursor: pointer; border-radius: 10px;">here</span> to select additional customer accounts for bulk ratesheet download.</h4>
             <div style="max-height: 500px; overflow-y: auto; overflow-x: hidden; " >
                 <div class="row my_account_table-5" style="display:none">
                     <div class="col-sm-4" style="float: right">
                         <select id="account_owners" class="custom-select form-control" name="account_owners">
+                            <option value="0">Select Owner</option>
+                            @if(!empty($owners))
+                                @foreach ($owners as $value)
+                                    <option value="{{$value->id}}">{{$value->name}}</option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                 </div>
@@ -108,6 +119,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if(!empty($clients))
+                            @foreach ($clients as $client)
+                            <tr>
+                                <td><input type="checkbox" name="customer[]" value="{{$client->id}}" class="rowcheckbox"></td>
+                                <td>{{$client->firstname}}</td>
+                            </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -127,6 +146,25 @@
 </div>
 
 <script>
+        $(document).on('click', '#table-5 tbody .rowcheckbox', function() {
+            if( $(this).prop("checked")){
+                $(this).parent().parent().addClass('selected');
+            }else{
+                $(this).parent().parent().removeClass('selected');
+            }
+        });
+        $(document).on('click', '#selectallcust' ,function (ev) {
+            var is_checked = $(this).is(':checked');
+            $('#table-5 tbody tr').each(function (i, el) {
+                if(is_checked){
+                    $(this).find('.rowcheckbox').prop("checked",true);
+                    $(this).addClass('selected');
+                }else{
+                    $(this).find('.rowcheckbox').prop("checked",false);
+                    $(this).removeClass('selected');
+                }
+            });
+        });
         $(document).ready(function () {
             $('#fileformat').on('change', function () {
                 var value = $(this).val();
@@ -145,8 +183,39 @@
                 }
             });
 
-
+            $('#account_owners').on('change', function () {
+                var owner_id = $(this).val();
+                var id = "{{request()->id}}";
+                $.ajax({
+                    url: "{{route('owners_customer',":id")}}",
+                    type: "GET",
+                    data: {
+                        "id":id,
+                        "owner_id":owner_id
+                    },
+                    dataType: 'json',
+                    success: function (resp) {
+                        $('#table-5 tbody').empty();
+                        if($.isEmptyObject(resp)) {
+                            $('#table-5 tbody').html('<tr><td>No Customer</td></tr>');
+                        }
+                        else{
+                            $.each(resp, function (key, value) {
+                                $('#table-5 tbody').append('<tr> <td><input type="checkbox" name="customer[]" id="rowcheckbox" value="'+value.id+'" class="rowcheckbox"/></td> <td>'+value.firstname+'</td> </tr>');
+                            });
+                        }
+                    }
+                });
+            });
         });
 
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
 
 </script>

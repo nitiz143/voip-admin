@@ -136,6 +136,11 @@
                         <label for="field-1" class="col-sm-2 control-label">Inbound Rate Table</label>
                         <div class="col-md-4">
                           <select class="custom-select form-control" data-placeholder="Select a Rate Table" name="InboudRateTableID">
+                            @if(!empty($rates))
+                                @foreach ($rates as $rate)
+                                    <option value="{{$rate->id}}">{{$rate->name}}</option>
+                                @endforeach
+                            @endif
                             </select>
                         </div>
                     </div>

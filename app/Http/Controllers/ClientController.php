@@ -387,7 +387,8 @@ class ClientController extends Controller
                     $data[] = $trunk->customers[0];
                 }
             }
-            return view('client.customer.setting',compact('trunks','data'));
+            $rates =  RateTable::select('*')->get();
+            return view('client.customer.setting',compact('trunks','data','rates'));
         }
         if($request->name == "Download Rate Sheet"){
             $vender_trunks = CustomerTrunk::where('customer_id',$request->id)->get();
@@ -397,7 +398,11 @@ class ClientController extends Controller
                     $trunks[] = Trunk::where('id',$value->trunkid)->first();
                 }
             }
-            return view('client.customer.download',compact('trunks'));
+
+            $owners = Client::leftjoin('users','users.id','=','clients.lead_owner')->get();
+            $owners = $owners->unique('lead_owner');
+            $clients = Client::where([["customer", "=", 1],["id", "!=",$request->id ]])->get();
+            return view('client.customer.download',compact('trunks','owners','clients'));
         }
         if($request->name == "History"){
             return view('client.customer.history');
@@ -475,8 +480,8 @@ class ClientController extends Controller
                     $trunks[] = Trunk::where('id',$value->trunkid)->first();
                 }
             }
-
-            return view('client.vendor.download',compact('trunks'));
+            $clients = Client::where([["Vendor", "=",1],["id", "!=",$request->id ]])->get();
+            return view('client.vendor.download',compact('trunks','clients'));
         }
         if($request->name == "Vendor Rate History"){
             return view('client.vendor.history');
@@ -548,6 +553,15 @@ class ClientController extends Controller
     {
         $data['rate_table']= RateTable::where("codeDeckId",$request->codedeckid)->get();
         return response()->json($data);
+    }
+
+    Protected function owners_customer(Request $request){
+        if($request->owner_id == 0){
+            $clients = Client::where([["customer", "=",1],["id", "!=",$request->id ]])->get();
+        }else{
+            $clients = Client::where([["customer", "=",1],["id", "!=",$request->id ],["lead_owner", "=",$request->owner_id ]])->get();
+        }
+        return response()->json($clients);
     }
 
 }

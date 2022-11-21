@@ -93,7 +93,7 @@
 $(document).ready(function ($) {
 
 
-// Replace Checboxes
+    // Replace Checboxes
     $(".pagination a").click(function (ev) {
     replaceCheckboxes();
     });
@@ -176,25 +176,25 @@ $(document).ready(function ($) {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
                     });
-                        $.ajax({
-                            type: "post",
-                            url: "{{route('vendorCodedeckid.update')}}",
-                            data: {
-                            id: id,
-                            codedeckid: codedeckid
-                            },
-                            success: function(response) {
-                                $('#global-loader').hide();
-                                if(response.success == false){
-                                    $.each(response.errors, function(k, e) {
-                                        $.notify(e, 'error');
-                                    });
-                                }
-                                else{
-                                    $.notify(response.message, 'success');
-                                }
+                    $.ajax({
+                        type: "post",
+                        url: "{{route('vendorCodedeckid.update')}}",
+                        data: {
+                        id: id,
+                        codedeckid: codedeckid
+                        },
+                        success: function(response) {
+                            $('#global-loader').hide();
+                            if(response.success == false){
+                                $.each(response.errors, function(k, e) {
+                                    $.notify(e, 'error');
+                                });
                             }
-                        });
+                            else{
+                                $.notify(response.message, 'success');
+                            }
+                        }
+                    });
                 }else{
 
                 }

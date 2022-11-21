@@ -31,10 +31,10 @@
                                                                 Filter
                                                             </div>
                                                             <div class="card-options float-right">
-                                                                <a href="#" class=" float-end" data-rel="collapse"><i class="fas fa-angle-down"></i></a>
+                                                                <a href="#" class=" float-end" data-rel="collapse" onclick="myFunction()"><i class="fas fa-angle-down"></i></a>
                                                             </div>
                                                         </div>
-                                                        <div class="card-body">
+                                                        <div class="card-body" id="myDIV">
                                                             <div class="form-group row">
                                                                 <label for="field-1" class="col-sm-1 control-label">Country</label>
                                                                 <div class="col-sm-2">
@@ -77,6 +77,48 @@
                                                     </div>
                                                 </form>
                                             </div>
+                                            <div style="text-align: right;padding:10px 0 ">
+                                                <form id="unblockSelectedCountry-form" method="post" action="" style="margin: 0px; padding: 0px; display: inline-table;" >
+                                                    <button type="submit" id="unblockSelectedCountry" class="btn btn-primary btn-sm btn-icon icon-left" data-loading-text="Loading...">
+                                                        <i class="entypo-cancel"></i>
+                                                        Unblock Selected Country
+                                                    </button>
+                                                    <input type="hidden" name="CountryID" value="">
+                                                    <input type="hidden" name="Trunk" value="">
+                                                    <input type="hidden" name="Timezones" value="">
+                                                    <input type="hidden" name="criteria" value="">
+                                                    <input type="hidden" name="action" value="unblock">
+                                                </form>
+                                                <form id="blockSelectedCountry-form" method="post" action=""  style="margin: 0px; padding: 0px; display: inline-table;" >
+                                                    <button  id="blockSelectedCountry" type="submit" class="btn btn-danger btn-sm btn-icon icon-left" href="javascript:;" data-loading-text="Loading...">
+                                                        <i class="entypo-floppy"></i>
+                                                        Block Selected Country
+                                                    </button>
+                                                    <input type="hidden" name="CountryID" value="">
+                                                    <input type="hidden" name="Trunk" value="">
+                                                    <input type="hidden" name="Timezones" value="">
+                                                    <input type="hidden" name="criteria" value="">
+                                                    <input type="hidden" name="action" value="block">
+                                                </form>
+                                            </div>
+
+                                            <table class="table table-bordered datatable" id="table-4">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <div class="checkbox ">
+                                                                <input type="checkbox" id="selectall" name="checkbox[]" class="">
+                                                                <!--<button type="button" id="selectallbutton"  class="btn btn-primary btn-xs" title="Select All Found Country"><i class="entypo-check"></i></button>-->
+                                                            </div>
+                                                        </th>
+                                                        <th>Country</th>
+                                                        <th>Staus</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="code_tab">
@@ -89,10 +131,10 @@
                                                                 Filter
                                                             </div>
                                                             <div class="card-options float-right">
-                                                                <a href="#" class=" float-end" data-rel="collapse"><i class="fas fa-angle-down"></i></a>
+                                                                <a href="#" class=" float-end" data-rel="collapse" onclick="myFunction1()"><i class="fas fa-angle-down"></i></a>
                                                             </div>
                                                         </div>
-                                                        <div class="card-body">
+                                                        <div class="card-body" id="myDIV1">
                                                             <div class="form-group row">
                                                                 <label class="col-sm-1 control-label">Code</label>
                                                                 <div class="col-sm-3">
@@ -139,6 +181,47 @@
                                                         </div>
                                                     </div>
                                                 </form>
+                                                <div style="text-align: right;padding:10px 0 ">
+                                                    <form id="blockSelectedCode-form" method="post" action=""  style="margin: 0px; padding: 0px; display: inline-table;" >
+                                                        <button id="blockSelectedCode" class="btn btn-primary btn-sm btn-icon icon-left"   data-loading-text="Loading...">
+                                                            <i class="entypo-floppy"></i>
+                                                            Unblock Selected Codes
+                                                        </button>
+                                                        <input type="hidden" name="RateID" value="">
+                                                        <input type="hidden" name="Trunk" value="">
+                                                        <input type="hidden" name="Timezones" value="">
+                                                        <input type="hidden" name="criteria" value="">
+                                                        <input type="hidden" name="action" value="unblock">
+                                                    </form>
+                                                    <form id="unblockSelectedCode-form" method="post" action="" style="margin: 0px; padding: 0px; display: inline-table;" >
+                                                        <button type="submit" id="unblockSelectedCode" class="btn btn-danger btn-sm btn-icon icon-left" data-loading-text="Loading...">
+                                                            <i class="entypo-cancel"></i>
+                                                            Block Selected Codes
+                                                        </button>
+                                                        <input type="hidden" name="RateID" value="">
+                                                        <input type="hidden" name="Trunk" value="">
+                                                        <input type="hidden" name="Timezones" value="">
+                                                        <input type="hidden" name="criteria" value="">
+                                                        <input type="hidden" name="action" value="block">
+                                                    </form>
+                                                </div>
+                                                <table class="table table-bordered datatable" id="table-4">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                <div class="checkbox ">
+                                                                    <input type="checkbox" id="selectall" name="checkbox[]" class="">
+                                                                    <!--<button type="button" id="selectallbutton"  class="btn btn-primary btn-xs" title="Select All Found Code"><i class="entypo-check"></i></button>-->
+                                                                </div>
+                                                            </th>
+                                                            <th>Code</th>
+                                                            <th>Status</th>
+                                                            <th>Description</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -152,6 +235,25 @@
     </div>
 </section>
 <script>
+
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+function myFunction1() {
+  var x = document.getElementById("myDIV1");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
 $(document).ready(function(){
     $("#Country").click(function(e){
         e.preventDefault();

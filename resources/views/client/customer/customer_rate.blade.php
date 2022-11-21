@@ -7,11 +7,11 @@
                        Search
                    </div>
                    <div class="card-options float-right">
-                       <a href="#" class=" float-end" data-rel="collapse"><i class="fas fa-angle-down"></i></a>
+                       <a href="#" class=" float-end" data-rel="collapse" onclick="myFunction()"><i class="fas fa-angle-down"></i></a>
                    </div>
                </div>
 
-               <div class="card-body">
+               <div class="card-body" id="myDIV">
                     <div class="form-group">
                         <div class="row">
                             <label for="field-1" class="col-sm-1">Code</label>
@@ -168,7 +168,7 @@
             <th width="5%">Rate1 ($)</th>
             <th width="5%">RateN ($)</th>
             <th width="8%">Effective Date</th>
-            <th width="8%" class="hidden">End Date</th>
+            {{-- <th width="8%" class="hidden">End Date</th> --}}
             <th width="8%">Modified Date</th>
             <th width="8%">Modified By</th>
             <th width="20%">Action</th>
@@ -196,4 +196,13 @@ $('#customer-rate-table-search select[name="Effective"]').on('change', function(
         $('.CustomDateBox').hide();
     }
 });
+
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
 </script>

@@ -8,11 +8,11 @@
                     </div>
 
                     <div class="card-options float-right">
-                        <a href="#" class=" float-end" data-rel="collapse"><i class="fas fa-angle-down"></i></a>
+                        <a href="#" class=" float-end" data-rel="collapse" onclick="myFunction()"><i class="fas fa-angle-down"></i></a>
                     </div>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body" id="myDIV">
                     <div class="form-group row">
                         <label for="field-1" class="col-sm-1 control-label">Code</label>
                         <div class="col-sm-3">
@@ -73,18 +73,28 @@
 
 
     <table class="table table-bordered datatable" id="table-4">
-    <thead>
-        <tr>
-            <th width="6%"><input type="checkbox" id="selectall" name="checkbox[]" class="" />
-                <!--<button type="button" id="selectallbutton"  class="btn btn-primary btn-xs" title="Select All Preference" alt="Select All Preference"><i class="entypo-check"></i></button>-->
-            </th>
-            <th width="13%">Code</th>
-            <th width="10%">Preference</th>
-            <th width="10%">Description</th>
-            <th width="15%">Action</th>
-        </tr>
-    </thead>
-    <tbody>
+        <thead>
+            <tr>
+                <th width="6%"><input type="checkbox" id="selectall" name="checkbox[]" class="" />
+                    <!--<button type="button" id="selectallbutton"  class="btn btn-primary btn-xs" title="Select All Preference" alt="Select All Preference"><i class="entypo-check"></i></button>-->
+                </th>
+                <th width="13%">Code</th>
+                <th width="10%">Preference</th>
+                <th width="10%">Description</th>
+                <th width="15%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
 
-    </tbody>
+        </tbody>
     </table>
+    <script>
+function myFunction() {
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+    </script>
