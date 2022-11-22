@@ -147,14 +147,14 @@
         $('#History').removeClass('active');
         var name = $('#Setting').data('name');
         $.ajax({
-                url:"{{route('customers')}}",
-                method:"get",
-                data:{'name':name , 'id':"{{request()->id}}"},
-                success:function(data){
-                    $('#tab5').html(data);
-                    $('#title').text(name);
-                }
-             });
+            url:"{{route('customers')}}",
+            method:"get",
+            data:{'name':name , 'id':"{{request()->id}}"},
+            success:function(data){
+                $('#tab5').html(data);
+                $('#title').text(name);
+            }
+        });
     });
     </script>
 @endsection

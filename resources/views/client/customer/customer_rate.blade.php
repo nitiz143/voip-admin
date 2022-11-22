@@ -100,13 +100,13 @@
 </div>
 <div class="clear"></div>
 
-{{-- <div class="row">
+<div class="row">
     <div class="col-md-12">
         <div class="alert alert-danger" style="padding: 6px;">
             In order to offer new rates use 'Bulk New Offer' OR 'New Offer Selected'.  In order to update rates use 'Update Selected Rates' OR 'Bulk Update'. To Delete rates use 'Bulk Clear' OR 'Clear Selected Rates'.
         </div>
     </div>
-</div> --}}
+</div>
 
 <div class="clear"></div>
 <div class="row">
@@ -152,6 +152,7 @@
             </form>
         </div><!-- /btn-group -->
     </div>
+
     <div class="clear"></div>
 </div>
 <br>

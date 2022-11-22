@@ -143,6 +143,19 @@ class RateController extends Controller
                 $updated_at = \Carbon\Carbon::parse($row->updated_at)->format('Y-m-d h:m:s');
                 return $updated_at;
             })
+            ->editColumn('codeDeckId',function($row){
+                if($row->codeDeckId == 1){
+                    $codeDeckId = "Customer Codedeck";
+                }
+                if($row->codeDeckId == 2){
+                    $codeDeckId = "Customer Codes";
+                }
+                if($row->codeDeckId == 3){
+                    $codeDeckId = "Vendor Codes";
+                }
+
+                return $codeDeckId;
+            })
             ->addColumn('action', function($row){
 
                 $btn = '<a href="#" class="delete btn btn-primary btn-sm editTable"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;

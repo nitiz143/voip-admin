@@ -121,32 +121,32 @@
 <div class="row">
     <div class="col-md-12">
         <form  id="inbound-ratetable-form" class="form-horizontal " method="post" action="" >
-        <div class="card card-primary" data-collapsed="0">
-            <div class="card-header " >
-                <div class="card-title ">
-                    Incoming
+            <div class="card card-primary" data-collapsed="0">
+                <div class="card-header " >
+                    <div class="card-title ">
+                        Incoming
+                    </div>
+                    <div class="card-title float-right">
+                        <a href="#" id="switch" data-rel="collapse" onclick="myFunction1()"><i class="fas fa-angle-down"></i></a>
+                    </div>
                 </div>
-                <div class="card-title float-right">
-                    <a href="#" id="switch" data-rel="collapse" onclick="myFunction1()"><i class="fas fa-angle-down"></i></a>
-                </div>
-            </div>
-            <div class="card-body mt-4" id="myDIV1">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="field-1" class="col-sm-2 control-label">Inbound Rate Table</label>
-                        <div class="col-md-4">
-                          <select class="custom-select form-control" data-placeholder="Select a Rate Table" name="InboudRateTableID">
-                            @if(!empty($rates))
-                                @foreach ($rates as $rate)
-                                    <option value="{{$rate->id}}">{{$rate->name}}</option>
-                                @endforeach
-                            @endif
-                            </select>
+                <div class="card-body mt-4" id="myDIV1">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="field-1" class="col-sm-2 control-label">Inbound Rate Table</label>
+                            <div class="col-md-4">
+                                <select class="custom-select form-control" data-placeholder="Select a Rate Table" name="InboudRateTableID">
+                                    @if(!empty($rates))
+                                        @foreach ($rates as $rate)
+                                            <option value="{{$rate->id}}">{{$rate->name}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         </form>
     </div>
 </div>
