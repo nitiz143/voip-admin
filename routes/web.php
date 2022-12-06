@@ -43,6 +43,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::post('customer/Codedeckid', [ClientController::class, 'fetchRateTable'])->name('customerCodedeckid.update');
     Route::post('vendor/Codedeckid', [ClientController::class, 'updatecodeckid'])->name('vendorCodedeckid.update');
     Route::get('owners-customer/{id}', [ClientController::class, 'owners_customer'])->name('owners_customer');
+    Route::post('customer_rate/{id}/process_download', [ClientController::class, 'process_download'])->name('process_download');
+    Route::get('history-detail/{id}', [ClientController::class, 'history_detail'])->name('history_detail');
     Route::get('/getClient/{id}','App\Http\Controllers\CRMController@ImportClient')->name('getClient');
     Route::resource('/cron','App\Http\Controllers\CronJobController');
     Route::resource('/setting','App\Http\Controllers\SettingController');

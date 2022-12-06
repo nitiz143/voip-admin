@@ -11,6 +11,7 @@ use App\Models\Trunk;
 use App\Models\RateTable;
 use App\Models\VendorTrunk;
 use App\Models\CustomerTrunk;
+use App\Models\DownloadProcess;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -405,7 +406,10 @@ class ClientController extends Controller
             return view('client.customer.download',compact('trunks','owners','clients'));
         }
         if($request->name == "History"){
-            return view('client.customer.history');
+          
+            $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('client_id',$request->id)->get();
+            $clients = Client::where("id", "=",$request->id)->first();   
+            return view('client.customer.history',compact('downloads','clients'));
         }
     }
 
@@ -480,7 +484,7 @@ class ClientController extends Controller
                     $trunks[] = Trunk::where('id',$value->trunkid)->first();
                 }
             }
-            $clients = Client::where([["Vendor", "=",1],["id", "!=",$request->id ]])->get();
+            $clients = Client::where([["Vendor", "=",1],["customer", "=",1],["id", "!=",$request->id ]])->get();
             return view('client.vendor.download',compact('trunks','clients'));
         }
         if($request->name == "Vendor Rate History"){
@@ -517,7 +521,6 @@ class ClientController extends Controller
             $validator = Validator::make($trunk, [
                 'prefix' => ['required'],
                 'codedeck'=>['required'],
-                'rate_table_id'=>['required'],
             ]);
 
             if ($validator->fails())
@@ -555,7 +558,7 @@ class ClientController extends Controller
         return response()->json($data);
     }
 
-    Protected function owners_customer(Request $request){
+    public function owners_customer(Request $request){
         if($request->owner_id == 0){
             $clients = Client::where([["customer", "=",1],["id", "!=",$request->id ]])->get();
         }else{
@@ -564,4 +567,59 @@ class ClientController extends Controller
         return response()->json($clients);
     }
 
+    public function process_download(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'filetype' => 'required',
+            'Format'=>'required',
+            'Timezones'=>'required',
+            'Trunks'=>'required',
+        ]);
+
+            if ($validator->fails())
+            {
+                $response = \Response::json([
+                        'success' => false,
+                        'errors' => $validator->getMessageBag()->toArray()
+                    ]);
+                return $response;
+            }
+            $clients = Client::where("id", "=",$request->id)->first();
+            if(!empty($request->Trunks)){
+                $data['trunks'] = json_encode($request->Trunks);
+            }else{
+                $data['trunks'] = json_encode([]);
+            }
+            if(!empty($request->Timezones)){
+                $data['timezones'] = json_encode($request->Timezones);
+            }else{
+                $data['timezones'] = json_encode([]);
+            }
+           
+
+            $data['name'] =  $clients->company ?? '';
+            $data['format'] = $request->Format ?? '';
+            $data['filetype'] = $request->filetype ?? '';
+            $data['effective'] = $request->Effective ?? '';
+            $data['customDate'] = $request->CustomDate ?? '';
+            $data['isMerge'] = $request->isMerge ?? '';
+            $data['sendMail'] = $request->sendMail ?? '';
+            $data['type'] = $request->type ?? '';
+            $data['account_owners'] = $request->account_owners ?? '';
+            $data['client_id'] = $request->id ?? '';
+            $data['created_by'] = Auth::user()->id ?? '';
+            DownloadProcess::create($data);
+            return response()->json(['message' =>  'Process Download created sucessfully']);
+    }
+
+    public function history_detail(Request $request){
+        $downloads =  $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('download_processes.id',$request->id)->first();
+        $clients = Client::where("id", "=",$request->client_id)->first();  
+        if(!empty($downloads->trunks)){
+            foreach (json_decode($downloads->trunks) as $trunk){
+                $trunks[] = Trunk::where("id", "=",$trunk)->first();  
+            }
+        } 
+        return view('client.customer.detail',compact('downloads','clients','trunks'));
+    }
 }

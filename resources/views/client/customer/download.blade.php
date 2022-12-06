@@ -16,7 +16,7 @@
     </div>
 
     <div class="card-body" id="myDIV">
-        <form id="form-download" action="" role="form" class="form-horizontal form-groups-bordered">
+        <form id="form-download" action="{{route('process_download',@request()->id)}}" role="form" class="form-horizontal form-groups-bordered">
             <div class="form-group">
                 <div class="row">
                     <label for="field-1" class="col-sm-3">Trunk</label>
@@ -197,7 +197,7 @@
                     success: function (resp) {
                         $('#table-5 tbody').empty();
                         if($.isEmptyObject(resp)) {
-                            $('#table-5 tbody').html('<tr><td>No Customer</td></tr>');
+                            $('#table-5 tbody').text('No Customer');
                         }
                         else{
                             $.each(resp, function (key, value) {
@@ -217,5 +217,45 @@
                 x.style.display = "none";
             }
         }
+
+
+        $(".btn.download").click(function () {
+           // return false;
+            var formData = new FormData($('#form-download')[0]);
+            $.ajax({
+                url:  $('#form-download').attr("action"),  //Server script to process data
+                type: 'POST',
+                dataType: 'json',
+                //Ajax events
+                beforeSend: function(){
+                    $('.btn.download').button('loading');
+                },
+                afterSend: function(){
+                    console.log("Afer Send");
+                },
+                success: function (response) {
+                    console.log(response.errors)
+                    if (response 'success') {
+                        $.notify(response.message, 'success');
+                       
+                        reloadJobsDrodown(0);
+                     } else {
+                        $.each(response.errors, function(k, e) {
+                            $.notify(e, 'error');
+                        });
+                    }
+                    //alert(response.message);
+                    $('.btn.download').button('reset');
+                },
+                // Form data
+                data: formData,
+                //Options to tell jQuery not to process data or worry about content-type.
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            return false;
+
+        });
 
 </script>
