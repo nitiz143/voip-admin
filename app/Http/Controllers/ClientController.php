@@ -613,13 +613,14 @@ class ClientController extends Controller
     }
 
     public function history_detail(Request $request){
-        $downloads =  $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('download_processes.id',$request->id)->first();
-        $clients = Client::where("id", "=",$request->client_id)->first();  
-        if(!empty($downloads->trunks)){
-            foreach (json_decode($downloads->trunks) as $trunk){
-                $trunks[] = Trunk::where("id", "=",$trunk)->first();  
-            }
-        } 
+       
+            $downloads =  $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('download_processes.id',$request->id)->first();
+            $clients = Client::where("id", "=",$request->client_id)->first();  
+            if(!empty($downloads->trunks)){
+                foreach (json_decode($downloads->trunks) as $trunk){
+                    $trunks[] = Trunk::where("id", "=",$trunk)->first();  
+                }
+            } 
         return view('client.customer.detail',compact('downloads','clients','trunks'));
     }
 }

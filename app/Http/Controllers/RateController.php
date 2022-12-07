@@ -144,17 +144,21 @@ class RateController extends Controller
                 return $updated_at;
             })
             ->editColumn('codeDeckId',function($row){
-                if($row->codeDeckId == 1){
+                if($row->codeDeckId == 3){
                     $codeDeckId = "Customer Codedeck";
                 }
                 if($row->codeDeckId == 2){
                     $codeDeckId = "Customer Codes";
                 }
-                if($row->codeDeckId == 3){
+                if($row->codeDeckId == 1){
                     $codeDeckId = "Vendor Codes";
                 }
 
                 return $codeDeckId;
+            })
+            ->editColumn('trunkId',function($row){
+                $trunks = Trunk::where('id',$row->trunkId)->first();
+                return $trunks->title;
             })
             ->addColumn('action', function($row){
 

@@ -20,7 +20,7 @@
         <div class="col-sm-12">
             @if(!empty($trunks))
                @foreach ( $trunks as $trunk)
-                   {{$trunk->title}}
+                   {{$trunk->title}}&nbsp;
                @endforeach
             @endif
         </div>

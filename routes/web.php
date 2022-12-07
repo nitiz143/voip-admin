@@ -48,6 +48,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/getClient/{id}','App\Http\Controllers\CRMController@ImportClient')->name('getClient');
     Route::resource('/cron','App\Http\Controllers\CronJobController');
     Route::resource('/setting','App\Http\Controllers\SettingController');
+    Route::get('/trunks', [App\Http\Controllers\SettingController::class, 'trunkIndex'])->name('trunks.index');
+    Route::post('/trunk/store', [App\Http\Controllers\SettingController::class, 'trunkStore'])->name('trunk.store');
     Route::resource('/company','App\Http\Controllers\CompanyController');
     Route::get('/rate-upload', [App\Http\Controllers\RateController::class, 'index'])->name('rate-upload');
     Route::post('/rate-upload', [App\Http\Controllers\RateController::class, 'store'])->name('post-rate-upload');

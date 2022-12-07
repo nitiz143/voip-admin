@@ -12,6 +12,10 @@ class Trunk extends Model
     protected $fillable = [
         'id',
         'title',
+        'area_prefix',
+        'rate_prefix',
+        'prefix',
+        'status',
     ];
     public function vendors()
     {

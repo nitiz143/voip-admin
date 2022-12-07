@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
+use App\Models\Trunk;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -160,5 +161,31 @@ class SettingController extends Controller
         $setting->delete();
         // Setting::find($request->id)->delete();
         return response()->json(['message'=>__('Deleted Successfully'),'success'=>true]);
+    }
+
+    public function trunkIndex(Request $request){
+        if ($request->ajax()) {
+            $data = Trunk::query('');
+            return Datatables::of($data)
+            ->filter(function ($instance) use ($request) {
+                if ($request->get('status') == '0' || $request->get('status') == '1') {
+                    $instance->where('status', $request->get('status'));
+                }
+            })
+            ->addColumn('action', function($row){
+
+                    $btn = '<a href="#" class="Edit btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;';
+                    return $btn;
+            })
+            ->rawColumns(['action','status'])
+            ->make(true);
+
+
+        }
+        return view('trunk.index');
+    }
+
+    public function trunkStore(Request $request){
+
     }
 }

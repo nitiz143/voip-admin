@@ -235,7 +235,7 @@
                 },
                 success: function (response) {
                     console.log(response.errors)
-                    if (response 'success') {
+                    if (response.success) {
                         $.notify(response.message, 'success');
                        
                         reloadJobsDrodown(0);

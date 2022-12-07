@@ -116,12 +116,30 @@
           </li>
 
           <li class="nav-item">
-            <a href="{{url('/setting')}}" class="nav-link {{ Request::is('setting','setting/*') ? 'active' : '' }} ">
-                <i class="nav-icon fa fa-cog"></i>
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-cog"></i>
               <p>
                 Settings
+                <i class="fas fa-angle-left right"></i>
+                <span class="badge badge-info right"></span>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li>
+                <a href="{{url('/trunks')}}" class="nav-link {{ Request::is('trunks','trunks/*') ? 'active' : '' }}">
+                  <p>
+                    Trunks
+                  </p>
+                </a>
+              </li>
+              <li>
+                <a href="{{url('/setting')}}" class="nav-link {{ Request::is('setting','setting/*') ? 'active' : '' }} ">
+                  <p>
+                    Settings
+                  </p>
+                </a>
+              </li>
+            </ul>
           </li>
 
           @if(Auth::user()->role  == 'Admin')
