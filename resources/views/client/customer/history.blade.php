@@ -1,7 +1,7 @@
 <div class="row">
     <div class="export-data ">
         <div class="DTTT btn-group float-end mb-2 mt-2">
-            <a href="" class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_0">
+            <a href="{{route('history_export_xlsx',@request()->id)}}" data-value="xlsx"class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_0">
                 <undefined>EXCEL</undefined>
             </a>
             <a  href="" class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_1">

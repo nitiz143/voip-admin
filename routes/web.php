@@ -50,6 +50,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::resource('/setting','App\Http\Controllers\SettingController');
     Route::get('/trunks', [App\Http\Controllers\SettingController::class, 'trunkIndex'])->name('trunks.index');
     Route::post('/trunk/store', [App\Http\Controllers\SettingController::class, 'trunkStore'])->name('trunk.store');
+    Route::get('/trunk/edit/{id}', [App\Http\Controllers\SettingController::class, 'trunkEdit'])->name('trunk.edit');
+    Route::get('/customer/{id}/history_export/xlsx', [App\Http\Controllers\ClientController::class, 'history_export_xlsx'])->name('history_export_xlsx');
     Route::resource('/company','App\Http\Controllers\CompanyController');
     Route::get('/rate-upload', [App\Http\Controllers\RateController::class, 'index'])->name('rate-upload');
     Route::post('/rate-upload', [App\Http\Controllers\RateController::class, 'store'])->name('post-rate-upload');

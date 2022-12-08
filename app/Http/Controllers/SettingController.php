@@ -186,6 +186,38 @@ class SettingController extends Controller
     }
 
     public function trunkStore(Request $request){
+        if(!empty($request->TrunkID)){
+            $rules = array(
+            'title'=>'required',
+                );
+        }else{
+            $rules = array(
+                'title'=>'required',
+            );
+        }
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails())
+        {
+            $response = \Response::json([
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ]);
+            return $response;
+        }
+        $data = array();
+        $data['title'] = $request->title; 
+        $data['rate_prefix'] = $request->RatePrefix; 
+        $data['area_prefix'] = $request->AreaPrefix; 
+        $data['prefix'] = $request->Prefix; 
+        $data['status'] = !empty($request->Status) ? $request->Status: 0; 
+        $Trunk =  Trunk::updateOrCreate(['id'   => $request->TrunkID],$data);
 
+
+    return response()->json(['message' =>  __('Updated Successfully'),'success'=>true]);
+    }
+
+    public function trunkEdit(Request $request){
+        $trunk = Trunk::where('id',$request->id)->first();
+        return $trunk;
     }
 }

@@ -12,6 +12,7 @@ use App\Models\RateTable;
 use App\Models\VendorTrunk;
 use App\Models\CustomerTrunk;
 use App\Models\DownloadProcess;
+use Rap2hpoutre\FastExcel\FastExcel;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -378,7 +379,7 @@ class ClientController extends Controller
         }
         if($request->name == "Settings"){
             $value = $request->id;
-            $trunks = Trunk::with(['customers' => function($q) use($value) {
+            $trunks = Trunk::where('status', 1)->with(['customers' => function($q) use($value) {
                 $q->where('customer_id', '=', $value); // '=' is optional
             }])->get();
             $data =array();
@@ -396,7 +397,7 @@ class ClientController extends Controller
             $trunks =array();
             if(!empty($vender_trunks)){
                 foreach ($vender_trunks as $key => $value) {
-                    $trunks[] = Trunk::where('id',$value->trunkid)->first();
+                    $trunks[] = Trunk::where('id',$value->trunkid)->where('status', 1)->first();
                 }
             }
 
@@ -460,7 +461,7 @@ class ClientController extends Controller
             $trunks =array();
             if(!empty($vender_trunks)){
                 foreach ($vender_trunks as $key => $value) {
-                    $trunks[] = Trunk::where('id',$value->trunkid)->first();
+                    $trunks[] = Trunk::where('id',$value->trunkid)->where('status', 1)->first();
                 }
             }
 
@@ -470,7 +471,7 @@ class ClientController extends Controller
         if($request->name == "Settings"){
 
             $value = $request->id;
-            $trunks = Trunk::with(['vendors' => function($q) use($value) {
+            $trunks = Trunk::where('status', 1)->with(['vendors' => function($q) use($value) {
                 $q->where('vendor_id', '=', $value); // '=' is optional
             }])->get();
             return view('client.vendor.setting',compact('trunks'));
@@ -481,7 +482,7 @@ class ClientController extends Controller
             $trunks =array();
             if(!empty($vender_trunks)){
                 foreach ($vender_trunks as $key => $value) {
-                    $trunks[] = Trunk::where('id',$value->trunkid)->first();
+                    $trunks[] = Trunk::where('id',$value->trunkid)->where('status', 1)->first();
                 }
             }
             $clients = Client::where([["Vendor", "=",1],["customer", "=",1],["id", "!=",$request->id ]])->get();
@@ -496,7 +497,7 @@ class ClientController extends Controller
             $trunks =array();
             if(!empty($vender_trunks)){
                 foreach ($vender_trunks as $key => $value) {
-                    $trunks[] = Trunk::where('id',$value->trunkid)->first();
+                    $trunks[] = Trunk::where('id',$value->trunkid)->where('status', 1)->first();
                 }
             }
 
@@ -508,7 +509,7 @@ class ClientController extends Controller
             $trunks =array();
             if(!empty($vender_trunks)){
                 foreach ($vender_trunks as $key => $value) {
-                    $trunks[] = Trunk::where('id',$value->trunkid)->first();
+                    $trunks[] = Trunk::where('id',$value->trunkid)->where('status', 1)->first();
                 }
             }
 
@@ -614,7 +615,7 @@ class ClientController extends Controller
 
     public function history_detail(Request $request){
        
-            $downloads =  $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('download_processes.id',$request->id)->first();
+            $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('download_processes.id',$request->id)->first();
             $clients = Client::where("id", "=",$request->client_id)->first();  
             if(!empty($downloads->trunks)){
                 foreach (json_decode($downloads->trunks) as $trunk){
@@ -622,5 +623,19 @@ class ClientController extends Controller
                 }
             } 
         return view('client.customer.detail',compact('downloads','clients','trunks'));
+    }
+
+    public function history_export_xlsx(Request $request){
+        $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('download_processes.client_id',$request->id)->get();
+        $list =array();
+        foreach ( $downloads as $key => $value) {
+            $data =array();
+            $data['title'] =  $value->name."($value->format)($value->effective)";
+            $data['created_at'] =  $value->created_at->format('d-m-Y H:i:s');
+            $list[]= $data;
+        }
+      
+
+        return (new FastExcel($list))->download('history.xlsx');
     }
 }

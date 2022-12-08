@@ -68,6 +68,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <form id="form-trunk-add" method="post" action="{{ route('trunk.store') }}">
+                @csrf
                 <div class="modal-header">
                     <h4 class="modal-title">Add New Trunk</h4>
                     <button type="button" class="close" data-dismiss="modal" id="close" aria-hidden="true" value="">×</button>
@@ -77,7 +78,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="field-1" class="control-label">Title</label>
-                                <input type="text" class="form-control" id="Trunk" name="Trunk" placeholder="Title" value="">
+                                <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="">
                             </div>
                         </div>
                     </div>
@@ -85,7 +86,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="field-1" class="col-sm-3 control-label">Rate Prefix</label>
-                                <input type="text" class="form-control" name="RatePrefix" data-mask="999999999999" placeholder="Rate Prefix" value="">
+                                <input type="text" class="form-control" name="RatePrefix" data-mask="999999999999" id="RatePrefix" placeholder="Rate Prefix" value="">
                             </div>
                         </div>
                     </div>
@@ -93,7 +94,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="field-1" class="col-sm-3 control-label">Area Prefix</label>
-                                <input type="text" class="form-control" data-mask="999999999999" name="AreaPrefix" placeholder="Area Prefix" value="">
+                                <input type="text" class="form-control" data-mask="999999999999" name="AreaPrefix" id="AreaPrefix" placeholder="Area Prefix" value="">
                             </div>
                         </div>
                     </div>
@@ -101,7 +102,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="field-1" class="col-sm-3 control-label">Prefix</label>
-                                <input type="text" class="form-control" data-mask="999999999999" name="Prefix" placeholder="Prefix" value="">
+                                <input type="text" class="form-control" data-mask="999999999999" name="Prefix" placeholder="Prefix" id="Prefix" value="">
                             </div>
                         </div>
                     </div>
@@ -111,7 +112,7 @@
                                 name="Status" value="1" checked>
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="TrunkID" value="">
+                        <input type="hidden" name="TrunkID" id="TrunkID" value="">
                         <button type="submit" id="trunk-update" class="save btn btn-primary btn-sm btn-icon icon-left" data-loading-text="Loading..." style="visibility: visible;" value="">
                             <i class="entypo-floppy"></i>
                             Save
@@ -162,6 +163,82 @@
     $('.close').click(function (e) {
         e.preventDefault();
         $('#add-new-modal-trunk').modal('hide');
+    });
+
+    function save(formdata,url){
+        $('#global-loader').show();
+        $.ajax({
+            data: formdata,
+            url: url,
+            type: "POST",
+            // dataType: 'json',
+            cache:false,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (resp) {
+                $('#global-loader').hide();
+                if(resp.success == false){
+                    $.each(resp.errors, function(k, e) {
+                        $.notify(e, 'error');
+                    });
+                }
+                else{
+                    $.notify(resp.message, 'success');
+                    $('#add-new-modal-trunk').modal('hide');
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
+                }
+            }, error: function(r) {
+                $('#global-loader').hide();
+                $.each(r.responseJSON.errors, function(k, e) {
+                    $.notify(e, 'error');
+                });
+                $('.blocker').hide();
+            }
+        });
+    }
+    $("body").delegate("#form-trunk-add", "submit", function(e) {
+        e.preventDefault();
+        var form = $('#form-trunk-add'),
+        url = form.attr('action');
+        var formData = new FormData(this);
+        save(formData,url);
+
+    });
+
+    $(document).on('click', '.Edit', function () {
+
+        let id = $(this).data('id');
+
+        $.ajax({
+            url: "{{ route('trunk.edit', ":id") }}",
+            type: 'get', // replaced from put
+            data: {
+                "id": id // method and token not needed in data
+            },
+            success: function (data)
+            {
+                $('#TrunkID').val(data.id);
+                $('#title').val(data.title);
+                $('#RatePrefix').val(data.rate_prefix);
+                $('#AreaPrefix').val(data.area_prefix);
+                if(data.status == 1){
+                    $('#Status').prop('checked', true);
+                }else{
+                    $('#Status').prop('checked', false);
+                }
+                
+                $('#Prefix').val(data.prefix);
+                $('#add-new-modal-trunk').modal('show');
+            },
+            error: function(xhr) {
+            console.log(xhr.responseText); // this line will save you tons of hours while debugging
+        }
+        });
     });
 
 </script>
