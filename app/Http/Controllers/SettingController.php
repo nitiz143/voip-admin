@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use DB;
 use Yajra\DataTables\DataTables;
+use Rap2hpoutre\FastExcel\FastExcel;
 use Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -219,5 +220,36 @@ class SettingController extends Controller
     public function trunkEdit(Request $request){
         $trunk = Trunk::where('id',$request->id)->first();
         return $trunk;
+    }
+
+    public function trunks_xlsx(Request $request){
+       
+        $downloads = Trunk::where('status',$request->status)->get();
+        $list =array();
+        foreach ( $downloads as $key => $value) {
+            $data =array();
+            $data['Trunks'] =  $value->title;
+            $data['area_prefix'] =  !empty($value->area_prefix) ? $value->area_prefix :"";
+            $data['rate_prefix'] =   !empty($value->rate_prefix) ? $value->rate_prefix :"";
+            $data['prefix'] =   !empty($value->prefix) ? $value->prefix :"";
+
+            $list[]= $data;
+        }
+        return (new FastExcel($list))->download('trunk.xlsx');
+    }
+
+    public function trunks_csv(Request $request){
+        $downloads = Trunk::where('status',$request->status)->get();
+        $list =array();
+        foreach ( $downloads as $key => $value) {
+            $data =array();
+            $data['Trunks'] =  $value->title;
+            $data['area_prefix'] =  !empty($value->area_prefix) ? $value->area_prefix :"";
+            $data['rate_prefix'] =   !empty($value->rate_prefix) ? $value->rate_prefix :"";
+            $data['prefix'] =   !empty($value->prefix) ? $value->prefix :"";
+
+            $list[]= $data;
+        }
+        return (new FastExcel($list))->download('trunk.csv');
     }
 }

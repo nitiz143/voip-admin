@@ -38,9 +38,23 @@
                                     </a>
                                 </p>
                             </div>
+                            <div class="col-xs-6">
+                                <div class="export-data">
+                                    <div class="DTTT btn-group float-end mb-2 mt-2">
+                                        <a href="" data-value="xlsx"class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_0">
+                                            <undefined>EXCEL</undefined>
+                                        </a>
+                                        <a  href="{{route('trunks_csv')}}" class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_1">
+                                            <undefined>CSV</undefined>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        
                         <!-- /.card-header -->
                         <div class="card-body">
+                            
                             <table class="table table-bordered datatable" id="table-4">
                                 <thead>
                                 <tr>
@@ -153,7 +167,28 @@
 
     $('#TrunkStatus').change(function(){
         data_table.draw();
+        if($('#TrunkStatus').is(":checked")){
+                var status_active =1
+                $("#ToolTables_table-4_0").attr('href',"{{ url('trunks/xlsx') }}"+'?status='+status_active);
+                $("#ToolTables_table-4_1").attr('href',"{{ url('trunks/csv') }}"+'?status='+status_active);
+        }else{
+                var status_inactive =0 
+                $("#ToolTables_table-4_0").attr('href',"{{ url('trunks/xlsx') }}"+'?status='+status_inactive);
+                $("#ToolTables_table-4_1").attr('href',"{{ url('trunks/csv') }}"+'?status='+status_inactive);
+        }
     });
+
+    $(document).ready( function () {
+        if($('#TrunkStatus').is(":checked")){
+                var status_active =1
+                $("#ToolTables_table-4_0").attr('href',"{{ url('trunks/xlsx') }}"+'?status='+status_active);
+                $("#ToolTables_table-4_1").attr('href',"{{ url('trunks/csv') }}"+'?status='+status_active);
+        }else{
+                var status_inactive =0 
+                $("#ToolTables_table-4_0").attr('href',"{{ url('trunks/xlsx') }}"+'?status='+status_inactive);
+                $("#ToolTables_table-4_1").attr('href',"{{ url('trunks/csv') }}"+'?status='+status_inactive);
+        }
+        });
 
     $('#showAddModal').click(function (e) {
         e.preventDefault();
@@ -241,5 +276,7 @@
         });
     });
 
+   
+    
 </script>
 @endsection

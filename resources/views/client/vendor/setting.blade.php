@@ -169,35 +169,36 @@ $(document).ready(function ($) {
             var self = $(this);
             var current_obj = self;
             var id = self.parent().children('[name="vendor_trunk_id"]').val();
-            changeConfirmation = confirm("Are you sure? Related Rates will be deleted");
-                if(changeConfirmation){
-                    $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            
+            if(id != ""){
+                changeConfirmation = confirm("Are you sure? Related Rates will be deleted");
+                    if(changeConfirmation){
+                        $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                        });
+                        $.ajax({
+                            type: "post",
+                            url: "{{route('vendorCodedeckid.update')}}",
+                            data: {
+                            id: id,
+                            codedeckid: codedeckid
+                            },
+                            success: function(response) {
+                                $('#global-loader').hide();
+                                if(response.success == false){
+                                    $.each(response.errors, function(k, e) {
+                                        $.notify(e, 'error');
+                                    });
+                                }
+                                else{
+                                    $.notify(response.message, 'success');
+                                }
                             }
-                    });
-                    $.ajax({
-                        type: "post",
-                        url: "{{route('vendorCodedeckid.update')}}",
-                        data: {
-                        id: id,
-                        codedeckid: codedeckid
-                        },
-                        success: function(response) {
-                            $('#global-loader').hide();
-                            if(response.success == false){
-                                $.each(response.errors, function(k, e) {
-                                    $.notify(e, 'error');
-                                });
-                            }
-                            else{
-                                $.notify(response.message, 'success');
-                            }
-                        }
-                    });
-                }else{
-
-                }
+                        });
+                    }
+            }
         });
 
 });

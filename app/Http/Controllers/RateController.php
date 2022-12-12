@@ -8,6 +8,8 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Validator;
 use App\Models\RateTable;
 use App\Models\Trunk;
+use App\Models\Client;
+use App\Models\VendorTrunk;
 use Yajra\DataTables\DataTables;
 
 class RateController extends Controller
@@ -19,7 +21,8 @@ class RateController extends Controller
      */
     public function index()
     {
-        return view('rate.rate_upload');
+        $clients = Client::where("Vendor", "=",1)->get();
+        return view('rate.rate_upload',compact('clients'));
     }
 
     /**
@@ -33,7 +36,7 @@ class RateController extends Controller
         if($request->id){
             $table = RateTable::find($request->id);
         }
-        $trunks = Trunk::select('*')->get();
+        $trunks = Trunk::where('status', 1)->get();
         return view('rate.rate-table.crateTable',compact('table','trunks'));
     }
 
@@ -185,5 +188,10 @@ class RateController extends Controller
         if(RateTable::updateOrCreate(['id' => $request->id], $request->all())){
             return response()->json(['message' =>'Data Saved Successfully']);
         }
+    }
+
+    public function get_trunk(Request $request){
+        $trunks = VendorTrunk::where('status', 1)->where('vendor_id', $request->id)->get();
+        return $trunks;
     }
 }

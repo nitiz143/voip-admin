@@ -638,4 +638,16 @@ class ClientController extends Controller
 
         return (new FastExcel($list))->download('history.xlsx');
     }
+
+    public function history_export_csv(Request $request){
+        $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('download_processes.client_id',$request->id)->get();
+        $list =array();
+        foreach ( $downloads as $key => $value) {
+            $data =array();
+            $data['title'] =  $value->name."($value->format)($value->effective)";
+            $data['created_at'] =  $value->created_at->format('d-m-Y H:i:s');
+            $list[]= $data;
+        }
+        return (new FastExcel($list))->download('history.csv');
+    }
 }

@@ -4,7 +4,7 @@
             <a href="{{route('history_export_xlsx',@request()->id)}}" data-value="xlsx"class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_0">
                 <undefined>EXCEL</undefined>
             </a>
-            <a  href="" class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_1">
+            <a  href="{{route('history_export_csv',@request()->id)}}" class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_1">
                 <undefined>CSV</undefined>
             </a>
         </div>
@@ -34,13 +34,13 @@
     <tbody>
         @if(!empty($downloads))
             @foreach ($downloads as $download)
-            <tr>
-                <td>{{$clients->company."($download->format)($download->effective)"}}</td>
-                <td>{{$download->created_at}}</td>
-                <td>{{$download->uname}}</td>
-                <td><a href="javascript:;" data-id="{{$download->id}}" id="View"  class="btn btn-default btn-sm View"><i class="fa fa-eye"></i></a>
-                 <a  href="" class="btn btn-success btn-sm btn-icon icon-left"><i class="entypo-down"></i>Download</a></td>
-            </tr>
+                <tr>
+                    <td>{{$clients->company."($download->format)($download->effective)"}}</td>
+                    <td>{{$download->created_at}}</td>
+                    <td>{{$download->uname}}</td>
+                    <td><a href="javascript:;" data-id="{{$download->id}}" id="View"  class="btn btn-default btn-sm View"><i class="fa fa-eye"></i></a>
+                    <a  href="" class="btn btn-success btn-sm btn-icon icon-left"><i class="entypo-down"></i>Download</a></td>
+                </tr>
             @endforeach
         @endif
     </tbody>

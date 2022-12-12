@@ -51,10 +51,15 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/trunks', [App\Http\Controllers\SettingController::class, 'trunkIndex'])->name('trunks.index');
     Route::post('/trunk/store', [App\Http\Controllers\SettingController::class, 'trunkStore'])->name('trunk.store');
     Route::get('/trunk/edit/{id}', [App\Http\Controllers\SettingController::class, 'trunkEdit'])->name('trunk.edit');
+    Route::get('trunks/xlsx', [App\Http\Controllers\SettingController::class, 'trunks_xlsx'])->name('trunks_xlsx');
+    Route::get('trunks/csv', [App\Http\Controllers\SettingController::class, 'trunks_csv'])->name('trunks_csv');
+
     Route::get('/customer/{id}/history_export/xlsx', [App\Http\Controllers\ClientController::class, 'history_export_xlsx'])->name('history_export_xlsx');
+    Route::get('/customer/{id}/history_export/csv', [App\Http\Controllers\ClientController::class, 'history_export_csv'])->name('history_export_csv');
     Route::resource('/company','App\Http\Controllers\CompanyController');
     Route::get('/rate-upload', [App\Http\Controllers\RateController::class, 'index'])->name('rate-upload');
     Route::post('/rate-upload', [App\Http\Controllers\RateController::class, 'store'])->name('post-rate-upload');
+    Route::POST('/rate_upload/getTrunk', [App\Http\Controllers\RateController::class, 'get_trunk'])->name('getTrunk');
     Route::get('/rate-table', [App\Http\Controllers\RateController::class, 'rateIndex'])->name('rate-table');
     Route::get('/rate-table-create', [App\Http\Controllers\RateController::class, 'create'])->name('rate-table.create');
     Route::post('/rate-table-post', [App\Http\Controllers\RateController::class, 'tableStore'])->name('rate-table.store');
