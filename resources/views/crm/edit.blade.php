@@ -48,6 +48,7 @@
                                                         @endif
                                                     </optgroup>
                                                 </select>
+                                                <input type="text" name="lead_owner" value="{{$user->lead_owner}}" hidden>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">

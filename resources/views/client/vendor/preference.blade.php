@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-           <form role="form" id="vendor-rate-search" method="get"  action="http://46.4.101.249/vendor_rates/3/search" class="form-horizontal form-groups-bordered validate" novalidate="novalidate">
+           <form role="form" id="vendor-rate-search" method="get"  action="" class="form-horizontal form-groups-bordered validate" novalidate="novalidate">
             <div class="card card-primary" data-collapsed="0">
                 <div class="card-header">
                     <div class="card-title">

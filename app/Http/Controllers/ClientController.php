@@ -569,7 +569,6 @@ class ClientController extends Controller
     }
 
     public function process_download(Request $request){
-
         $validator = Validator::make($request->all(), [
             'filetype' => 'required',
             'Format'=>'required',
@@ -585,7 +584,8 @@ class ClientController extends Controller
                     ]);
                 return $response;
             }
-            $clients = Client::where("id", "=",$request->id)->first();
+           
+            $data = array();
             if(!empty($request->Trunks)){
                 $data['trunks'] = json_encode($request->Trunks);
             }else{
@@ -597,20 +597,24 @@ class ClientController extends Controller
                 $data['timezones'] = json_encode([]);
             }
            
-
-            $data['name'] =  $clients->company ?? '';
-            $data['format'] = $request->Format ?? '';
-            $data['filetype'] = $request->filetype ?? '';
-            $data['effective'] = $request->Effective ?? '';
-            $data['customDate'] = $request->CustomDate ?? '';
-            $data['isMerge'] = $request->isMerge ?? '';
-            $data['sendMail'] = $request->sendMail ?? '';
-            $data['type'] = $request->type ?? '';
-            $data['account_owners'] = $request->account_owners ?? '';
-            $data['client_id'] = $request->id ?? '';
-            $data['created_by'] = Auth::user()->id ?? '';
-            DownloadProcess::create($data);
-            return response()->json(['message' =>  'Process Download created sucessfully']);
+        if(!empty($request->customer)){
+            foreach ($request->customer as $key => $value) {
+                $clients = Client::where("id", "=",$value)->first();
+                $data['name'] =  $clients->company ?? '';
+                $data['format'] = $request->Format ?? '';
+                $data['filetype'] = $request->filetype ?? '';
+                $data['effective'] = $request->Effective ?? '';
+                $data['customDate'] = $request->CustomDate ?? '';
+                $data['isMerge'] = $request->isMerge ?? '';
+                $data['sendMail'] = $request->sendMail ?? '';
+                $data['type'] = $request->type ?? '';
+                $data['account_owners'] = $request->account_owners ?? '';
+                $data['client_id'] = $value;
+                $data['created_by'] = Auth::user()->id ?? '';
+                DownloadProcess::create($data);
+            }
+        }
+            return response()->json(['message' =>  'Process Download created sucessfully','success'=>true]);
     }
 
     public function history_detail(Request $request){

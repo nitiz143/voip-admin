@@ -58,11 +58,14 @@
                         <div class="card card-primary">
                             <div class="card-header">
                                 <h3 class="card-title">Upload Rates</h3>
+                                <div class="card-options float-right">
+                                    <a href="#" class=" float-end" data-rel="collapse" onclick="myFunction()"><i class="fas fa-angle-down"></i></a>
+                                </div>
                             </div>
 
                             <form action="{{ route('post-rate-upload') }}" method="POST" id="RateUploadform" enctype="multipart/form-data">
                                 @csrf
-                                <div class="card-body">
+                                <div class="card-body" id="myDIV">
                                     <div class="form-group row">
                                         <label for="field-1" class="col-sm-2 control-label">Rate Upload Type</label>
                                         <div class="col-sm-10">
@@ -93,7 +96,14 @@
                                     <div class="form-group ratetablecontent typecontentbox row" style="display: none">
                                         <label for="field-1" class="col-sm-2 control-label">Ratetable</label>
                                         <div class="col-sm-4">
-                                            <select class="form-control  select2" id="ratetable" name="Ratetable"></select>
+                                            <select class="form-control  select2" id="ratetable" name="Ratetable">
+                                                <option>Select Vendor</option>
+                                                @if (!empty($rate_table))
+                                                    @foreach ( $rate_table as $rate)
+                                                    <option value="{{$rate->id}}" >{{$rate->name}}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group customercontent typecontentbox " style="display: none">
@@ -107,26 +117,12 @@
                                         <label for="field-1" class="col-sm-2 control-label">Trunk</label>
                                         <div class="col-sm-4">
                                             <select class="form-control select2 small" id="Trunk" name="Trunk">
-                                                <option>Select Vendor</option>
-                                                @if(!empty($trunks))
-                                                    @foreach ($trunks as $trunk )
-                                                        <option>{{$trunk->title}}</option>
-                                                    @endforeach
-                                                @endif
+                                                <option>Select Trunk</option>
                                             </select>
                                             <input class="form-control" id="isTrunks" disabled="disabled" name="isTrunks" type="hidden" value="0">
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <label for="field-1" class="col-sm-2 control-label">Upload Template</label>
-                                        <div class="col-sm-4">
-                                            <select class="form-control select2 select2-offscreen" id="uploadtemplate" name="uploadtemplate" tabindex="-1" style="visibility: visible;">
-                                                <option value="" >Select</option>
-                                               
-                                            </select>
-                                        </div>
-                                    </div>
                                     <!----------5 row ---------->
         
                                     <div class="form-group row">
@@ -152,84 +148,9 @@
                                             <span>Upload file</span></label>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 control-label">Settings</label>
-                                        <div class="col-sm-10">
-                                            <div class="checkbox ">
-                                                <label>
-                                                    <input type="hidden" name="checkbox_replace_all" value="0" >
-                                                    <input type="checkbox" id="rd-1" name="checkbox_replace_all" value="1" > Replace all of the existing rates with the rates from the file
-                                                </label>
-                                            </div>
-                                            <div class="checkbox ">
-                                                <input type="hidden" name="checkbox_rates_with_effected_from" value="0" >
-                                                <label>
-                                                    <input type="checkbox" id="rd-1" name="checkbox_rates_with_effected_from" value="1" checked> Rates with 'effective from' date in the past should be uploaded as effective immediately
-                                                </label>
-                                            </div>
-                                            <div class="checkbox ">
-                                                <input type="hidden" name="checkbox_add_new_codes_to_code_decks" value="0" >
-                                                <label>
-                                                    <input type="checkbox" id="rd-1" name="checkbox_add_new_codes_to_code_decks" value="1" checked> Add new codes from the file to code decks
-                                                </label>
-                                            </div>
-                                            <div class="checkbox review_vendor_rate">
-                                                <input type="hidden" name="checkbox_review_rates" value="0" >
-                                                <label>
-                                                    <input type="checkbox" name="checkbox_review_rates" id="checkbox_review_rates" value="1"> Review Rates
-                                                </label> 
-                                                    
-                                                <span class="label label-info popover-primary" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="if checked, review screen will be displayed before processing" data-original-title="Review Rates">?</span>
-                                            </div>
-                                            <div class="radio ">
-                                                <label>
-                                                    <input type="radio" name="radio_list_option" value="1" checked>Complete File
-                                                </label> 
-                                                <span class="label label-info popover-primary" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="if complete file, codes which are not in the file will be deleted." data-original-title="Completed List">?
-
-                                                </span>
-                                                <br/>
-                                                <label>
-                                                    <input type="radio" name="radio_list_option" value="2">Partial File
-                                                </label>
-                                                <span class="label label-info popover-primary" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="if partial file, codes only in the file will be processed." data-original-title="Partial List">?
-                                                
-                                                </span>
-                                            </div>
-                                            <div class="row" style="margin-top:10px;">
-                                                <label for="field-1" class="col-sm-2 control-label" style="text-align: right;">Skips rows from Start (Rate)</label>
-                                                <div class="col-sm-3" style="padding-left:40px;">
-                                                    <input name="start_row" type="number" class="form-control" data-label="<i class='glyphicon glyphicon-circle-arrow-up'></i>&nbsp;   Browse" style="" placeholder="Skips rows from Start" min="0" value="0">
-                                                </div>
-                                                <label class="col-sm-3 control-label" style="text-align: right;">Skips rows from Bottom (Rate)</label>
-                                                <div class="col-sm-3">
-                                                    <input name="end_row" type="number" class="form-control" data-label="<i class='glyphicon glyphicon-circle-arrow-up'></i>&nbsp;   Browse" placeholder="Skips rows from Bottom" min="0" value="0">
-                                                </div>
-                                            </div>
-                                            <br/><br/>
-                                            <div class="skip_div_2" style="margin-top:10px;display:none;">
-                                                <label for="field-1" class="col-sm-2 control-label" style="text-align: right;">Skips rows from Start (DialCodes)</label>
-                                                <div class="col-sm-3" style="padding-left:40px;">
-                                                    <input name="start_row_sheet2" type="number" class="form-control" data-label="<i class='glyphicon glyphicon-circle-arrow-up'></i>&nbsp;   Browse" style="" placeholder="Skips rows from Start" min="0" value="0">
-                                                </div>
-                                                <label class="col-sm-3 control-label" style="text-align: right;">Skips rows from Bottom (DialCodes)</label>
-                                                <div class="col-sm-3">
-                                                    <input name="end_row_sheet2" type="number" class="form-control" data-label="<i class='glyphicon glyphicon-circle-arrow-up'></i>&nbsp;   Browse" placeholder="Skips rows from Bottom" min="0" value="0">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                 
             
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 control-label">Note</label>
-                                        <div class="col-sm-8">
-                                            <p><i class="glyphicon glyphicon-minus"></i><strong>Allowed Extension</strong> .xls, .xlsx, .csv</p>
-                                           <!-- <p>Please upload the file in given <span style="cursor: pointer" onclick="jQuery('#modal-fileformat').modal('show');" class="label label-info">Format</span></p>
-                                            <p>Sample File <a class="btn btn-success btn-sm btn-icon icon-left" href=""><i class="entypo-down"></i>Download</a></p>-->
-                                            <i class="glyphicon glyphicon-minus"></i> <strong>Replace all of the existing rates with the rates from the file -</strong> The default option is to add new rates. If there is at least one parameter that differentiates a new rate from the existent one then the new rate will override it. If a rate for a certain prefix exists in the tariff but is not present in the file you received from the carrier, it will remain unchanged. The replace mode uploads all the new rates from the file and marks all the existent rates as discontinued. <br><br>
-                                            <i class="glyphicon glyphicon-minus"></i> <strong>Rates with 'effective from' date in the past should be uploaded as 'effective immediately' - </strong> Sometimes you might receive a file with rates later than expected, when the moment at which the rates were supposed to become effective has already passed. By default this check box is disabled and a rate that has an 'effective from' date that has passed will be rejected and not included in the tariff. Altematively, you may choose to insert these rates into the tariff and make them effective from the current moment; to do so enable this check box. <br><br>
-                                        </div>
-                                    </div>
+                                   
                                         {{-- <p style="text-align: right;">
                                             <button  type="submit" class="btn upload btn-primary btn-sm btn-icon icon-left" data-loading-text="Loading...">
                                                 <i class="glyphicon glyphicon-circle-arrow-up"></i>
@@ -312,7 +233,7 @@
 
         $.when(getTrunk(Type,id)).then(function() {
             if($('#isTrunks').val() == '0') {
-                toastr.error("You can not upload rate against this account, To upload rates against this account you need to setup trunk against this account", "Error", toastr_opts);
+               $.notify("You can not upload rate against this account, To upload rates against this account you need to setup trunk against this account", "Error");
                 $('.btn.upload').attr('disabled','disabled');
             } else {
                 $('.btn.upload').removeAttr('disabled');
@@ -333,33 +254,43 @@
                 type: 'POST',
                 dataType: 'json',
                 success: function (response) {
-                    if (response.status == 'success') {
+                    console.log(response.success );
+                    if (response.success == true) {
                         var html = '';
-                        var Trunks = response.trunks;
-                        var Trunk  = response.trunk;
-
+                        var Trunks = response.data;
+                       
                         if(!jQuery.isEmptyObject(Trunks)) {
+                            
                             $('#isTrunks').val('1');
                         } else {
                             $('#isTrunks').val('0');
                         }
+                        html += '<option value="" >SelectTrunk</option>';
 
-                        for(key in Trunks) {
-                            if(Trunks[key] == 'Select') {
-                                html += '<option value="'+key+'" selected>'+Trunks[key]+'</option>';
-                            } else {
-                                html += '<option value="'+key+'">'+Trunks[key]+'</option>';
-                            }
-                        }
+                        Trunks.forEach(Trunks => {
+                                html += '<option value="'+Trunks['id']+'">'+Trunks['title']+'</option>';
+                            });
+                        
                         $('#Trunk').html(html).trigger('change');
-                    } else {
-                        notify.error(response.message, "Error", toastr_opts);
                     }
+                    //  else {
+                    //    alert(response.message, "Error")
+                    // }
                 },
                 error: function () {
-                    notify.error("error", "Error", toastr_opts);
+                    alert("error", "Error")
                 }
             });
         }
+     
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
 </script>
 @endsection

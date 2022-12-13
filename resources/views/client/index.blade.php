@@ -1,10 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('content')
-{{-- <style>
-    table {border-collapse:collapse; table-layout:fixed; width:310px;}
-    table td {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-</style> --}}
+<style>
+    table {border-collapse:collapse; table-layout:fixed; }
+   table td {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+   table th {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+</style>
 <div class="content-wrapper mt-3">
     <section class="content-header">
         <div class="container-fluid">
@@ -33,17 +34,17 @@
                             <div class="card-body">
                                 <table class="table table-bordered data-table" style="width: 100%">
                                     <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Company</th>
-                                        <th>Firstname</th>
-                                        <th>Lastname</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Created_at</th>
-                                        <th>Updated_at</th>
-                                        <th>Action</th>
-                                    </tr>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Company</th>
+                                            <th>Firstname</th>
+                                            <th>Lastname</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Created_at</th>
+                                            <th>Updated_at</th>
+                                            <th width="11%">Action</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
 

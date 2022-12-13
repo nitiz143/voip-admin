@@ -22,7 +22,8 @@ class RateController extends Controller
     public function index()
     {
         $clients = Client::where("Vendor", "=",1)->get();
-        return view('rate.rate_upload',compact('clients'));
+        $rate_table = RateTable::select('*')->get();
+        return view('rate.rate_upload',compact('clients','rate_table'));
     }
 
     /**
@@ -191,7 +192,11 @@ class RateController extends Controller
     }
 
     public function get_trunk(Request $request){
-        $trunks = VendorTrunk::where('status', 1)->where('vendor_id', $request->id)->get();
-        return $trunks;
+        $vendor = VendorTrunk::where('status', 1)->where('vendor_id', $request->id)->get();
+        $trunks=array();
+        foreach ($vendor  as $key => $value) {
+            $trunks[] = Trunk::where('id',$value->trunkid)->first();
+        }
+        return response()->json(['data' => $trunks ,'success'=>true]);
     }
 }

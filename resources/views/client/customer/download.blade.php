@@ -93,6 +93,7 @@
                             <input type="checkbox"  class="form-check-input" name="isMerge" value="1">
                             <input type="hidden" name="sendMail" value="0">
                             <input type="hidden" name="type" value="CD" />
+                            <input type="hidden" name="customer[]" value="{{@request()->id}}" class="rowcheckbox">
                         </div>
                     </div>
                 </div>
@@ -121,10 +122,10 @@
                     <tbody>
                         @if(!empty($clients))
                             @foreach ($clients as $client)
-                            <tr>
-                                <td><input type="checkbox" name="customer[]" value="{{$client->id}}" class="rowcheckbox"></td>
-                                <td>{{$client->firstname}}</td>
-                            </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="customer[]" value="{{$client->id}}" class="rowcheckbox"></td>
+                                    <td>{{$client->firstname}}</td>
+                                </tr>
                             @endforeach
                         @endif
                     </tbody>
@@ -222,6 +223,7 @@
         $(".btn.download").click(function () {
            // return false;
             var formData = new FormData($('#form-download')[0]);
+            var i = 0;
             $.ajax({
                 url:  $('#form-download').attr("action"),  //Server script to process data
                 type: 'POST',
@@ -229,16 +231,16 @@
                 //Ajax events
                 beforeSend: function(){
                     $('.btn.download').button('loading');
+                    i++;
                 },
                 afterSend: function(){
                     console.log("Afer Send");
                 },
                 success: function (response) {
-                    console.log(response.errors)
-                    if (response.success) {
+                  
+                    if (response.success == true) {
                         $.notify(response.message, 'success');
                        
-                        reloadJobsDrodown(0);
                      } else {
                         $.each(response.errors, function(k, e) {
                             $.notify(e, 'error');
