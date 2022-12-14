@@ -8,12 +8,14 @@ use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Trunk;
+use App\Models\BlockByCountry;
 use App\Models\RateTable;
 use App\Models\VendorTrunk;
 use App\Models\CustomerTrunk;
 use App\Models\DownloadProcess;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Carbon\Carbon;
+use DB;
 
 use Illuminate\Http\Request;
 use Auth;
@@ -493,6 +495,11 @@ class ClientController extends Controller
         }
         if($request->name == "Blocking"){
 
+           
+            return view('client.vendor.blocking ');
+        }
+      
+        if($request->name == "Country"){
             $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
             $trunks =array();
             if(!empty($vender_trunks)){
@@ -500,9 +507,22 @@ class ClientController extends Controller
                     $trunks[] = Trunk::where('id',$value->trunkid)->where('status', 1)->first();
                 }
             }
-
-            return view('client.vendor.blocking ',compact('trunks'));
-        }
+           
+            return view('client.vendor.country ',compact('trunks'));
+         }
+         if($request->name == "Code"){
+            $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
+            $trunks =array();
+            if(!empty($vender_trunks)){
+                foreach ($vender_trunks as $key => $value) {
+                    $trunks[] = Trunk::where('id',$value->trunkid)->where('status', 1)->first();
+                }
+            }
+           
+               
+            return view('client.vendor.code ',compact('trunks'));
+         }
+       
         if($request->name == "Preference"){
 
             $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
@@ -653,5 +673,36 @@ class ClientController extends Controller
             $list[]= $data;
         }
         return (new FastExcel($list))->download('history.csv');
+    }
+
+    public function ajax_datagrid_blockbycountry(Request $request){
+
+        if ($request->ajax()) {
+            $users = DB::table('countries')->select('id','name')->get();
+            return Datatables::of($users)
+
+            ->addColumn('status', function($row){
+               $block = BlockByCountry::where('CountryID',$row->id)->first();
+                return  !empty($block) ? __('Blocked') : __('Not Blocked');
+
+            })
+                ->addColumn('action', function($row){
+                    
+                        $btn = '<input type="checkbox" name="checkbox[]" value="'. $row->id.'" class="rowcheckbox" >';
+
+                        return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+            
+        
+    }
+
+    public function ajax_datagrid_blockbycode(Request $request){
+        if ($request->ajax()) {
+            // $data = Client::query('');
+            // return Datatables::of($data)->make(true);
+        }
     }
 }

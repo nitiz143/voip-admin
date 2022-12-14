@@ -97,7 +97,7 @@
                                         <label for="field-1" class="col-sm-2 control-label">Ratetable</label>
                                         <div class="col-sm-4">
                                             <select class="form-control  select2" id="ratetable" name="Ratetable">
-                                                <option>Select Vendor</option>
+                                                <option>Select Rate Table</option>
                                                 @if (!empty($rate_table))
                                                     @foreach ( $rate_table as $rate)
                                                     <option value="{{$rate->id}}" >{{$rate->name}}</option>
