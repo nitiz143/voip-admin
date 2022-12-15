@@ -13,9 +13,11 @@ use App\Models\RateTable;
 use App\Models\VendorTrunk;
 use App\Models\CustomerTrunk;
 use App\Models\DownloadProcess;
+use App\Models\Country;
+use Illuminate\Support\Arr;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Carbon\Carbon;
-use DB;
+// use DB;
 
 use Illuminate\Http\Request;
 use Auth;
@@ -458,7 +460,7 @@ class ClientController extends Controller
     }
     public function vendors(Request $request){
         if($request->name == "Vendor Rate"){
-
+            $country = Country::query('')->get();
             $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
             $trunks =array();
             if(!empty($vender_trunks)){
@@ -468,7 +470,7 @@ class ClientController extends Controller
             }
 
 
-            return view('client.vendor.vendor_rate',compact('trunks'));
+            return view('client.vendor.vendor_rate',compact('trunks','country'));
         }
         if($request->name == "Settings"){
 
@@ -494,12 +496,11 @@ class ClientController extends Controller
             return view('client.vendor.history');
         }
         if($request->name == "Blocking"){
-
-           
             return view('client.vendor.blocking ');
         }
       
         if($request->name == "Country"){
+            $country = Country::query('')->get();
             $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
             $trunks =array();
             if(!empty($vender_trunks)){
@@ -507,10 +508,10 @@ class ClientController extends Controller
                     $trunks[] = Trunk::where('id',$value->trunkid)->where('status', 1)->first();
                 }
             }
-           
-            return view('client.vendor.country ',compact('trunks'));
+            return view('client.vendor.country ',compact('trunks','country'));
          }
          if($request->name == "Code"){
+            $country = Country::query('')->get();
             $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
             $trunks =array();
             if(!empty($vender_trunks)){
@@ -518,13 +519,11 @@ class ClientController extends Controller
                     $trunks[] = Trunk::where('id',$value->trunkid)->where('status', 1)->first();
                 }
             }
-           
-               
-            return view('client.vendor.code ',compact('trunks'));
+            return view('client.vendor.code ',compact('trunks','country'));
          }
        
         if($request->name == "Preference"){
-
+            $country = Country::query('')->get();
             $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
             $trunks =array();
             if(!empty($vender_trunks)){
@@ -533,7 +532,7 @@ class ClientController extends Controller
                 }
             }
 
-            return view('client.vendor.preference',compact('trunks'));
+            return view('client.vendor.preference',compact('trunks','country'));
         }
     }
     public function vendortrunk(Request $request){
@@ -678,12 +677,61 @@ class ClientController extends Controller
     public function ajax_datagrid_blockbycountry(Request $request){
 
         if ($request->ajax()) {
-            $users = DB::table('countries')->select('id','name')->get();
+           
+            if($request->Country != null){
+                $users = Country::where('id',$request->Country)->with(['BlockByCountries'=> function($q) use($request) {
+                    // Query the name field in status table
+                    $q->where('client_id', '=', $request->id)->orWhere('Trunk','=',$request->Trunk);
+                }]);
+            }
+            else{
+                $users = Country::select('*')->with(['BlockByCountries'=> function($q) use($request) {
+                    // Query the name field in status table
+                    $q->where('client_id', '=', $request->id); // '=' is optiona
+                }]);
+            }
+            $users =  $users->get();
+            
             return Datatables::of($users)
+            ->filter(function ($instance) use ($request) {
+                $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                    
+                    if(!empty($request->Status)){
+                        if($request->Status == "Blocked"){
+                            $row = !empty($row['block_by_countries']);
+                            return  $row;
+                        }
+                        if($request->Status == "Not_Blocked"){
+                            $row = empty($row['block_by_countries']);
+                            return  $row;
+                        }
+                        if($request->Status == "All"){
+                            return $row;
+                        }
+                    }
+                   
+                });
+            })
+          
+            ->addColumn('status', function($row) use ($request) {
 
-            ->addColumn('status', function($row){
-               $block = BlockByCountry::where('CountryID',$row->id)->first();
-                return  !empty($block) ? __('Blocked') : __('Not Blocked');
+                if(!empty($row->BlockByCountries[0]->CountryID) == $row->id)
+                {
+                    if($row->BlockByCountries[0]->Trunk == $request->Trunk)
+                    {
+                        $value = "Blocked";
+                        return $value;
+                    }else{
+                        $value = "Not Blocked";
+                        return $value;
+                    }
+                       
+                }else{
+                    $value = "Not Blocked";
+                    return $value;
+                }
+               
+              
 
             })
                 ->addColumn('action', function($row){
@@ -696,6 +744,75 @@ class ClientController extends Controller
                 ->make(true);
         }
             
+        
+    }
+
+
+    public function block_unblock_by_country(Request $request){
+        if($request->action == 'block'){
+            if(!empty($request->CountryID ))
+            {
+                foreach($request->CountryID as $Country_ID){
+                    $validator = Validator::make($request->all(), [
+                        'CountryID' => 'required',
+                        'Trunk'=>'required',
+                    ]);
+
+                        if ($validator->fails())
+                        {
+                            $response = \Response::json([
+                                    'success' => false,
+                                    'errors' => $validator->getMessageBag()->toArray()
+                                ]);
+                            return $response;
+                        }
+
+                        $data['CountryID'] = $Country_ID ?? "";
+                        $data['client_id'] = $request->client_id ?? "";
+                        $data['Trunk'] = $request->Trunk ?? "";
+                        $data['Timezones'] = $request->Timezones ?? "" ;
+                        $data['prefix_cdr'] = $request->criteria ?? "0";
+                        $data['user_id'] = Auth::user()->id ?? '';
+                        BlockByCountry::Create($data);
+                }
+                $response = \Response::json(['success' => true,'message' => 'Blocked sucessfully']);
+                return $response;
+            }
+        }
+
+        if($request->action == 'unblock'){
+            if(!empty($request->CountryID))
+            {
+                foreach($request->CountryID as $Country_ID){
+                    $validator = Validator::make($request->all(), [
+                        'CountryID' => 'required',
+                        'Trunk'=>'required',
+                    ]);
+
+                        if ($validator->fails())
+                        {
+                            $response = \Response::json([
+                                    'success' => false,
+                                    'errors' => $validator->getMessageBag()->toArray()
+                                ]);
+                            return $response;
+                        }
+
+                        
+                    $unblock=  BlockByCountry::where([["client_id","=", $request->client_id],["CountryID","=",$Country_ID],["Trunk","=", $request->Trunk]])->first();
+                    if(!empty($unblock)){
+                        $unblock =  $unblock->delete();
+                    }
+                    else{
+                        $response = \Response::json(['success' => false,'message' => 'Select Blocked Country']);
+                        return $response;
+                    }
+                   
+                }
+                $response = \Response::json(['success' => true,'message' => 'Unblocked sucessfully']);
+                return $response;
+            }
+        }
         
     }
 

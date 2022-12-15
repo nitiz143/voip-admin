@@ -58,6 +58,7 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/customer/{id}/history_export/csv', [App\Http\Controllers\ClientController::class, 'history_export_csv'])->name('history_export_csv');
     Route::get('/vendor_blocking/{id}/ajax_datagrid_blockbycountry', [App\Http\Controllers\ClientController::class, 'ajax_datagrid_blockbycountry'])->name('ajax_datagrid_blockbycountry');
     Route::get('/vendor_blocking/{id}/ajax_datagrid_blockbycode', [App\Http\Controllers\ClientController::class, 'ajax_datagrid_blockbycode'])->name('ajax_datagrid_blockbycode');
+    Route::post('/block-unblock_country/{id}', [App\Http\Controllers\ClientController::class, 'block_unblock_by_country'])->name('block-unblock-by-country');
     Route::resource('/company','App\Http\Controllers\CompanyController');
     Route::get('/rate-upload', [App\Http\Controllers\RateController::class, 'index'])->name('rate-upload');
     Route::post('/rate-upload', [App\Http\Controllers\RateController::class, 'store'])->name('post-rate-upload');
