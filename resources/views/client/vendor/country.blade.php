@@ -149,16 +149,16 @@
                 if (response.success == true) {
                    $.notify(response.message, "success");
                     data_table.fnFilter('', 0);
-                    $("#unblockSelectedCountry-form").find('input[name="CountryID[]"]').val('');
+                    $("#unblockSelectedCountry-form").find("input[name='CountryID[]']").remove();
                 } else {
                     $.each(response.errors, function(k, e) {
                         $.notify(e, 'error');
-                        $("#unblockSelectedCountry-form").find('input[name="CountryID[]"]').val('');
+                        $("#unblockSelectedCountry-form").find("input[name='CountryID[]']").remove();
                     });
                 }
                 if (response.success == null) {
                     $.notify(response.message, "error");
-                    $("#unblockSelectedCountry-form").find('input[name="CountryID[]"]').val('');
+                    $("#unblockSelectedCountry-form").find("input[name='CountryID[]']").remove();
                 }
             },
             // Form data
@@ -214,7 +214,7 @@
     });
 
      // Select all
-     $("#selectall").click(function(ev) {
+    $("#selectall").click(function(ev) {
         var is_checked = $(this).is(':checked');
         $('#table-4 tbody tr').each(function(i, el) {
             if (is_checked) {
@@ -271,13 +271,16 @@
                 if (response.success == true) {
                     $.notify(response.message, "success");
                     data_table.fnFilter('', 0);
+                    $("#blockSelectedCountry-form").find("input[name='CountryID[]']").remove();
                 } else {
                     $.each(response.errors, function(k, e) {
                         $.notify(e, 'error');
+                        $("#blockSelectedCountry-form").find("input[name='CountryID[]']").remove();
                     });
                 }
                 if (response.success == null) {
                     $.notify(response.message, "error");
+                    $("#blockSelectedCountry-form").find("input[name='CountryID[]']").remove();
                 }
             },
             // Form data

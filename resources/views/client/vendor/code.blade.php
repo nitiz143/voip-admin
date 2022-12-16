@@ -124,7 +124,7 @@ var checked='';
         $searchFilter.Code = $("#block_by_code_form [name='Code']").val();
         $searchFilter.Timezones = $("#block_by_code_form select[name='Timezones']").val();
         if(typeof $searchFilter.Trunk  == 'undefined' || $searchFilter.Trunk == '' ){
-            $.notify("Please Select a Trunk", "Error");
+            $.notify("Please Select a Trunk", "error");
             return false;
         }
         
@@ -158,66 +158,8 @@ var checked='';
                         {}, //1 Code
                         {}, //2 Status
                         {}, //3 Description
-                    ],
-            "oTableTools":
-            {
-                "aButtons": [
-                    {
-                        "sExtends": "download",
-                        "sButtonText": "EXCEL",
-                        // "sUrl": baseurl + "/vendor_blocking/415/blockbycode_exports/xlsx",
-                        sButtonClass: "save-collection btn-sm"
-                    },
-                    {
-                        "sExtends": "download",
-                        "sButtonText": "CSV",
-                        // "sUrl": baseurl + "/vendor_blocking/415/blockbycode_exports/csv",
-                        sButtonClass: "save-collection btn-sm"
-                    }
-                ]
-            }, 
-            "fnDrawCallback": function() {
-                // $(".dataTables_wrapper select").select2({
-                //     minimumResultsForSearch: -1
-                // });
-
-                $('#table-4 tbody tr').each(function(i, el) {
-                    if (checked!='') {
-                        $(this).find('.rowcheckbox').prop("checked", true).prop('disabled', true);
-                        $(this).addClass('selected');
-                        $('#selectallbutton').prop("checked", true);
-                    } else {
-                        $(this).find('.rowcheckbox').prop("checked", false).prop('disabled', false);;
-                        $(this).removeClass('selected');
-                    }
+                    ]
                 });
-
-                $('#selectallbutton').click(function(ev) {
-                    if($(this).is(':checked')){
-                        checked = 'checked=checked disabled';
-                        $("#selectall").prop("checked", true).prop('disabled', true);
-                        if(!$('#changeSelectedInvoice').hasClass('hidden')){
-                            $('#table-4 tbody tr').each(function(i, el) {
-                                $(this).find('.rowcheckbox').prop("checked", true).prop('disabled', true);
-                                $(this).addClass('selected');
-                            });
-                        }
-                    }else{
-                        checked = '';
-                        $("#selectall").prop("checked", false).prop('disabled', false);
-                        if(!$('#changeSelectedInvoice').hasClass('hidden')){
-                            $('#table-4 tbody tr').each(function(i, el) {
-                                $(this).find('.rowcheckbox').prop("checked", false).prop('disabled', false);
-                                $(this).removeClass('selected');
-                            });
-                        }
-                    }
-                });
-                                    
-            },
-        
-        });
-        $("#selectcheckbox").append('<input type="checkbox" id="selectallbutton" name="checkboxselect[]" class="" title="Select All Found Records" />');
         return false;
     });
 

@@ -41,9 +41,7 @@
 
             </div>
             <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
 
-              </ol>
             </div>
           </div>
         </div><!-- /.container-fluid -->
@@ -52,9 +50,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-
-                    <div class="col-md-12">
-                                <!-- general form elements -->
+                    <div class="col-md-12"><!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
                                 <h3 class="card-title">Upload Rates</h3>
@@ -223,7 +219,6 @@
         var id   = $("#"+Type).val();
         $('.typecontentbox').hide().addClass('hidden');
         $('.'+Type+'content').show().removeClass('hidden');
-        getUploadTemplates(Type);
         getTrunk(Type,id);
         $('.btn.upload').removeAttr('disabled');
     });
@@ -233,7 +228,7 @@
 
         $.when(getTrunk(Type,id)).then(function() {
             if($('#isTrunks').val() == '0') {
-               $.notify("You can not upload rate against this account, To upload rates against this account you need to setup trunk against this account", "Error");
+               $.notify("You can not upload rate against this account, To upload rates against this account you need to setup trunk against this account", "error");
                 $('.btn.upload').attr('disabled','disabled');
             } else {
                 $('.btn.upload').removeAttr('disabled');
@@ -254,8 +249,7 @@
                 type: 'POST',
                 dataType: 'json',
                 success: function (response) {
-                    console.log(response.success );
-                    if (response.success == true) {
+                    if(response.success == true) {
                         var html = '';
                         var Trunks = response.data;
                        

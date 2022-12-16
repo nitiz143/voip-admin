@@ -11,7 +11,8 @@
     </div>
 
     <div class="card-body" id="myDIV">
-        <form id="form-download" action="" role="form" class="form-horizontal form-groups-bordered">
+        <form id="form-download" action="{{route('vendor_process_download',@request()->id)}}" role="form" class="form-horizontal form-groups-bordered">
+            @csrf
             <div class="form-group">
                 <div class="row">
                     <label for="field-1" class="col-sm-3">Trunk</label>
@@ -76,7 +77,7 @@
                 <div class="row">
                     <label for="field-1" class="col-sm-3 control-label">Date</label>
                     <div class="col-sm-5">
-                        <input type="date" class="form-control datepicker" data-date-format="yyyy-mm-dd" placeholder="2022-11-10" data-startdate="2022-11-10" name="CustomDate" type="text" value="2022-11-10">
+                        <input type="date" class="form-control datepicker" data-date-format="yyyy-mm-dd" placeholder="2022-11-10" data-startdate="2022-11-10" name="CustomDate" type="text" value="">
                     </div>
                 </div>
             </div>
@@ -87,8 +88,7 @@
                         <div class="form-check form-switch ml-4">
                             <input type="hidden" name="isMerge" value="0">
                             <input type="checkbox"  class="form-check-input" name="isMerge" value="1">
-                            <input type="hidden" name="sendMail" value="0">
-                            <input type="hidden" name="type" value="CD" />
+                            <input type="hidden" name="vendor[]" value="{{@request()->id}}" >
                         </div>
                     </div>
                 </div>
@@ -156,5 +156,45 @@ function myFunction() {
     x.style.display = "none";
   }
 }
+
+$(".btn.download").click(function () {
+           // return false;
+            var formData = new FormData($('#form-download')[0]);
+            var i = 0;
+            $.ajax({
+                url:  $('#form-download').attr("action"),  //Server script to process data
+                type: 'POST',
+                dataType: 'json',
+                //Ajax events
+                beforeSend: function(){
+                    $('.btn.download').button('loading');
+                    i++;
+                },
+                afterSend: function(){
+                    console.log("Afer Send");
+                },
+                success: function (response) {
+                  
+                    if (response.success == true) {
+                        $.notify(response.message, 'success');
+                       
+                     } else {
+                        $.each(response.errors, function(k, e) {
+                            $.notify(e, 'error');
+                        });
+                    }
+                    //alert(response.message);
+                    $('.btn.download').button('reset');
+                },
+                // Form data
+                data: formData,
+                //Options to tell jQuery not to process data or worry about content-type.
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            return false;
+
+        });
 
 </script>

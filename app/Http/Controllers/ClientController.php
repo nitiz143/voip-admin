@@ -13,6 +13,7 @@ use App\Models\RateTable;
 use App\Models\VendorTrunk;
 use App\Models\CustomerTrunk;
 use App\Models\DownloadProcess;
+use App\Models\VendorDownloadProcess;
 use App\Models\Country;
 use Illuminate\Support\Arr;
 use Rap2hpoutre\FastExcel\FastExcel;
@@ -493,7 +494,10 @@ class ClientController extends Controller
             return view('client.vendor.download',compact('trunks','clients'));
         }
         if($request->name == "Vendor Rate History"){
-            return view('client.vendor.history');
+
+            $downloads = VendorDownloadProcess::leftjoin('users','users.id','=','vendor_download_processes.created_by')->select('vendor_download_processes.*','users.name as uname')->where('client_id',$request->id)->get();
+            $clients = Client::where("id", "=",$request->id)->first();
+            return view('client.vendor.history',compact('downloads','clients'));
         }
         if($request->name == "Blocking"){
             return view('client.vendor.blocking ');
@@ -633,8 +637,58 @@ class ClientController extends Controller
                 DownloadProcess::create($data);
             }
         }
-            return response()->json(['message' =>  'Process Download created sucessfully','success'=>true]);
+            return response()->json(['message' =>  'File is added to queue for processing. You will be notified once file creation is completed','success'=>true]);
     }
+
+    public function vendor_process_download(Request $request){
+        $validator = Validator::make($request->all(), [
+            'filetype' => 'required',
+            'Format'=>'required',
+            'Timezones'=>'required',
+            'Trunks'=>'required',
+        ]);
+
+            if ($validator->fails())
+            {
+                $response = \Response::json([
+                        'success' => false,
+                        'errors' => $validator->getMessageBag()->toArray()
+                    ]);
+                return $response;
+            }
+           
+            $data = array();
+            if(!empty($request->Trunks)){
+                $data['trunks'] = json_encode($request->Trunks);
+            }else{
+                $data['trunks'] = json_encode([]);
+            }
+            if(!empty($request->Timezones)){
+                $data['timezones'] = json_encode($request->Timezones);
+            }else{
+                $data['timezones'] = json_encode([]);
+            }
+           
+        if(!empty($request->vendor)){
+            foreach ($request->vendor as $key => $value) {
+                $clients = Client::where("id", "=",$value)->first();
+                $data['name'] =  $clients->company ?? '';
+                $data['format'] = $request->Format ?? '';
+                $data['filetype'] = $request->filetype ?? '';
+                $data['effective'] = $request->Effective ?? '';
+                $data['customDate'] = $request->CustomDate ?? '';
+                $data['isMerge'] = $request->isMerge ?? '';
+                $data['sendMail'] = $request->sendMail ?? '';
+                $data['type'] = "Download";
+                $data['account_owners'] = $request->account_owners ?? '';
+                $data['client_id'] = $value;
+                $data['created_by'] = Auth::user()->id ?? '';
+                VendorDownloadProcess::create($data);
+            }
+        }
+            return response()->json(['message' =>  'File is added to queue for processing. You will be notified once file creation is completed','success'=>true]);
+    }
+
 
     public function history_detail(Request $request){
        
@@ -647,6 +701,18 @@ class ClientController extends Controller
             } 
         return view('client.customer.detail',compact('downloads','clients','trunks'));
     }
+
+    public function vendor_history_detail(Request $request){
+       
+        $downloads = VendorDownloadProcess::leftjoin('users','users.id','=','vendor_download_processes.created_by')->select('vendor_download_processes.*','users.name as uname')->where('vendor_download_processes.id',$request->id)->first();
+        $clients = Client::where("id", "=",$request->client_id)->first();  
+        if(!empty($downloads->trunks)){
+            foreach (json_decode($downloads->trunks) as $trunk){
+                $trunks[] = Trunk::where("id", "=",$trunk)->first();  
+            }
+        } 
+    return view('client.vendor.detail',compact('downloads','clients','trunks'));
+}
 
     public function history_export_xlsx(Request $request){
         $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('download_processes.client_id',$request->id)->get();
@@ -681,13 +747,13 @@ class ClientController extends Controller
             if($request->Country != null){
                 $users = Country::where('id',$request->Country)->with(['BlockByCountries'=> function($q) use($request) {
                     // Query the name field in status table
-                    $q->where('client_id', '=', $request->id)->orWhere('Trunk','=',$request->Trunk);
+                    $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
                 }]);
             }
             else{
                 $users = Country::select('*')->with(['BlockByCountries'=> function($q) use($request) {
                     // Query the name field in status table
-                    $q->where('client_id', '=', $request->id); // '=' is optiona
+                    $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]); // '=' is optiona
                 }]);
             }
             $users =  $users->get();
@@ -730,8 +796,6 @@ class ClientController extends Controller
                     $value = "Not Blocked";
                     return $value;
                 }
-               
-              
 
             })
                 ->addColumn('action', function($row){
@@ -773,7 +837,14 @@ class ClientController extends Controller
                         $data['Timezones'] = $request->Timezones ?? "" ;
                         $data['prefix_cdr'] = $request->criteria ?? "0";
                         $data['user_id'] = Auth::user()->id ?? '';
+
+                    $block = BlockByCountry::where([["client_id","=", $request->client_id],["CountryID","=",$Country_ID],["Trunk","=", $request->Trunk]])->first();
+                    if(empty($block)){
                         BlockByCountry::Create($data);
+                    }else{
+                        $response = \Response::json(['success' => null,'message' => 'Select Not Blocked country']);
+                        return $response;
+                    }
                 }
                 $response = \Response::json(['success' => true,'message' => 'Blocked sucessfully']);
                 return $response;
@@ -804,7 +875,7 @@ class ClientController extends Controller
                         $unblock =  $unblock->delete();
                     }
                     else{
-                        $response = \Response::json(['success' => false,'message' => 'Select Blocked Country']);
+                        $response = \Response::json(['success' => null,'message' => 'Select Blocked Country']);
                         return $response;
                     }
                    
