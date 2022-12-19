@@ -18,8 +18,6 @@ use App\Models\Country;
 use Illuminate\Support\Arr;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Carbon\Carbon;
-// use DB;
-
 use Illuminate\Http\Request;
 use Auth;
 
@@ -725,7 +723,7 @@ class ClientController extends Controller
         }
       
 
-        return (new FastExcel($list))->download('history.xlsx');
+        return (new FastExcel($list))->download('Customer_history.xlsx');
     }
 
     public function history_export_csv(Request $request){
@@ -737,7 +735,32 @@ class ClientController extends Controller
             $data['created_at'] =  $value->created_at->format('d-m-Y H:i:s');
             $list[]= $data;
         }
-        return (new FastExcel($list))->download('history.csv');
+        return (new FastExcel($list))->download('Customer_history.csv');
+    }
+
+
+    public function vendor_history_export_xlsx(Request $request){
+        $downloads = VendorDownloadProcess::leftjoin('users','users.id','=','vendor_download_processes.created_by')->select('vendor_download_processes.*','users.name as uname')->where('vendor_download_processes.client_id',$request->id)->get();
+        $list =array();
+        foreach ( $downloads as $key => $value) {
+            $data =array();
+            $data['title'] =  $value->name."($value->format)($value->effective)";
+            $data['created_at'] =  $value->created_at->format('d-m-Y H:i:s');
+            $list[]= $data;
+        }
+        return (new FastExcel($list))->download('Vendor_history.xlsx');
+    }
+
+    public function vendor_history_export_csv(Request $request){
+        $downloads = VendorDownloadProcess::leftjoin('users','users.id','=','vendor_download_processes.created_by')->select('vendor_download_processes.*','users.name as uname')->where('vendor_download_processes.client_id',$request->id)->get();
+        $list =array();
+        foreach ( $downloads as $key => $value) {
+            $data =array();
+            $data['title'] =  $value->name."($value->format)($value->effective)";
+            $data['created_at'] =  $value->created_at->format('d-m-Y H:i:s');
+            $list[]= $data;
+        }
+        return (new FastExcel($list))->download('Vendor_history.csv');
     }
 
     public function ajax_datagrid_blockbycountry(Request $request){

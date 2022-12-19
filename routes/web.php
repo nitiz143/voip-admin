@@ -33,6 +33,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::post('getUsers','App\Http\Controllers\UserController@getUsers')->name('getUsers');
     // Route::get('autocomplete','App\Http\Controllers\UserController@autocomplete')->name('autocomplete');
     Route::resource('/crm','App\Http\Controllers\CRMController');
+
+    //Client Controller
     Route::resource('/client','App\Http\Controllers\ClientController');
     Route::get('client-customer/{id}','App\Http\Controllers\ClientController@customer')->name('client.customer');
     Route::get('client-vendor/{id}','App\Http\Controllers\ClientController@vendor')->name('client.vendor');
@@ -47,20 +49,30 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::post('vendor_rate/{id}/vendor_process_download', [ClientController::class, 'vendor_process_download'])->name('vendor_process_download');
     Route::get('history-detail/{id}', [ClientController::class, 'history_detail'])->name('history_detail');
     Route::get('vendor-history-detail/{id}', [ClientController::class, 'vendor_history_detail'])->name('vendor_history_detail');
+    Route::get('/customer/{id}/history_export/xlsx', [App\Http\Controllers\ClientController::class, 'history_export_xlsx'])->name('history_export_xlsx');
+    Route::get('/customer/{id}/history_export/csv', [App\Http\Controllers\ClientController::class, 'history_export_csv'])->name('history_export_csv');
+
+    Route::get('/vendor/{id}/history_export/xlsx', [App\Http\Controllers\ClientController::class, 'vendor_history_export_xlsx'])->name('Vendor-history_export_xlsx');
+    Route::get('/vendor/{id}/history_export/csv', [App\Http\Controllers\ClientController::class, 'vendor_history_export_csv'])->name('Vendor-history_export_csv');
+
+    Route::get('/vendor_blocking/{id}/ajax_datagrid_blockbycountry', [App\Http\Controllers\ClientController::class, 'ajax_datagrid_blockbycountry'])->name('ajax_datagrid_blockbycountry');
+    Route::get('/vendor_blocking/{id}/ajax_datagrid_blockbycode', [App\Http\Controllers\ClientController::class, 'ajax_datagrid_blockbycode'])->name('ajax_datagrid_blockbycode');
+    Route::post('/block-unblock_country/{id}', [App\Http\Controllers\ClientController::class, 'block_unblock_by_country'])->name('block-unblock-by-country');
+
+
     Route::get('/getClient/{id}','App\Http\Controllers\CRMController@ImportClient')->name('getClient');
     Route::resource('/cron','App\Http\Controllers\CronJobController');
     Route::resource('/setting','App\Http\Controllers\SettingController');
+
+
+    //Trunks
     Route::get('/trunks', [App\Http\Controllers\SettingController::class, 'trunkIndex'])->name('trunks.index');
     Route::post('/trunk/store', [App\Http\Controllers\SettingController::class, 'trunkStore'])->name('trunk.store');
     Route::get('/trunk/edit/{id}', [App\Http\Controllers\SettingController::class, 'trunkEdit'])->name('trunk.edit');
     Route::get('trunks/xlsx', [App\Http\Controllers\SettingController::class, 'trunks_xlsx'])->name('trunks_xlsx');
     Route::get('trunks/csv', [App\Http\Controllers\SettingController::class, 'trunks_csv'])->name('trunks_csv');
 
-    Route::get('/customer/{id}/history_export/xlsx', [App\Http\Controllers\ClientController::class, 'history_export_xlsx'])->name('history_export_xlsx');
-    Route::get('/customer/{id}/history_export/csv', [App\Http\Controllers\ClientController::class, 'history_export_csv'])->name('history_export_csv');
-    Route::get('/vendor_blocking/{id}/ajax_datagrid_blockbycountry', [App\Http\Controllers\ClientController::class, 'ajax_datagrid_blockbycountry'])->name('ajax_datagrid_blockbycountry');
-    Route::get('/vendor_blocking/{id}/ajax_datagrid_blockbycode', [App\Http\Controllers\ClientController::class, 'ajax_datagrid_blockbycode'])->name('ajax_datagrid_blockbycode');
-    Route::post('/block-unblock_country/{id}', [App\Http\Controllers\ClientController::class, 'block_unblock_by_country'])->name('block-unblock-by-country');
+   
     Route::resource('/company','App\Http\Controllers\CompanyController');
     Route::get('/rate-upload', [App\Http\Controllers\RateController::class, 'index'])->name('rate-upload');
     Route::post('/rate-upload', [App\Http\Controllers\RateController::class, 'store'])->name('post-rate-upload');

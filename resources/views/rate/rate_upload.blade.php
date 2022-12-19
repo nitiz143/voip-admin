@@ -208,12 +208,9 @@
                 $('.blocker').hide();
             }
         });
-
     });
 
-    $("input[name='Vendor']").on('change', function(){
-        
-    });
+   
     $("input[name='RateUploadType']").on('change', function(){
         var Type = $("input[name=RateUploadType]:checked").val();
         var id   = $("#"+Type).val();
@@ -238,53 +235,52 @@
     });
 
     function getTrunk($RateUploadType,id) {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            return $.ajax({
-                url: "{{route('getTrunk')}}",
-                data: 'Type='+$RateUploadType+'&id='+id,
-                type: 'POST',
-                dataType: 'json',
-                success: function (response) {
-                    if(response.success == true) {
-                        var html = '';
-                        var Trunks = response.data;
-                       
-                        if(!jQuery.isEmptyObject(Trunks)) {
-                            
-                            $('#isTrunks').val('1');
-                        } else {
-                            $('#isTrunks').val('0');
-                        }
-                        html += '<option value="" >SelectTrunk</option>';
-
-                        Trunks.forEach(Trunks => {
-                                html += '<option value="'+Trunks['id']+'">'+Trunks['title']+'</option>';
-                            });
-                        
-                        $('#Trunk').html(html).trigger('change');
-                    }
-                    //  else {
-                    //    alert(response.message, "Error")
-                    // }
-                },
-                error: function () {
-                    alert("error", "Error")
-                }
-            });
-        }
-     
-        function myFunction() {
-            var x = document.getElementById("myDIV");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+        return $.ajax({
+            url: "{{route('getTrunk')}}",
+            data: 'Type='+$RateUploadType+'&id='+id,
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if(response.success == true) {
+                    var html = '';
+                    var Trunks = response.data;
+                    
+                    if(!jQuery.isEmptyObject(Trunks)) {
+                        $('#isTrunks').val('1');
+                    } else {
+                        $('#isTrunks').val('0');
+                    }
+                    html += '<option value="" >SelectTrunk</option>';
+
+                    Trunks.forEach(Trunks => {
+                            html += '<option value="'+Trunks['id']+'">'+Trunks['title']+'</option>';
+                        });
+                    
+                    $('#Trunk').html(html).trigger('change');
+                }
+                //  else {
+                //    alert(response.message, "Error")
+                // }
+            },
+            error: function () {
+                alert("error", "Error")
+            }
+        });
+    }
+     
+    function myFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
         }
+    }
 
 </script>
 @endsection

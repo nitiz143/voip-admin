@@ -59,7 +59,7 @@
                                 </select>
                             </div>
                             <label for="field-2" class="col-sm-2">Discontinued Codes</label>
-                            <div class="col-sm-1">
+                            <div class="col-sm-1 ml-5">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" id="DiscontinuedRates" name="DiscontinuedRates" type="checkbox" value="1">
                                 </div>

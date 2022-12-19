@@ -137,7 +137,7 @@ var checked='';
             "ajax": {
                 "url" : "{{route('ajax_datagrid_blockbycode',"request()->id")}}",
                 data : function ( d ){
-                    d.type = "code",
+                    d.id = "{{request()->id}}",
                     d.Trunk= $searchFilter.Trunk,
                     d.Status= $searchFilter.Status,
                     d.Country = $searchFilter.Country,
@@ -147,19 +147,19 @@ var checked='';
             },
             "iDisplayLength": parseInt('50'),
             //  "sDom": "<'row'<'col-xs-6 col-left '<'#selectcheckbox.col-xs-1'>'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
-             "aaSorting": [[1, "asc"]],
-             "aoColumns":
-                    [
-                        {"bSortable": false, //RateId
-                            mRender: function(id, type, full) {
-                                return '<input type="checkbox" name="checkbox[]" value="' + id + '" class="rowcheckbox" >';
-                            }
-                        },  //0 RateId
-                        {}, //1 Code
-                        {}, //2 Status
-                        {}, //3 Description
-                    ]
-                });
+            "aaSorting": [[1, "asc"]],
+            "aoColumns":
+            [
+                {"bSortable": false, //RateId
+                    mRender: function(id, type, full) {
+                        return '<input type="checkbox" name="checkbox[]" value="' + id + '" class="rowcheckbox" >';
+                    }
+                },  //0 RateId
+                {}, //1 Code
+                {}, //2 Status
+                {}, //3 Description
+            ]
+        });
         return false;
     });
 
@@ -176,8 +176,8 @@ var checked='';
             }
         });
     });
-//for single select
-    $('#table-4 tbody tr .rowcheckbox').click(function () {
+    //for single select
+        $('#table-4 tbody tr .rowcheckbox').click(function () {
             if( $(this).prop("checked")){
                 $(this).parent().parent().addClass('selected');
             }else{

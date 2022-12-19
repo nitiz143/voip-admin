@@ -7,8 +7,10 @@ use App\Models\RateUpload;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Validator;
 use App\Models\RateTable;
+use App\Models\VendorDownloadProcess;
 use App\Models\Trunk;
 use App\Models\Client;
+use Auth;
 use App\Models\VendorTrunk;
 use Yajra\DataTables\DataTables;
 
@@ -80,8 +82,23 @@ class RateController extends Controller
                     'deletion_date' => !empty($line['DELETION DATE']) ? \Carbon\Carbon::parse($line['DELETION DATE'])->format('d-m-y') : NULL,
 
                 ]);
+                
             }
          });
+        if(!$users->isEmpty()){
+            if(!empty($request->Vendor)){
+                $array = explode(' ', $request->Trunk);
+                $client =  Client::where('id',$request->Vendor)->first();
+                    VendorDownloadProcess::create([
+                        'name'=>$client->name,
+                        'client_id'=>$request->Vendor,
+                        'trunks'=> json_encode($array),
+                        'created_by'=>Auth::user()->id ?? '',
+                        'type'=>'Upload',
+                    ]);
+            }  
+        }  
+          
         return response()->json(['message' =>'File Imported Successfully']);
 
     }

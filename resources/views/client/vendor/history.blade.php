@@ -1,10 +1,10 @@
 <div class="row">
     <div class="export-data ">
         <div class="DTTT btn-group float-end mb-2 mt-2">
-            <a href="" data-value="xlsx"class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_0">
+            <a href="{{route('Vendor-history_export_xlsx',@request()->id)}}" data-value="xlsx"class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_0">
                 <undefined>EXCEL</undefined>
             </a>
-            <a  href="" class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_1">
+            <a  href="{{route('Vendor-history_export_csv',@request()->id)}}" class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_1">
                 <undefined>CSV</undefined>
             </a>
         </div>
@@ -36,7 +36,8 @@
         @if(!empty($downloads))
             @foreach ($downloads as $download)
                 <tr>
-                    <td>{{$clients->company."($download->format)($download->effective)"}}</td>
+                    <td>{{$clients->company}} @if(!empty($download->format)) {{"($download->format)"}}@endif 
+                    @if(!empty($download->effective)){{"($download->effective)"}} @endif</td>
                     <td>{{$download->created_at}}</td>
                     <td>{{$download->uname}}</td>
                     <td>{{$download->type}}</td>
@@ -52,19 +53,17 @@
     });
 
     $(".View").click(function(e){
-         e.preventDefault();
-        
-         var id = $(this).data('id');
-        
-     $.ajax({
-         url:"{{route('vendor_history_detail',":id")}}",
-         method:"get",
-         data:{"id":id , "client_id": "{{request()->id}}"},
-         success:function(data){
-             $("#articlesModal").modal('show');
-             $('.modal-data').html(data);
-         }
-     });
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.ajax({
+            url:"{{route('vendor_history_detail',":id")}}",
+            method:"get",
+            data:{"id":id , "client_id": "{{request()->id}}"},
+            success:function(data){
+                $("#articlesModal").modal('show');
+                $('.modal-data').html(data);
+            }
+        });
     });
 </script>
 

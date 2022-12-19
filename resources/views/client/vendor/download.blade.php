@@ -21,10 +21,9 @@
                             <label>
                                 @if(!empty($trunks))
                                     @foreach ( $trunks as $trunk)
-                                     <input type="checkbox" name="Trunks[]" value="{{$trunk->id}}" >{{$trunk->title}}&nbsp;&nbsp;&nbsp;
+                                        <input type="checkbox" name="Trunks[]" value="{{$trunk->id}}">&nbsp;{{$trunk->title}}&nbsp;&nbsp;&nbsp;
                                     @endforeach
                                 @endif
-
                             </label>
                         </div>
                     </div>
@@ -121,11 +120,11 @@
 <script>
 
 var vendors = $('#vendors').bootstrapDualListbox({
-        nonselectedlistlabel: 'Non-selected',
-        selectedlistlabel: 'Selected',
-        filterPlaceHolder: 'Search',
-        moveonselect: false,
-        preserveselectiononmove: 'moved',
+    nonselectedlistlabel: 'Non-selected',
+    selectedlistlabel: 'Selected',
+    filterPlaceHolder: 'Search',
+    moveonselect: false,
+    preserveselectiononmove: 'moved',
 });
 
     $(document).ready(function () {
@@ -148,16 +147,16 @@ var vendors = $('#vendors').bootstrapDualListbox({
         }
     });
 
-function myFunction() {
-  var x = document.getElementById("myDIV");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-}
+    function myFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
 
-$(".btn.download").click(function () {
+        $(".btn.download").click(function () {
            // return false;
             var formData = new FormData($('#form-download')[0]);
             var i = 0;

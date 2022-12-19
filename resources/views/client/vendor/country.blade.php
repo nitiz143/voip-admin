@@ -192,7 +192,6 @@
             "ajax": {
                 "url" : "{{route('ajax_datagrid_blockbycountry',"request()->id")}}",
                 "data" : function ( d ){
-                    d.type = "country",
                     d.id = "{{request()->id}}",
                     d.Trunk= $searchFilter.Trunk,
                     d.Status= $searchFilter.Status,
