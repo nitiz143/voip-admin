@@ -164,8 +164,7 @@
                                     <div class="col-xl-6">
                                         <div class="form-group">
                                             <label for="employee">Employee</label>
-                                            <input type="text" class="form-control" id="employee" name="employee"
-                                                value="">
+                                            <input type="text" class="form-control" id="employee" name="employee" value="">
                                         </div>
                                     </div>
                                 </div>

@@ -18,11 +18,11 @@
                 <div class="card-body" id="myDIV1">
                     <div class="form-group row">
                         <label class="col-sm-1 control-label">Code</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                         <input type="text" value="" placeholder="Code" id="code" class="form-control" name="Code">
                         </div>
                         <label class="col-sm-1 control-label">Status</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <select class=" custom-select form-control select2" name="Status"><option value="All">All</option>
                                 <option value="Blocked">Blocked</option>
                                 <option value="Not Blocked">Unblocked</option>
@@ -41,7 +41,7 @@
                             </select>
                         </div>
                         <label for="field-1" class="col-sm-1 control-label">Trunk</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <select class="custom-select form-control select2" name="Trunk">
                                 <option value="">Select</option>
                                 @if(!empty($trunks))
@@ -52,7 +52,7 @@
                             </select>
                         </div>
                         <label class="col-sm-2 control-label float-right">Timezone</label>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <select class=" custom-select form-control select2" name="Timezones">
                                 <option value="1">Default</option>
                             </select>

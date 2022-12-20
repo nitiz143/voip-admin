@@ -20,12 +20,12 @@
             <div class="form-group">
                 <div class="row">
                     <label for="field-1" class="col-sm-3">Trunk</label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-5">
                         <div class="checkbox">
                             <label>
                                 @if(!empty($trunks))
                                     @foreach ( $trunks as $trunk)
-                                        <input type="checkbox" name="Trunks[]" value="{{$trunk->id}}" >{{$trunk->title}}
+                                        <input type="checkbox" name="Trunks[]" value="{{$trunk->id}}" >&nbsp;{{$trunk->title}}&nbsp;&nbsp;
                                     @endforeach
                                 @endif
                             </label>

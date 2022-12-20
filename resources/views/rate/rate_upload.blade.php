@@ -263,12 +263,12 @@
                     
                     $('#Trunk').html(html).trigger('change');
                 }
-                //  else {
-                //    alert(response.message, "Error")
-                // }
+                 else {
+                   $.notify(response.message, "Error")
+                }
             },
             error: function () {
-                alert("error", "Error")
+                $.notify("error", "Error")
             }
         });
     }

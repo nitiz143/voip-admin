@@ -109,7 +109,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="alert alert-danger" style="padding: 6px;">
+        <div class=" mb-3" style="padding: 6px; color:#a94442; background-color:#f2dede; border:1px solid #ebccd1;">
             In order to offer new rates use 'Bulk New Offer' OR 'New Offer Selected'.  In order to update rates use 'Update Selected Rates' OR 'Bulk Update'. To Delete rates use 'Bulk Clear' OR 'Clear Selected Rates'.
         </div>
     </div>
@@ -193,6 +193,7 @@ $("#DiscontinuedRates").on('change', function (event, state) {
     } else {
         $(".EffectiveBox").show();
         $("#btn-action").show();
+        $('.CustomDateBox').hide();
     }
 });
 

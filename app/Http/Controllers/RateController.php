@@ -89,13 +89,13 @@ class RateController extends Controller
             if(!empty($request->Vendor)){
                 $array = explode(' ', $request->Trunk);
                 $client =  Client::where('id',$request->Vendor)->first();
-                    VendorDownloadProcess::create([
-                        'name'=>$client->name,
-                        'client_id'=>$request->Vendor,
-                        'trunks'=> json_encode($array),
-                        'created_by'=>Auth::user()->id ?? '',
-                        'type'=>'Upload',
-                    ]);
+                VendorDownloadProcess::create([
+                    'name'=>$client->name,
+                    'client_id'=>$request->Vendor,
+                    'trunks'=> json_encode($array),
+                    'created_by'=>Auth::user()->id ?? '',
+                    'type'=>'Upload',
+                ]);
             }  
         }  
           

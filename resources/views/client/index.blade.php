@@ -71,7 +71,6 @@ var table = $('.data-table').DataTable({
         ajax: "{{ route('client.index') }}",
         columns: [
             {data:'id',name:'id'},
-            // {data:'lead_owner',name:'lead_owner'},
             {data:'company',name:'company'},
             {data:'firstname',name:'firstname'},
             {data:'lastname',name:'lastname'},

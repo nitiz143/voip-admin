@@ -74,10 +74,6 @@
                                 <select class="custom-select form-control" name="Timezones"><option value="1">Default</option></select>
                             </div>
 
-                            {{-- <label for="field-3" class="col-sm-1  RoutinePlan">Routing Plan</label>
-                            <div class="col-sm-3">
-                                <select class="custom-select form-control RoutinePlan" name="RoutinePlanFilter"><option value="" selected="selected">Select</option><option value="2">CLI</option><option value="3">NCLI</option><option value="4">Call Center</option></select>
-                            </div> --}}
                         </div>
                     </div>
                    <p style="text-align: right;">
