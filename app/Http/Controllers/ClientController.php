@@ -916,4 +916,11 @@ class ClientController extends Controller
             // return Datatables::of($data)->make(true);
         }
     }
+
+    public function ajax_datagrid_preference(Request $request){
+        if ($request->ajax()) {
+           dd($request->all());
+           
+        }
+    }
 }

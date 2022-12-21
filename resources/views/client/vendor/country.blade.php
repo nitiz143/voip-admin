@@ -117,179 +117,184 @@
 </div>
 
 <script>
+    $(document).ready(function() {
+        var $searchFilter = {};
+        var checked='';
+        $("#block_by_country_form").submit(function(e) {
+            e.preventDefault();
+            $searchFilter.Trunk = $("#block_by_country_form select[name='Trunk']").val();
+            $searchFilter.Status = $("#block_by_country_form select[name='Status']").val();
+            $searchFilter.Country = $("#block_by_country_form select[name='Country']").val();
+            $searchFilter.Timezones = $("#block_by_country_form select[name='Timezones']").val();
 
-
-     //Unblock Selected Countries
-     $("#unblockSelectedCountry-form").submit(function() {
-         var criteria='';
-         var CountryIDs = [];
-         if($('#selectallbutton').is(':checked')){
-             criteria = JSON.stringify($searchFilter);
-         }else{
-            var i = 0;
-            $('#table-4 tr .rowcheckbox:checked').each(function(i, el) {
-                $("#Country_unblock").append('<input type="text" name="CountryID[]"value="'+$(this).val()+'" hidden/>'); 
-            });
-         }
-        
-        
-        //Trunk = $('#block_by_country_form').find("select[name='Trunk']").val();
-        $("#unblockSelectedCountry-form").find("input[name='Trunk']").val($searchFilter.Trunk);
-        $("#unblockSelectedCountry-form").find("input[name='Timezones']").val($searchFilter.Timezones);
-        $("#unblockSelectedCountry-form").find("input[name='criteria']").val(criteria);
-        
-        var formData = new FormData($('#unblockSelectedCountry-form')[0]);
-        $.ajax({
-            url: $("#unblockSelectedCountry-form").attr("action"),
-            type: 'POST',
-            dataType: 'json',
-            success: function(response) {
-               
-                $("#unblockSelectedCountry").button('reset');
-                if (response.success == true) {
-                   $.notify(response.message, "success");
-                    data_table.fnFilter('', 0);
-                    $("#unblockSelectedCountry-form").find("input[name='CountryID[]']").remove();
-                } else {
-                    $.each(response.errors, function(k, e) {
-                        $.notify(e, 'error');
-                        $("#unblockSelectedCountry-form").find("input[name='CountryID[]']").remove();
-                    });
-                }
-                if (response.success == null) {
-                    $.notify(response.message, "error");
-                    $("#unblockSelectedCountry-form").find("input[name='CountryID[]']").remove();
-                }
-            },
-            // Form data
-            data: formData,
-            //Options to tell jQuery not to process data or worry about content-type.
-            cache: false,
-            contentType: false,
-            processData: false
-        });
-        return false;
-    });
-
-
-    var $searchFilter = {};
-    var checked='';
-     $("#block_by_country_form").submit(function(e) {
-        e.preventDefault();
-        $searchFilter.Trunk = $("#block_by_country_form select[name='Trunk']").val();
-        $searchFilter.Status = $("#block_by_country_form select[name='Status']").val();
-        $searchFilter.Country = $("#block_by_country_form select[name='Country']").val();
-        $searchFilter.Timezones = $("#block_by_country_form select[name='Timezones']").val();
-
-        if(typeof $searchFilter.Trunk  == 'undefined' || $searchFilter.Trunk == '' ){
-            $.notify("Please Select a Trunk", "error");
-            return false;
-        }
-        data_table = $("#table-4").dataTable({
-            "bDestroy": true, // Destroy when resubmit form
-            "bProcessing": true,
-            "bServerSide": true,
-            "ajax": {
-                "url" : "{{route('ajax_datagrid_blockbycountry',"request()->id")}}",
-                "data" : function ( d ){
-                    d.id = "{{request()->id}}",
-                    d.Trunk= $searchFilter.Trunk,
-                    d.Status= $searchFilter.Status,
-                    d.Country = $searchFilter.Country,
-                    d.Timezones= $searchFilter.Timezones
+            if(typeof $searchFilter.Trunk  == 'undefined' || $searchFilter.Trunk == '' ){
+                $.notify("Please Select a Trunk", "error");
+                return false;
+            }
+            data_table = $("#table-4").dataTable({
+                "bDestroy": true, // Destroy when resubmit form
+                "bProcessing": true,
+                "bServerSide": true,
+                "ajax": {
+                    "url" : "{{route('ajax_datagrid_blockbycountry',"request()->id")}}",
+                    "data" : function ( d ){
+                        d.id = "{{request()->id}}",
+                        d.Trunk= $searchFilter.Trunk,
+                        d.Status= $searchFilter.Status,
+                        d.Country = $searchFilter.Country,
+                        d.Timezones= $searchFilter.Timezones
+                    },
                 },
-            },
-            "iDisplayLength": parseInt('50'),
-            //  "sDom": "<'row'<'col-xs-6 col-left '<'#selectcheckbox.col-xs-1'>'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
-             "aaSorting": [[1, "asc"]],
-             "aoColumns":
-                [
-                    {data:'action',name:'action', orderable: false, searchable: false},
-                    {data:'name',name:'name'},
-                    {data:'status',name:'status'},
-                ],
+                "iDisplayLength": parseInt('50'),
+                //  "sDom": "<'row'<'col-xs-6 col-left '<'#selectcheckbox.col-xs-1'>'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
+                "aaSorting": [[1, "asc"]],
+                "aoColumns":
+                    [
+                        {data:'action',name:'action', orderable: false, searchable: false},
+                        {data:'name',name:'name'},
+                        {data:'status',name:'status'},
+                    ],
+            });
+            return false;
         });
-        return false;
-    });
 
-     // Select all
-    $("#selectall").click(function(ev) {
-        var is_checked = $(this).is(':checked');
-        $('#table-4 tbody tr').each(function(i, el) {
-            if (is_checked) {
-                $(this).find('.rowcheckbox').prop("checked", true);
-                $(this).addClass('selected');
-            } else {
-                $(this).find('.rowcheckbox').prop("checked", false);
-                $(this).removeClass('selected');
+        // Select all
+        $("#selectall").click(function(ev) {
+            var is_checked = $(this).is(':checked');
+            $('#table-4 tbody tr').each(function(i, el) {
+                if (is_checked) {
+                    $(this).find('.rowcheckbox').prop("checked", true);
+                    $(this).addClass('selected');
+                } else {
+                    $(this).find('.rowcheckbox').prop("checked", false);
+                    $(this).removeClass('selected');
+                }
+            });
+        });
+
+        // Replace Checboxes
+        $(".pagination a").click(function(ev) {
+            replaceCheckboxes();
+        });
+        
+
+
+        $(document).on( 'click','#table-4 tbody  .rowcheckbox' ,  function () {
+            if( $(this).prop("checked")){
+                $(this).parent().parent().addClass('selected');
+            }else{
+                $(this).parent().parent().removeClass('selected');
             }
         });
-    });
-
-    // Replace Checboxes
-    $(".pagination a").click(function(ev) {
-        replaceCheckboxes();
-    });
-     
 
 
-    $(document).on( 'click','#table-4 tbody  .rowcheckbox' ,  function () {
-        if( $(this).prop("checked")){
-            $(this).parent().parent().addClass('selected');
-        }else{
-            $(this).parent().parent().removeClass('selected');
-        }
-    });
-
-    $("#blockSelectedCountry-form").submit(function() {
-       
-        var criteria='';
-        var CountryIDs = [];
-        if($('#selectallbutton').is(':checked')){
-            criteria = JSON.stringify($searchFilter);
-        }else{
-           
-            $('#table-4 tr .rowcheckbox:checked').each(function(i, el) {
+            //Unblock Selected Countries
+            $("#unblockSelectedCountry-form").submit(function() {
+            var criteria='';
+            var CountryIDs = [];
+            if($('#selectallbutton').is(':checked')){
+                criteria = JSON.stringify($searchFilter);
+            }else{
+                var i = 0;
+                $('#table-4 tr .rowcheckbox:checked').each(function(i, el) {
+                    $("#Country_unblock").append('<input type="text" name="CountryID[]"value="'+$(this).val()+'" hidden/>'); 
+                });
+            }
+            
+            
+            //Trunk = $('#block_by_country_form').find("select[name='Trunk']").val();
+            $("#unblockSelectedCountry-form").find("input[name='Trunk']").val($searchFilter.Trunk);
+            $("#unblockSelectedCountry-form").find("input[name='Timezones']").val($searchFilter.Timezones);
+            $("#unblockSelectedCountry-form").find("input[name='criteria']").val(criteria);
+            
+            var formData = new FormData($('#unblockSelectedCountry-form')[0]);
+            $.ajax({
+                url: $("#unblockSelectedCountry-form").attr("action"),
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
                 
-                $("#Country_block").append('<input type="text" name="CountryID[]" value="'+$(this).val()+'" hidden/>'); 
+                    $("#unblockSelectedCountry").button('reset');
+                    if (response.success == true) {
+                        $("#unblockSelectedCountry-form").find("input[name='CountryID[]']").remove();
+                        $.notify(response.message, "success");
+                        data_table.fnFilter('', 0);
+                    } else {
+                        $.each(response.errors, function(k, e) {
+                            $("#unblockSelectedCountry-form").find("input[name='CountryID[]']").remove();
+                            $.notify(e, 'error');
+                            data_table.fnFilter('', 0);
+                        
+                        });
+                    }
+                    if (response.success == null) {
+                        $("#unblockSelectedCountry-form").find("input[name='CountryID[]']").remove();
+                        $.notify(response.message, "error");
+                        data_table.fnFilter('', 0);
+                    }
+                },
+                // Form data
+                data: formData,
+                //Options to tell jQuery not to process data or worry about content-type.
+                cache: false,
+                contentType: false,
+                processData: false
             });
-        }
-        
-        // $("#blockSelectedCountry-form").find("input[name='CountryID[]']").val(CountryID);
-        $("#blockSelectedCountry-form").find("input[name='Trunk']").val($searchFilter.Trunk);
-        $("#blockSelectedCountry-form").find("input[name='Timezones']").val($searchFilter.Timezones);
-        $("#blockSelectedCountry-form").find("input[name='criteria']").val(criteria);
-
-        var formData = new FormData($('#blockSelectedCountry-form')[0]);
-        $.ajax({
-            url: $("#blockSelectedCountry-form").attr("action"),
-            type: 'POST',
-            dataType: 'json',
-            success: function(response) {
-                $("#blockSelectedCountry").button('reset');
-                if (response.success == true) {
-                    $.notify(response.message, "success");
-                    data_table.fnFilter('', 0);
-                    $("#blockSelectedCountry-form").find("input[name='CountryID[]']").remove();
-                } else {
-                    $.each(response.errors, function(k, e) {
-                        $.notify(e, 'error');
-                        $("#blockSelectedCountry-form").find("input[name='CountryID[]']").remove();
-                    });
-                }
-                if (response.success == null) {
-                    $.notify(response.message, "error");
-                    $("#blockSelectedCountry-form").find("input[name='CountryID[]']").remove();
-                }
-            },
-            // Form data
-            data: formData,
-            //Options to tell jQuery not to process data or worry about content-type.
-            cache: false,
-            contentType: false,
-            processData: false
+            return false;
         });
-        return false;
+
+        $("#blockSelectedCountry-form").submit(function() {
+        
+            var criteria='';
+            var CountryIDs = [];
+            if($('#selectallbutton').is(':checked')){
+                criteria = JSON.stringify($searchFilter);
+            }else{
+            
+                $('#table-4 tr .rowcheckbox:checked').each(function(i, el) {
+                    
+                    $("#Country_block").append('<input type="text" name="CountryID[]" value="'+$(this).val()+'" hidden/>'); 
+                });
+            }
+            
+            // $("#blockSelectedCountry-form").find("input[name='CountryID[]']").val(CountryID);
+            $("#blockSelectedCountry-form").find("input[name='Trunk']").val($searchFilter.Trunk);
+            $("#blockSelectedCountry-form").find("input[name='Timezones']").val($searchFilter.Timezones);
+            $("#blockSelectedCountry-form").find("input[name='criteria']").val(criteria);
+
+            var formData = new FormData($('#blockSelectedCountry-form')[0]);
+            $.ajax({
+                url: $("#blockSelectedCountry-form").attr("action"),
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    $("#blockSelectedCountry").button('reset');
+                    if (response.success == true) {
+                        $("#blockSelectedCountry-form").find("input[name='CountryID[]']").remove();
+                        $.notify(response.message, "success");
+                        data_table.fnFilter('', 0);
+                    } else {
+                        $.each(response.errors, function(k, e) {
+                            $("#blockSelectedCountry-form").find("input[name='CountryID[]']").remove();
+                            $.notify(e, 'error');
+                            data_table.fnFilter('', 0);
+                        });
+                    }
+                    if (response.success == null) {
+                        $("#blockSelectedCountry-form").find("input[name='CountryID[]']").remove();
+                        $.notify(response.message, "error");
+                        data_table.fnFilter('', 0);
+                    }
+                },
+                // Form data
+                data: formData,
+                //Options to tell jQuery not to process data or worry about content-type.
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            return false;
+        });
     });
 
     </script>

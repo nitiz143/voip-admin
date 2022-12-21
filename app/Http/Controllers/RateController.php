@@ -216,4 +216,50 @@ class RateController extends Controller
         }
         return response()->json(['data' => $trunks ,'success'=>true]);
     }
+
+    public function rate_export_xlsx(Request $request){
+        $downloads = RateTable::query()->get();
+        $list =array();
+        foreach ( $downloads as $key => $value) {
+            $codeDeckId = "";
+            if($value->codeDeckId == 3){
+                $codeDeckId = "Customer Codedeck";
+            }
+            if($value->codeDeckId == 2){
+                $codeDeckId = "Customer Codes";
+            }
+            if($value->codeDeckId == 1){
+                $codeDeckId = "Vendor Codes";
+            }
+            $data =array();
+            $data['RateTableName'] = $value->name;
+            $data['Currency'] =  $value->currency;
+            $data['CodeDeckName'] =  $codeDeckId ;
+            $list[] = $data;
+        }
+        return (new FastExcel($list))->download('Rates_table.xlsx');
+    }
+
+    public function rate_export_csv(Request $request){
+        $downloads = RateTable::query()->get();
+        $list =array();
+        foreach ( $downloads as $key => $value) {
+            $codeDeckId = "";
+            if($value->codeDeckId == 3){
+                $codeDeckId = "Customer Codedeck";
+            }
+            if($value->codeDeckId == 2){
+                $codeDeckId = "Customer Codes";
+            }
+            if($value->codeDeckId == 1){
+                $codeDeckId = "Vendor Codes";
+            }
+            $data =array();
+            $data['RateTableName'] = $value->name;
+            $data['Currency'] =  $value->currency;
+            $data['CodeDeckName'] =  $codeDeckId;
+            $list[] = $data;
+        }
+        return (new FastExcel($list))->download('Rates_table.csv');
+    }
 }

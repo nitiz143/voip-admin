@@ -41,7 +41,7 @@
                             <div class="col-xs-6">
                                 <div class="export-data">
                                     <div class="DTTT btn-group float-end mb-2 mt-2">
-                                        <a href="" data-value="xlsx"class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_0">
+                                        <a href="{{route('trunks_xlsx')}}" data-value="xlsx"class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_0">
                                             <undefined>EXCEL</undefined>
                                         </a>
                                         <a  href="{{route('trunks_csv')}}" class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_1">

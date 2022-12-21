@@ -60,6 +60,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::post('/block-unblock_country/{id}', [App\Http\Controllers\ClientController::class, 'block_unblock_by_country'])->name('block-unblock-by-country');
 
 
+    Route::get('/vendor_preference/{id}/ajax_datagrid_preference', [App\Http\Controllers\ClientController::class, 'ajax_datagrid_preference'])->name('ajax_datagrid_preference');
+
     Route::get('/getClient/{id}','App\Http\Controllers\CRMController@ImportClient')->name('getClient');
     Route::resource('/cron','App\Http\Controllers\CronJobController');
     Route::resource('/setting','App\Http\Controllers\SettingController');
@@ -74,6 +76,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
 
    
     Route::resource('/company','App\Http\Controllers\CompanyController');
+
+    //RateManagment
     Route::get('/rate-upload', [App\Http\Controllers\RateController::class, 'index'])->name('rate-upload');
     Route::post('/rate-upload', [App\Http\Controllers\RateController::class, 'store'])->name('post-rate-upload');
     Route::POST('/rate_upload/getTrunk', [App\Http\Controllers\RateController::class, 'get_trunk'])->name('getTrunk');
@@ -81,6 +85,10 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/rate-table-create', [App\Http\Controllers\RateController::class, 'create'])->name('rate-table.create');
     Route::post('/rate-table-post', [App\Http\Controllers\RateController::class, 'tableStore'])->name('rate-table.store');
     Route::delete('/rate-table-delete', [App\Http\Controllers\RateController::class, 'destroy'])->name('rate-table.delete');
+    Route::get('rate-table/xlsx', [App\Http\Controllers\RateController::class, 'rate_export_xlsx'])->name('rates_xlsx');
+    Route::get('rate-table/csv', [App\Http\Controllers\RateController::class, 'rate_export_csv'])->name('rates_csv');
+
+
     Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
     Route::post('/profile-update', [App\Http\Controllers\HomeController::class, 'profileUpdate'])->name('profile-update');
 

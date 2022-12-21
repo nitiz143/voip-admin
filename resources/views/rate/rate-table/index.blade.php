@@ -24,6 +24,19 @@
                         <div class="card-header">
                             <h1 class="card-title">Rate Table</h1>
                             <a href="#" class="btn btn-primary mb-4  float-right" id="createTableModal">Create</a>
+                            
+                        </div>
+                        <div class="col-sm-12 mb-0">
+                            <div class="export-data pr-3">
+                                <div class="DTTT btn-group float-end mb-2 mt-2">
+                                    <a href="{{route('rates_xlsx')}}" data-value="xlsx"class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_0">
+                                        <undefined>EXCEL</undefined>
+                                    </a>
+                                    <a  href="{{route('rates_csv')}}" class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_1">
+                                        <undefined>CSV</undefined>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">

@@ -36,8 +36,16 @@
         @if(!empty($downloads))
             @foreach ($downloads as $download)
                 <tr>
-                    <td>{{$clients->company}} @if(!empty($download->format)) {{"($download->format)"}}@endif 
-                    @if(!empty($download->effective)){{"($download->effective)"}} @endif</td>
+                    <td>
+                        {{$clients->company}}
+                        @if(!empty($download->format)) {{"($download->format)"}}@endif 
+                        @if(!empty($download->effective)){{"($download->effective)"}} @endif   
+                        @if(!empty($download->timezones)) 
+                            @foreach (json_decode($download->timezones) as $value)
+                                @if($value == 1)(default)@endif
+                            @endforeach 
+                        @endif 
+                    </td>
                     <td>{{$download->created_at}}</td>
                     <td>{{$download->uname}}</td>
                     <td>{{$download->type}}</td>

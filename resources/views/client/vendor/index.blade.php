@@ -188,6 +188,7 @@
              });
         });
 
+        
         $("#preference").click(function(e){
             e.preventDefault();
             var name = $(this).data('name');
@@ -205,6 +206,49 @@
                 success:function(data){
                     $('#tab5').html(data);
                     $('#title').text(name);
+                    var $searchFilter = {};
+                    var checked='';
+                    $("#vendor-rate-search").submit(function(e) {
+                        e.preventDefault();
+                        $searchFilter.Trunk = $("#vendor-rate-search select[name='Trunk']").val();
+                        $searchFilter.Code = $("#vendor-rate-search input[name='Code']").val();
+                        $searchFilter.Country = $("#vendor-rate-search select[name='Country']").val();
+                        $searchFilter.Description =  $("#vendor-rate-search input[name='Description']").val();
+                        $searchFilter.Timezones = $("#vendor-rate-search select[name='Timezones']").val();
+
+                        if(typeof $searchFilter.Trunk  == 'undefined' || $searchFilter.Trunk == '' ){
+                            $.notify("Please Select a Trunk", "error");
+                            return false;
+                        }
+                        data_table = $("#table-4").dataTable({
+                            "bDestroy": true, // Destroy when resubmit form
+                            "bProcessing": true,
+                            "bServerSide": true,
+                            "ajax": {
+                                "url" : "{{route('ajax_datagrid_preference',"request()->id")}}",
+                                "data" : function ( d ){
+                                    d.id = "{{request()->id}}",
+                                    d.Trunk= $searchFilter.Trunk,
+                                    d.Code= $searchFilter.Code,
+                                    d.Description= $searchFilter.Description,
+                                    d.Country = $searchFilter.Country,
+                                    d.Timezones= $searchFilter.Timezones
+                                },
+                            },
+                            "iDisplayLength": parseInt('50'),
+                            //  "sDom": "<'row'<'col-xs-6 col-left '<'#selectcheckbox.col-xs-1'>'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
+                            "aaSorting": [[1, "asc"]],
+                            "aoColumns":
+                                [
+                                    {data:'ckeckbox',name:'ckeckbox'},
+                                    {data:'code',name:'code'},
+                                    {data:'Preference',name:'Preference'},
+                                    {data:'Description',name:'Description'},
+                                    {data:'action',name:'action', orderable: false, searchable: false},
+                                ],
+                        });
+                        return false;
+                    });
                 }
              });
 
