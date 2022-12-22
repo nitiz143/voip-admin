@@ -43,7 +43,7 @@
                                             <th>Phone</th>
                                             <th>Created_at</th>
                                             <th>Updated_at</th>
-                                            <th width="11%">Action</th>
+                                            <th width="14%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>

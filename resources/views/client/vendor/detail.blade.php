@@ -2,7 +2,14 @@
     <div class="form-group">
         <label for="field-1" class="control-label col-sm-12 text-left bold">Title:</label>
         <div class="col-sm-12">{{$clients->company}}
-            @if(!empty($downloads->format)) {{"($downloads->format)"}}@endif @if(!empty($downloads->effective)){{"($downloads->effective)"}} @endif</div>
+            @if(!empty($downloads->format)) {{"($downloads->format)"}}@endif
+            @if(!empty($downloads->effective)){{"($downloads->effective)"}}@endif
+            @if(!empty($downloads->timezones)) 
+                @foreach (json_decode($downloads->timezones) as $value)
+                    @if($value == 1)(default)@endif
+                @endforeach 
+            @endif 
+        </div>
     </div>	
     <div class="form-group">
         <label for="field-1" class="control-label col-sm-12 bold">Description</label>

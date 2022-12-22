@@ -365,7 +365,8 @@ class ClientController extends Controller
 
     public function customer(Request $request)
     {
-        return view('client.customer.index');
+       $customer =  CustomerTrunk::where('customer_id',$request->id)->get();
+        return view('client.customer.index',compact('customer'));
     }
     public function customers(Request $request)
     {
@@ -410,17 +411,14 @@ class ClientController extends Controller
             return view('client.customer.download',compact('trunks','owners','clients'));
         }
         if($request->name == "History"){
-          
-            $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('client_id',$request->id)->get();
-            $clients = Client::where("id", "=",$request->id)->first();   
-            return view('client.customer.history',compact('downloads','clients'));
+            return view('client.customer.history');
         }
     }
 
     public function customertrunk(Request $request){
 
         foreach($request->CustomerTrunk as $trunk){
-            if(!empty($trunk['status'])){
+            if(!empty($trunk['status']) == 1){
                 $validator = Validator::make($trunk, [
                     'prefix' => ['required'],
                     'codedeck'=>['required'],
@@ -455,7 +453,8 @@ class ClientController extends Controller
 
     public function vendor(Request $request)
     {
-        return view('client.vendor.index');
+        $vendor =  VendorTrunk::where('vendor_id',$request->id)->get();
+        return view('client.vendor.index',compact('vendor'));
     }
     public function vendors(Request $request){
         if($request->name == "Vendor Rate"){
@@ -492,10 +491,7 @@ class ClientController extends Controller
             return view('client.vendor.download',compact('trunks','clients'));
         }
         if($request->name == "Vendor Rate History"){
-
-            $downloads = VendorDownloadProcess::leftjoin('users','users.id','=','vendor_download_processes.created_by')->select('vendor_download_processes.*','users.name as uname')->where('client_id',$request->id)->get();
-            $clients = Client::where("id", "=",$request->id)->first();
-            return view('client.vendor.history',compact('downloads','clients'));
+            return view('client.vendor.history');
         }
         if($request->name == "Blocking"){
             return view('client.vendor.blocking ');
@@ -539,7 +535,7 @@ class ClientController extends Controller
     }
     public function vendortrunk(Request $request){
         foreach($request->VendorTrunk as $trunk){
-           if(!empty($trunk['status'])){
+           if(!empty($trunk['status']) == 1){
             $validator = Validator::make($trunk, [
                 'prefix' => ['required'],
                 'codedeck'=>['required'],
@@ -716,8 +712,30 @@ class ClientController extends Controller
         $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('download_processes.client_id',$request->id)->get();
         $list =array();
         foreach ( $downloads as $key => $value) {
+            $timezone = '';
+            $effective = '';
+            if(!empty($value->timezones)){
+                foreach (json_decode($value->timezones )as $row) {
+                    if($row == 1){
+                        $timezone  .= "(default)";
+                    }
+                }
+            }
+
+            if(!empty($value->effective)){
+                if($value->effective == "CustomDate"){
+                    $effective = "($value->customDate)";
+                }else{
+                    $effective = "($value->effective)";
+                }
+            }
+
+            if(!empty($value->client_id)){
+                $client = Client::where("id", "=",$value->client_id)->first();  
+            }
+
             $data =array();
-            $data['title'] =  $value->name."($value->format)($value->effective)";
+            $data['title'] =  $client->company.(!empty($value->format) ? "($value->format)" : "").$effective.$timezone;
             $data['created_at'] =  $value->created_at->format('d-m-Y H:i:s');
             $list[]= $data;
         }
@@ -730,8 +748,30 @@ class ClientController extends Controller
         $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('download_processes.client_id',$request->id)->get();
         $list =array();
         foreach ( $downloads as $key => $value) {
+            $timezone = '';
+            $effective = '';
+            if(!empty($value->timezones)){
+                foreach (json_decode($value->timezones )as $row) {
+                    if($row == 1){
+                        $timezone  .= "(default)";
+                    }
+                }
+            }
+
+            if(!empty($value->effective)){
+                if($value->effective == "CustomDate"){
+                    $effective = "($value->customDate)";
+                }else{
+                    $effective = "($value->effective)";
+                }
+            }
+            
+            if(!empty($value->client_id)){
+                $client = Client::where("id", "=",$value->client_id)->first();  
+            }
+
             $data =array();
-            $data['title'] =  $value->name."($value->format)($value->effective)";
+            $data['title'] =  $client->company.(!empty($value->format) ? "($value->format)" : "").$effective.$timezone;
             $data['created_at'] =  $value->created_at->format('d-m-Y H:i:s');
             $list[]= $data;
         }
@@ -743,8 +783,29 @@ class ClientController extends Controller
         $downloads = VendorDownloadProcess::leftjoin('users','users.id','=','vendor_download_processes.created_by')->select('vendor_download_processes.*','users.name as uname')->where('vendor_download_processes.client_id',$request->id)->get();
         $list =array();
         foreach ( $downloads as $key => $value) {
+            $timezone = '';
+            $effective = '';
+            if(!empty($value->timezones)){
+                foreach (json_decode($value->timezones )as $row) {
+                    if($row == 1){
+                        $timezone  .= "(default)";
+                    }
+                }
+            }
+
+            if(!empty($value->effective)){
+                if($value->effective == "CustomDate"){
+                    $effective = "($value->customDate)";
+                }else{
+                    $effective = "($value->effective)";
+                }
+            }
+            if(!empty($value->client_id)){
+                $client = Client::where("id", "=",$value->client_id)->first();  
+            }
+
             $data =array();
-            $data['title'] =  $value->name."($value->format)($value->effective)";
+            $data['title'] =  $client->company.(!empty($value->format) ? "($value->format)" : "").$effective.$timezone;
             $data['created_at'] =  $value->created_at->format('d-m-Y H:i:s');
             $list[]= $data;
         }
@@ -755,8 +816,30 @@ class ClientController extends Controller
         $downloads = VendorDownloadProcess::leftjoin('users','users.id','=','vendor_download_processes.created_by')->select('vendor_download_processes.*','users.name as uname')->where('vendor_download_processes.client_id',$request->id)->get();
         $list =array();
         foreach ( $downloads as $key => $value) {
+            $timezone = '';
+            $effective = '';
+            if(!empty($value->timezones)){
+                foreach (json_decode($value->timezones )as $row) {
+                    if($row == 1){
+                        $timezone  .= "(default)";
+                    }
+                }
+            }
+
+            if(!empty($value->effective)){
+                if($value->effective == "CustomDate"){
+                    $effective = "($value->customDate)";
+                }else{
+                    $effective = "($value->effective)";
+                }
+            }
+           
+            if(!empty($value->client_id)){
+                $client = Client::where("id", "=",$value->client_id)->first();  
+            }
+
             $data =array();
-            $data['title'] =  $value->name."($value->format)($value->effective)";
+            $data['title'] =  $client->company.(!empty($value->format) ? "($value->format)" : "").$effective.$timezone;
             $data['created_at'] =  $value->created_at->format('d-m-Y H:i:s');
             $list[]= $data;
         }
@@ -923,4 +1006,94 @@ class ClientController extends Controller
            
         }
     }
+
+    public function ajax_datagrid_vendorHistory(Request $request){
+        if ($request->ajax()) {
+            $data = VendorDownloadProcess::leftjoin('users','users.id','=','vendor_download_processes.created_by')->select('vendor_download_processes.*','users.name as uname')->where('client_id',$request->id)->get();
+           
+            return Datatables::of($data)
+            ->addColumn('title', function($row)use($request){
+                $timezone = '';
+                $effective = '';
+                if(!empty($row->timezones)){
+                    foreach (json_decode($row->timezones )as $value) {
+                        if($value == 1){
+                            $timezone  .= "(default)";
+                        }
+                    }
+                }
+                if(!empty($row->effective)){
+                    if($row->effective == "CustomDate"){
+                        $effective = $row->customDate;
+                    }else{
+                        $effective = "($row->effective)";
+                    }
+                }
+                $clients = Client::where("id", "=",$request->id)->first();
+               return  $clients->company.(!empty($row->format)? "($row->format)":"").$effective. $timezone ;
+            })
+            ->addColumn('created_by', function($row){
+                return $row->uname;
+            })
+            ->addColumn('created_at', function($row){
+               return  $row->created_at->format('Y-m-d H:i:s');
+            })
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                
+                $btn = '<a href="javascript:void(0)" data-id="'.$row->id.'" id="View"  class="btn btn-default btn-sm View"><i class="fa fa-eye"></i></a>
+                <a  href="" class="btn btn-success btn-sm btn-icon icon-left"><i class="entypo-down"></i>Download</a>';
+
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+
+        
+    }
+
+    public function ajax_datagrid_customerHistory(Request $request){
+        if ($request->ajax()) {
+            $data = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('client_id',$request->id)->get();
+           
+            return Datatables::of($data)
+            ->addColumn('title', function($row)use($request){
+                $timezone = '';
+                $effective = '';
+                foreach (json_decode($row->timezones )as $value) {
+                    if($value == 1){
+                        $timezone  .= "(default)";
+                    }
+                   
+                }
+                if(!empty($row->effective)){
+                    if($row->effective == "CustomDate"){
+                        $effective = "($row->customDate)";
+                    }else{
+                        $effective = "($row->effective)";
+                    }
+                }
+                $clients = Client::where("id", "=",$request->id)->first();
+               return  $clients->company.(!empty($row->format)? "($row->format)":"").$effective.$timezone;
+            })
+            ->addColumn('created_by', function($row){
+                return $row->uname;
+            })
+            ->addColumn('created_at', function($row){
+               return  $row->created_at->format('Y-m-d H:i:s');
+            })
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                
+                $btn = '<a href="javascript:void(0)" data-id="'.$row->id.'" id="View"  class="btn btn-default btn-sm View"><i class="fa fa-eye"></i></a>
+                <a  href="" class="btn btn-success btn-sm btn-icon icon-left"><i class="entypo-down"></i>Download</a>';
+
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+    }
+
 }

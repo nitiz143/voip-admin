@@ -76,12 +76,12 @@
 
                         </div>
                     </div>
-                   <p style="text-align: right;">
-                       <button type="submit" class="btn btn-primary btn-sm btn-icon icon-left">
-                           <i class="entypo-search"></i>
-                           Search
-                       </button>
-                   </p>
+                    <p style="text-align: right;">
+                        <button type="submit" class="btn btn-primary btn-sm btn-icon icon-left">
+                            <i class="entypo-search"></i>
+                            Search
+                        </button>
+                    </p>
                </div>
            </div>
        </form>

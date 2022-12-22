@@ -33,35 +33,45 @@
         </tr>
     </thead>
     <tbody>
-        @if(!empty($downloads))
-            @foreach ($downloads as $download)
-                <tr>
-                    <td>
-                        {{$clients->company}}
-                        @if(!empty($download->format)) {{"($download->format)"}}@endif 
-                        @if(!empty($download->effective)){{"($download->effective)"}} @endif   
-                        @if(!empty($download->timezones)) 
-                            @foreach (json_decode($download->timezones) as $value)
-                                @if($value == 1)(default)@endif
-                            @endforeach 
-                        @endif 
-                    </td>
-                    <td>{{$download->created_at}}</td>
-                    <td>{{$download->uname}}</td>
-                    <td>{{$download->type}}</td>
-                    <td><a href="javascript:;" data-id="{{$download->id}}" id="View"  class="btn btn-default btn-sm View"><i class="fa fa-eye"></i></a>
-                    <a  href="" class="btn btn-success btn-sm btn-icon icon-left"><i class="entypo-down"></i>Download</a></td>
-                </tr>
-            @endforeach
-        @endif
+       
     </tbody>
 </table>
 <script>
-    var role = $('#table-4').DataTable({
+   var role = $('#table-4').DataTable({
+        serverSide: true,
+        processing: true,
+        "ajax": {
+            "url" : "{{route('ajax_datagrid_vendorHistory',"request()->id")}}",
+            "data" : function ( d ){
+                d.id = "{{request()->id}}"
+            },
+        },
+        "aoColumns": [{
+                data: 'title',
+                name:'title'
+            },
+            {
+                data: 'created_at',
+                name: 'created_at'
+            },
+            {
+                data: 'created_by',
+                name: 'created_by'
+            },
+            {
+                data: 'type',
+                name: 'type'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                searchable: false,
+                orderable: false
+            },
+        ]
     });
-
-    $(".View").click(function(e){
-        e.preventDefault();
+    
+    $(document).on('click', '.View', function () {
         var id = $(this).data('id');
         $.ajax({
             url:"{{route('vendor_history_detail',":id")}}",

@@ -1,7 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('content')
-
+<style>
+    a:disabled{
+        cursor: not-allowed;
+    }
+    </style>
 <div class="content-wrapper mt-3">
     <section class="content-header">
         <div class="container-fluid">
@@ -28,17 +32,17 @@
                                     <div class="tabs-menu1">
                                         <!-- Tabs -->
                                         <ul class="nav nav-tabs gap-5">
-                                            <li class="nav nav-tabs">
-                                                <a href="" data-bs-toggle="nav-link" id="customer" data-name="Customer Rate"  class="nav-link">Customer Rate</a>
+                                            <li class="nav nav-tabs" >
+                                                <a href="" data-bs-toggle="nav-link" id="customer" data-name="Customer Rate"  class="nav-link   @if($customer->isEmpty()) disabled @endif" >Customer Rate</a>
                                             </li>
                                             <li class="nav nav-tabs">
                                                 <a href="#" data-bs-toggle="nav-link" id="Setting"  data-name="Settings" class="nav-link">Settings</a>
                                             </li>
                                             <li class="nav nav-tabs">
-                                                <a href="#" data-bs-toggle="nav-link" id="Download"  data-name="Download Rate Sheet"  class="nav-link">Download Rate Sheet</a>
+                                                <a href="#" data-bs-toggle="nav-link" id="Download"  data-name="Download Rate Sheet"  class="nav-link   @if($customer->isEmpty()) disabled @endif" >Download Rate Sheet</a>
                                             </li>
-                                            <li class="nav nav-tabs">
-                                                <a href="#" data-bs-toggle="nav-link" id="History"  data-name="History"  class="nav-link">History</a>
+                                            <li class="nav nav-tabs" >
+                                                <a href="#" data-bs-toggle="nav-link" id="History"  data-name="History"  class="nav-link @if($customer->isEmpty()) disabled @endif"   >History</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -58,8 +62,14 @@
         </div>
     </section>
 </div>
+   
 @endsection
 @section('page_js')
+@if($customer->isEmpty())
+    <script>
+    $.notify("Please select any Trunk", 'info'); 
+    </script>
+@endif
 <script>
     $(document).ready(function(){
         $("#customer").click(function(e){

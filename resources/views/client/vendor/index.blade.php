@@ -2,6 +2,10 @@
 
 @section('content')
 <style>
+    .not-allowed{
+        cursor: not-allowed !important;
+        pointer-events: all !important;
+    }
     .form-check {
         padding-left: 0.25rem !important;
     }
@@ -60,22 +64,22 @@
                                         <!-- Tabs -->
                                         <ul class="nav nav-tabs gap-3">
                                             <li class="nav nav-tabs">
-                                                <a href="" data-bs-toggle="nav-link" id="vendor" data-name="Vendor Rate"  class="nav-link">Vendor Rate</a>
+                                                <a href="" data-bs-toggle="nav-link" id="vendor" data-name="Vendor Rate"  class="nav-link  @if($vendor->isEmpty()) not-allowed disabled @endif">Vendor Rate</a>
                                             </li>
                                             <li class="nav nav-tabs">
-                                                <a href="#" data-bs-toggle="nav-link" id="download"  data-name="Vender Rate Download" class="nav-link">Vender Rate Download</a>
+                                                <a href="#" data-bs-toggle="nav-link" id="download"  data-name="Vender Rate Download" class="nav-link  @if($vendor->isEmpty()) not-allowed  disabled @endif">Vender Rate Download</a>
                                             </li>
                                             <li class="nav nav-tabs">
                                                 <a href="#" data-bs-toggle="nav-link" id="setting"  data-name="Settings"  class="nav-link">Settings</a>
                                             </li>
                                             <li class="nav nav-tabs">
-                                                <a href="#" data-bs-toggle="nav-link" id="blocking"  data-name="Blocking"  class="nav-link">Blocking</a>
+                                                <a href="#" data-bs-toggle="nav-link" id="blocking"  data-name="Blocking"  class="nav-link  @if($vendor->isEmpty()) not-allowed  disabled @endif">Blocking</a>
                                             </li>
                                             <li class="nav nav-tabs">
-                                                <a href="#" data-bs-toggle="nav-link" id="preference"  data-name="Preference"  class="nav-link">Preference</a>
+                                                <a href="#" data-bs-toggle="nav-link" id="preference"  data-name="Preference"  class="nav-link  @if($vendor->isEmpty()) not-allowed  disabled @endif">Preference</a>
                                             </li>
                                             <li class="nav nav-tabs">
-                                                <a href="#" data-bs-toggle="nav-link" id="history"  data-name="Vendor Rate History"  class="nav-link">Vendor Rate History</a>
+                                                <a href="#" data-bs-toggle="nav-link" id="history"  data-name="Vendor Rate History"  class="nav-link @if($vendor->isEmpty()) not-allowed  disabled @endif">Vendor Rate History</a>
                                             </li>
                                             <li class="float-right ml-5">
                                                 <div class="file-input">
@@ -104,6 +108,12 @@
 </div>
 @endsection
 @section('page_js')
+
+@if($vendor->isEmpty())
+    <script>
+    $.notify("Please select any Trunk", 'info'); 
+    </script>
+@endif
 <script>
     $(document).ready(function(){
         $("#vendor").click(function(e){
@@ -184,6 +194,7 @@
                 success:function(data){
                     $('#tab5').html(data);
                     $('#title').text(name);
+                    
                 }
              });
         });
