@@ -365,8 +365,9 @@ class ClientController extends Controller
 
     public function customer(Request $request)
     {
-       $customer =  CustomerTrunk::where('customer_id',$request->id)->get();
-        return view('client.customer.index',compact('customer'));
+        $clients = Client::where("customer", "=",1)->get();
+        $customer =  CustomerTrunk::where('customer_id',$request->id)->get();
+        return view('client.customer.index',compact('customer','clients'));
     }
     public function customers(Request $request)
     {
@@ -454,7 +455,8 @@ class ClientController extends Controller
     public function vendor(Request $request)
     {
         $vendor =  VendorTrunk::where('vendor_id',$request->id)->get();
-        return view('client.vendor.index',compact('vendor'));
+        $clients = Client::where("Vendor", "=",1)->get();
+        return view('client.vendor.index',compact('vendor','clients'));
     }
     public function vendors(Request $request){
         if($request->name == "Vendor Rate"){

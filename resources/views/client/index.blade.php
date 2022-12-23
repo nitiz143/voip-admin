@@ -21,44 +21,41 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h1 class="card-title">Accounts</h1>
-                                <a href="{{ route('client.create') }}" class="btn btn-primary mb-4  float-right">Add New</a>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table class="table table-bordered data-table" style="width: 100%">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Company</th>
-                                            <th>Firstname</th>
-                                            <th>Lastname</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Created_at</th>
-                                            <th>Updated_at</th>
-                                            <th width="14%">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- /.card-body -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h1 class="card-title">Accounts</h1>
+                            <a href="{{ route('client.create') }}" class="btn btn-primary mb-4  float-right">Add New</a>
                         </div>
-            <!-- /.card -->
-                    </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table class="table table-bordered data-table" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Company</th>
+                                        <th>Firstname</th>
+                                        <th>Lastname</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Created_at</th>
+                                        <th>Updated_at</th>
+                                        <th width="14%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div><!-- /.card-body -->
+                    </div><!-- /.card -->
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 </div>
 @endsection
 

@@ -6,6 +6,18 @@
         cursor: not-allowed !important;
         pointer-events: all !important;
     }
+
+    .nav-tabs .nav-link:hover {
+        border-color: #e9ecef #e9ecef #dee2e6;
+        background-color: gainsboro;
+        color: #495057;
+    }
+    .nav-tabs .nav-link.active:hover{
+        color: #495057;
+        background-color: #fff;
+        border-color: #dee2e6 #dee2e6 #fff;
+    }
+
     .form-check {
         padding-left: 0.25rem !important;
     }
@@ -46,6 +58,22 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
+                        <li>
+                            <a href="{{route('home')}}"><i class="fa fa-home" aria-hidden="true"></i>Home</a>
+                        </li>&nbsp;&nbsp;/&nbsp;&nbsp;
+                        <li>
+                            <a href="{{url('/client')}}">Account</a>
+                        </li>&nbsp;&nbsp;/&nbsp;&nbsp;
+                        <li>
+                            <select id="vendors_search" class=" custom-select form-control "name="vendors_search" style="width: 160px; background-color: #f4f6f9;
+                            border: 0px; margin-top: -5px; box-shadow: inherit;"> 
+                                @if(!empty($clients))
+                                    @foreach ($clients as $client)
+                                        <option value="{{$client->id}}"{{$client->id == @request()->id ? 'selected' : ''}} >{{$client->company}}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </li>
 
                     </ol>
                 </div>
@@ -62,7 +90,7 @@
                                 <div class=" tab-menu-heading">
                                     <div class="tabs-menu1">
                                         <!-- Tabs -->
-                                        <ul class="nav nav-tabs gap-3">
+                                        <ul class="nav nav-tabs gap-1">
                                             <li class="nav nav-tabs">
                                                 <a href="" data-bs-toggle="nav-link" id="vendor" data-name="Vendor Rate"  class="nav-link  @if($vendor->isEmpty()) not-allowed disabled @endif">Vendor Rate</a>
                                             </li>
@@ -81,7 +109,9 @@
                                             <li class="nav nav-tabs">
                                                 <a href="#" data-bs-toggle="nav-link" id="history"  data-name="Vendor Rate History"  class="nav-link @if($vendor->isEmpty()) not-allowed  disabled @endif">Vendor Rate History</a>
                                             </li>
-                                            <li class="float-right ml-5">
+                                            <li class="ml-5">
+                                            </li>
+                                            <li class=" float-end ml-5  mt-1">
                                                 <div class="file-input">
                                                     <button class="btn btn-dark btn-sm btn-icon icon-left" onclick="location.href='{{route('rate-upload')}}'">
                                                         <i class="fa fa-upload"></i>
@@ -289,7 +319,6 @@
 
     });
     $(document).ready(function(){
-
         $('#tab5').show();
         $('#vendor').removeClass('active');
         $('#setting').addClass('active');
@@ -307,6 +336,15 @@
                     $('#title').text(name);
                 }
              });
+    });
+    $(document).ready(function(){
+        $('#vendors_search').change(function(){
+            var name = $('#setting').data('name');
+            var id = $(this).val();
+            var vals='/client-vendor/'+id;
+             location.href = vals;
+            
+        });
     });
     </script>
 @endsection

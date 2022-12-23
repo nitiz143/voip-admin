@@ -19,7 +19,7 @@
                             <input type="text" name="Code" class="form-control" id="field-1" placeholder="" value="" />
                         </div>
 
-                        <label class="col-sm-1 control-label">Description</label>
+                        <label class="col-sm-2 control-label">Description</label>
                         <div class="col-sm-3">
                             <input type="text" name="Description" class="form-control" id="field-1" placeholder="" value="" />
 
