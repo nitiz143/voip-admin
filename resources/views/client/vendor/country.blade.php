@@ -188,8 +188,8 @@
         });
 
 
-            //Unblock Selected Countries
-            $("#unblockSelectedCountry-form").submit(function() {
+        //Unblock Selected Countries
+        $("#unblockSelectedCountry-form").submit(function() {
             var criteria='';
             var CountryIDs = [];
             if($('#selectallbutton').is(':checked')){

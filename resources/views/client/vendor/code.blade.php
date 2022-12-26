@@ -72,20 +72,23 @@
             <form id="blockSelectedCode-form" method="post" action=""  style="margin: 0px; padding: 0px; display: inline-table;" >
                 <button id="blockSelectedCode" class="btn btn-primary btn-sm btn-icon icon-left"   data-loading-text="Loading...">
                     <i class="entypo-floppy"></i>
-                    Unblock Selected Codes
+                    Block Selected Codes
                 </button>
-                <input type="hidden" name="RateID" value="">
+                {{-- <input type="hidden" name="CodeID" value=""> --}}
                 <input type="hidden" name="Trunk" value="">
                 <input type="hidden" name="Timezones" value="">
                 <input type="hidden" name="criteria" value="">
                 <input type="hidden" name="action" value="unblock">
             </form>
-            <form id="unblockSelectedCode-form" method="post" action="" style="margin: 0px; padding: 0px; display: inline-table;" >
+            <form id="unblockSelectedCode-form" method="post" action="{{route('block-unblock-by-codes',':id')}}" style="margin: 0px; padding: 0px; display: inline-table;" >
+                @csrf
                 <button type="submit" id="unblockSelectedCode" class="btn btn-danger btn-sm btn-icon icon-left" data-loading-text="Loading...">
                     <i class="entypo-cancel"></i>
-                    Block Selected Codes
+                    Unblock Selected Codes
                 </button>
-                <input type="hidden" name="RateID" value="">
+                <div id="Code_unblock">
+                </div>
+                {{-- <input type="hidden" name="CodeID" value=""> --}}
                 <input type="hidden" name="Trunk" value="">
                 <input type="hidden" name="Timezones" value="">
                 <input type="hidden" name="criteria" value="">
@@ -150,14 +153,10 @@ var checked='';
             "aaSorting": [[1, "asc"]],
             "aoColumns":
             [
-                {"bSortable": false, //RateId
-                    mRender: function(id, type, full) {
-                        return '<input type="checkbox" name="checkbox[]" value="' + id + '" class="rowcheckbox" >';
-                    }
-                },  //0 RateId
-                {}, //1 Code
-                {}, //2 Status
-                {}, //3 Description
+                {data:'action',name:'action', orderable: false, searchable: false},
+                {data:'codes',name:'codes'},
+                {data:'status',name:'status'},
+                {data:'destination',name:'destination'},
             ]
         });
         return false;
@@ -188,4 +187,60 @@ var checked='';
     $(".pagination a").click(function(ev) {
         replaceCheckboxes();
     });
+
+     //Unblock Selected Countries
+     $("#unblockSelectedCode-form").submit(function() {
+            var criteria='';
+            var CountryIDs = [];
+            if($('#selectallbutton').is(':checked')){
+                criteria = JSON.stringify($searchFilter);
+            }else{
+                var i = 0;
+                $('#table-4 tr .rowcheckbox:checked').each(function(i, el) {
+                    $("#Code_unblock").append('<input type="text" name="CodeID[]"value="'+$(this).val()+'" hidden/>'); 
+                });
+            }
+            
+            
+            //Trunk = $('#block_by_country_form').find("select[name='Trunk']").val();
+            $("#unblockSelectedCode-form").find("input[name='Trunk']").val($searchFilter.Trunk);
+            $("#unblockSelectedCode-form").find("input[name='Timezones']").val($searchFilter.Timezones);
+            $("#unblockSelectedCode-form").find("input[name='criteria']").val(criteria);
+            
+            var formData = new FormData($('#unblockSelectedCode-form')[0]);
+            $.ajax({
+                url: $("#unblockSelectedCode-form").attr("action"),
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                
+                    $("#unblockSelectedCode").button('reset');
+                    if (response.success == true) {
+                        $("#unblockSelectedCode-form").find("input[name='CodeID[]']").remove();
+                        $.notify(response.message, "success");
+                        data_table.fnFilter('', 0);
+                    } else {
+                        $.each(response.errors, function(k, e) {
+                            $("#unblockSelectedCode-form").find("input[name='CodeID[]']").remove();
+                            $.notify(e, 'error');
+                            data_table.fnFilter('', 0);
+                        
+                        });
+                    }
+                    if (response.success == null) {
+                        $("#unblockSelectedCode-form").find("input[name='CodeID[]']").remove();
+                        $.notify(response.message, "error");
+                        data_table.fnFilter('', 0);
+                    }
+                },
+                // Form data
+                data: formData,
+                //Options to tell jQuery not to process data or worry about content-type.
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            return false;
+        });
+
 </script>

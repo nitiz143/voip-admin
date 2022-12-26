@@ -15,6 +15,7 @@ use App\Models\CustomerTrunk;
 use App\Models\DownloadProcess;
 use App\Models\VendorDownloadProcess;
 use App\Models\Country;
+use App\Models\Codes;
 use Illuminate\Support\Arr;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Carbon\Carbon;
@@ -997,9 +998,72 @@ class ClientController extends Controller
 
     public function ajax_datagrid_blockbycode(Request $request){
         if ($request->ajax()) {
-            // $data = Client::query('');
-            // return Datatables::of($data)->make(true);
+            if($request->Code != null){
+                $users = Codes::where('id',$request->Code)->with(['BlockByCodes'=> function($q) use($request) {
+                    // Query the name field in status table
+                    $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
+                }]);
+            }
+            else{
+                $users = Codes::select('*')->with(['BlockByCodes'=> function($q) use($request) {
+                    // Query the name field in status table
+                    $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]); // '=' is optiona
+                }]);
+            }
+            $users =  $users->get();
+            
+            return Datatables::of($users)
+            ->filter(function ($instance) use ($request) {
+                $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                    
+                    if(!empty($request->Status)){
+                        if($request->Status == "Blocked"){
+                            $row = !empty($row['block_by_codes']);
+                            return  $row;
+                        }
+                        if($request->Status == "Not_Blocked"){
+                            $row = empty($row['block_by_codes']);
+                            return  $row;
+                        }
+                        if($request->Status == "All"){
+                            return $row;
+                        }
+                    }
+                   
+                });
+            })
+          
+            ->addColumn('status', function($row) use ($request) {
+
+                if(!empty($row->BlockByCodes[0]->CountryID) == $row->id)
+                {
+                    if($row->BlockByCodes[0]->Trunk == $request->Trunk)
+                    {
+                        $value = "Blocked";
+                        return $value;
+                    }else{
+                        $value = "Not Blocked";
+                        return $value;
+                    }
+                       
+                }else{
+                    $value = "Not Blocked";
+                    return $value;
+                }
+
+            })
+                ->addColumn('action', function($row){
+                    
+                        $btn = '<input type="checkbox" name="checkbox[]" value="'. $row->id.'" class="rowcheckbox" >';
+
+                        return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
+    }
+    public function block_unblock_by_codes(Request $request){
+        dd($request->all());
     }
 
     public function ajax_datagrid_preference(Request $request){
@@ -1018,9 +1082,9 @@ class ClientController extends Controller
                 $timezone = '';
                 $effective = '';
                 if(!empty($row->timezones)){
-                    foreach (json_decode($row->timezones )as $value) {
+                    foreach (json_decode($row->timezones) as $value) {
                         if($value == 1){
-                            $timezone  .= "(default)";
+                            $timezone = "(default)";
                         }
                     }
                 }
@@ -1051,8 +1115,6 @@ class ClientController extends Controller
             ->rawColumns(['action'])
             ->make(true);
         }
-
-        
     }
 
     public function ajax_datagrid_customerHistory(Request $request){
