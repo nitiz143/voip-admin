@@ -9,6 +9,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Trunk;
 use App\Models\BlockByCountry;
+use App\Models\BlockByCode;
 use App\Models\RateTable;
 use App\Models\VendorTrunk;
 use App\Models\CustomerTrunk;
@@ -999,7 +1000,7 @@ class ClientController extends Controller
     public function ajax_datagrid_blockbycode(Request $request){
         if ($request->ajax()) {
             if($request->Code != null){
-                $users = Codes::where('id',$request->Code)->with(['BlockByCodes'=> function($q) use($request) {
+                $users = Codes::where('codes',$request->Code)->with(['BlockByCodes'=> function($q) use($request) {
                     // Query the name field in status table
                     $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
                 }]);
@@ -1015,7 +1016,7 @@ class ClientController extends Controller
             return Datatables::of($users)
             ->filter(function ($instance) use ($request) {
                 $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                    
+                                            
                     if(!empty($request->Status)){
                         if($request->Status == "Blocked"){
                             $row = !empty($row['block_by_codes']);
@@ -1035,7 +1036,7 @@ class ClientController extends Controller
           
             ->addColumn('status', function($row) use ($request) {
 
-                if(!empty($row->BlockByCodes[0]->CountryID) == $row->id)
+                if(!empty($row->BlockByCodes[0]->CodeID) == $row->id)
                 {
                     if($row->BlockByCodes[0]->Trunk == $request->Trunk)
                     {
@@ -1063,7 +1064,77 @@ class ClientController extends Controller
         }
     }
     public function block_unblock_by_codes(Request $request){
-        dd($request->all());
+        if($request->action == 'block'){
+            if(!empty($request->CodeID ))
+            {
+                foreach($request->CodeID as $Code_ID){
+                    $validator = Validator::make($request->all(), [
+                        'CodeID' => 'required',
+                        'Trunk'=>'required',
+                    ]);
+
+                        if ($validator->fails())
+                        {
+                            $response = \Response::json([
+                                    'success' => false,
+                                    'errors' => $validator->getMessageBag()->toArray()
+                                ]);
+                            return $response;
+                        }
+
+                        $data['CodeID'] = $Code_ID ?? "";
+                        $data['client_id'] = $request->client_id ?? "";
+                        $data['Trunk'] = $request->Trunk ?? "";
+                        $data['Timezones'] = $request->Timezones ?? "" ;
+                        $data['prefix_cdr'] = $request->criteria ?? "0";
+                        $data['user_id'] = Auth::user()->id ?? '';
+
+                    $block = BlockByCode::where([["client_id","=", $request->client_id],["CodeID","=",$Code_ID],["Trunk","=", $request->Trunk]])->first();
+                    if(empty($block)){
+                        BlockByCode::Create($data);
+                    }else{
+                        $response = \Response::json(['success' => null,'message' => 'Select Not Blocked country']);
+                        return $response;
+                    }
+                }
+                $response = \Response::json(['success' => true,'message' => 'Blocked sucessfully']);
+                return $response;
+            }
+        }
+
+        if($request->action == 'unblock'){
+            if(!empty($request->CodeID))
+            {
+                foreach($request->CodeID as $Code_ID){
+                    $validator = Validator::make($request->all(), [
+                        'CodeID' => 'required',
+                        'Trunk'=>'required',
+                    ]);
+
+                        if ($validator->fails())
+                        {
+                            $response = \Response::json([
+                                    'success' => false,
+                                    'errors' => $validator->getMessageBag()->toArray()
+                                ]);
+                            return $response;
+                        }
+
+                        
+                    $unblock=  BlockByCode::where([["client_id","=", $request->client_id],["CodeID","=",$Code_ID],["Trunk","=", $request->Trunk]])->first();
+                    if(!empty($unblock)){
+                        $unblock =  $unblock->delete();
+                    }
+                    else{
+                        $response = \Response::json(['success' => null,'message' => 'Select Blocked Country']);
+                        return $response;
+                    }
+                   
+                }
+                $response = \Response::json(['success' => true,'message' => 'Unblocked sucessfully']);
+                return $response;
+            }
+        }
     }
 
     public function ajax_datagrid_preference(Request $request){

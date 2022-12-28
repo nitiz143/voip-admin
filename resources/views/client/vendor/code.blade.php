@@ -69,30 +69,35 @@
             </div>
         </form>
         <div style="text-align: right;padding:10px 0 ">
-            <form id="blockSelectedCode-form" method="post" action=""  style="margin: 0px; padding: 0px; display: inline-table;" >
-                <button id="blockSelectedCode" class="btn btn-primary btn-sm btn-icon icon-left"   data-loading-text="Loading...">
+            <form id="blockSelectedCode-form" method="post" action="{{route('block-unblock-by-codes',':id')}}" style="margin: 0px; padding: 0px; display: inline-table;" >
+                @csrf
+                <button id="blockSelectedCode" class="btn btn-danger btn-sm btn-icon icon-left"   data-loading-text="Loading...">
                     <i class="entypo-floppy"></i>
                     Block Selected Codes
                 </button>
+                <div id="Code_block">
+                </div>
                 {{-- <input type="hidden" name="CodeID" value=""> --}}
+                <input type="hidden" name="client_id" value="{{request()->id}}">
                 <input type="hidden" name="Trunk" value="">
                 <input type="hidden" name="Timezones" value="">
                 <input type="hidden" name="criteria" value="">
-                <input type="hidden" name="action" value="unblock">
+                <input type="hidden" name="action" value="block">
             </form>
             <form id="unblockSelectedCode-form" method="post" action="{{route('block-unblock-by-codes',':id')}}" style="margin: 0px; padding: 0px; display: inline-table;" >
                 @csrf
-                <button type="submit" id="unblockSelectedCode" class="btn btn-danger btn-sm btn-icon icon-left" data-loading-text="Loading...">
+                <button id="unblockSelectedCode" class="btn btn-primary btn-sm btn-icon icon-left" data-loading-text="Loading...">
                     <i class="entypo-cancel"></i>
                     Unblock Selected Codes
                 </button>
                 <div id="Code_unblock">
                 </div>
                 {{-- <input type="hidden" name="CodeID" value=""> --}}
+                <input type="hidden" name="client_id" value="{{request()->id}}">
                 <input type="hidden" name="Trunk" value="">
                 <input type="hidden" name="Timezones" value="">
                 <input type="hidden" name="criteria" value="">
-                <input type="hidden" name="action" value="block">
+                <input type="hidden" name="action" value="unblock">
             </form>
         </div>
         <table class="table table-bordered datatable" id="table-4">
@@ -213,7 +218,7 @@ var checked='';
                 type: 'POST',
                 dataType: 'json',
                 success: function(response) {
-                
+                console.log(response)
                     $("#unblockSelectedCode").button('reset');
                     if (response.success == true) {
                         $("#unblockSelectedCode-form").find("input[name='CodeID[]']").remove();
@@ -242,5 +247,58 @@ var checked='';
             });
             return false;
         });
+
+        $("#blockSelectedCode-form").submit(function() {
+        
+        var criteria='';
+        var CountryIDs = [];
+        if($('#selectallbutton').is(':checked')){
+            criteria = JSON.stringify($searchFilter);
+        }else{
+        
+            $('#table-4 tr .rowcheckbox:checked').each(function(i, el) {
+                
+                $("#Code_block").append('<input type="text" name="CodeID[]" value="'+$(this).val()+'" hidden/>'); 
+            });
+        }
+        
+        // $("#blockSelectedCountry-form").find("input[name='CountryID[]']").val(CountryID);
+        $("#blockSelectedCode-form").find("input[name='Trunk']").val($searchFilter.Trunk);
+        $("#blockSelectedCode-form").find("input[name='Timezones']").val($searchFilter.Timezones);
+        $("#blockSelectedCode-form").find("input[name='criteria']").val(criteria);
+
+        var formData = new FormData($('#blockSelectedCode-form')[0]);
+        $.ajax({
+            url: $("#blockSelectedCode-form").attr("action"),
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                $("#blockSelectedCode").button('reset');
+                if (response.success == true) {
+                    $("#blockSelectedCode-form").find("input[name='CodeID[]']").remove();
+                    $.notify(response.message, "success");
+                    data_table.fnFilter('', 0);
+                } else {
+                    $.each(response.errors, function(k, e) {
+                        $("#blockSelectedCode-form").find("input[name='CodeID[]']").remove();
+                        $.notify(e, 'error');
+                        data_table.fnFilter('', 0);
+                    });
+                }
+                if (response.success == null) {
+                    $("#blockSelectedCode-form").find("input[name='CodeID[]']").remove();
+                    $.notify(response.message, "error");
+                    data_table.fnFilter('', 0);
+                }
+            },
+            // Form data
+            data: formData,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        return false;
+    });
 
 </script>

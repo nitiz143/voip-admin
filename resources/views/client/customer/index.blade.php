@@ -70,7 +70,7 @@
                                                 <a href="#" data-bs-toggle="nav-link" id="Download"  data-name="Download Rate Sheet"  class="nav-link   @if($customer->isEmpty()) not-allowed disabled @endif" >Download Rate Sheet</a>
                                             </li>
                                             <li class="nav nav-tabs" >
-                                                <a href="#" data-bs-toggle="nav-link" id="History"  data-name="History"  class="nav-link @if($customer->isEmpty()) not-allowed disabled @endif"   >History</a>
+                                                <a href="#" data-bs-toggle="nav-link" id="History"  data-name="History"  class="nav-link @if($customer->isEmpty()) not-allowed disabled @endif">History</a>
                                             </li>
                                         </ul>
                                     </div>

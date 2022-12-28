@@ -78,7 +78,6 @@
         </a>
     </div>
 
-
     <table class="table table-bordered datatable" id="table-4">
         <thead>
             <tr>
@@ -104,4 +103,50 @@
                 x.style.display = "none";
             }
         }
+
+        var $searchFilter = {};
+        var checked='';
+        $("#vendor-rate-search").submit(function(e) {
+        e.preventDefault();
+        $searchFilter.Trunk = $("#vendor-rate-search select[name='Trunk']").val();
+        $searchFilter.Timezone = $("#vendor-rate-search select[name='Timezone']").val();
+        $searchFilter.Country = $("#vendor-rate-search  select[name='Country']").val();
+        $searchFilter.Code = $("#vendor-rate-search  input[name='Code']").val();
+        $searchFilter.Description = $("#vendor-rate-search  input[name='Description']").val();
+        if(typeof $searchFilter.Trunk  == 'undefined' || $searchFilter.Trunk == '' ){
+            $.notify("Please Select a Trunk", "error");
+            return false;
+        }
+        
+        
+
+        data_table = $("#table-4").dataTable({
+            "bDestroy": true, // Destroy when resubmit form
+            "bProcessing": true,
+            "bServerSide": true,
+            "ajax": {
+                "url" : "{{route('ajax_datagrid_preference',"request()->id")}}",
+                data : function ( d ){
+                    d.id = "{{request()->id}}",
+                    d.Trunk= $searchFilter.Trunk,
+                    d.Description= $searchFilter.Description,
+                    d.Country = $searchFilter.Country,
+                    d.Code= $searchFilter.Code,
+                    d.Timezones= $searchFilter.Timezones
+                },
+            },
+            "iDisplayLength": parseInt('50'),
+            //  "sDom": "<'row'<'col-xs-6 col-left '<'#selectcheckbox.col-xs-1'>'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
+            "aaSorting": [[1, "asc"]],
+            "aoColumns":
+            [
+                {data:'ckeckbox',name:'ckeckbox', orderable: false, searchable: false},
+                {data:'codes',name:'codes'},
+                {data:'Preference',name:'Preference'},
+                {data:'destination',name:'destination'},
+                {data:'action',name:'action', orderable: false, searchable: false},
+            ]
+        });
+        return false;
+    });
     </script>
