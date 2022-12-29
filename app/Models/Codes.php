@@ -22,4 +22,9 @@ class Codes extends Model
     {
         return $this->hasMany(BlockByCode::class ,'CodeID' , 'id');
     }
+
+    public function Perferences()
+    {
+        return $this->hasMany(Preference::class ,'CodeID' , 'id');
+    }
 }

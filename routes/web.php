@@ -61,6 +61,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
 
     Route::post('/block-unblock_codes/{id}', [App\Http\Controllers\ClientController::class, 'block_unblock_by_codes'])->name('block-unblock-by-codes');
 
+    Route::post('/vendor_preference-store', [App\Http\Controllers\ClientController::class, 'vendor_preference_store'])->name('vendor_preference.store');
+
 
     Route::get('/vendor_preference/{id}/ajax_datagrid_preference', [App\Http\Controllers\ClientController::class, 'ajax_datagrid_preference'])->name('ajax_datagrid_preference');
     Route::get('/vendor_history/{id}/ajax_datagrid_vendorHistory', [App\Http\Controllers\ClientController::class, 'ajax_datagrid_vendorHistory'])->name('ajax_datagrid_vendorHistory');

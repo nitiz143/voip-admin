@@ -281,10 +281,10 @@
                             "aaSorting": [[1, "asc"]],
                             "aoColumns":
                                 [
-                                    {data:'ckeckbox',name:'ckeckbox'},
-                                    {data:'code',name:'code'},
-                                    {data:'Preference',name:'Preference'},
-                                    {data:'Description',name:'Description'},
+                                    {data:'checkbox',name:'checkbox'},
+                                    {data:'codes',name:'codes'},
+                                    {data:'preference',name:'preference'},
+                                    {data:'destination',name:'destination'},
                                     {data:'action',name:'action', orderable: false, searchable: false},
                                 ],
                         });

@@ -17,6 +17,7 @@ use App\Models\DownloadProcess;
 use App\Models\VendorDownloadProcess;
 use App\Models\Country;
 use App\Models\Codes;
+use App\Models\Preference;
 use Illuminate\Support\Arr;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Carbon\Carbon;
@@ -1139,8 +1140,33 @@ class ClientController extends Controller
 
     public function ajax_datagrid_preference(Request $request){
         if ($request->ajax()) {
-           dd($request->all());
+            $data = Codes::with(['Perferences'=> function($q) use($request) {
+                // Query the name field in status table
+                $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
+            }])->get();
            
+            return Datatables::of($data)
+
+            ->addColumn('preference', function($row) use ($request) {
+                return !empty($row->Perferences->preference) ? $row->Perferences->preference : "";
+            })
+            ->addColumn('checkbox', function($row){
+                
+              
+                $btn1 = '<input type="checkbox" name="checkbox[]" value="'. $row->id.'" class="rowcheckbox" >';
+
+                return $btn1 ;
+
+            })
+        
+            ->addColumn('action', function($row){
+                
+                $btn = '<a href="javascript:void(0)" data-id="'.$row->id.'" id="View"  class="btn btn-default btn-sm edit"><i class="fa fa-pen"></i></a>';
+
+                return $btn;
+            })
+            ->rawColumns(['action','checkbox'])
+            ->make(true);
         }
     }
 
@@ -1186,6 +1212,10 @@ class ClientController extends Controller
             ->rawColumns(['action'])
             ->make(true);
         }
+    }
+
+    public function vendor_preference_store(Request $request){
+dd($request->all());
     }
 
     public function ajax_datagrid_customerHistory(Request $request){

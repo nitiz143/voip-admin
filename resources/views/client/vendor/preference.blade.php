@@ -1,6 +1,34 @@
+<div class="modal fade " id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Preference</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-download" method="post" action="{{route('vendor_preference.store')}}" role="form" class="form-horizontal form-groups-bordered">
+                    @csrf
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="field-1" class="col-sm-3">Preference</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control " name="preference" value="" >
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-sm btn-icon icon-left">
+                        <i class="entypo-search"></i>
+                        save
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
            <form role="form" id="vendor-rate-search" method="get"  action="" class="form-horizontal form-groups-bordered validate" novalidate="novalidate">
+            @csrf
             <div class="card card-primary" data-collapsed="0">
                 <div class="card-header">
                     <div class="card-title">
@@ -57,7 +85,7 @@
 
                     </div>
                     <p style="text-align: right;">
-                        <button type="submit" class="btn btn-primary btn-sm btn-icon icon-left">
+                        <button class="btn btn-primary btn-sm btn-icon icon-left">
                             <i class="entypo-search"></i>
                             Search
                         </button>
@@ -95,6 +123,7 @@
         </tbody>
     </table>
     <script>
+  
         function myFunction() {
             var x = document.getElementById("myDIV");
             if (x.style.display === "none") {
@@ -104,49 +133,16 @@
             }
         }
 
-        var $searchFilter = {};
-        var checked='';
-        $("#vendor-rate-search").submit(function(e) {
-        e.preventDefault();
-        $searchFilter.Trunk = $("#vendor-rate-search select[name='Trunk']").val();
-        $searchFilter.Timezone = $("#vendor-rate-search select[name='Timezone']").val();
-        $searchFilter.Country = $("#vendor-rate-search  select[name='Country']").val();
-        $searchFilter.Code = $("#vendor-rate-search  input[name='Code']").val();
-        $searchFilter.Description = $("#vendor-rate-search  input[name='Description']").val();
-        if(typeof $searchFilter.Trunk  == 'undefined' || $searchFilter.Trunk == '' ){
-            $.notify("Please Select a Trunk", "error");
-            return false;
-        }
-        
-        
+    function Edit(id) {
+        $('#editModal').modal('show');
+        $('#exampleModalLabel').text('Preference'); 
+    }
 
-        data_table = $("#table-4").dataTable({
-            "bDestroy": true, // Destroy when resubmit form
-            "bProcessing": true,
-            "bServerSide": true,
-            "ajax": {
-                "url" : "{{route('ajax_datagrid_preference',"request()->id")}}",
-                data : function ( d ){
-                    d.id = "{{request()->id}}",
-                    d.Trunk= $searchFilter.Trunk,
-                    d.Description= $searchFilter.Description,
-                    d.Country = $searchFilter.Country,
-                    d.Code= $searchFilter.Code,
-                    d.Timezones= $searchFilter.Timezones
-                },
-            },
-            "iDisplayLength": parseInt('50'),
-            //  "sDom": "<'row'<'col-xs-6 col-left '<'#selectcheckbox.col-xs-1'>'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
-            "aaSorting": [[1, "asc"]],
-            "aoColumns":
-            [
-                {data:'ckeckbox',name:'ckeckbox', orderable: false, searchable: false},
-                {data:'codes',name:'codes'},
-                {data:'Preference',name:'Preference'},
-                {data:'destination',name:'destination'},
-                {data:'action',name:'action', orderable: false, searchable: false},
-            ]
-        });
-        return false;
+   
+    $(document).on('click', '.edit', function (e) {
+        e.preventDefault();
+        $('#global-loader').show();
+        let id = $(this).data('id');
+        Edit(id);
     });
     </script>
