@@ -1140,15 +1140,14 @@ class ClientController extends Controller
 
     public function ajax_datagrid_preference(Request $request){
         if ($request->ajax()) {
-            $data = Codes::with(['Perferences'=> function($q) use($request) {
+            $data = Codes::orderBy('id', 'asc')->with(['Perferences'=> function($q) use($request) {
                 // Query the name field in status table
                 $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
             }])->get();
-           
+       
             return Datatables::of($data)
-
             ->addColumn('preference', function($row) use ($request) {
-                return !empty($row->Perferences->preference) ? $row->Perferences->preference : "";
+                return !empty($row->Perferences[0]->preference) ? $row->Perferences[0]->preference : "";
             })
             ->addColumn('checkbox', function($row){
                 
@@ -1160,8 +1159,8 @@ class ClientController extends Controller
             })
         
             ->addColumn('action', function($row){
-                
-                $btn = '<a href="javascript:void(0)" data-id="'.$row->id.'" id="View"  class="btn btn-default btn-sm edit"><i class="fa fa-pen"></i></a>';
+                $id = !empty($row->Perferences[0]->id) ? $row->Perferences[0]->id : "";
+                $btn = '<a href="javascript:void(0)" data-id="'.$id.'" data-codeid="'.$row->id.'" id="View"  class="btn btn-default btn-sm edit"><i class="fa fa-pen"></i></a>';
 
                 return $btn;
             })
@@ -1215,9 +1214,32 @@ class ClientController extends Controller
     }
 
     public function vendor_preference_store(Request $request){
-dd($request->all());
+      
+        $validator = Validator::make($request->all(), [
+            'preference' => 'required',
+        ]);
+
+            if ($validator->fails())
+            {
+                $response = \Response::json([
+                        'success' => false,
+                        'errors' => $validator->getMessageBag()->toArray()
+                    ]);
+                return $response;
+            }
+
+            $data['CodeID'] = $request->CodeID ?? "";
+            $data['client_id'] = $request->client_id ?? "";
+            $data['Trunk'] = $request->Trunk ?? "";
+            $data['user_id'] = Auth::user()->id ?? '';
+            $data['preference']= $request->preference ?? "";
+
+        $Preference = Preference:: updateOrCreate(['id'   => $request->VendorPreferenceID],$data);
+
+        return response()->json(['message' =>  'Update sucessfully']);
     }
 
+  
     public function ajax_datagrid_customerHistory(Request $request){
         if ($request->ajax()) {
             $data = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('client_id',$request->id)->get();

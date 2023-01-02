@@ -1,4 +1,10 @@
-<div class="modal fade " id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<style>
+    .datatable tr.selected{
+         background:#EDC171;
+     }
+ </style>
+ <div class="modal fade " id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -6,7 +12,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="form-download" method="post" action="{{route('vendor_preference.store')}}" role="form" class="form-horizontal form-groups-bordered">
+                <form id="form-preference" method="POST"  action="{{route('vendor_preference.store')}}" role="form" class="form-horizontal form-groups-bordered">
                     @csrf
                     <div class="form-group">
                         <div class="row">
@@ -16,10 +22,12 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-sm btn-icon icon-left">
-                        <i class="entypo-search"></i>
-                        save
-                    </button>
+                        <input type="hidden" name="VendorPreferenceID" id="VendorPreferenceID" value="">
+                        <input type="hidden" name="CodeID" id="CodeID" value="">
+                        <input type="hidden" name="client_id" id="client_id" value="{{@request()->id}}">
+                        <input type="hidden" name="Trunk" value="">
+                        <input type="hidden" name="Action" value="">
+                    <button type="submit" id="save" class="btn btn-primary">save</button>
                 </form>
             </div>
         </div>
@@ -132,17 +140,72 @@
                 x.style.display = "none";
             }
         }
-
-    function Edit(id) {
-        $('#editModal').modal('show');
-        $('#exampleModalLabel').text('Preference'); 
-    }
-
-   
     $(document).on('click', '.edit', function (e) {
         e.preventDefault();
-        $('#global-loader').show();
-        let id = $(this).data('id');
-        Edit(id);
+        $('#editModal').modal('show');
+        let codeid = $(this).data('codeid');
+        $("#form-preference").find("input[name='CodeID']").val(codeid);
+        $("#form-preference").find("input[name='Action']").val("single");
     });
+
+    function save(formdata,url){
+        $('#global-loader').show();
+        $.ajax({
+          data: formdata,
+          url: url,
+          type: "POST",
+          dataType: 'json',
+          success: function (resp) {
+                $('#global-loader').hide();
+                if(resp.success == false){
+                    $.each(resp.errors, function(k, e) {
+                        $.notify(e, 'error');
+                    });
+                }
+                else{
+                    $.notify(resp.message, 'success');
+                    $('#editModal').modal('hide');
+
+                }
+             }, error: function(r) {
+                $('#global-loader').hide();
+                $.each(r.responseJSON.errors, function(k, e) {
+                    $.notify(e, 'error');
+                });
+                $('.blocker').hide();
+            }
+      });
+    }
+    $('#save').click(function (e) {
+        e.preventDefault();
+        let formdata = $('#form-preference').serialize();
+        let url =   $('#form-preference').attr('action');
+        save(formdata,url);
+
+    });
+
+      //for single select
+      $(document).on( 'click','#table-4 tbody  .rowcheckbox' ,  function () {
+            if( $(this).prop("checked")){
+                $(this).parent().parent().addClass('selected');
+            }else{
+                $(this).parent().parent().removeClass('selected');
+            }
+        });
+
+    $("#selectall").click(function (ev) {
+
+        var is_checked = $(this).is(':checked');
+
+        $('#table-4 tbody tr').each(function (i, el) {
+            if(is_checked){
+                $(this).find('.rowcheckbox').prop("checked",true);
+                $(this).addClass('selected');
+            }else{
+                $(this).find('.rowcheckbox').prop("checked",false);
+                $(this).removeClass('selected');
+            }
+        });
+    });
+
     </script>

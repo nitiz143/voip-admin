@@ -261,6 +261,7 @@
                             $.notify("Please Select a Trunk", "error");
                             return false;
                         }
+                        $("#form-preference").find("input[name='Trunk']").val($searchFilter.Trunk);
                         data_table = $("#table-4").dataTable({
                             "bDestroy": true, // Destroy when resubmit form
                             "bProcessing": true,
@@ -278,7 +279,7 @@
                             },
                             "iDisplayLength": parseInt('50'),
                             //  "sDom": "<'row'<'col-xs-6 col-left '<'#selectcheckbox.col-xs-1'>'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
-                            "aaSorting": [[1, "asc"]],
+                            // "aaSorting": [[1, "asc"]],
                             "aoColumns":
                                 [
                                     {data:'checkbox',name:'checkbox'},
