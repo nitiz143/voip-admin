@@ -22,6 +22,7 @@ use Illuminate\Support\Arr;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str; 
 use Auth;
 
 class ClientController extends Controller
@@ -1140,12 +1141,33 @@ class ClientController extends Controller
 
     public function ajax_datagrid_preference(Request $request){
         if ($request->ajax()) {
-            $data = Codes::orderBy('id', 'asc')->with(['Perferences'=> function($q) use($request) {
-                // Query the name field in status table
-                $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
-            }])->get();
+
+            if($request->Code != null){
+                $users = Codes::where('codes',$request->Code)->with(['Perferences'=> function($q) use($request) {
+                    // Query the name field in status table
+                    $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
+                }]);
+            }
+            else{
+                $users = Codes::orderBy('id', 'asc')->with(['Perferences'=> function($q) use($request) {
+                    // Query the name field in status table
+                    $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
+                }]);
+            }
+
+                if($request->Country != "All")
+                {
+                    $users =  $users->where('destination', 'like', '%' . $request->Country . '%')->get();
+                }
+                else{
+                    $users =  $users->get();
+                }
+            
+
        
-            return Datatables::of($data)
+            return Datatables::of($users)
+            
+            
             ->addColumn('preference', function($row) use ($request) {
                 return !empty($row->Perferences[0]->preference) ? $row->Perferences[0]->preference : "";
             })
@@ -1215,26 +1237,34 @@ class ClientController extends Controller
 
     public function vendor_preference_store(Request $request){
       
-        $validator = Validator::make($request->all(), [
+        foreach( $request->CodeID as $Code_ID){
+            $validator = Validator::make($request->all(), [
             'preference' => 'required',
-        ]);
+            ]);
 
-            if ($validator->fails())
-            {
-                $response = \Response::json([
-                        'success' => false,
-                        'errors' => $validator->getMessageBag()->toArray()
-                    ]);
-                return $response;
-            }
+                if ($validator->fails())
+                {
+                    $response = \Response::json([
+                            'success' => false,
+                            'errors' => $validator->getMessageBag()->toArray()
+                        ]);
+                    return $response;
+                }
 
-            $data['CodeID'] = $request->CodeID ?? "";
-            $data['client_id'] = $request->client_id ?? "";
-            $data['Trunk'] = $request->Trunk ?? "";
-            $data['user_id'] = Auth::user()->id ?? '';
-            $data['preference']= $request->preference ?? "";
+                $data['CodeID'] = $Code_ID ?? "";
+                $data['client_id'] = $request->client_id ?? "";
+                $data['Trunk'] = $request->Trunk ?? "";
+                $data['user_id'] = Auth::user()->id ?? '';
+                $data['preference']= $request->preference ?? "";
 
-        $Preference = Preference:: updateOrCreate(['id'   => $request->VendorPreferenceID],$data);
+                $block = Preference::where([["client_id","=", $request->client_id],["CodeID","=",$Code_ID],["Trunk","=", $request->Trunk]])->first();
+                if(empty($block)){
+                    Preference::Create($data);
+                }
+                if(!empty($request->VendorPreferenceID)){
+                    $Preference = Preference:: updateOrCreate(['id'   => $request->VendorPreferenceID],$data);
+                }
+        }
 
         return response()->json(['message' =>  'Update sucessfully']);
     }

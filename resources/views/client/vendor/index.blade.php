@@ -282,7 +282,7 @@
                             // "aaSorting": [[1, "asc"]],
                             "aoColumns":
                                 [
-                                    {data:'checkbox',name:'checkbox'},
+                                    {data:'checkbox',name:'checkbox',orderable: false, searchable: false},
                                     {data:'codes',name:'codes'},
                                     {data:'preference',name:'preference'},
                                     {data:'destination',name:'destination'},

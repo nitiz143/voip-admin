@@ -22,8 +22,11 @@
                             </div>
                         </div>
                     </div>
+                    <div id="Code">
+
+                    </div>
                         <input type="hidden" name="VendorPreferenceID" id="VendorPreferenceID" value="">
-                        <input type="hidden" name="CodeID" id="CodeID" value="">
+                        {{-- <input type="hidden" name="CodeID[]" id="CodeID" value=""> --}}
                         <input type="hidden" name="client_id" id="client_id" value="{{@request()->id}}">
                         <input type="hidden" name="Trunk" value="">
                         <input type="hidden" name="Action" value="">
@@ -68,7 +71,7 @@
                                 <option value="All">All</option>
                                 @if(!empty($country))
                                     @foreach ($country as $value )
-                                        <option value="{{$value->id}}">{{$value->phonecode}} {{$value->name}} </option>
+                                        <option value="{{$value->name}} ">{{$value->phonecode}} {{$value->name}}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -131,7 +134,7 @@
         </tbody>
     </table>
     <script>
-  
+   var list_fields  = ['RateID','Code','Preference','Description','VendorPreferenceID'];
         function myFunction() {
             var x = document.getElementById("myDIV");
             if (x.style.display === "none") {
@@ -144,7 +147,10 @@
         e.preventDefault();
         $('#editModal').modal('show');
         let codeid = $(this).data('codeid');
-        $("#form-preference").find("input[name='CodeID']").val(codeid);
+        let id = $(this).data('id');
+        $("#form-preference").find("input[name='CodeID[]']").remove();
+        $("#form-preference").find("input[name='VendorPreferenceID']").val(id);
+        $("#Code").append('<input type="text" name="CodeID[]"value="'+codeid+'" hidden/>');
         $("#form-preference").find("input[name='Action']").val("single");
     });
 
@@ -206,6 +212,26 @@
                 $(this).removeClass('selected');
             }
         });
+    });
+
+       //Bulk Edit Button
+       $("#changeSelectedVendorRates").click(function(ev) {
+        var criteria='';
+        if($('#selectallbutton').is(':checked')){
+        //if($('#selectallbutton').find('i').hasClass('entypo-cancel')){
+            criteria = JSON.stringify($searchFilter);
+            if(criteria==''){
+                return false;
+            }
+        }
+        $("#form-preference").find("input[name='CodeID[]']").remove();
+        $('#table-4 tr .rowcheckbox:checked').each(function(i, el) {
+            $("#Code").append('<input type="text" name="CodeID[]"value="'+$(this).val()+'" hidden/>'); 
+        });
+       
+        $('#editModal').modal('show', {backdrop: 'static'});
+        $("#form-preference [name='Action']").val('selected');
+        $("#form-preference [name='VendorPreferenceID']").val();
     });
 
     </script>
