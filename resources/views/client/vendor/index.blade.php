@@ -262,6 +262,10 @@
                             return false;
                         }
                         $("#form-preference").find("input[name='Trunk']").val($searchFilter.Trunk);
+                        $(".preference-row").show();
+                        var id = "{{request()->id}}";
+                        $("#ToolTables_table-4_0").attr('href',"{{ url('vendor/preference/xlsx') }}"+'?id='+id+'?Trunk='+$searchFilter.Trunk);
+                        $("#ToolTables_table-4_1").attr('href',"{{ url('vendor/preference/csv') }}"+'?id='+id+'?Trunk='+$searchFilter.Trunk);
                         data_table = $("#table-4").dataTable({
                             "bDestroy": true, // Destroy when resubmit form
                             "bProcessing": true,

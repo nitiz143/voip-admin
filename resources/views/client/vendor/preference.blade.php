@@ -28,7 +28,7 @@
                         <input type="hidden" name="VendorPreferenceID" id="VendorPreferenceID" value="">
                         {{-- <input type="hidden" name="CodeID[]" id="CodeID" value=""> --}}
                         <input type="hidden" name="client_id" id="client_id" value="{{@request()->id}}">
-                        <input type="hidden" name="Trunk" value="">
+                        <input type="hidden" name="Trunk" id="Trunk" value="">
                         <input type="hidden" name="Action" value="">
                     <button type="submit" id="save" class="btn btn-primary">save</button>
                 </form>
@@ -79,7 +79,7 @@
 
                         <label for="field-1" class="col-sm-1 control-label">Trunk</label>
                         <div class="col-sm-3">
-                            <select class=" form-control select2" name="Trunk">
+                            <select class=" form-control select2" id="pre_trunk" name="Trunk">
                                 <option value="">Select</option>
                                 @if(!empty($trunks))
                                     @foreach ( $trunks as $trunk)
@@ -118,6 +118,18 @@
     </div>
 
     <table class="table table-bordered datatable" id="table-4">
+        <div class="row preference-row" style="display:none;">
+            <div class="export-data ">
+                <div class="DTTT btn-group float-end mb-2 mt-2">
+                    <a href="#" data-value="xlsx"class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_0">
+                        <undefined>EXCEL</undefined>
+                    </a>
+                    <a  href="#" class="btn btn-white save-collection btn-sm" style="border: 1px solid gray;" id="ToolTables_table-4_1">
+                        <undefined>CSV</undefined>
+                    </a>
+                </div>
+            </div>
+        </div>
         <thead>
             <tr>
                 <th width="6%"><input type="checkbox" id="selectall" name="checkbox[]" class="" />
@@ -224,14 +236,23 @@
                 return false;
             }
         }
+        var VendorPreferenceID = [];
         $("#form-preference").find("input[name='CodeID[]']").remove();
         $('#table-4 tr .rowcheckbox:checked').each(function(i, el) {
+             VendorPreferenceID = $(this).data('preference');
             $("#Code").append('<input type="text" name="CodeID[]"value="'+$(this).val()+'" hidden/>'); 
         });
        
         $('#editModal').modal('show', {backdrop: 'static'});
         $("#form-preference [name='Action']").val('selected');
-        $("#form-preference [name='VendorPreferenceID']").val();
+        $("#form-preference [name='VendorPreferenceID']").val(VendorPreferenceID);
     });
 
+    $('.selectType').on('change',function(e){
+        var type = this.value;
+
+        $('#download').attr('href',"{{ url('download') }}"+'?type='+type);
+    });
+
+    
     </script>

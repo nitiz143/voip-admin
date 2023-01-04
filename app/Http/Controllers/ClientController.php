@@ -1173,8 +1173,8 @@ class ClientController extends Controller
             })
             ->addColumn('checkbox', function($row){
                 
-              
-                $btn1 = '<input type="checkbox" name="checkbox[]" value="'. $row->id.'" class="rowcheckbox" >';
+                $id = !empty($row->Perferences[0]->id) ? $row->Perferences[0]->id : "";
+                $btn1 = '<input type="checkbox" name="checkbox[]" data-preference="'.$id.'" value="'. $row->id.'" class="rowcheckbox" >';
 
                 return $btn1 ;
 
@@ -1268,6 +1268,43 @@ class ClientController extends Controller
 
         return response()->json(['message' =>  'Update sucessfully']);
     }
+
+    public function preference_xlsx(Request $request){
+        $list =array();
+        $downloads = Codes::with(['Perferences'=> function($q) use($request) {
+            // Query the name field in status table
+            $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
+        }])->get();
+
+        foreach ( $downloads as $key => $value) {
+            $data =array();
+            $data['code'] =  $value->codes;
+            $data['preference'] =  !empty($value->Perferences[0]->preference) ? $value->Perferences[0]->preference : "";
+            $data['Description'] =  $value->destination;
+            $list[]= $data;
+        }
+    
+        return (new FastExcel($list))->download('Vendor_preference.xlsx');
+    }
+
+    public function preference_csv(Request $request){
+       
+        $list =array();
+        $downloads = Codes::with(['Perferences'=> function($q) use($request) {
+            // Query the name field in status table
+            $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
+        }])->get();
+
+        foreach ( $downloads as $key => $value) {
+            $data =array();
+            $data['code'] =  $value->codes;
+            $data['preference'] =  !empty($value->Perferences[0]->preference) ? $value->Perferences[0]->preference : "";
+            $data['Description'] =  $value->destination;
+            $list[]= $data;
+        }
+        return (new FastExcel($list))->download('Vendor_preference.csv');
+    }
+
 
   
     public function ajax_datagrid_customerHistory(Request $request){
