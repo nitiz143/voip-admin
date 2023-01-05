@@ -4,7 +4,7 @@
 <style>
     .not-allowed{
         cursor: not-allowed !important;
-        pointer-events: all !important;
+        pointer-events: none !important;
     }
 
     .nav-tabs .nav-link:hover {

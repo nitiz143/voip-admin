@@ -89,8 +89,8 @@
                             </select>
                         </div>
 
-                        <label class="col-sm-1 control-label">Timezone</label>
-                        <div class="col-sm-3">
+                        <label class="col-sm-2 control-label ">Timezone</label>
+                        <div class="col-sm-2">
                             <select class="form-control select2" name="Timezones"><option value="1">Default</option></select>
                         </div>
 

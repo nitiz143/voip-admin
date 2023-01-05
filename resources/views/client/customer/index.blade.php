@@ -4,7 +4,7 @@
 <style>
     .not-allowed{
         cursor: not-allowed !important;
-        pointer-events: all !important;
+        pointer-events: none !important;
     }
     .nav-tabs .nav-link:hover {
         border-color: #e9ecef #e9ecef #dee2e6;
@@ -116,7 +116,7 @@
                     $('#tab5').html(data);
                     $('#title').text(name);
                 }
-             });
+            });
         });
         $("#Setting").click(function(e){
             e.preventDefault();

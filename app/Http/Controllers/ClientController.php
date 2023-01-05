@@ -1236,34 +1236,36 @@ class ClientController extends Controller
     }
 
     public function vendor_preference_store(Request $request){
-      
-        foreach( $request->CodeID as $Code_ID){
-            $validator = Validator::make($request->all(), [
-            'preference' => 'required',
-            ]);
+        if(!empty($request->CodeID))
+        {
+            foreach( $request->CodeID as $Code_ID){
+                $validator = Validator::make($request->all(), [
+                'preference' => 'required',
+                ]);
 
-                if ($validator->fails())
-                {
-                    $response = \Response::json([
-                            'success' => false,
-                            'errors' => $validator->getMessageBag()->toArray()
-                        ]);
-                    return $response;
-                }
+                    if ($validator->fails())
+                    {
+                        $response = \Response::json([
+                                'success' => false,
+                                'errors' => $validator->getMessageBag()->toArray()
+                            ]);
+                        return $response;
+                    }
 
-                $data['CodeID'] = $Code_ID ?? "";
-                $data['client_id'] = $request->client_id ?? "";
-                $data['Trunk'] = $request->Trunk ?? "";
-                $data['user_id'] = Auth::user()->id ?? '';
-                $data['preference']= $request->preference ?? "";
+                    $data['CodeID'] = $Code_ID ?? "";
+                    $data['client_id'] = $request->client_id ?? "";
+                    $data['Trunk'] = $request->Trunk ?? "";
+                    $data['user_id'] = Auth::user()->id ?? '';
+                    $data['preference']= $request->preference ?? "";
 
-                $block = Preference::where([["client_id","=", $request->client_id],["CodeID","=",$Code_ID],["Trunk","=", $request->Trunk]])->first();
-                if(empty($block)){
-                    Preference::Create($data);
-                }
-                if(!empty($request->VendorPreferenceID)){
-                    $Preference = Preference:: updateOrCreate(['id'   => $request->VendorPreferenceID],$data);
-                }
+                    $block = Preference::where([["client_id","=", $request->client_id],["CodeID","=",$Code_ID],["Trunk","=", $request->Trunk]])->first();
+                    if(empty($block)){
+                        Preference::Create($data);
+                    }
+                    if(!empty($request->VendorPreferenceID)){
+                        $Preference = Preference:: updateOrCreate(['id'   => $request->VendorPreferenceID],$data);
+                    }
+            }
         }
 
         return response()->json(['message' =>  'Update sucessfully']);
