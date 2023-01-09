@@ -95,7 +95,7 @@
 @section('page_js')
 @if($customer->isEmpty())
     <script>
-    $.notify("Please select any Trunk", 'info'); 
+        $.notify("Please select any Trunk", 'info'); 
     </script>
 @endif
 <script>
@@ -134,7 +134,7 @@
                     $('#tab5').html(data);
                     $('#title').text(name);
                 }
-             });
+            });
         });
         $("#Download").click(function(e){
             e.preventDefault();
@@ -152,8 +152,7 @@
                     $('#tab5').html(data);
                     $('#title').text(name);
                 }
-             });
-
+            });
         });
 
         $("#History").click(function(e){

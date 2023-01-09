@@ -1013,7 +1013,13 @@ class ClientController extends Controller
                     $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]); // '=' is optiona
                 }]);
             }
-            $users =  $users->get();
+            if($request->Country != null)
+            {
+                $users =  $users->where('destination', 'like', '%' . $request->Country . '%')->get();
+            }
+            else{
+                $users =  $users->get();
+            }
             
             return Datatables::of($users)
             ->filter(function ($instance) use ($request) {
@@ -1155,14 +1161,14 @@ class ClientController extends Controller
                 }]);
             }
 
-                if($request->Country != "All")
-                {
-                    $users =  $users->where('destination', 'like', '%' . $request->Country . '%')->get();
-                }
-                else{
-                    $users =  $users->get();
-                }
-            
+            if($request->Country != "All")
+            {
+                $users =  $users->where('destination', 'like', '%' . $request->Country . '%')->get();
+            }
+            else{
+                $users =  $users->get();
+            }
+        
 
        
             return Datatables::of($users)
@@ -1190,6 +1196,85 @@ class ClientController extends Controller
             ->make(true);
         }
     }
+
+   
+    public function vendor_preference_store(Request $request){
+        if(!empty($request->CodeID))
+        {
+            foreach( $request->CodeID as  $index => $Code_ID){
+                $validator = Validator::make($request->all(), [
+                'preference' => 'required',
+                ]);
+
+                    if ($validator->fails())
+                    {
+                        $response = \Response::json([
+                                'success' => false,
+                                'errors' => $validator->getMessageBag()->toArray()
+                            ]);
+                        return $response;
+                    }
+
+                    $data['CodeID'] = $Code_ID ?? "";
+                    $data['client_id'] = $request->client_id ?? "";
+                    $data['Trunk'] = $request->Trunk ?? "";
+                    $data['user_id'] = Auth::user()->id ?? '';
+                    $data['preference']= $request->preference ?? "";
+                    $preference_check = Preference::where([["client_id","=", $request->client_id],["CodeID","=",$Code_ID],["Trunk","=", $request->Trunk]])->first();
+                    if(empty($preference_check)){
+                        Preference::Create($data);
+                    }
+                    if(!empty($request->VendorPreferenceID[$index])){
+                        $Preference = Preference:: updateOrCreate(['id'   => $request->VendorPreferenceID[$index]],$data);
+                    }
+            }
+            return response()->json(['message' =>  'Update sucessfully']);
+        }
+    }
+
+    public function vendor_preference_edit(Request $request){
+        if($request->ajax()){
+            $user = Preference::find($request->id);
+            return $user;
+        }
+    }
+
+    public function preference_xlsx(Request $request){
+        $list =array();
+        $downloads = Codes::with(['Perferences'=> function($q) use($request) {
+            // Query the name field in status table
+            $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
+        }])->get();
+
+        foreach ( $downloads as $key => $value) {
+            $data =array();
+            $data['code'] =  $value->codes;
+            $data['preference'] =  !empty($value->Perferences[0]->preference) ? $value->Perferences[0]->preference : "";
+            $data['Description'] =  $value->destination;
+            $list[]= $data;
+        }
+    
+        return (new FastExcel($list))->download('Vendor_preference.xlsx');
+    }
+
+    public function preference_csv(Request $request){
+       
+        $list =array();
+        $downloads = Codes::with(['Perferences'=> function($q) use($request) {
+            // Query the name field in status table
+            $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
+        }])->get();
+
+        foreach ( $downloads as $key => $value) {
+            $data =array();
+            $data['code'] =  $value->codes;
+            $data['preference'] =  !empty($value->Perferences[0]->preference) ? $value->Perferences[0]->preference : "";
+            $data['Description'] =  $value->destination;
+            $list[]= $data;
+        }
+        return (new FastExcel($list))->download('Vendor_preference.csv');
+    }
+
 
     public function ajax_datagrid_vendorHistory(Request $request){
         if ($request->ajax()) {
@@ -1235,80 +1320,6 @@ class ClientController extends Controller
         }
     }
 
-    public function vendor_preference_store(Request $request){
-        if(!empty($request->CodeID))
-        {
-            foreach( $request->CodeID as $Code_ID){
-                $validator = Validator::make($request->all(), [
-                'preference' => 'required',
-                ]);
-
-                    if ($validator->fails())
-                    {
-                        $response = \Response::json([
-                                'success' => false,
-                                'errors' => $validator->getMessageBag()->toArray()
-                            ]);
-                        return $response;
-                    }
-
-                    $data['CodeID'] = $Code_ID ?? "";
-                    $data['client_id'] = $request->client_id ?? "";
-                    $data['Trunk'] = $request->Trunk ?? "";
-                    $data['user_id'] = Auth::user()->id ?? '';
-                    $data['preference']= $request->preference ?? "";
-
-                    $block = Preference::where([["client_id","=", $request->client_id],["CodeID","=",$Code_ID],["Trunk","=", $request->Trunk]])->first();
-                    if(empty($block)){
-                        Preference::Create($data);
-                    }
-                    if(!empty($request->VendorPreferenceID)){
-                        $Preference = Preference:: updateOrCreate(['id'   => $request->VendorPreferenceID],$data);
-                    }
-            }
-        }
-
-        return response()->json(['message' =>  'Update sucessfully']);
-    }
-
-    public function preference_xlsx(Request $request){
-        $list =array();
-        $downloads = Codes::with(['Perferences'=> function($q) use($request) {
-            // Query the name field in status table
-            $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
-        }])->get();
-
-        foreach ( $downloads as $key => $value) {
-            $data =array();
-            $data['code'] =  $value->codes;
-            $data['preference'] =  !empty($value->Perferences[0]->preference) ? $value->Perferences[0]->preference : "";
-            $data['Description'] =  $value->destination;
-            $list[]= $data;
-        }
-    
-        return (new FastExcel($list))->download('Vendor_preference.xlsx');
-    }
-
-    public function preference_csv(Request $request){
-       
-        $list =array();
-        $downloads = Codes::with(['Perferences'=> function($q) use($request) {
-            // Query the name field in status table
-            $q->where([["client_id", "=", $request->id],["Trunk","=",$request->Trunk]]);
-        }])->get();
-
-        foreach ( $downloads as $key => $value) {
-            $data =array();
-            $data['code'] =  $value->codes;
-            $data['preference'] =  !empty($value->Perferences[0]->preference) ? $value->Perferences[0]->preference : "";
-            $data['Description'] =  $value->destination;
-            $list[]= $data;
-        }
-        return (new FastExcel($list))->download('Vendor_preference.csv');
-    }
-
-
-  
     public function ajax_datagrid_customerHistory(Request $request){
         if ($request->ajax()) {
             $data = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('client_id',$request->id)->get();
@@ -1319,7 +1330,7 @@ class ClientController extends Controller
                 $effective = '';
                 foreach (json_decode($row->timezones )as $value) {
                     if($value == 1){
-                        $timezone  .= "(default)";
+                        $timezone  = "(default)";
                     }
                    
                 }

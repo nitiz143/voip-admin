@@ -8,7 +8,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Preference</h5>
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -18,14 +18,14 @@
                         <div class="row">
                             <label for="field-1" class="col-sm-3">Preference</label>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control " name="preference" value="" >
+                                <input type="text" class="form-control" id="preference" name="preference" value="" >
                             </div>
                         </div>
                     </div>
                     <div id="Code">
 
                     </div>
-                        <input type="hidden" name="VendorPreferenceID" id="VendorPreferenceID" value="">
+                        {{-- <input type="hidden" name="VendorPreferenceID" id="VendorPreferenceID" value=""> --}}
                         {{-- <input type="hidden" name="CodeID[]" id="CodeID" value=""> --}}
                         <input type="hidden" name="client_id" id="client_id" value="{{@request()->id}}">
                         <input type="hidden" name="Trunk" id="Trunk" value="">
@@ -61,7 +61,6 @@
                         <label class="col-sm-2 control-label">Description</label>
                         <div class="col-sm-3">
                             <input type="text" name="Description" class="form-control" id="field-1" placeholder="" value="" />
-
                         </div>
                     </div>
                     <div class="form-group row mt-5">
@@ -93,7 +92,6 @@
                         <div class="col-sm-2">
                             <select class="form-control select2" name="Timezones"><option value="1">Default</option></select>
                         </div>
-
                     </div>
                     <p style="text-align: right;">
                         <button class="btn btn-primary btn-sm btn-icon icon-left">
@@ -105,7 +103,7 @@
             </div>
         </form>
     </div>
-    </div>
+</div>
     <div style="text-align: right;padding:10px 0 ">
         <!--<a class="btn btn-primary btn-sm btn-icon icon-left" id="bulk_set_vendor_rate" href="javascript:;">
             <i class="entypo-floppy"></i>
@@ -145,8 +143,8 @@
 
         </tbody>
     </table>
-    <script>
-   var list_fields  = ['RateID','Code','Preference','Description','VendorPreferenceID'];
+<script>
+//    var list_fields  = ['RateID','Code','Preference','Description','VendorPreferenceID'];
         function myFunction() {
             var x = document.getElementById("myDIV");
             if (x.style.display === "none") {
@@ -157,13 +155,37 @@
         }
     $(document).on('click', '.edit', function (e) {
         e.preventDefault();
-        $('#editModal').modal('show');
-        let codeid = $(this).data('codeid');
+        $('#global-loader').show();
         let id = $(this).data('id');
-        $("#form-preference").find("input[name='CodeID[]']").remove();
-        $("#form-preference").find("input[name='VendorPreferenceID']").val(id);
-        $("#Code").append('<input type="text" name="CodeID[]"value="'+codeid+'" hidden/>');
-        $("#form-preference").find("input[name='Action']").val("single");
+        let codeid = $(this).data('codeid');
+        $.ajax({
+            url: "{{ route('vendor_preference.edit', ":id") }}",
+            type: 'get', // replaced from put
+            data: {
+                "id": id // method and token not needed in data
+            },
+            success: function (data)
+            {
+                $("#form-preference").find("input[name='CodeID[]']").remove();
+                $("#form-preference").find("input[name='VendorPreferenceID[]']").remove();
+                if(data != ""){
+                    $('#editModal .modal-header h4').text('Edit Vendor Preference')
+                    $('#editModal').modal('show');
+                    $("input[name='preference']").val(data.preference);
+                    $("#Code").append('<input type="text" name="CodeID[]"value="'+data.CodeID+'" hidden/> <input type="text" name="VendorPreferenceID[]"value="'+data.id+'" hidden/>');
+                }else{
+                    $('#editModal .modal-header h4').text('Edit Vendor Preference')
+                    $('#editModal').modal('show');
+                    $("input[name='preference']").val('');
+                    $("#Code").append('<input type="text" name="CodeID[]"value="'+codeid+'" hidden/> <input type="text" name="VendorPreferenceID[]"value="" hidden/>');
+                }
+            },
+            error: function(xhr) {
+            $('#global-loader').hide();
+            $.notify(xhr.responseText,'error'); // this line will save you tons of hours while debugging
+            // do something here because of error
+            }
+        });
     });
 
     function save(formdata,url){
@@ -183,23 +205,22 @@
                 else{
                     $.notify(resp.message, 'success');
                     $('#editModal').modal('hide');
-
+                    data_table.fnFilter('', 0);
                 }
-             }, error: function(r) {
+            }, error: function(r) {
                 $('#global-loader').hide();
                 $.each(r.responseJSON.errors, function(k, e) {
                     $.notify(e, 'error');
                 });
                 $('.blocker').hide();
             }
-      });
+        });
     }
     $('#save').click(function (e) {
         e.preventDefault();
         let formdata = $('#form-preference').serialize();
         let url =   $('#form-preference').attr('action');
         save(formdata,url);
-
     });
 
       //for single select
@@ -226,33 +247,29 @@
         });
     });
 
-       //Bulk Edit Button
-       $("#changeSelectedVendorRates").click(function(ev) {
-        var criteria='';
-        if($('#selectallbutton').is(':checked')){
-        //if($('#selectallbutton').find('i').hasClass('entypo-cancel')){
-            criteria = JSON.stringify($searchFilter);
-            if(criteria==''){
-                return false;
-            }
+    //Bulk Edit Button
+    $("#changeSelectedVendorRates").click(function(ev) {
+        if($('#table-4 tr .rowcheckbox').is(':checked')){
+            // var criteria='';
+            // if($('#selectallbutton').is(':checked')){
+            // //if($('#selectallbutton').find('i').hasClass('entypo-cancel')){
+            //     criteria = JSON.stringify($searchFilter);
+            //     if(criteria==''){
+            //         return false;
+            //     }
+            // }
+            $("#form-preference").find("input[name='CodeID[]']").remove();
+            $("#form-preference").find("input[name='VendorPreferenceID[]']").remove();
+            $('#table-4 tr .rowcheckbox:checked').each(function(i, el) {
+                $("#Code").append('<input type="text" name="CodeID[]"value="'+$(this).val()+'"hidden/> <input type="text" name="VendorPreferenceID[]"value="'+$(this).data('preference')+'"hidden/>');
+            });
+            $('#editModal .modal-header h4').text('Bulk Edit Vendor Preference')
+            $('#editModal').modal('show');
+            $("#form-preference [name='Action']").val('selected');
         }
-        var VendorPreferenceID = [];
-        $("#form-preference").find("input[name='CodeID[]']").remove();
-        $('#table-4 tr .rowcheckbox:checked').each(function(i, el) {
-             VendorPreferenceID = $(this).data('preference');
-            $("#Code").append('<input type="text" name="CodeID[]"value="'+$(this).val()+'" hidden/>'); 
-        });
-       
-        $('#editModal').modal('show', {backdrop: 'static'});
-        $("#form-preference [name='Action']").val('selected');
-        $("#form-preference [name='VendorPreferenceID']").val(VendorPreferenceID);
     });
 
-    $('.selectType').on('change',function(e){
-        var type = this.value;
-
-        $('#download').attr('href',"{{ url('download') }}"+'?type='+type);
-    });
+   
 
     
     </script>

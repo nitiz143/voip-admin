@@ -25,7 +25,7 @@
                         <div class="col-sm-2">
                             <select class=" custom-select form-control select2" name="Status"><option value="All">All</option>
                                 <option value="Blocked">Blocked</option>
-                                <option value="Not Blocked">Unblocked</option>
+                                <option value="Not_Blocked">Unblocked</option>
                             </select>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                             <select class="custom-select form-control select2" name="Country"><option value="" selected="selected">Select</option>  
                                 @if(!empty($country))
                                     @foreach ($country as $value )
-                                        <option value="{{$value->id}}">{{$value->phonecode}} {{$value->name}} </option>
+                                        <option value="{{$value->name}}">{{$value->phonecode}} {{$value->name}} </option>
                                     @endforeach
                                 @endif
                             </select>
