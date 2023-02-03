@@ -139,8 +139,11 @@
                   </p>
                 </a>
               </li>
+             
             </ul>
           </li>
+        
+
 
           @if(Auth::user()->role  == 'Admin')
               @php
@@ -157,7 +160,14 @@
                   </li>
                 @endif
           @endif
-
+          <li class="nav-item ">
+            <a href="{{url('/activity')}}" class="nav-link {{ Request::is('activity') ? 'active' : '' }} ">
+              <i class="fa fa-history" aria-hidden="true"></i>
+              <p>
+                Activity
+              </p>
+            </a>
+          </li>
             <li class="nav-item">
                 <a class="nav-link " href="{{ route('logout') }}"
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="nav-icon fas fa-sign-out-alt"></i>
