@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::post('getUsers','App\Http\Controllers\UserController@getUsers')->name('getUsers');
     // Route::get('autocomplete','App\Http\Controllers\UserController@autocomplete')->name('autocomplete');
     Route::resource('/crm','App\Http\Controllers\CRMController');
-
+    Route::Post('status','App\Http\Controllers\CRMController@changestatus')->name('changestatus');
     //Client Controller
     Route::resource('/client','App\Http\Controllers\ClientController');
     Route::get('client-customer/{id}','App\Http\Controllers\ClientController@customer')->name('client.customer');

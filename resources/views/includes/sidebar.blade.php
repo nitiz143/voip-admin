@@ -48,7 +48,7 @@
 
           @if (auth()->user()->role == 'Admin'||auth()->user()->role == 'Super Admin'||auth()->user()->role == 'NOC Admin'||auth()->user()->role == 'Sales Admin'||auth()->user()->role == 'Rate Admin'||auth()->user()->role == 'Billing Admin')
           <li class="nav-item ">
-            <a href="{{url('/users')}}" class="nav-link {{ Request::is('users','users/create') ? 'active' : '' }} ">
+            <a href="{{url('/users')}}" class="nav-link {{ Request::is('users','users/*') ? 'active' : '' }} ">
                 <i class="nav-icon fas fa-user-alt"></i>
               <p>
                 Users
@@ -58,7 +58,7 @@
           @endif
 
           <li class="nav-item ">
-            <a href="{{url('/call')}}" class="nav-link {{ Request::is('call') ? 'active' : '' }} ">
+            <a href="{{url('/call')}}" class="nav-link {{ Request::is('call','call/*') ? 'active' : '' }} ">
                 <i class="nav-icon fas fa-phone-alt"></i>
               <p>
                 Call-history
@@ -75,7 +75,7 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item  {{ Request::is('rate-upload','rate-table') ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
@@ -85,12 +85,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
+              <li>
                 <a href="{{route('rate-upload')}}" class="nav-link {{ Request::is('rate-upload') ? 'active' : '' }}">
                   <p>Upload Rates</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <li>
                 <a href="{{ route('rate-table') }}" class="nav-link {{ Request::is('rate-table') ? 'active' : '' }}">
                   <p>Rate Tables</p>
                 </a>
@@ -98,7 +98,7 @@
             </ul>
           </li>
           <li class="nav-item ">
-            <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/create') ? 'active' : '' }} ">
+            <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/*') ? 'active' : '' }} ">
                 <i class="nav-icon fas fa-user-alt"></i>
               <p>
                 CRM
@@ -107,7 +107,7 @@
           </li>
 
           <li class="nav-item ">
-            <a href="{{url('/cron')}}" class="nav-link {{ Request::is('cron') ? 'active' : '' }} ">
+            <a href="{{url('/cron')}}" class="nav-link {{ Request::is('cron','cron/*') ? 'active' : '' }} ">
                 <i class="nav-icon fas fa-tasks"></i>
               <p>
                 Cron Job
@@ -115,7 +115,7 @@
             </a>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item {{ Request::is('trunks','trunks/*','setting','setting/*') ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cog"></i>
               <p>
@@ -161,23 +161,23 @@
                 @endif
           @endif
           <li class="nav-item ">
-            <a href="{{url('/activity')}}" class="nav-link {{ Request::is('activity') ? 'active' : '' }} ">
-              <i class="fa fa-history" aria-hidden="true"></i>
+            <a href="{{url('/activity')}}" class="nav-link {{ Request::is('activity','activity/*') ? 'active' : '' }} ">
+              <i class="nav-icon fas fa-history"></i>
               <p>
                 Activity
               </p>
             </a>
           </li>
-            <li class="nav-item">
-                <a class="nav-link " href="{{ route('logout') }}"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="nav-icon fas fa-sign-out-alt"></i>
-                    <p>{{ __('Logout') }}</p>
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                    <p>Logout</p>
-                </form>
-            </li>
+          <li class="nav-item">
+              <a class="nav-link " href="{{ route('logout') }}"
+              onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="nav-icon fas fa-sign-out-alt"></i>
+                  <p>{{ __('Logout') }}</p>
+              </a>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                  @csrf
+                  <p>Logout</p>
+              </form>
+          </li>
 
         </ul>
       </nav>

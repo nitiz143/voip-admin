@@ -9,6 +9,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Mail;
 use Auth;
 
 class CRMController extends Controller
@@ -286,6 +287,18 @@ class CRMController extends Controller
             }
         }
         return $user_ids;
+    }
+
+    public function changestatus(Request $request){
+        $data = $request->all();
+        $info = array('info');
+        $user =User::where('role','Admin')->first();
+        Mail::send(['emails.update_email'], $info, function ($message) use($user)
+        {
+            $message->to($user->email)
+                ->subject('Alert!');
+            $message->from(Auth::user()->email);
+        });
     }
 
 }

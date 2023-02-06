@@ -37,7 +37,7 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label>Lead Owner</label>
+                                            <label>Lead Owner<span style="color:red;">*</span></label>
                                             <select class="custom-select form-control-border border-width-2" name="lead_owner" id="lead_owner">
                                                 @if($users->isNotEmpty())
                                                     @foreach ($users as $user )
@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="company">Company</label>
+                                            <label for="company">Company<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="company" name="company">
                                         </div>
                                     </div>
@@ -58,13 +58,13 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="firstname">First Name</label>
+                                            <label for="firstname">First Name<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="firstname" name="firstname">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="lastname">Last Name</label>
+                                            <label for="lastname">Last Name<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="lastname" name="lastname">
                                         </div>
                                     </div>
@@ -73,7 +73,7 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="email">Email</label>
+                                            <label for="email">Email<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="email" name="email">
                                         </div>
                                     </div>
@@ -85,13 +85,13 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="phone">Phone</label>
+                                            <label for="phone">Phone<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="phone" name="phone">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="fax">Fax</label>
+                                            <label for="fax">Fax<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="fax" name="fax">
                                         </div>
                                     </div>
@@ -100,13 +100,13 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="mobile">Mobile</label>
+                                            <label for="mobile">Mobile<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="mobile" name="mobile">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="website">Website</label>
+                                            <label for="website">Website<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="website" name="website">
                                         </div>
                                     </div>
@@ -115,7 +115,7 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label>Lead Source</label>
+                                            <label>Lead Source<span style="color:red;">*</span></label>
                                             <select class="custom-select form-control-border border-width-2" name="lead_source" id="lead_source">
                                                 <option selected disabled>--Select Lead Source--</option>
                                                 <option value="Advertisment">Advertisment</option>
@@ -131,7 +131,7 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label >Lead Status</label>
+                                            <label >Lead Status<span style="color:red;">*</span></label>
                                             <select class="custom-select form-control-border border-width-2" name="lead_status" id="lead_status">
                                                 <option selected disabled>--Select Lead Status--</option>
                                                 <option value="Attempted to Contact">Attempted to Contact</option>
@@ -148,7 +148,7 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="rating">Rating</label>
+                                            <label for="rating">Rating<span style="color:red;">*</span></label>
                                             <select class="custom-select form-control-border border-width-2" name="rating" id="rating">
                                                 <option selected disabled>--Select Rating--</option>
                                                 <option value="Aquired">Aquired</option>
@@ -161,7 +161,7 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="employee">No. of Employees</label>
+                                            <label for="employee">No. of Employees<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="employee" name="employee">
                                         </div>
                                     </div>
@@ -173,7 +173,7 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="skype_id">Skype ID</label>
+                                            <label for="skype_id">Skype ID<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="skype_id" name="skype_id">
                                         </div>
                                     </div>
@@ -182,7 +182,7 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="status">Status</label>
+                                            <label for="status">Status<span style="color:red;">*</span></label>
                                             <select class="custom-select form-control-border border-width-2" name="status" id="status">
                                                 <option selected disabled>--Select Status--</option>
                                                 <option value="0">Active</option>
@@ -192,7 +192,7 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="vat_number">VAT Number</label>
+                                            <label for="vat_number">VAT Number<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="vat_number" name="vat_number">
                                         </div>
                                     </div>
@@ -201,7 +201,7 @@
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="form-group">
-                                            <label for="description">Description</label>
+                                            <label for="description">Description<span style="color:red;">*</span></label>
                                             <textarea class="form-control" id="description" name="description">
                                             </textarea>
                                         </div>
@@ -216,13 +216,13 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="address_line1">Address Line1</label>
+                                            <label for="address_line1">Address Line1<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="address_line1" name="address_line1">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="city">City</label>
+                                            <label for="city">City<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="city" name="city">
                                         </div>
                                     </div>
@@ -231,13 +231,13 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="address_line2">Address Line2</label>
+                                            <label for="address_line2">Address Line2<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="address_line2" name="address_line2">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="postzip">PostZip Code</label>
+                                            <label for="postzip">PostZip Code<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="postzip" name="postzip">
                                         </div>
                                     </div>
@@ -246,13 +246,13 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="address_line3">Address Line3</label>
+                                            <label for="address_line3">Address Line3<span style="color:red;">*</span></label>
                                             <input type="text" class="form-control" id="address_line3" name="address_line3">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="country">Country</label>
+                                            <label for="country">Country<span style="color:red;">*</span></label>
                                             <select class="custom-select form-control-border border-width-2" name="country" id="country">
                                                 <option selected disabled>--Select Country--</option>
                                                 <option value="Afghanistan">Afghanistan</option>
