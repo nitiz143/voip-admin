@@ -87,11 +87,13 @@
             <ul class="nav nav-treeview">
               <li>
                 <a href="{{route('rate-upload')}}" class="nav-link {{ Request::is('rate-upload') ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-"></i>
                   <p>Upload Rates</p>
                 </a>
               </li>
               <li>
                 <a href="{{ route('rate-table') }}" class="nav-link {{ Request::is('rate-table') ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-"></i>
                   <p>Rate Tables</p>
                 </a>
               </li>
@@ -127,6 +129,7 @@
             <ul class="nav nav-treeview">
               <li>
                 <a href="{{url('/trunks')}}" class="nav-link {{ Request::is('trunks','trunks/*') ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-"></i>
                   <p>
                     Trunks
                   </p>
@@ -134,6 +137,7 @@
               </li>
               <li>
                 <a href="{{url('/setting')}}" class="nav-link {{ Request::is('setting','setting/*') ? 'active' : '' }} ">
+                  <i class="nav-icon fas fa-"></i>
                   <p>
                     Settings
                   </p>

@@ -161,11 +161,34 @@ class CRMController extends Controller
             return $response;
         }
 
+
+        $cms = array();
+        if(!empty($request->id)){
+           $cms =  Crm::where('id',$request->id)->first()->toArray();
+        }
+
+      
         $user =  Crm::updateOrCreate([
             'id'   => $request->id,
          ],$request->all());
 
-         return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/crm')]);
+        if(!empty($request->id)){
+         
+            $info = $request->except('_token');
+           
+            $updated_values = array_diff($info, $cms);
+            $user =User::where('role','Admin')->first();
+            Mail::send('emails.email',  ["updated_values"=> $updated_values] , function ($message) use($user)
+            {
+                $message->to($user->email)
+                    ->subject('Update Alert!');
+                $message->from(Auth::user()->email);
+            });
+            return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/crm')]);
+        }else{
+            return response()->json(['message' =>  __('Created Successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/crm')]);
+        }
+         
 
 
     }
@@ -290,13 +313,18 @@ class CRMController extends Controller
     }
 
     public function changestatus(Request $request){
-        $data = $request->all();
-        $info = array('info');
+        $cms =  Crm::where('id',$request->id)->first();
+        $status =Crm::where('id',$request->id)->update(['lead_status'=>$request->status]);
+       
+        $info = [
+                'new_status' => $request->status,
+                'old_status' => $cms->lead_status
+            ];
         $user =User::where('role','Admin')->first();
-        Mail::send(['emails.update_email'], $info, function ($message) use($user)
+        Mail::send('emails.update_email', ["info"=>$info] , function ($message) use($user)
         {
             $message->to($user->email)
-                ->subject('Alert!');
+                ->subject('Lead Status Update Alert!');
             $message->from(Auth::user()->email);
         });
     }

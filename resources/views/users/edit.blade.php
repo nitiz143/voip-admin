@@ -50,12 +50,8 @@
                                     <input type="password" class="form-control" id="password" name="password" value=""
                                         placeholder="Password" autocomplete="new-password">
                                 </div>
-                                {{-- <div class="form-group" id="password">
-                                    <label>Confirm Password'</label>
-                                    <input id="password-confirm" type="password"
-                                        class="form-control @error('password_confirmation') is-invalid @enderror"
-                                        name="password_confirmation" autocomplete="new-password">
-                                </div> --}}
+                               
+                                <input type="hidden" class="form-control" id="role" name="role" value="{{$user->role}}">
                                 <div class="form-group">
                                     <label for="select_role">Role Select</label>
                                     <select class="custom-select form-control-border border-width-2" id="select_role"

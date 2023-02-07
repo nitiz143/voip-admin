@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8" />
@@ -45,18 +45,26 @@
     <div class="exception-summary">
         <div class="container">
             <div class="exception-message-wrapper">
-                <h1 class="break-long-words exception-message">Lead Status change by {{Auth::user()->name}}.</h1>
+                <h1 class="break-long-words exception-message">Update CMS by {{Auth::user()->name}}.</h1>
                 <h3> Role:- {{Auth::user()->role}}.</h3>&nbsp;&nbsp;&nbsp;&nbsp;
                 <h3> Email:- {{Auth::user()->email}}</h3>
             </div>
         </div>
     </div>
+
     <div class="container">
-        <div class="trace trace-as-html">
-            <h2>Change lead status.</h2>
-            <h3>Old lead status:-  &nbsp;&nbsp;<span style="font-size: 14px; font-weight: 100;">{{$info['old_status']}}</span></h3>
-            <h3>New lead status:-  &nbsp;&nbsp;<span style="font-size: 14px; font-weight: 100;">{{$info['new_status']}}</span></h3>
-        </div>
+        <h2>Updated values in Cms</h2>
+        
+        @if(!empty($updated_values))
+            @foreach( $updated_values as $key => $updated_value )
+           
+                <h3>{{$key}}:-  &nbsp;&nbsp;<span style="font-size: 14px; font-weight: 100;">{{$updated_value}}</span></h3>
+            @endforeach
+        @else
+        <hr>
+        <h3> No Changes</h3>
+        @endif
+      
     </div>
     </body>
 </html>
