@@ -9,6 +9,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Mail;
 use Auth;
 
 class CRMController extends Controller
@@ -160,11 +161,55 @@ class CRMController extends Controller
             return $response;
         }
 
-        $user =  Crm::updateOrCreate([
-            'id'   => $request->id,
-         ],$request->all());
 
-         return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/crm')]);
+        $cms = array();
+        if(!empty($request->id)){
+            $cms =  Crm::where('id',$request->id)->select('id','lead_owner','company','firstname','lastname','email','phone','fax','mobile','website','lead_source','lead_status',	'rating','employee','skype_id','status','vat_number','description','address_line1','city','address_line2','postzip','address_line3','country')->first()->toArray();
+        }
+        $data = array();
+        $data["lead_owner"]	= $request->lead_owner;
+        $data["company"] = $request->company;
+        $data["firstname"] = $request->firstname;
+        $data["lastname"] = $request->lastname;
+        $data["email"] = $request->email;
+        $data["phone"] = $request->phone;
+        $data["fax"] = $request->fax;
+        $data["mobile"]	= $request->mobile;
+        $data["website"] = $request->website;
+        $data["lead_source"] = $request->lead_source;
+        $data["lead_status"] = $request->lead_status;	
+        $data["rating"] = $request->rating;
+        $data["employee"] = $request->employee;
+        $data["skype_id"] = $request->skype_id;
+        $data["status"]	= $request->status;
+        $data["vat_number"]	 = $request->vat_number;
+        $data["description"] = $request->description;
+        $data["address_line1"] = $request->address_line1;
+        $data["city"] = $request->city;	
+        $data["address_line2"] = $request->address_line2;		
+        $data["postzip"] = $request->postzip;
+        $data["address_line3"] = $request->address_line3;	
+        $data["country"] = $request->country;
+        $user =  Crm::updateOrCreate(['id'   => $request->id],$data);
+
+        if(!empty($request->id)){
+         
+            $info = $request->except('_token');
+            $updated_values = array_diff($info, $cms);
+            $old_values = array_diff( $cms,$info);
+            $user =User::where('role','Admin')->first();
+
+            Mail::send('emails.email',  ["updated_values"=> $updated_values ,"old_values"=>$old_values] , function ($message) use($user)
+            {
+                $message->to($user->email)
+                    ->subject('Update Alert!');
+                $message->from(Auth::user()->email);
+            });
+            return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/crm')]);
+        }else{
+            return response()->json(['message' =>  __('Created Successfully'),'data' => $user,'success'=>true,'redirect_url' => ('/crm')]);
+        }
+         
 
 
     }
@@ -188,8 +233,9 @@ class CRMController extends Controller
      */
     public function edit($id)
     {
-        $data= User::query('')->get();
+        
         $user = Crm::find($id);
+        $data= User::where('id', $user->lead_owner)->get();
         return view('crm.edit',compact('user','data'));
     }
 
@@ -261,19 +307,19 @@ class CRMController extends Controller
         $users = User::query('');
         if(Auth::user()->role == 'Super Admin'){
 
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin');
+            $users = $users->where('role','!=','Admin');
         }
         if(Auth::user()->role == 'NOC Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','Billing Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id());
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','Billing Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id())->orwhere('id',Auth::id());
         }
         if(Auth::user()->role == 'Rate Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id());
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id())->orwhere('id',Auth::id());
         }
         if(Auth::user()->role == 'Sales Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id());
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id())->orwhere('id',Auth::id());
         }
         if(Auth::user()->role == 'Billing Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id());
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id())->orWhere('id', '=', Auth::id());
         }
         if(Auth::user()->role == 'NOC Executive' || Auth::user()->role == 'Rate Executive' || Auth::user()->role == 'Sales Executive' || Auth::user()->role == 'Billing Executive' ){
             $users = $users->where('id',Auth::id());
@@ -286,6 +332,23 @@ class CRMController extends Controller
             }
         }
         return $user_ids;
+    }
+
+    public function changestatus(Request $request){
+        $cms =  Crm::where('id',$request->id)->first();
+        $status =Crm::where('id',$request->id)->update(['lead_status'=>$request->status]);
+       
+        $info = [
+                'new_status' => $request->status,
+                'old_status' => $cms->lead_status
+            ];
+        $user =User::where('role','Admin')->first();
+        Mail::send('emails.update_email', ["info"=>$info] , function ($message) use($user)
+        {
+            $message->to($user->email)
+                ->subject('Lead Status Update Alert!');
+            $message->from(Auth::user()->email);
+        });
     }
 
 }
