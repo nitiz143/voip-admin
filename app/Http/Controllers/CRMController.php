@@ -14,11 +14,7 @@ use Auth;
 
 class CRMController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -55,11 +51,6 @@ class CRMController extends Controller
         return view('crm.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
 
@@ -86,15 +77,9 @@ class CRMController extends Controller
         return view('crm.create',compact('users'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
-        // dd($request->all());
 
         if(!empty($request->id)){
 
@@ -104,24 +89,6 @@ class CRMController extends Controller
             'firstname'=>'required',
             'lastname'=>'required',
             'email' => ['required', 'string', 'email', 'max:255','regex:/(.+)@(.+)\.(.+)/i','unique:users,email,'.$request->id],
-            'phone'=>'required',
-            'fax'=>'required',
-            'mobile'=>'required',
-            'website'=>'required',
-            'lead_source'=>'required',
-            'lead_status'=>'required',
-            'rating'=>'required',
-            'employee'=>'required',
-            'skype_id'=>'required',
-            'status'=>'required',
-            'vat_number'=>'required',
-            'description'=>'required',
-            'address_line1'=>'required',
-            'city'=>'required',
-            'address_line2'=>'required',
-            'postzip'=>'required',
-            'address_line3'=>'required',
-            'country'=>'required',
                 );
         }else{
             $rules = array(
@@ -130,24 +97,6 @@ class CRMController extends Controller
                 'firstname'=>'required',
                 'lastname'=>'required',
                 'email' => ['required', 'string', 'email', 'max:255','regex:/(.+)@(.+)\.(.+)/i','unique:users,email'],
-                'phone'=>'required|numeric',
-                'fax'=>'required',
-                'mobile'=>'required',
-                'website'=>['required','regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'],
-                'lead_source'=>'required',
-                'lead_status'=>'required',
-                'rating'=>'required',
-                'employee'=>'required',
-                'skype_id'=>'required',
-                'status'=>'required',
-                'vat_number'=>'required',
-                'description'=>'required',
-                'address_line1'=>'required',
-                'city'=>'required',
-                'address_line2'=>'required',
-                'postzip'=>'required',
-                'address_line3'=>'required',
-                'country'=>'required',
             );
 
         }
@@ -214,23 +163,7 @@ class CRMController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         
@@ -239,24 +172,7 @@ class CRMController extends Controller
         return view('crm.edit',compact('user','data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
         CRM::find($request->id)->delete();
@@ -265,40 +181,60 @@ class CRMController extends Controller
 
     public function ImportClient(Request $request)
     {
-        //  dd($request->id);
-        $crm = CRM::find($request->id);
-        if($crm){
-            $data = [
-                // 'id' => $crm->id,
-                'lead_owner'=>$crm->lead_owner,
-                'fax'=>$crm->fax,
-                'mobile'=>$crm->mobile,
-                'website'=>$crm->website,
-                'skype_id'=>$crm->skype_id,
-                'status'=>$crm->status,
-                'vat_number'=>$crm->vat_number,
-                'description'=>$crm->description,
-                'address_line1'=>$crm->address_line1,
-                'city'=>$crm->city,
-                'address_line2'=>$crm->address_line2,
-                'postzip'=>$crm->postzip,
-                'address_line3'=>$crm->address_line3,
-                'country'=>$crm->country,
-                'company' => $crm->company,
-                'firstname' => $crm->firstname,
-                'lastname' => $crm->lastname,
-                'email' => $crm->email,
-                'phone' => $crm->phone,
+        $crm = CRM::where('id',$request->id)->first();
+       return view('crm.convert_to_account',compact('crm'));
+    }
 
-            ];
+    public function Convert_to_Client(Request $request)
+    {
+        $rules = array(
+            'account_name'=>'required',
+        );
 
-            if(Client::create($data)){
-               if ($crm->delete()){
-                // return response()->json(['message' =>  __('Leads Converted Into Account'),'success'=>true,'redirect_url' => route('client.index')]);
-                return redirect()->route('client.index')->with('success', 'Leads Converted Into Account');
-            }
-            }
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails())
+        {
+            $response = \Response::json([
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ]);
+            return $response;
         }
+        
+        // $crm = CRM::find($request->id);
+        // if($crm){
+        //     $data = [
+        //         // 'id' => $crm->id,
+        //         'lead_owner'=>$request->lead_owner,
+        //         'fax'=>$request->fax,
+        //         'mobile'=>$request->mobile,
+        //         'website'=>$request->website,
+        //         'skype_id'=>$request->skype_id,
+        //         'status'=>$request->status,
+        //         'vat_number'=>$request->vat_number,
+        //         'description'=>$request->description,
+        //         'address_line1'=>$request->address_line1,
+        //         'city'=>$request->city,
+        //         'address_line2'=>$request->address_line2,
+        //         'postzip'=>$request->postzip,
+        //         'address_line3'=>$request->address_line3,
+        //         'country'=>$request->country,
+        //         'company' => $request->company,
+        //         'firstname' => $request->firstname,
+        //         'lastname' => $request->lastname,
+        //         'email' => $request->email,
+        //         'phone' => $request->phone,
+
+        //     ];
+
+        //     $Client = Client::create($data);
+        //     if(!empty($Client)){
+        //        if ($crm->delete()){
+        //             // return response()->json(['message' =>  __('Leads Converted Into Account'),'success'=>true,'redirect_url' => route('client.index')]);
+        //             return redirect()->route('client.index')->with('success', 'Leads Converted Into Account');
+        //         }
+        //     }
+        // }
 
     }
 
@@ -307,19 +243,19 @@ class CRMController extends Controller
         $users = User::query('');
         if(Auth::user()->role == 'Super Admin'){
 
-            $users = $users->where('role','!=','Admin');
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin');
         }
         if(Auth::user()->role == 'NOC Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','Billing Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id())->orwhere('id',Auth::id());
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','Billing Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id());
         }
         if(Auth::user()->role == 'Rate Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id())->orwhere('id',Auth::id());
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Sales Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id());
         }
         if(Auth::user()->role == 'Sales Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id())->orwhere('id',Auth::id());
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Billing Executive')->where('parent_id',Auth::id());
         }
         if(Auth::user()->role == 'Billing Admin'){
-            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id())->orWhere('id', '=', Auth::id());
+            $users = $users->where('role','!=','Admin')->where('role','!=','Super Admin')->where('role','!=','NOC Admin')->where('role','!=','Rate Admin')->where('role','!=','Sales Admin')->where('role','!=','Billing Admin')->where('role','!=','NOC Executive')->where('role','!=','Rate Executive')->where('role','!=','Sales Executive')->where('parent_id',Auth::id());
         }
         if(Auth::user()->role == 'NOC Executive' || Auth::user()->role == 'Rate Executive' || Auth::user()->role == 'Sales Executive' || Auth::user()->role == 'Billing Executive' ){
             $users = $users->where('id',Auth::id());

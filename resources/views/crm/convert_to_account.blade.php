@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <h3 class="card-title">New Account</h3>
                         </div>
-                        <form action="{{ route('client.store') }}" method="POST" id="Clientform">
+                        <form action="{{ route('Convert_to_Client',$crm->id) }}" method="POST" id="Clientform">
                             @csrf
                             <div class="card-body">
                                 <div class="card-header">
@@ -39,11 +39,7 @@
                                             <select class="custom-select form-control-border border-width-2"
                                                 name="lead_owner" id="lead_owner">
                                                 <optgroup label="Select option">
-                                                    @if($account_owner->isNotEmpty())
-                                                        @foreach ($account_owner as $dat )
-                                                            <option value="{{$dat->id}}">{{$dat->name}} ({{$dat->role}})</option>
-                                                        @endforeach
-                                                    @endif
+                                                    <option value=""></option>
                                                 </optgroup>
                                             </select>
                                         </div>
@@ -68,22 +64,20 @@
                                     <div class="col-xl-4">
                                         <div class="form-group">
                                             <label for="company">Company</label>
-                                            <input type="text" class="form-control" id="company" name="company"
-                                                value="">
+                                            <input type="text" class="form-control" id="company" name="company" value="{{$crm->company}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-4">
                                         <div class="form-group">
                                             <label for="mobile">Mobile</label>
-                                            <input type="text" class="form-control number_only" id="mobile" name="mobile"
-                                                value="">
+                                            <input type="text" class="form-control number_only" id="mobile" name="mobile" value="{{$crm->mobile}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-4">
                                         <div class="form-group">
                                             <label for="skype_id">Skype ID</label>
                                             <input type="text" class="form-control" id="skype_id" name="skype_id"
-                                                value="">
+                                                value="{{$crm->skype_id}}">
                                         </div>
                                     </div>
                                 </div>
@@ -92,14 +86,14 @@
                                         <div class="form-group">
                                             <label for="firstname">First Name</label>
                                             <input type="text" class="form-control" id="firstname" name="firstname"
-                                                value="">
+                                                value="{{$crm->firstname}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
                                             <label for="lastname">Last Name</label>
                                             <input type="text" class="form-control" id="lastname" name="lastname"
-                                                value="">
+                                                value="{{$crm->lastname}}">
                                         </div>
                                     </div>
                                 </div>
@@ -117,7 +111,7 @@
                                         <div class="form-group">
                                             <label for="website">Website</label>
                                             <input type="text" class="form-control" id="website" name="website"
-                                                value="">
+                                                value="{{$crm->website}}">
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +127,7 @@
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
                                             <input type="text" class="form-control" id="phone" name="phone"
-                                                value="">
+                                                value="{{$crm->phone}}">
                                         </div>
                                     </div>
                                 </div>
@@ -149,7 +143,7 @@
                                         <div class="form-group">
                                             <label for="fax">Fax</label>
                                             <input type="text" class="form-control" id="fax" name="fax"
-                                                value="">
+                                                value="{{$crm->fax}}">
                                         </div>
                                     </div>
                                 </div>
@@ -164,7 +158,7 @@
                                     <div class="col-xl-6">
                                         <div class="form-group">
                                             <label for="employee">Employee</label>
-                                            <input type="text" class="form-control" id="employee" name="employee" value="">
+                                            <input type="text" class="form-control" id="employee" name="employee" value="{{$crm->employee}}">
                                         </div>
                                     </div>
                                 </div>
@@ -193,7 +187,7 @@
                                         <div class="form-group">
                                             <label for="email">Email</label>
                                             <input type="text" class="form-control" id="email" name="email"
-                                                value="">
+                                                value="{{$crm->email}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
@@ -217,7 +211,7 @@
                                         <div class="form-group">
                                             <label for="vat_number">VAT Number</label>
                                             <input type="text" class="form-control" id="vat_number" name="vat_number"
-                                                value="">
+                                                value="{{$crm->vat_number}}">
                                         </div>
                                     </div>
                                 </div>
@@ -276,7 +270,7 @@
                                     <div class="col-xl-12">
                                         <div class="form-group">
                                             <label for="description">Description</label>
-                                            <textarea class="form-control" id="description" name="description" value="">
+                                            <textarea class="form-control" id="description" name="description" value="{{$crm->description}}">
                                                     
                                             </textarea>
                                         </div>
@@ -291,14 +285,14 @@
                                         <div class="form-group">
                                             <label for="address_line1">Address Line 1</label>
                                             <input type="text" class="form-control" id="address_line1"
-                                                name="address_line1" value="">
+                                                name="address_line1" value="{{$crm->address_line1}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
                                             <label for="city">City</label>
                                             <input type="text" class="form-control" id="city" name="city"
-                                                value="">
+                                                value="{{$crm->city}}">
                                         </div>
                                     </div>
                                 </div>
@@ -307,14 +301,14 @@
                                         <div class="form-group">
                                             <label for="address_line2">Address Line 2</label>
                                             <input type="text" class="form-control" id="address_line2"
-                                                name="address_line2" value="">
+                                                name="address_line2" value="{{$crm->address_line2}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
                                             <label for="postzip">Post/Zip Code</label>
                                             <input type="text" class="form-control" id="postzip" name="postzip"
-                                                value="">
+                                                value="{{$crm->postzip}}">
                                         </div>
                                     </div>
                                 </div>
@@ -323,7 +317,7 @@
                                         <div class="form-group">
                                             <label for="address_line3">Address Line 3</label>
                                             <input type="text" class="form-control" id="address_line3"
-                                                name="address_line3" value="">
+                                                name="address_line3" value="{{$crm->address_line3}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
@@ -582,6 +576,10 @@
                                                 <option value="Serbia">Serbia</option>
                                                 <option value="Zambia">Zambia</option>
                                                 <option value="Zimbabwe">Zimbabwe</option>
+                                                <optgroup label="Selected Country">
+                                                    <option {{$crm->country ? 'selected' :''}}
+                                                        value="{{$crm->country}}" >{{$crm->country}}</option>
+                                                </optgroup>
                                             </select>
                                         </div>
                                     </div>
