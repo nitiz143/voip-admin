@@ -15,7 +15,7 @@ class CallController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = CallHistory::query('');
+            $data = CallHistory::query('')->with('client_customers','client_vendors')->get();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -29,7 +29,7 @@ class CallController extends Controller
 
 
                 }
-                // dd($data);
+              
         return view('call.call-history-index');
     }
 
@@ -44,11 +44,11 @@ class CallController extends Controller
         ]);
 
         $file  = $request->file;
-        //  dd($file);
+   
         $name = time().'.'.$file->getClientOriginalExtension();
         $path = $file->storeAs('public/csv', $name);
         $users = (new FastExcel)->import(public_path('storage/csv/' .$name), function ($line) {
-            // dd($line['id']);
+       
                 $checkHistory = CallHistory::whereCallerId($line['id'])->first();
                 if(empty($checkHistory)){
                     return CallHistory::create([
@@ -121,7 +121,7 @@ class CallController extends Controller
 
     public function destroy(Request $request)
     {
-         //dd($request->id);
+      
         CallHistory::find($request->id)->delete();
         return response()->json(['message'=>__('Deleted Successfully'),'success'=>true]);
 
@@ -131,7 +131,6 @@ class CallController extends Controller
     public function getCallhistory(Request $request)
     {
          $callhistory =  CallHistory::find($request->id);
-        //  dd($request->all());
          return view('call.viewcallhistory',compact('callhistory'));
 
     }

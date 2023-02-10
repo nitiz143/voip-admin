@@ -57,13 +57,13 @@ class ClientController extends Controller
                 ->addColumn('action', function($row){
                     $customer ="";
                     $Vendor = "";
-                    if($row->customer == 1){
-                        $customer = '<a href="'.route('client.customer',$row->id).'" class=" btn btn-warning btn-sm Customer"  data-id ="'.$row->id.'"><i class="fa fa-user"></i></a> ';
-                    }
-                    if($row->Vendor == 1){
-                        $Vendor = '<a href="'.route('client.vendor',$row->id).'" class=" btn btn-info btn-sm Vendor"  data-id ="'.$row->id.'"><i class="fab fa-slideshare"></i></a> ';
-                    }
-                        $btn = '<a href="'.route('client.edit',$row->id).'" class=" btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;';
+                    // if($row->customer == 1){
+                    //     $customer = '<a href="'.route('client.customer',$row->id).'" class=" btn btn-warning btn-sm Customer"  data-id ="'.$row->id.'"><i class="fa fa-user"></i></a> ';
+                    // }
+                    // if($row->Vendor == 1){
+                    //     $Vendor = '<a href="'.route('client.vendor',$row->id).'" class=" btn btn-info btn-sm Vendor"  data-id ="'.$row->id.'"><i class="fab fa-slideshare"></i></a> ';
+                    // }
+                    $btn = '<a href="'.route('client.edit',$row->id).'" class=" btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;';
 
                         return $btn.$customer.$Vendor;
                 })

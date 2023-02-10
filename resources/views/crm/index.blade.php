@@ -32,7 +32,6 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <!-- {{-- <th>lead_owner</th> --}} -->
                                         <th>Company</th>
                                         <th>Firstname</th>
                                         <th>Lastname</th>

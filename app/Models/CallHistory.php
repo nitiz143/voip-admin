@@ -62,6 +62,15 @@ class CallHistory extends Model
         'agentcdr_id',
         'transactionid',
     ];
+
+    function client_customers(){
+
+        return $this->hasMany(Client::class,'customer_authentication_value','id');
+    }
+    function client_vendors(){
+
+        return $this->hasMany(Client::class,'vendor_authentication_value','id');
+    }
 }
 
 

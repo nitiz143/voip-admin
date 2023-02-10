@@ -62,4 +62,13 @@ class Client extends Model
         'balance_threshold',
         'billing_status',
      ];
+
+    function Callhistory_customer() {
+
+        return $this->belongsTo(CallHistory::class,'customer_authentication_value');
+    }
+    function Callhistory_vendor() {
+
+        return $this->belongsTo(CallHistory::class,'vendor_authentication_value');
+    }
 }

@@ -75,7 +75,7 @@
               </p>
             </a>
           </li>
-          <li class="nav-item  {{ Request::is('rate-upload','rate-table') ? 'menu-is-opening menu-open' : '' }}">
+          {{-- <li class="nav-item  {{ Request::is('rate-upload','rate-table') ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
@@ -98,9 +98,9 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> --}}
           <li class="nav-item ">
-            <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/*') ? 'active' : '' }} ">
+            <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/*','getClient/*') ? 'active' : '' }} ">
                 <i class="nav-icon fas fa-user-alt"></i>
               <p>
                 CRM
