@@ -39,7 +39,7 @@
                                             <select class="custom-select form-control-border border-width-2"
                                                 name="lead_owner" id="lead_owner">
                                                 <optgroup label="Select option">
-                                                    <option value=""></option>
+                                                    <option value="{{$crm->lead_owner}}">{{$lead_owner->role}}</option>
                                                 </optgroup>
                                             </select>
                                         </div>

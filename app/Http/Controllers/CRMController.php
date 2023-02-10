@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Crm;
 use App\Models\Client;
 use App\Models\User;
+use  App\Models\Billing;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -182,7 +183,8 @@ class CRMController extends Controller
     public function ImportClient(Request $request)
     {
         $crm = CRM::where('id',$request->id)->first();
-       return view('crm.convert_to_account',compact('crm'));
+        $lead_owner = User::where('id',$crm->lead_owner)->first();
+       return view('crm.convert_to_account',compact('crm','lead_owner'));
     }
 
     public function Convert_to_Client(Request $request)
@@ -201,41 +203,63 @@ class CRMController extends Controller
             return $response;
         }
         
-        // $crm = CRM::find($request->id);
-        // if($crm){
-        //     $data = [
-        //         // 'id' => $crm->id,
-        //         'lead_owner'=>$request->lead_owner,
-        //         'fax'=>$request->fax,
-        //         'mobile'=>$request->mobile,
-        //         'website'=>$request->website,
-        //         'skype_id'=>$request->skype_id,
-        //         'status'=>$request->status,
-        //         'vat_number'=>$request->vat_number,
-        //         'description'=>$request->description,
-        //         'address_line1'=>$request->address_line1,
-        //         'city'=>$request->city,
-        //         'address_line2'=>$request->address_line2,
-        //         'postzip'=>$request->postzip,
-        //         'address_line3'=>$request->address_line3,
-        //         'country'=>$request->country,
-        //         'company' => $request->company,
-        //         'firstname' => $request->firstname,
-        //         'lastname' => $request->lastname,
-        //         'email' => $request->email,
-        //         'phone' => $request->phone,
+        $crm = CRM::find($request->id);
+        if($crm){
+            $data = [
+                // 'id' => $crm->id,
+                'lead_owner'=>$request->lead_owner,
+                'fax'=>$request->fax,
+                'mobile'=>$request->mobile,
+                'website'=>$request->website,
+                'skype_id'=>$request->skype_id,
+                'status'=>$request->status,
+                'vat_number'=>$request->vat_number,
+                'description'=>$request->description,
+                'address_line1'=>$request->address_line1,
+                'city'=>$request->city,
+                'address_line2'=>$request->address_line2,
+                'postzip'=>$request->postzip,
+                'address_line3'=>$request->address_line3,
+                'country'=>$request->country,
+                'company' => $request->company,
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'email' => $request->email,
+                'phone' => $request->phone,
 
-        //     ];
-
-        //     $Client = Client::create($data);
-        //     if(!empty($Client)){
-        //        if ($crm->delete()){
-        //             // return response()->json(['message' =>  __('Leads Converted Into Account'),'success'=>true,'redirect_url' => route('client.index')]);
-        //             return redirect()->route('client.index')->with('success', 'Leads Converted Into Account');
-        //         }
-        //     }
-        // }
-
+            ];
+           
+            $client = Client::create($data);
+            if(!empty($client)){
+                $billingdata["account_id"] = $client->id;
+                $billingdata["billing_class"] = $request->billing_class;
+                $billingdata["billing_type"] = $request->billing_type;
+                $billingdata["billing_timezone"] = $request->billing_timezone;
+                $billingdata["billing_startdate"] = $request->billing_startdate;
+                $billingdata["billing_cycle"] = $request->billing_cycle;
+                if($request->billing_cycle == 'in_specific_days'){
+                    $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;
+                }elseif ($request->billing_cycle == 'monthly_anniversary') {
+                    $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_monthly;
+                }elseif ($request->billing_cycle == 'weekly') {
+                    $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
+                }else{
+                    $billingdata["billing_cycle_startday"] = NULL;
+                }
+                $billingdata["auto_pay"] = $request->auto_pay;
+                $billingdata["auto_pay_method"] = $request->auto_pay_method;
+                $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;
+                $billingdata["next_invoice_date"] = $request->next_invoice_date;
+                $billingdata["next_charge_date"] = $request->next_charge_date;
+    
+                if(Billing::create($billingdata)){
+                    if($crm->delete()){
+                        // return response()->json(['message' =>  __('Leads Converted Into Account'),'success'=>true,'redirect_url' => route('client.index')]);
+                        return response()->json(['message' =>  __('CRM Convert to Account Successfully'),'success'=>true,'redirect_url' => route('client.index')]);
+                    }
+                }
+            }
+        }
     }
 
     public function getUser()

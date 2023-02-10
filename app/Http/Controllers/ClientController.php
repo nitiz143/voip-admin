@@ -108,24 +108,25 @@ class ClientController extends Controller
      public function store(Request $request)
      {
         $rules = array(
-            'lead_owner'=>'required',
-            'company'=>'required',
-            'firstname'=>'required',
-            'lastname'=>'required',
-            'email' => ['required', 'string', 'email', 'max:255','regex:/(.+)@(.+)\.(.+)/i','unique:users,email'],
-            'phone'=>'required|numeric',
-            'fax'=>'required',
-            'mobile'=>'required',
-            'website'=>['required','regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'],
-            'skype_id'=>'required',
-            'vat_number'=>'required',
-            'description'=>'required',
-            'address_line1'=>'required',
-            'city'=>'required',
-            'address_line2'=>'required',
-            'postzip'=>'required',
-            'address_line3'=>'required',
-            'country'=>'required',
+            // 'lead_owner'=>'required',
+            // 'company'=>'required',
+            // 'firstname'=>'required',
+            // 'lastname'=>'required',
+            // 'email' => ['required', 'string', 'email', 'max:255','regex:/(.+)@(.+)\.(.+)/i','unique:users,email'],
+            // 'phone'=>'required|numeric',
+            // 'fax'=>'required',
+            // 'mobile'=>'required',
+            // 'website'=>['required','regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'],
+            // 'skype_id'=>'required',
+            // 'vat_number'=>'required',
+            // 'description'=>'required',
+            // 'address_line1'=>'required',
+            // 'city'=>'required',
+            // 'address_line2'=>'required',
+            // 'postzip'=>'required',
+            // 'address_line3'=>'required',
+            // 'country'=>'required',
+            'account_name'=>'required',
         );
 
         if(!empty($request->billing_status) && $request->billing_status == 'active'){
@@ -230,25 +231,26 @@ class ClientController extends Controller
         if(!empty($request->id)){
 
             $rules = array(
-            'lead_owner'=>'required',
-            'company'=>'required',
-            'firstname'=>'required',
-            'lastname'=>'required',
-            'email' => ['required', 'string', 'email', 'max:255','regex:/(.+)@(.+)\.(.+)/i','unique:users,email,'.$request->id],
-            'phone'=>'required',
-            'fax'=>'required',
-            'mobile'=>'required',
-            'website'=>'required',
-            'skype_id'=>'required',
-            'status'=>'required',
-            'vat_number'=>'required',
-            'description'=>'required',
-            'address_line1'=>'required',
-            'city'=>'required',
-            'address_line2'=>'required',
-            'postzip'=>'required',
-            'address_line3'=>'required',
-            'country'=>'required',
+            // 'lead_owner'=>'required',
+            // 'company'=>'required',
+            // 'firstname'=>'required',
+            // 'lastname'=>'required',
+            // 'email' => ['required', 'string', 'email', 'max:255','regex:/(.+)@(.+)\.(.+)/i','unique:users,email,'.$request->id],
+            // 'phone'=>'required',
+            // 'fax'=>'required',
+            // 'mobile'=>'required',
+            // 'website'=>'required',
+            // 'skype_id'=>'required',
+            // 'status'=>'required',
+            // 'vat_number'=>'required',
+            // 'description'=>'required',
+            // 'address_line1'=>'required',
+            // 'city'=>'required',
+            // 'address_line2'=>'required',
+            // 'postzip'=>'required',
+            // 'address_line3'=>'required',
+            // 'country'=>'required',
+            'account_name'=>'required',
                 );
             if($request->customer_authentication_rule == 6){
                 $rules['customer_authentication_value'] = 'required';
@@ -261,30 +263,8 @@ class ClientController extends Controller
                     $rules['billing_cycle_startday'] = 'required';
                 }
             }
-        }else{
-            $rules = array(
-                'lead_owner'=>'required',
-                'company'=>'required',
-                'firstname'=>'required',
-                'lastname'=>'required',
-                'email' => ['required', 'string', 'email', 'max:255','regex:/(.+)@(.+)\.(.+)/i','unique:users,email'],
-                'phone'=>'required|numeric',
-                'fax'=>'required',
-                'mobile'=>'required',
-                'website'=>['required','regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'],
-                'skype_id'=>'required',
-                'status'=>'required',
-                'vat_number'=>'required',
-                'description'=>'required',
-                'address_line1'=>'required',
-                'city'=>'required',
-                'address_line2'=>'required',
-                'postzip'=>'required',
-                'address_line3'=>'required',
-                'country'=>'required',
-            );
-
         }
+       
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails())
         {
