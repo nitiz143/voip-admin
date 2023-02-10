@@ -48,7 +48,7 @@
                                                     @endif
                                                 </optgroup>
                                             </select>
-                                            <input type="hidden" name="lead_owner" value="{{$user->lead_owner}}" >
+                                            <input type="hidden" name="lead_owner" id="lead_owner1" value="{{$user->lead_owner}}" >
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
@@ -89,14 +89,14 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="phone">Phone<span style="color:red;">*</span></label>
+                                            <label for="phone">Phone</label>
                                             <input type="text" class="form-control" id="phone" name="phone"
                                             value="{{$user->phone}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="fax">Fax<span style="color:red;">*</span></label>
+                                            <label for="fax">Fax</label>
                                             <input type="text" class="form-control" id="fax" name="fax" value="{{$user->fax}}">
                                         </div>
                                     </div>
@@ -105,13 +105,13 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="mobile">Mobile<span style="color:red;">*</span></label>
+                                            <label for="mobile">Mobile</label>
                                             <input type="text" class="form-control" id="mobile" name="mobile" value="{{$user->mobile}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="website">Website<span style="color:red;">*</span></label>
+                                            <label for="website">Website</label>
                                             <input type="text" class="form-control" id="website" name="website" value="{{$user->website}}">
                                         </div>
                                     </div>
@@ -120,7 +120,7 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label>Lead Source<span style="color:red;">*</span></label>
+                                            <label>Lead Source</label>
                                             <select class="custom-select form-control-border border-width-2" name="lead_source" id="lead_source">
                                                 <option selected disabled>--Select Lead Source--</option>
                                                 <option value="Advertisment" {{"Advertisment" == $user->lead_source ? 'selected' : ''}}>Advertisment</option>
@@ -136,7 +136,7 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label >Lead Status<span style="color:red;">*</span></label>
+                                            <label >Lead Status</label>
                                             <select class="custom-select form-control-border border-width-2" name="lead_status" data-id="{{$user->id}}" id="lead_status">
                                                 <option selected disabled>--Select Lead Status--</option>
                                                 <option value="Attempted to Contact" {{"Attempted to Contact" == $user->lead_status ? 'selected' : ''}}>Attempted to Contact</option>
@@ -153,7 +153,7 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="rating">Rating<span style="color:red;">*</span></label>
+                                            <label for="rating">Rating</label>
                                             <select class="custom-select form-control-border border-width-2" name="rating" id="rating">
                                                 <option selected disabled>--Select Rating--</option>
                                                 <option value="Aquired" {{"Aquired" == $user->rating ? 'selected' : ''}}>Aquired</option>
@@ -166,7 +166,7 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="employee">No. of Employees<span style="color:red;">*</span></label>
+                                            <label for="employee">No. of Employees</label>
                                             <input type="text" class="form-control" id="employee" name="employee" value="{{$user->employee}}">
                                         </div>
                                     </div>
@@ -178,7 +178,7 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="skype_id">Skype ID<span style="color:red;">*</span></label>
+                                            <label for="skype_id">Skype ID</label>
                                             <input type="text" class="form-control" id="skype_id" name="skype_id" value="{{$user->skype_id}}">
                                         </div>
                                     </div>
@@ -187,7 +187,7 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="status">Status<span style="color:red;">*</span></label>
+                                            <label for="status">Status</label>
                                             <select class="custom-select form-control-border border-width-2" name="status" data-id="{{$user->id}}" id="status">
                                                 <option selected disabled>--Select Status--</option>
                                                 <option value="0" {{"0" == $user->status ? 'selected' : ''}}>Active</option>
@@ -197,7 +197,7 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="vat_number">VAT Number<span style="color:red;">*</span></label>
+                                            <label for="vat_number">VAT Number</label>
                                             <input type="text" class="form-control" id="vat_number" name="vat_number" value="{{$user->vat_number}}">
                                         </div>
                                     </div>
@@ -206,7 +206,7 @@
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="form-group">
-                                            <label for="description">Description<span style="color:red;">*</span></label>
+                                            <label for="description">Description</label>
                                             <textarea class="form-control" id="description" name="description" value="">
                                                 {{$user->description}}
                                             </textarea>
@@ -222,13 +222,13 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="address_line1">Address Line1<span style="color:red;">*</span></label>
+                                            <label for="address_line1">Address Line1</label>
                                             <input type="text" class="form-control" id="address_line1" name="address_line1" value="{{$user->address_line1}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="city">City<span style="color:red;">*</span></label>
+                                            <label for="city">City</label>
                                             <input type="text" class="form-control" id="city" name="city" value="{{$user->city}}">
                                         </div>
                                     </div>
@@ -237,13 +237,13 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="address_line2">Address Line2<span style="color:red;">*</span></label>
+                                            <label for="address_line2">Address Line2</label>
                                             <input type="text" class="form-control" id="address_line2" name="address_line2" value="{{$user->address_line2}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="postzip">PostZip Code<span style="color:red;">*</span></label>
+                                            <label for="postzip">PostZip Code</label>
                                             <input type="text" class="form-control" id="postzip" name="postzip" value="{{$user->postzip}}">
                                         </div>
                                     </div>
@@ -252,13 +252,13 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="address_line3">Address Line3<span style="color:red;">*</span></label>
+                                            <label for="address_line3">Address Line3</label>
                                             <input type="text" class="form-control" id="address_line3" name="address_line3" value="{{$user->address_line3}}">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="country">Country<span style="color:red;">*</span></label>
+                                            <label for="country">Country</label>
                                             <select class="custom-select form-control-border border-width-2" name="country" id="country">
                                                 <option selected disabled>--Select Country--</option>
                                                 <option value="Afghanistan">Afghanistan</option>

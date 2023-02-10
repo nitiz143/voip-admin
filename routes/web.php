@@ -72,6 +72,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/customer_history/{id}/ajax_datagrid_customerHistory', [App\Http\Controllers\ClientController::class, 'ajax_datagrid_customerHistory'])->name('ajax_datagrid_customerHistory');
 
     Route::get('/getClient/{id}','App\Http\Controllers\CRMController@ImportClient')->name('getClient');
+    Route::post('/Convert_to_Client/{id}','App\Http\Controllers\CRMController@Convert_to_Client')->name('Convert_to_Client');
+
     Route::resource('/cron','App\Http\Controllers\CronJobController');
     Route::resource('/setting','App\Http\Controllers\SettingController');
 

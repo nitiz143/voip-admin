@@ -144,12 +144,7 @@
           url: url,
           type: "POST",
           dataType: 'json',
-        //   cache:false,
-        //   contentType: false,
-        //   processData: false,
-        //   headers: {
-        //     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-        //   },
+
           success: function (resp) {
                 $('#global-loader').hide();
                 if(resp.success == false){
@@ -173,7 +168,7 @@
                 });
                 $('.blocker').hide();
             }
-    });
+        });
     }
     $('#submit').click(function (e) {
         //alert();

@@ -707,7 +707,7 @@
 
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label for="account_name">Account Name</label>
+                                                <label for="account_name">Account Name<span style="color:red;">*</span></label>
                                                 <input type="text" class="form-control" id="account_name"
                                                     name="account_name" value="{{$user->account_name}}">
                                             </div>
