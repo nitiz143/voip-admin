@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CallHistory;
 use Illuminate\Support\Facades\Validator;
 use Rap2hpoutre\FastExcel\FastExcel;
-// use Datatables;
+use App\Models\Client;
 use Yajra\DataTables\DataTables;
 use File;
 
@@ -15,7 +15,7 @@ class CallController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = CallHistory::query('')->with('client_customers','client_vendors')->get();
+            $data = CallHistory::query('*')->get();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -28,7 +28,7 @@ class CallController extends Controller
                     ->make(true);
 
 
-                }
+        }
               
         return view('call.call-history-index');
     }

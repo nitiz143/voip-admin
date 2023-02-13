@@ -37,6 +37,7 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
+                                    {{-- <th>Name</th> --}}
                                     <th>Callere</th>
                                     <th>Calleee</th>
                                     <th>Action</th>
@@ -85,6 +86,7 @@ $("#btnModeClose").on("click", function (e) {
         ajax: "{{ route('call.index') }}",
         columns: [
             {data:'id',name:'id'},
+            // {data:'firstname',name:'firstname'},
             {data:'callere164',name:'callere164'},
             {data:'calleee164',name:'calleee164'},
 

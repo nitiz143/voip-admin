@@ -157,10 +157,8 @@ class SettingController extends Controller
     public function destroy(Request $request)
     {
 
-        $setting = Setting::find($id);
-        // dd($request->id);
+        $setting = Setting::find($request->id);
         $setting->delete();
-        // Setting::find($request->id)->delete();
         return response()->json(['message'=>__('Deleted Successfully'),'success'=>true]);
     }
 
