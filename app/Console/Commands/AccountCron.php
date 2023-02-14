@@ -41,21 +41,25 @@ class AccountCron extends Command
     {
         $accounts = Client::query('')->get();
         $callhistory =array();
-        foreach ($accounts as $key => $account) {
-            //for other
-            if($account->customer_authentication_rule == 6){
-                $callhistory[] = CallHistory::where('customeraccount',$account->customer_authentication_value)->orwhere('customername',$account->customer_authentication_value)->get();
+        if(!empty($accounts)){
+            foreach ($accounts as $key => $account) {
+                //for other
+                if($account->customer_authentication_rule == 6){
+                    $data['account_id'] =  $account->id;
+                    $callhistory[] = CallHistory::where('customeraccount',$account->customer_authentication_value)->orwhere('customername',$account->customer_authentication_value)->update($data);
+                }
+                //for customername
+                if($account->customer_authentication_rule == 2){
+                    $data['account_id'] =  $account->id;
+                    $callhistory[] = CallHistory::where('customername',$account->customer_authentication_value)->update($data);
+                }
+                //for customeraccount
+                if($account->customer_authentication_rule == 3){
+                    $data['account_id'] =  $account->id;
+                    $callhistory[] = CallHistory::where('customeraccount',$account->customer_authentication_value)->update($data);
+                }
+            
             }
-            //for customername
-            if($account->customer_authentication_rule == 2){
-                $callhistory[] = CallHistory::where('customername',$account->customer_authentication_value)->get();
-            }
-            //for customeraccount
-            if($account->customer_authentication_rule == 3){
-                $callhistory[] = CallHistory::where('customeraccount',$account->customer_authentication_value)->get();
-            }
-          
         }
-        dd( $callhistory);
     }
 }

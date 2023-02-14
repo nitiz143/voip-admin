@@ -61,6 +61,7 @@ class CallHistory extends Model
         'cdrlevel',
         'agentcdr_id',
         'transactionid',
+        'account_id'
     ];
 } 
 

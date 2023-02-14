@@ -26,18 +26,14 @@
                             <h1 class="card-title ">Call History</h1>
                             <a href="{{ route('call.create') }}" class="btn btn-primary mb-4 float-right w-10" id="createzoneModal">Import</a>
                         </div>
-                        {{-- <div class="form-inline d-flex justify-content-end mt-2 mr-4">
-                            <div class="input-group" data-widget="sidebar-search">
-                                <input class="form-control search" type="text" value="" placeholder="Search">
-                            </div>
-                        </div> --}}
+                       
                         <!-- /.card-header -->
                         <div class="card-body">
                             <table class="table table-bordered data-table">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    {{-- <th>Name</th> --}}
+                                    <th>Name</th>
                                     <th>Callere</th>
                                     <th>Calleee</th>
                                     <th>Action</th>
@@ -50,8 +46,7 @@
                         </div>
 
                         <!-- /.card-body -->
-                    </div>
-                    <!-- /.card -->
+                    </div><!-- /.card -->
                 </div>
 
                 <div class="modal" id="ajaxModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -76,7 +71,7 @@
 @endsection
 @section('page_js')
 <script>
-$("#btnModeClose").on("click", function (e) {
+    $("#btnModeClose").on("click", function (e) {
         e.preventDefault();
         $("#ajaxModel").modal("hide");
     });
@@ -86,7 +81,7 @@ $("#btnModeClose").on("click", function (e) {
         ajax: "{{ route('call.index') }}",
         columns: [
             {data:'id',name:'id'},
-            // {data:'firstname',name:'firstname'},
+            {data:'account',name:'account'},
             {data:'callere164',name:'callere164'},
             {data:'calleee164',name:'calleee164'},
 

@@ -17,17 +17,19 @@ class CallController extends Controller
         if ($request->ajax()) {
             $data = CallHistory::query('*')->get();
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->addColumn('action', function($row){
-
-                           $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>';
-
-                            return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-
-
+                ->addIndexColumn()
+                ->addColumn('account', function($row){
+                    $account = Client::where('id',$row->account_id)->first();
+                    $firstname = !empty($account->firstname) ? $account->firstname : "";
+                    $lastname =  !empty($account->lastname) ? $account->lastname : "";
+                        return $firstname.$lastname;
+                })
+                ->addColumn('action', function($row){
+                    $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
               
         return view('call.call-history-index');
