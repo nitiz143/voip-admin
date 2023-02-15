@@ -1,5 +1,4 @@
 @extends('layouts.dashboard')
-
 @section('content')
 <div class="content-wrapper mt-3">
     <section class="content-header">
@@ -43,9 +42,7 @@
 
                                 </tbody>
                             </table>
-                        </div>
-
-                        <!-- /.card-body -->
+                        </div><!-- /.card-body -->
                     </div><!-- /.card -->
                 </div>
 

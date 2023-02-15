@@ -100,7 +100,7 @@
             </ul>
           </li> --}}
           <li class="nav-item ">
-            <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/*','getClient/*') ? 'active' : '' }} ">
+            <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/*','getClient/*','comment/*') ? 'active' : '' }} ">
                 <i class="nav-icon fas fa-user-alt"></i>
               <p>
                 CRM

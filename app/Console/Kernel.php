@@ -27,10 +27,9 @@ class Kernel extends ConsoleKernel
 
         $tasks = CronJob::all();
 
-       
-            $schedule->command('download:cron')->everyFiveMinutes();
-            $schedule->command('csvImport:cron')->everyTenMinutes();
-            $schedule->command('account:cron')->everyFiveMinutes();
+        $schedule->command('download:cron')->everyFiveMinutes();
+        $schedule->command('csvImport:cron')->everyTenMinutes();
+        $schedule->command('account:cron')->everyFifteenMinutes();
         
     }
 

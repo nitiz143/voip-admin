@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Crm;
 use App\Models\Client;
 use App\Models\User;
-use  App\Models\Billing;
+use App\Models\Comment;
+use App\Models\Billing;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -42,7 +43,8 @@ class CRMController extends Controller
 
                     $btn = '<a href="'.route('crm.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit mb-2"  data-id ="'.$row->id.'">Edit</a>
                     <a href="'.route('getClient',$row->id).'" class="delete btn btn-info btn-sm Create mb-2"  data-id ="'.$row->id.'">Convert to account </a>
-                    <a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
+                    <a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete mb-2"  data-id ="'.$row->id.'">Delete</a>  
+                    <a href="'.route('crm.comment',$row->id).'" class=" btn btn-success btn-sm "  data-id ="'.$row->id.'">Comment</a>';
 
                     return $btn;
             })
@@ -311,4 +313,34 @@ class CRMController extends Controller
         });
     }
 
+    public function comment(Request $request){
+        $crm = Crm::where('id',$request->id)->first();
+        $data= User::where('id', $crm->lead_owner)->first();
+        $comments = Comment::where('crm_id',$request->id)->with('user')->get();
+       
+        return view('crm.comment',compact('crm','data' ,'comments'));
+    }
+
+    public function commentstore(Request $request){
+        $rules = array(
+            'comment'=>'required',
+        );
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails())
+        {
+            $response = \Response::json([
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ]);
+            return $response;
+        }
+        $data=array();
+        $data['crm_id'] = $request->id;
+        $data['comment'] = $request->comment;
+        $data['user_id'] = Auth::user()->id;
+        $Comment = Comment::create($data);
+        return response()->json(['message' =>  __('Comment Save Successfully'),'success'=>true]);
+        
+    }
 }

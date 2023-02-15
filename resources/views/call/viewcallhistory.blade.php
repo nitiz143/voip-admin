@@ -215,5 +215,9 @@
         <td>Transactionid</td>
         <td>{{$callhistory->transactionid}}</td>
     </tr>
+    <tr>
+        <td>Account</td>
+        <td>{{$firstname  $lastname}}</td>
+    </tr>
   </tbody>
 </table>

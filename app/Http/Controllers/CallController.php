@@ -22,10 +22,10 @@ class CallController extends Controller
                     $account = Client::where('id',$row->account_id)->first();
                     $firstname = !empty($account->firstname) ? $account->firstname : "";
                     $lastname =  !empty($account->lastname) ? $account->lastname : "";
-                        return $firstname.$lastname;
+                        return $firstname .'  '. $lastname;
                 })
                 ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>';
+                    $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -133,7 +133,10 @@ class CallController extends Controller
     public function getCallhistory(Request $request)
     {
          $callhistory =  CallHistory::find($request->id);
-         return view('call.viewcallhistory',compact('callhistory'));
+         $account = Client::where('id',$callhistory->account_id)->first();
+         $firstname = !empty($account->firstname) ? $account->firstname : "";
+         $lastname =  !empty($account->lastname) ? $account->lastname : "";
+         return view('call.viewcallhistory',compact('callhistory','firstname','lastname'));
 
     }
 

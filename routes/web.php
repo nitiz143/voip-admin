@@ -73,6 +73,10 @@ Route::group(['middleware' => ['auth','activity']], function () {
 
     Route::get('/getClient/{id}','App\Http\Controllers\CRMController@ImportClient')->name('getClient');
     Route::post('/Convert_to_Client/{id}','App\Http\Controllers\CRMController@Convert_to_Client')->name('Convert_to_Client');
+    Route::get('/comment/{id}','App\Http\Controllers\CRMController@comment')->name('crm.comment');
+    Route::post('/comment/store/{id}','App\Http\Controllers\CRMController@commentstore')->name('crm.commentstore');
+
+
 
     Route::resource('/cron','App\Http\Controllers\CronJobController');
     Route::resource('/setting','App\Http\Controllers\SettingController');
