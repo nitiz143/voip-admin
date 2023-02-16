@@ -16,44 +16,41 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-
-
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h1 class="card-title">FTP Details</h1>
-                                <a href="{{ route('setting.create') }}" class="btn btn-primary mb-4  float-right" id="createzoneModal">Create</a>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table class="table table-bordered data-table" style="width: 100%">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Protocol</th>
-                                        <th>Host</th>
-                                        <th>Port</th>
-                                        <th>Username</th>
-                                        <th>Csv Path</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- /.card-body -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h1 class="card-title">FTP Details</h1>
+                            <a href="{{ route('setting.create') }}" class="btn btn-primary mb-4  float-right" id="createzoneModal">Create</a>
                         </div>
-            <!-- /.card -->
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table class="table table-bordered data-table" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Protocol</th>
+                                    <th>Host</th>
+                                    <th>Port</th>
+                                    <th>Username</th>
+                                    <th>Csv Path</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 </div>
 @endsection
 @section('page_js')

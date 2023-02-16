@@ -11,7 +11,6 @@ class Comment extends Model
     protected $fillable = ['id','crm_id','user_id','comment'];
    
     function user() {
-
         return $this->belongsTo(User::class,'user_id');
     }
 

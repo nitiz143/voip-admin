@@ -38,6 +38,7 @@
                                             <label>Lead Owner<span style="color:red;">*</span></label>
                                             <select class="custom-select form-control-border border-width-2" name="lead_owner" id="lead_owner">
                                                 @if($users->isNotEmpty())
+                                                <option value="">Select Lead Owner</option>
                                                     @foreach ($users as $user )
                                                         <option value="{{$user->id}}">{{$user->name}}&nbsp;&nbsp;({{$user->role}})</option>
                                                     @endforeach

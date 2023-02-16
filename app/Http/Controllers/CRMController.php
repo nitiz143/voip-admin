@@ -256,7 +256,7 @@ class CRMController extends Controller
     
                 if(Billing::create($billingdata)){
                     if($crm->delete()){
-                        // return response()->json(['message' =>  __('Leads Converted Into Account'),'success'=>true,'redirect_url' => route('client.index')]);
+
                         return response()->json(['message' =>  __('CRM Convert to Account Successfully'),'success'=>true,'redirect_url' => route('client.index')]);
                     }
                 }
@@ -341,6 +341,5 @@ class CRMController extends Controller
         $data['user_id'] = Auth::user()->id;
         $Comment = Comment::create($data);
         return response()->json(['message' =>  __('Comment Save Successfully'),'success'=>true]);
-        
     }
 }

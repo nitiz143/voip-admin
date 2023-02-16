@@ -19,7 +19,6 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-
                 <div class="col-md-12">
                             <!-- general form elements -->
                     <div class="card card-primary">
@@ -76,158 +75,7 @@
 
                                 </div>
                             </div>
-                                {{-- <!----------4 row ---------->
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="phone">Phone</label>
-                                        <p>{{!empty($crm->phone) ? $crm->phone :"NA"}}</p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="fax">Fax</label>
-                                        <p>{{!empty($crm->fax) ? $crm->fax :"NA"}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!----------5 row ---------->
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="mobile">Mobile</label>
-                                        <p>{{!empty($crm->mobile) ? $crm->mobile :"NA"}}</p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="website">Website</label>
-                                        <p>{{!empty($crm->website) ? $crm->website :"NA"}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!----------5 row ---------->
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label>Lead Source</label>
-                                        <p>{{!empty($crm->lead_source) ? $crm->lead_source :"NA"}}</p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label >Lead Status</label>
-                                        <p>{{!empty($crm->lead_status) ? $crm->lead_status :"NA"}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!----------6 row ---------->
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="rating">Rating</label>
-                                        <p>{{!empty($crm->rating) ? $crm->rating :"NA"}}</p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="employee">No. of Employees</label>
-                                        <p>{{!empty($crm->employee) ? $crm->employee :"NA"}} </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!----------7 row ---------->
-                            <div class="row">
-                                <div class="col-xl-6">
-
-                                </div>
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="skype_id">Skype ID</label>
-                                        <p>{{!empty($crm->skype_id) ? $crm->skype_id  :"NA"}} </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!----------8 row ---------->
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="status">Status</label>
-                                        <p>{{!empty($crm->status) ? $crm->status  :"NA"}} </p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="vat_number">VAT Number</label>
-                                        <p> {{!empty($crm->vat_number) ? $crm->vat_number  :"NA"}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!----------9 row ---------->
-                            <div class="row">
-                                <div class="col-xl-12">
-                                    <div class="form-group">
-                                        <label for="description">Description</label>
-                                        <p>{{!empty($crm->description) ? $crm->description  :"NA"}}</p>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                        <!-- /.card-body -->
-                        <div class="card-body">
-                            <h4>Address</h4>
-                            <hr>
-                                <!-------- address row1---------->
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="address_line1">Address Line1</label>
-                                        <p>{{!empty($crm->address_line1) ? $crm->address_line1  :"NA"}}</p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="city">City</label>
-                                        <p>{{!empty($crm->city) ? $crm->city  :"NA"}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-------- address row2--------->
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="address_line2">Address Line2</label>
-                                        <p>{{!empty($crm->address_line2 ) ? $crm->address_line2  :"NA"}}</p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="postzip">PostZip Code</label>
-                                        <p>{{!empty($crm->postzip ) ? $crm->postzip  :"NA"}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                                <!-------- address row3--------->
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="address_line3">Address Line3</label>
-                                        <p>{{!empty($crm->address_line3) ? $crm->address_line3 :"NA"}}</p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-                                        <label for="country">Country</label>
-                                        <p>{{!empty($crm->country) ? $crm->country :"NA"}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer">
-                            
-                        </div> --}}
-                       
                     </div>
                 </div>
             </div>
@@ -236,9 +84,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-
                 <div class="col-md-12">
-                            <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="card-title">
