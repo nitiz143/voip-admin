@@ -20,7 +20,6 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                            <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="card-title">
@@ -31,9 +30,6 @@
                             </div>
                         </div>
                         <div class="card-body"  id="myDIV">
-                            <div class="form-group">
-                            
-                            </div>
                             <div class="row">
                                 <div class="col-xl-6">
                                     <div class="form-group">
@@ -88,7 +84,7 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="card-title">
-                               Comments
+                                 Comment
                             </div>
                             <div class="card-options float-right">
                                 <a href="#" class=" float-end" data-rel="collapse" onclick="myFunction1()"><i class="fas fa-angle-down"></i></a>
@@ -100,7 +96,7 @@
                                 <div class="card-body" >
                                     <div class="row">
                                         <label> Comment</label>
-                                        <textarea name="comment"></textarea>
+                                        <textarea name="comment" id="summernote"></textarea>
                                     </div>
                                 </div>
                                 <div class="card-footer">
@@ -108,104 +104,159 @@
                                     <button type="button" id="cancel" class="btn btn-danger">Cancel</button>
                                 </div>
                             </form>
-                            @if($comments->isNotEmpty())
-                                <div class="card-body" >
-                                    <label>Related Comments</label>
-                                    @foreach ($comments as $comment)
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-xl-6">
-                                                <div class="form-group d-flex">
-                                                    <label>Commented By:-</label>
-                                                    <p>{{$comment->user->name}}</p>
-                                                </div>
-                                                <div class="form-group d-flex">
-                                                    <label for="company">Role:-</label>
-                                                    <p>{{$comment->user->role}}</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-6">
-                                                <div class="form-group d-flex">
-                                                    <label>Email:-</label>
-                                                    <p>{{$comment->user->email}}</p>
-                                                </div>
-                                                <div class="form-group d-flex">
-                                                    <label for="company">Created_at:-</label>
-                                                    <p>{{$comment->created_at}}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <textarea name="comment" readonly>{{$comment->comment}}</textarea>
-                                        </div><br>
-                                    @endforeach
-                                </div>
-                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    @if($comments->isNotEmpty())
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    Related  Comments
+                                </div>
+                                <div class="card-options float-right">
+                                    <a href="#" class=" float-end" data-rel="collapse" onclick="myFunction2()"><i class="fas fa-angle-down"></i></a>
+                                </div>
+                            </div>
+                            <div id="myDIV2">
+                                @foreach ($comments as $comment)
+                                    {{-- <hr style="height: 0.2px; margin-top: 0px;"> --}}
+                                    <div class="card-body ">
+                                        <div class="card " style="background-color:#f4f6f9">
+                                            <div class="row col-12 mb-2 mt-3">
+                                                <div class="col-2 col-md-1 ">
+                                                    <div class="row">
+                                                        <div class="ticket-sender-picture img-shadow">
+                                                            <img src="{{asset('assets/dist/img/user.png')}}" alt="image" height="55px" class="rounded-circle center">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2 col-md-5">
+                                                    <div class="row mt-3">
+                                                        <div class="form-group d-flex ">
+                                                            <label for="lastname">By:</label>&nbsp;
+                                                            <p>{{$comment->user->role}}&nbsp;*&nbsp;{{$comment->created_at->diffForHumans()}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <section class="content mb-3 mt-3">
+                                                        <hr style="height: 0.2px; margin-top: 0px;">
+                                                        {!!  $comment->comment !!}
+                                                        <hr style="height: 0.2px;"/>
+                                                    </section>
+                                                </div>
+                                            </div>
+                                            <div class="col-2 col-md-2">
+                                                <div class="row mt-3">
+                                                    <span class="form-group d-flex ">
+                                                        <label for="lastname">Name:-</label>&nbsp;
+                                                        <p>{{$comment->user->name}}</p>
+                                                    </span>
+                                                    <span class="form-group d-flex">
+                                                        <label for="lastname">Email:-</label>&nbsp;
+                                                        <p>{{$comment->user->email}}</p>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
 </div>
 @endsection
 @section('page_js')
 <script>
-function save(formdata, url,method) {
-    $('#global-loader').show();
-    $.ajax({
-        data: formdata,
-        url: url,
-        type: method,
-        dataType: 'json',
-        success: function (resp) {
-            $('#global-loader').hide();
-            if (resp.success == false) {
-                $.each(resp.errors, function (k, e) {
-                    $.notify(e, 'error');
-                });
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            height: 300,
+            popover: {
+                image: [
+                    ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
+                    ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                    ['remove', ['removeMedia']]
+                ],
             }
-            else {
-                $.notify(resp.message, 'success');
-                setTimeout(function () {
-                    window.location.reload();
-                }, 3000);
-            }
-        }, error: function (r) {
-            $('#global-loader').hide();
-            $.each(r.responseJSON.errors, function (k, e) {
-                $.notify(e, 'error');
+        });
+
+        function save(formdata, url,method) {
+            $('#global-loader').show();
+            $.ajax({
+                data: formdata,
+                url: url,
+                type: method,
+                dataType: 'json',
+                success: function (resp) {
+                    $('#global-loader').hide();
+                    if (resp.success == false) {
+                        $.each(resp.errors, function (k, e) {
+                            $.notify(e, 'error');
+                        });
+                    }
+                    else {
+                        $.notify(resp.message, 'success');
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 3000);
+                    }
+                }, error: function (r) {
+                    $('#global-loader').hide();
+                    $.each(r.responseJSON.errors, function (k, e) {
+                        $.notify(e, 'error');
+                    });
+                    $('.blocker').hide();
+                }
             });
-            $('.blocker').hide();
         }
+
+        $('#submit').click(function (e) {
+            e.preventDefault();
+            let formdata = $('#form').serialize();
+            let url =   $('#form').attr('action');
+            let method =   $('#form').attr('method');
+            save(formdata,url,method);
+
+        });
     });
-}
 
-$('#submit').click(function (e) {
-    e.preventDefault();
-    let formdata = $('#form').serialize();
-    let url =   $('#form').attr('action');
-    let method =   $('#form').attr('method');
-    save(formdata,url,method);
+    function myFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
 
-});
-
-function myFunction() {
-  var x = document.getElementById("myDIV");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-}
-
-function myFunction1() {
-  var x = document.getElementById("myDIV1");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-}
+    function myFunction1() {
+        var x = document.getElementById("myDIV1");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+    function myFunction2() {
+        var x = document.getElementById("myDIV2");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
 </script>
 @endsection

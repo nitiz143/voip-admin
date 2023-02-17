@@ -67,7 +67,7 @@ input:checked + .slider:before {
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 
   <title>{{env('APP_NAME')}}</title>
-<!---------- for yajra datatable------------>
+  <!---------- for yajra datatable------------>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
   <!-- Google Font: Source Sans Pro -->
@@ -93,6 +93,7 @@ input:checked + .slider:before {
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap4-duallistbox/4.0.2/bootstrap-duallistbox.css" rel="stylesheet"/>
   <link href="{{asset('css/timezone-picker.css')}}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -151,6 +152,8 @@ input:checked + .slider:before {
 <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap4-duallistbox/4.0.2/jquery.bootstrap-duallistbox.min.js"></script>
 
+
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
 <!---notify---------->
 <script src="{{asset('assets/dist/js/notify.js')}}"></script>

@@ -44,7 +44,7 @@ class CRMController extends Controller
                     $btn = '<a href="'.route('crm.edit',$row->id).'" class="delete btn btn-primary btn-sm Edit mb-2"  data-id ="'.$row->id.'">Edit</a>
                     <a href="'.route('getClient',$row->id).'" class="delete btn btn-info btn-sm Create mb-2"  data-id ="'.$row->id.'">Convert to account </a>
                     <a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete mb-2"  data-id ="'.$row->id.'">Delete</a>  
-                    <a href="'.route('crm.comment',$row->id).'" class=" btn btn-success btn-sm "  data-id ="'.$row->id.'">Comment</a>';
+                    <a href="'.route('crm.comment',$row->id).'" class=" btn btn-success btn-sm "  data-id ="'.$row->id.'">View</a>';
 
                     return $btn;
             })
