@@ -635,7 +635,7 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Billing Start Date</label>
-                                                    <input type="date" class="form-control" id="billing_startdate"
+                                                    <input type="date" class="form-control billing_start_date" id="billing_startdate"
                                                         name="billing_startdate" value="">
                                                 </div>
                                             </div>
@@ -646,16 +646,16 @@
                                                     <label for="billing_cycle">Billing Cycle</label>
                                                     <select class="custom-select form-control" name="billing_cycle"
                                                         id="billing_cycle">
-                                                        <option value="">Select</option>
-                                                        <option value="daily">Daily</option>
-                                                        <option value="fortnightly">Fortnightly</option>
-                                                        <option value="in_specific_days">In Specific days</option>
-                                                        <option value="manual">Manual</option>
-                                                        <option value="monthly">Monthly</option>
-                                                        <option value="monthly_anniversary">Monthly anniversary</option>
-                                                        <option value="quarterly">Quarterly</option>
-                                                        <option value="weekly">Weekly</option>
-                                                        <option value="yearly">Yearly</option>
+                                                        <option class="billing_options" value="">Select</option>
+                                                        <option class="billing_options" value="daily">Daily</option>
+                                                        <option class="billing_options" value="fortnightly">Fortnightly</option>
+                                                        <option class="billing_options" value="in_specific_days">In Specific days</option>
+                                                        <option  class="billing_options" value="manual">Manual</option>
+                                                        <option class="billing_options" value="monthly">Monthly</option>
+                                                        <option class="billing_options" value="monthly_anniversary">Monthly anniversary</option>
+                                                        <option class="billing_options" value="quarterly">Quarterly</option>
+                                                        <option class="billing_options" value="weekly">Weekly</option>
+                                                        <option class="billing_options" value="yearly">Yearly</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -663,7 +663,7 @@
                                                 <div class="form-group d-none" id="in_specific_days">
                                                     <label for="billing_cycle_startday">Billing Cycle - for
                                                         Days*</label>
-                                                    <input type="text" name="billing_cycle_startday_for_days"
+                                                    <input type="number" name="billing_cycle_startday_for_days"
                                                         class="form-control billing_cycle_startday" id="number_only"
                                                         value="">
                                                 </div>
@@ -680,13 +680,13 @@
                                                     <select
                                                         class="custom-select form-control billing_cycle_startday"
                                                         name="billing_cycle_startday" id="billing_cycle_startday">
-                                                        <option value="Sunday">Sunday</option>
-                                                        <option value="Monday">Monday</option>
-                                                        <option value="Tuesday">Tuesday</option>
-                                                        <option value="Wednesday">Wednesday</option>
-                                                        <option value="Thursday">Thursday</option>
-                                                        <option value="Friday">Friday</option>
-                                                        <option value="Saturday">Saturday</option>
+                                                        <option value="0">Sunday</option>
+                                                        <option value="1">Monday</option>
+                                                        <option value="2">Tuesday</option>
+                                                        <option value="3">Wednesday</option>
+                                                        <option value="4">Thursday</option>
+                                                        <option value="5">Friday</option>
+                                                        <option value="6">Saturday</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -695,14 +695,14 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="next_invoice_date">Next Invoice Date</label>
-                                                    <input type="date" class="form-control" name="next_invoice_date"
+                                                    <input type="date" class="form-control next_invoice_date" name="next_invoice_date"
                                                         value="">
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="next_charge_date">Next Charge Date</label>
-                                                    <input type="date" class="form-control" name="next_charge_date"
+                                                    <input type="date" class="form-control" name="next_charge_date" id="next_charge_date"
                                                         value="" readonly>
                                                 </div>
                                             </div>
@@ -761,6 +761,8 @@
 </div>
 @endsection
 @section('page_js')
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
 <script src="{{asset('js/timezones.full.js')}}"></script>
 <script src="{{asset('js/account_custom.js')}}"></script>
 
