@@ -5,6 +5,9 @@
     .form-check {
         padding-left: 0.25rem !important;
     }
+    .hidden{
+        display: none;
+    }
 </style>
 <div class="content-wrapper mt-3">
     <section class="content-header">
@@ -970,11 +973,16 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6">
-                                                    <div class="form-group">
+                                                    <div class="form-group mt-4">
                                                         <label>Billing Start Date</label>
-                                                        <input type="date" class="form-control" id="billing_startdate"
+                                                        <input  data-date-format="yyyy-mm-dd"  type="text"  class="form-control datepicker hidden" id="billing_startdate"
                                                             name="billing_startdate"
                                                             value="@if(!empty($billingdata->billing_startdate)){{$billingdata->billing_startdate}} @endif">
+                                                        <span class="text ml-2">
+                                                            @if(!empty($billingdata->billing_startdate))
+                                                                {{ $billingdata->billing_startdate}} 
+                                                            @endif
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -982,7 +990,7 @@
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
                                                         <label for="billing_cycle">Billing Cycle</label>
-                                                        <select class="custom-select form-control" name="billing_cycle"
+                                                        <select class="custom-select  form-control hidden" name="billing_cycle"
                                                             id="billing_cycle">
                                                             <option value="">Select</option>
                                                             <option value="daily" @if(!empty($billingdata->
@@ -1015,7 +1023,14 @@
                                                                 billing_cycle)){{$billingdata->billing_cycle=='yearly' ?
                                                                 'selected' : ''}} @endif>Yearly</option>
                                                         </select>
+                                                        <span class="bill_cycle_edit_text ml-2">
+                                                            @if(!empty($billingdata->billing_cycle))
+                                                             {{ $billingdata->billing_cycle}} 
+                                                            @endif
+                                                        </span>
+                                                        <span><a href="#" class=" btn btn-dark btn-sm Edit_bill_cycle ml-2" style="font-size: 8px;" ><i class="fas fa-pen"></i></a></span>
                                                     </div>
+                                                   
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="form-group  {{@$billingdata->billing_cycle !='in_specific_days' ? 'd-none' : ''}} "
@@ -1132,27 +1147,36 @@
                                     <div class="row">
                                         <div class="col-xl-6">
                                             <div class="form-group">
+                                                <input type="hidden" name="last_invoice_date" value="{{@$billingdata->last_invoice_date}}">
                                                 <label for="last_invoice_date">Last Invoice Date</label>
                                                 <span>{{@$billingdata->last_invoice_date}}</span>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
-                                            <div class="form-group">
+                                            <div class="form-group d-flex">
                                                 <label for="next_invoice_date">Next Invoice Date</label>
-                                                <input type="date" class="form-control" name="next_invoice_date"
-                                                    value="@if(!empty($billingdata->next_invoice_date)) {{$billingdata->next_invoice_date}} @endif">
+                                                <input class="form-control datepicker hidden next_invoice_date" id="next_invoice_date" data-date-format="yyyy-mm-dd" name="next_invoice_date" type="text" style="width: 50%; margin-left:10px;" value=" @if(!empty($billingdata->next_invoice_date)){{ $billingdata->next_invoice_date}}@endif">
+                                                
+                                                <span class="next_invoice_edit_text ml-2">
+                                                    @if(!empty($billingdata->next_invoice_date))
+                                                     {{ $billingdata->next_invoice_date}} 
+                                                    @endif
+                                                </span>
+                                                <span><a href="#" class=" btn btn-dark btn-sm Edit ml-2"  style="font-size: 8px;"><i class="fas fa-pen" ></i></a></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-xl-6">
                                             <div class="form-group">
+                                                <input type="hidden" name="last_charge_date" value="{{@$billingdata->last_charge_date}}">
                                                 <label for="last_charge_date">Last Charge Date</label>
                                                 <span>{{@$billingdata->last_charge_date}}</span>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
+                                                <input type="hidden" name="next_charge_date" value="{{@$billingdata->next_charge_date}}">
                                                 <label for="next_charge_date">Next Charge Date</label>
                                                 <span>{{@$billingdata->next_charge_date}}</span>
                                             </div>
@@ -1239,6 +1263,25 @@
         let method =   $('#Clientform').attr('method');
         save(formdata,url,method);
 
+    });
+    $('.Edit').click(function (e){
+        e.preventDefault();
+        $('.next_invoice_edit_text').addClass('hidden');
+        $('#next_invoice_date').removeClass('hidden');
+        $('.Edit').addClass('d-none');
+    })
+    $('.Edit_bill_cycle').click(function (e){
+        e.preventDefault();
+        $('.bill_cycle_edit_text').addClass('hidden');
+        $('#billing_cycle').removeClass('hidden');
+        $('.Edit_bill_cycle').addClass('d-none');
+    })
+
+    $(function () {
+        $(".datepicker").datepicker({ 
+                autoclose: true, 
+                todayHighlight: true
+        });
     });
 
 </script>

@@ -93,8 +93,8 @@ $("#billing_cycle").change(function () {
         $('.next_invoice_date').val(date);
 
         //for next charge date
-        const charge_date = new Date(start_date);
-        charge_date.setDate(charge_date.getDate() + 1);
+        const charge_date = new Date(date);
+        charge_date.setDate(charge_date.getDate() - 1);
         var chargedate = moment(charge_date).format("YYYY-MM-DD");  
         $('#next_charge_date').val(chargedate);
 
@@ -114,10 +114,8 @@ $("#billing_cycle").change(function () {
         //for next charge date
         const charge_date = new Date(start_date);
         charge_date.setYear(charge_date.getFullYear() + 1);
-
         var charge_year_date =  new Date(moment(charge_date));  
         charge_year_date.setDate(charge_year_date.getDate() - 1);
-
         var chargeyeardate = moment(charge_year_date).format("YYYY-MM-DD");  
         $('#next_charge_date').val(chargeyeardate);
 
@@ -133,7 +131,11 @@ $("#billing_cycle").change(function () {
             start_date1.setDate(start_date1.getDate() + specific);
             var date = moment(start_date1).format("YYYY-MM-DD");  
             $('.next_invoice_date').val(date);
-            $('#next_charge_date').val(start_date);
+
+            const charge_date = new Date(date);
+            charge_date.setDate(charge_date.getDate() - 1 );
+            var chargedate = moment(charge_date).format("YYYY-MM-DD"); 
+            $('#next_charge_date').val(chargedate);
         });
        
     } else if ($(this).val() == 'monthly_anniversary') {
@@ -208,14 +210,58 @@ $("#billing_cycle").change(function () {
         $('#week').addClass('d-none');
         $('#in_specific_days').addClass('d-none');
         $('#monthly_anniversary').addClass('d-none');
-        
-
+        var today = new Date(start_date);
+        var quarter = Math.floor((today.getMonth() + 3) / 3);
+       
     }
     else {
+        $('.next_invoice_date').val('');
+        $('#next_charge_date').val('');
         $('#week').addClass('d-none');
         $('#in_specific_days').addClass('d-none');
         $('#monthly_anniversary').addClass('d-none');
     }
+});
+
+
+
+$(document.body).on('change',".billing_start_date",function (e) {
+    var bill =  $("#billing_cycle").val();
+   if(bill != ""){
+        if(bill == "daily"){
+            const start_date1 = new Date($(this).val());
+            start_date1.setDate(start_date1.getDate() + 1);
+            var date = moment(start_date1).format("YYYY-MM-DD");  
+            $('.next_invoice_date').val(date);
+            $('#next_charge_date').val($(this).val());
+        }
+        if(bill == "fortnightly"){
+            //for invoice date
+            const next_date = new Date($(this).val());
+            next_date.setDate(next_date.getDate() + 2);
+            var date = moment(next_date).format("YYYY-MM-DD");  
+            $('.next_invoice_date').val(date);
+
+            //for next charge date
+            const charge_date = new Date($(this).val());
+            charge_date.setDate(charge_date.getDate() + 1);
+            var chargedate = moment(charge_date).format("YYYY-MM-DD");  
+            $('#next_charge_date').val(chargedate);
+        }
+        if(bill == "monthly"){
+             //for invoice date
+            const next_date = new Date($(this).val());
+            next_date.setMonth(next_date.getMonth() + 1, 1);
+            var date = moment(next_date).format("YYYY-MM-DD");  
+            $('.next_invoice_date').val(date);
+
+            //for next charge date
+            const charge_date = new Date(date);
+            charge_date.setDate(charge_date.getDate() - 1);
+            var chargedate = moment(charge_date).format("YYYY-MM-DD");  
+            $('#next_charge_date').val(chargedate);
+        }
+   }
 });
 
 $("#cancel").click(function(){

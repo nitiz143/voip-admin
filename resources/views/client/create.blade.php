@@ -635,7 +635,7 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Billing Start Date</label>
-                                                    <input type="date" class="form-control billing_start_date" id="billing_startdate"
+                                                    <input type="text" class="form-control datepicker billing_start_date"  data-date-format="yyyy-mm-dd" id="billing_startdate"
                                                         name="billing_startdate" value="">
                                                 </div>
                                             </div>
@@ -670,8 +670,8 @@
                                                 <div class="form-group d-none" id="monthly_anniversary">
                                                     <label for="billing_cycle_startday">Billing Cycle - Monthly
                                                         Anniversary Date*</label>
-                                                    <input type="date" name="billing_cycle_startday_for_monthly"
-                                                        class="form-control billing_cycle_startday"
+                                                    <input type="text" name="billing_cycle_startday_for_monthly"
+                                                        class="form-control datepicker billing_cycle_startday" data-date-format="yyyy-mm-dd"
                                                         value="">
                                                 </div>
                                                 <div class="form-group d-none" id="week">
@@ -695,14 +695,14 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="next_invoice_date">Next Invoice Date</label>
-                                                    <input type="date" class="form-control next_invoice_date" name="next_invoice_date"
+                                                    <input type="text" class="form-control datepicker next_invoice_date"  data-date-format="yyyy-mm-dd" name="next_invoice_date"
                                                         value="">
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label for="next_charge_date">Next Charge Date</label>
-                                                    <input type="date" class="form-control" name="next_charge_date" id="next_charge_date"
+                                                    <input type="text" class="form-control datepicker" name="next_charge_date"  data-date-format="yyyy-mm-dd" id="next_charge_date"
                                                         value="" readonly>
                                                 </div>
                                             </div>
@@ -761,7 +761,7 @@
 </div>
 @endsection
 @section('page_js')
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
 
 <script src="{{asset('js/timezones.full.js')}}"></script>
 <script src="{{asset('js/account_custom.js')}}"></script>
@@ -775,6 +775,12 @@
         let method =   $('#Clientform').attr('method');
         save(formdata,url,method);
 
+    });
+    $(function () {
+        $(".datepicker").datepicker({ 
+                autoclose: true, 
+                todayHighlight: true
+        });
     });
 </script>
 @endsection
