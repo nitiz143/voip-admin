@@ -26,12 +26,9 @@ $("#billing_cycle").change(function () {
 
         $(".billing_cycle_startday").change(function () {
            
-
+            var data =$(this).find(':selected').attr('data-id');
             var a = new Date(start_date);
-            const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-            let day = weekday[a.getDay()];
-           
-            if(day == $(this).val() ){
+            if(a.getDay() == data ){
                 //for invoice date
                 const next_date = new Date(start_date);
                 next_date.setDate(next_date.getDate() + 7);
@@ -45,11 +42,10 @@ $("#billing_cycle").change(function () {
                 var chargedate = moment(charge_date).format("YYYY-MM-DD");  
                 $('#next_charge_date').val(chargedate);
             }
-            else if($(this).val() < a.getDay()){
+            else if(data < a.getDay()){
                 //for invoice date
                 const next_date = new Date(start_date);
-                next_date.setDate(next_date.getDate() + 6);
-                console.log(next_date)
+                next_date.setDate(next_date.getDate() + (data - 1 - next_date.getDay() + 7) % 7 + 1);
                 var date = moment(next_date).format("YYYY-MM-DD");  
                 $('.next_invoice_date').val(date);
 
@@ -61,7 +57,7 @@ $("#billing_cycle").change(function () {
                 $('#next_charge_date').val(chargedate);
             }
             else{
-                var count = $(this).val() - a.getDay();
+                var count = data - a.getDay();
 
                 //for invoice date
                 const next_date = new Date(start_date);

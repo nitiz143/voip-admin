@@ -973,17 +973,21 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6">
-                                                    <div class="form-group mt-4">
-                                                        <label>Billing Start Date</label>
-                                                        <input  data-date-format="yyyy-mm-dd"  type="text"  class="form-control datepicker hidden" id="billing_startdate"
-                                                            name="billing_startdate"
-                                                            value="@if(!empty($billingdata->billing_startdate)){{$billingdata->billing_startdate}} @endif">
-                                                        <span class="text ml-2">
-                                                            @if(!empty($billingdata->billing_startdate))
+                                                    @if(!empty($billingdata->billing_startdate))
+                                                        <div class="form-group mt-4">
+                                                            <label>Billing Start Date</label>
+                                                            <input  data-date-format="yyyy-mm-dd"  type="text"  class="form-control hidden datepicker  billing_start_date" id="billing_start_date" name="billing_startdate"
+                                                            value="{{ $billingdata->billing_startdate}}">
+                                                            <span class="text ml-2">
                                                                 {{ $billingdata->billing_startdate}} 
-                                                            @endif
-                                                        </span>
-                                                    </div>
+                                                            </span>
+                                                        </div>
+                                                    @else
+                                                        <div class="form-group ">
+                                                            <label>Billing Start Date</label>
+                                                            <input  data-date-format="yyyy-mm-dd"  type="text"  class="form-control datepicker  billing_start_date" id="billing_start_date" name="billing_startdate" value="">
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -1056,32 +1060,25 @@
                                                         <select
                                                             class="custom-select form-control billing_cycle_startday"
                                                             name="billing_cycle_startday" id="billing_cycle_startday">
-                                                            <option value="Sunday" @if(!empty($billingdata->
-                                                                billing_cycle_startday))
+                                                            <option data-id="0" value="Sunday" @if(!empty($billingdata->billing_cycle_startday))
                                                                 {{$billingdata->billing_cycle_startday=='Sunday' ?
                                                                 'selected' : ''}} @endif>Sunday</option>
-                                                            <option value="Monday" @if(!empty($billingdata->
-                                                                billing_cycle_startday))
+                                                            <option data-id="1" value="Monday" @if(!empty($billingdata->billing_cycle_startday))
                                                                 {{$billingdata->billing_cycle_startday=='Monday' ?
                                                                 'selected' : ''}} @endif>Monday</option>
-                                                            <option value="Tuesday" @if(!empty($billingdata->
-                                                                billing_cycle_startday))
+                                                            <option data-id="2" value="Tuesday" @if(!empty($billingdata->billing_cycle_startday))
                                                                 {{$billingdata->billing_cycle_startday=='Tuesday' ?
                                                                 'selected' : ''}}@endif>Tuesday</option>
-                                                            <option value="Wednesday" @if(!empty($billingdata->
-                                                                billing_cycle_startday))
+                                                            <option data-id="3" value="Wednesday" @if(!empty($billingdata->billing_cycle_startday))
                                                                 {{$billingdata->billing_cycle_startday=='Wednesday' ?
                                                                 'selected' : ''}}@endif>Wednesday</option>
-                                                            <option value="Thursday" @if(!empty($billingdata->
-                                                                billing_cycle_startday))
+                                                            <option data-id="4" value="Thursday" @if(!empty($billingdata->billing_cycle_startday))
                                                                 {{$billingdata->billing_cycle_startday=='Thursday' ?
                                                                 'selected' : ''}}@endif>Thursday</option>
-                                                            <option value="Friday" @if(!empty($billingdata->
-                                                                billing_cycle_startday))
+                                                            <option  data-id="5" value="Friday" @if(!empty($billingdata->billing_cycle_startday))
                                                                 {{$billingdata->billing_cycle_startday=='Friday' ?
                                                                 'selected' : ''}} @endif>Friday</option>
-                                                            <option value="Saturday" @if(!empty($billingdata->
-                                                                billing_cycle_startday))
+                                                            <option data-id="6" value="Saturday" @if(!empty($billingdata->billing_cycle_startday))
                                                                 {{$billingdata->billing_cycle_startday=='Saturday' ?
                                                                 'selected' : ''}}@endif>Saturday</option>
                                                         </select>
@@ -1157,7 +1154,7 @@
                                                 <label for="next_invoice_date">Next Invoice Date</label>
                                                 <input class="form-control datepicker hidden next_invoice_date" id="next_invoice_date" data-date-format="yyyy-mm-dd" name="next_invoice_date" type="text" style="width: 50%; margin-left:10px;" value=" @if(!empty($billingdata->next_invoice_date)){{ $billingdata->next_invoice_date}}@endif">
                                                 
-                                                <span class="next_invoice_edit_text ml-2">
+                                                <span class="next_invoice_edit_text ml-2 next_invoice_date">
                                                     @if(!empty($billingdata->next_invoice_date))
                                                      {{ $billingdata->next_invoice_date}} 
                                                     @endif
@@ -1275,6 +1272,9 @@
         $('.bill_cycle_edit_text').addClass('hidden');
         $('#billing_cycle').removeClass('hidden');
         $('.Edit_bill_cycle').addClass('d-none');
+        $('.next_invoice_edit_text').addClass('hidden');
+        $('#next_invoice_date').removeClass('hidden');
+        $('.Edit').addClass('d-none');
     })
 
     $(function () {

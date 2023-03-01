@@ -134,9 +134,7 @@ class CallController extends Controller
     {
          $callhistory =  CallHistory::find($request->id);
          $account = Client::where('id',$callhistory->account_id)->first();
-         $firstname = !empty($account->firstname) ? $account->firstname : "";
-         $lastname =  !empty($account->lastname) ? $account->lastname : "";
-         return view('call.viewcallhistory',compact('callhistory','firstname','lastname'));
+         return view('call.viewcallhistory',compact('callhistory','account'));
 
     }
 

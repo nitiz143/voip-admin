@@ -680,13 +680,13 @@
                                                     <select
                                                         class="custom-select form-control billing_cycle_startday"
                                                         name="billing_cycle_startday" id="billing_cycle_startday">
-                                                        <option value="0">Sunday</option>
-                                                        <option value="1">Monday</option>
-                                                        <option value="2">Tuesday</option>
-                                                        <option value="3">Wednesday</option>
-                                                        <option value="4">Thursday</option>
-                                                        <option value="5">Friday</option>
-                                                        <option value="6">Saturday</option>
+                                                        <option data-id="0" value="Sunday">Sunday</option>
+                                                        <option data-id="1" value="Monday">Monday</option>
+                                                        <option data-id="2"value="Tuesday">Tuesday</option>
+                                                        <option data-id="3" value="Wednesday">Wednesday</option>
+                                                        <option data-id="4" value="Thursday">Thursday</option>
+                                                        <option data-id="5" value="Friday">Friday</option>
+                                                        <option data-id="6" value="Saturday">Saturday</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -778,8 +778,8 @@
     });
     $(function () {
         $(".datepicker").datepicker({ 
-                autoclose: true, 
-                todayHighlight: true
+            autoclose: true, 
+            todayHighlight: true
         });
     });
 </script>
