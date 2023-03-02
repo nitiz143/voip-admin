@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\Client;
 use Yajra\DataTables\DataTables;
+use DateTime;
 use File;
 
 class CallController extends Controller
@@ -20,9 +21,48 @@ class CallController extends Controller
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
                     $account = Client::where('id',$row->account_id)->first();
-                    $firstname = !empty($account->firstname) ? $account->firstname : "";
-                    $lastname =  !empty($account->lastname) ? $account->lastname : "";
-                        return $firstname .'  '. $lastname;
+                    return  !empty($account->account_name) ? $account->account_name : "";
+                })
+                ->addColumn('Connect_time', function($row){
+                    $date = new \DateTime();
+                    $value = $row->starttime;
+                    $startTime =  $date->setTimestamp($value/1000);
+                    return !empty($startTime) ? $startTime->format('Y-m-d H:i:s') : "";
+
+                })
+                ->addColumn('Disconnect_time', function($row){
+                    $date = new \DateTime();
+                    $value = $row->stoptime;
+                    $stopTime =  $date->setTimestamp($value/1000);
+                    return !empty($stopTime) ? $stopTime->format('Y-m-d H:i:s') : "";
+                })
+                ->addColumn('Cost', function($row){
+                        $cost = "$".$row->fee;
+                    return $cost;
+                })
+                ->addColumn('Avrage_cost', function($row){
+                        $cost = "$".$row->fee;
+                    return $cost;
+                })
+                ->addColumn('Trunk', function($row){
+                    $account = Client::where('id',$row->account_id)->first();
+                   if(!empty($account->customer_authentication_rule)){
+                        if($account->customer_authentication_rule == "6"){
+                            return "other";
+                        }
+                    }
+                })
+                ->addColumn('billing_duration', function($row){
+                    $date = new \DateTime();
+                    $value = $row->starttime;
+                    $startTime =  $date->setTimestamp($value/1000);
+
+                    $date1 = new \DateTime();
+                    $value1 = $row->stoptime;
+                    $stopTime =  $date1->setTimestamp($value1/1000);
+                  
+                    $totalDuration =  $stopTime->diff( $startTime)->format('%S');
+                    return   $totalDuration;
                 })
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;
@@ -35,6 +75,69 @@ class CallController extends Controller
         return view('call.call-history-index');
     }
 
+
+    public function VendorIndex(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = CallHistory::query('*')->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('account', function($row){
+                    $account = Client::where('id',$row->account_id)->first();
+                    return  !empty($account->account_name) ? $account->account_name : "";
+                })
+                ->addColumn('Connect_time', function($row){
+                    $date = new \DateTime();
+                    $value = $row->starttime;
+                    $startTime =  $date->setTimestamp($value/1000);
+                    return !empty($startTime) ? $startTime->format('Y-m-d H:i:s') : "";
+
+                })
+                ->addColumn('Disconnect_time', function($row){
+                    $date = new \DateTime();
+                    $value = $row->stoptime;
+                    $stopTime =  $date->setTimestamp($value/1000);
+                    return !empty($stopTime) ? $stopTime->format('Y-m-d H:i:s') : "";
+                })
+                ->addColumn('Cost', function($row){
+                        $cost = "$".$row->agentfee;
+                    return $cost;
+                })
+                ->addColumn('Avrage_cost', function($row){
+                        $cost = "$".$row->agentfee;
+                    return $cost;
+                })
+                ->addColumn('billing_duration', function($row){
+                    $date = new \DateTime();
+                    $value = $row->starttime;
+                    $startTime =  $date->setTimestamp($value/1000);
+
+                    $date1 = new \DateTime();
+                    $value1 = $row->stoptime;
+                    $stopTime =  $date1->setTimestamp($value1/1000);
+                  
+                    $totalDuration =  $stopTime->diff( $startTime)->format('%S');
+                    return   $totalDuration;
+                })
+                ->addColumn('Trunk', function($row){
+                    $account = Client::where('id',$row->account_id)->first();
+                   if(!empty($account->customer_authentication_rule)){
+                        if($account->customer_authentication_rule == "6"){
+                            return "other";
+                        }
+                   }
+                      
+                })
+                ->addColumn('action', function($row){
+                    $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+              
+        return view('call.vendor-index');
+    }
 
 
     public function store(Request $request)

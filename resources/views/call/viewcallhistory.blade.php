@@ -217,7 +217,7 @@
     </tr>
     <tr>
         <td>Account</td>
-        <td>{{!empty($account->firstname) ?  $account->firstname:""}} &nbsp;&nbsp;{{!empty($account->lastname) ? $account->lastname:""}}</td>
+        <td>{{!empty($account->account_name) ?  $account->account_name:""}}</td>
     </tr>
   </tbody>
 </table>

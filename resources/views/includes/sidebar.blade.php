@@ -58,7 +58,7 @@
           @endif
 
           <li class="nav-item ">
-            <a href="{{url('/call')}}" class="nav-link {{ Request::is('call','call/*') ? 'active' : '' }} ">
+            <a href="{{url('/Customer_cdr_show')}}" class="nav-link {{ Request::is('Customer_cdr_show','Customer_cdr_show/*') ? 'active' : '' }} ">
                 <i class="nav-icon fas fa-phone-alt"></i>
               <p>
                 Call-history

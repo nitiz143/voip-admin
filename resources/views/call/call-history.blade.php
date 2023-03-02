@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('call.index')}}">Call-history</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('Customer_cdr_show.index')}}">Call-history</a></li>
                         <li class="breadcrumb-item active">Import CSV</li>
                     </ol>
                 </div>
@@ -32,7 +32,7 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="{{ route('call.store') }}" method="POST" id="form" enctype="multipart/form-data">
+                        <form action="{{ route('cdr.store') }}" method="POST" id="form" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">

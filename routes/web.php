@@ -27,7 +27,11 @@ Auth::routes();
 Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::resource('/call','App\Http\Controllers\CallController');
+    // Route::resource('/Customer_cdr_show','App\Http\Controllers\CallController');
+    Route::get('/Upload-CDR', [App\Http\Controllers\CallController::class, 'create'])->name('cdr.create');
+    Route::post('/Store-CDR', [App\Http\Controllers\CallController::class, 'store'])->name('cdr.store');
+    Route::get('/Customer_cdr_show', [App\Http\Controllers\CallController::class, 'index'])->name('Customer_cdr_show.index');
+    Route::get('/Vendor_cdr_show', [App\Http\Controllers\CallController::class, 'VendorIndex'])->name('vendorCdr.index');
     Route::get('/getCallhistory','App\Http\Controllers\CallController@getCallhistory')->name('getCallhistory');
     Route::resource('/users','App\Http\Controllers\UserController');
     Route::post('getUsers','App\Http\Controllers\UserController@getUsers')->name('getUsers');

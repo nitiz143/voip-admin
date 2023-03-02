@@ -1308,11 +1308,12 @@ class ClientController extends Controller
         }
     }
 
-    public function invoice_create(Request $request){
-        $clients = Client::where('billing_status','Active')->get();
-        foreach ( $clients as $key => $client) {
-            $billingdata = Billing::where('account_id',$client->id)->first();
-        }
-    }
+    // public function invoice_create(Request $request){
+    //     $billingdata = Billing::query('')->get();
+    //     foreach ($billingdata as $key => $billing) {
+           
+    //     }
+        
+    // }
 
 }
