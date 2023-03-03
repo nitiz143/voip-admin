@@ -16,8 +16,17 @@ class CallController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = CallHistory::query('*')->get();
+            $data= CallHistory::query('')->get();  
             return Datatables::of($data)
+                ->filter(function ($instance) use ($request) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if(!empty($request->Account)){
+                            if($row['account_id'] == $request->Account){
+                                return $row;
+                            }
+                        }
+                    });
+                })
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
                     $account = Client::where('id',$row->account_id)->first();
@@ -41,7 +50,7 @@ class CallController extends Controller
                     return $cost;
                 })
                 ->addColumn('Avrage_cost', function($row){
-                        $cost = "$".$row->fee;
+                        $cost = "$0.0";
                     return $cost;
                 })
                 ->addColumn('Trunk', function($row){
@@ -71,16 +80,32 @@ class CallController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-              
-        return view('call.call-history-index');
+        $Accounts = Client::where("customer", "=",1)->get();
+        return view('call.call-history-index',compact('Accounts'));
     }
 
 
     public function VendorIndex(Request $request)
     {
         if ($request->ajax()) {
-            $data = CallHistory::query('*')->get();
+            $data= CallHistory::query('')->get();  
             return Datatables::of($data)
+            ->filter(function ($instance) use ($request) {
+                $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                          
+                    if(!empty($request->Account)){
+                        if($row['account_id'] == $request->Account){
+                            return $row;
+                        }
+                    }
+                    if(!empty($request->StartDate)){
+                        $start = \Carbon\Carbon::parse($request->StartDate);
+                        $end = \Carbon\Carbon::parse($request->EndDate);
+                        $get_all_user = CallHistory::whereDate('starttime','<=',$end->format('m-d-y'))
+                        ->whereDate('stoptime','>=',$start->format('m-d-y'));
+                    }
+                });
+            })
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
                     $account = Client::where('id',$row->account_id)->first();
@@ -104,7 +129,7 @@ class CallController extends Controller
                     return $cost;
                 })
                 ->addColumn('Avrage_cost', function($row){
-                        $cost = "$".$row->agentfee;
+                        $cost =  $cost = "$0.0";
                     return $cost;
                 })
                 ->addColumn('billing_duration', function($row){
@@ -135,8 +160,8 @@ class CallController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-              
-        return view('call.vendor-index');
+        $Accounts = Client::where("Vendor", "=",1)->get();
+        return view('call.vendor-index',compact('Accounts'));
     }
 
 

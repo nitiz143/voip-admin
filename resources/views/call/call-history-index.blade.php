@@ -9,7 +9,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <a href="{{ route('cdr.create') }}" class="btn btn-primary mb-4 float-right w-10" id="createzoneModal">Import</a>
+                        <a href="" class="btn btn-primary mb-4 float-right w-10" id="Filter">Filter</a>
+                        <a href="{{ route('cdr.create') }}" class="btn btn-primary mb-4 ml-2 float-right w-10" id="createzoneModal">Import</a>
                     </ol>
                 </div>
             </div>
@@ -78,6 +79,100 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="modal" id="FilterModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog ">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Filter</h5>
+                                                    <button type="button" id="filterClose" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" >
+                                                    <form novalidate class="form-horizontal form-groups-bordered validate" method="post" id="cdr_filter">
+                                                        <div class="form-group">
+                                                            <label class="control-label small_label" for="field-1">Start Date</label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="text" name="StartDate" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="text" name="EndDate" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {{-- <div class="form-group">
+                                                            <label for="field-1" class="control-label">Currency</label>
+                                                            <select class="form-control" name="CurrencyID"></select>
+                                                        </div> --}}
+                                                        <div class="form-group">
+                                                            <label class="control-label small_label" for="field-1">Type</label>
+                                                            <select class="form-control" id="bulk_AccountID" allowClear="true" name="CDRType"></select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="field-1">Gateway</label>
+                                                            <select class="form-control" id="bluk_CompanyGatewayID" name="CompanyGatewayID"></select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="field-1">Account</label>
+                                                            <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
+                                                                @if(!empty($Accounts))
+                                                                <option value="">Select</option>
+                                                                    @foreach ( $Accounts as $Account )
+                                                                        <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
+                                                                    @endforeach
+                                                                @endif
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="field-1">CLI</label>
+                                                            <input type="text" name="CLI" class="form-control mid_fld "  value=""  />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="field-1">CLD</label>
+                                                            <input type="text" name="CLD" class="form-control mid_fld  "  value=""  />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="field-1" class="control-label">Show</label>
+                                                            <select class="form-control" id="bulk_AccountID" allowClear="true" name="zerovaluecost"></select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="field-1">Prefix</label>
+                                                            <input type="text" name="area_prefix" class="form-control mid_fld "  value=""  />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="field-1">Trunk</label>
+                                                            <select class="form-control" id="bulk_AccountID" allowClear="true" name="Trunk"></select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label">Account Tag</label>
+                                                            <input class="form-control tags" name="tag" type="text" >
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <br/>
+                                                            <input type="hidden" name="ResellerOwner" value="0">
+                                                            <button type="submit" class="btn btn-primary btn-md btn-icon icon-left">
+                                                                <i class="entypo-search"></i>
+                                                                Search
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -90,29 +185,95 @@
 @endsection
 @section('page_js')
 <script>
+ $("#Filter").on("click", function (e) {
+    e.preventDefault();
+    $('#FilterModel').modal('show');
+});
 
-    
+    $("#filterClose").on("click", function (e) {
+        e.preventDefault();
+        $("#FilterModel").modal("hide");
+    });
+
     $("#btnModeClose").on("click", function (e) {
         e.preventDefault();
         $("#ajaxModel").modal("hide");
     });
-    var table = $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ route('Customer_cdr_show.index') }}",
-        columns: [
-            {data:'id',name:'id'},
-            {data:'account',name:'account'},
-            {data:'Connect_time',name:'Connect_time'},
-            {data:'Disconnect_time',name:'Disconnect_time'},
-            {data:'billing_duration',name:'billing_duration'},
-            {data:'Cost',name:'Cost'},
-            {data:'Avrage_cost',name:'Avrage_cost'},
-            {data:'callere164',name:'callere164'},
-            {data:'calleee164',name:'calleee164'},
-            // {data:'Trunk',name:'Trunk'},
-            {data:'action',name:'action', orderable: false, searchable: false},
-        ]
+
+    $(document).ready(function() {
+        var $searchFilter = {};
+        $("#cdr_filter").submit(function(e) {
+            e.preventDefault();
+            $searchFilter.Trunk = $("#cdr_filter select[name='Trunk']").val();
+            $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
+            $searchFilter.Gateway = $("#cdr_filter select[name='GatewayID']").val();
+            $searchFilter.zerovaluecost = $("#cdr_filter select[name='zerovaluecost']").val();
+            $searchFilter.Cli = $("#cdr_filter input[name='CLI']").val();
+            $searchFilter.Cld = $("#cdr_filter input[name='CLD']").val();
+            $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
+            $searchFilter.Tag = $("#cdr_filter input[name='tag']").val();
+            $searchFilter.Start_date = $("#cdr_filter input[name='StartDate']").val();
+            $searchFilter.End_date = $("#cdr_filter input[name='EndDate']").val();
+            var table = $('.data-table').DataTable({
+                    "bDestroy": true, // Destroy when resubmit form
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "ajax": {
+                        "url" : "{{ route('Customer_cdr_show.index') }}",
+                        "data" : function ( d ){
+                            d.Trunk= $searchFilter.Trunk,
+                            d.Account= $searchFilter.Account,
+                            d.Gateway = $searchFilter.Country,
+                            d.zerovaluecost= $searchFilter.zerovaluecost,
+                            d.Cli= $searchFilter.Cli,
+                            d.Cld= $searchFilter.Cld,
+                            d.Prefix = $searchFilter.Prefix,
+                            d.Tag= $searchFilter.Tag,
+                            d.Start_date= $searchFilter.Start_date,
+                            d.End_date= $searchFilter.End_date
+                        },
+                    },
+                    "aaSorting": [[1, "asc"]],
+                    "language": {                
+                                    "infoFiltered": ""
+                                },
+                    "aoColumns":
+                    [
+                        {data:'id',name:'id'},
+                        {data:'account',name:'account'},
+                        {data:'Connect_time',name:'Connect_time'},
+                        {data:'Disconnect_time',name:'Disconnect_time'},
+                        {data:'billing_duration',name:'billing_duration'},
+                        {data:'Cost',name:'Cost'},
+                        {data:'Avrage_cost',name:'Avrage_cost'},
+                        {data:'callere164',name:'callere164'},
+                        {data:'calleee164',name:'calleee164'},
+                        {data:'action',name:'action', orderable: false, searchable: false},
+                    ],
+            });
+            $('#FilterModel').modal('hide');
+        });
+    });
+
+    $(document).on('click','.callhistoryForm',function(e){
+        // $("#ajaxModel").modal();
+        var id = $(this).data('id')
+        $.ajax({
+           type:'get',
+           url:"{{ route('getCallhistory') }}",
+           data:{id,id},
+           success:function(data){
+              console.log(data);
+              $('#callForm').html(data);
+              $("#ajaxModel").modal('show');
+           }
+        });
+    });
+    $(function () {
+        $(".datepicker").datepicker({ 
+            autoclose: true, 
+            todayHighlight: true
+        });
     });
 
     $(document).on('click','.callhistoryForm',function(e){
