@@ -103,7 +103,7 @@
                                                                 <label class="control-label small_label" for="field-1">Start Date</label>
                                                                 <div class="row">
                                                                     <div class="col-sm-6">
-                                                                        <input type="text" name="StartDate" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
+                                                                        <input type="text" name="StartDate" id="datepicker" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
                                                                     </div>
                                                                     <div class="col-sm-6">
                                                                         <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
@@ -114,7 +114,7 @@
                                                                 <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
                                                                 <div class="row">
                                                                     <div class="col-sm-6">
-                                                                        <input type="text" name="EndDate" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
+                                                                        <input type="text" name="EndDate" id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
                                                                     </div>
                                                                     <div class="col-sm-6">
                                                                         <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
@@ -149,7 +149,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="field-1" class="control-label">Show</label>
-                                                                <select class="form-control" id="bulk_AccountID" allowClear="true" name="zerovaluecost"></select>
+                                                                <select class="form-control" id="bulk_AccountID" allowClear="true" name="zerovaluecost"><option value="0">All</option><option value="1">Zero Cost</option><option value="2">Non Zero Cost</option></select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label" for="field-1">Prefix</label>
@@ -157,10 +157,17 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label" for="field-1">Trunk</label>
-                                                                <select class="form-control" id="bulk_AccountID" allowClear="true" name="Trunk"></select>
+                                                                <select class="form-control" id="bulk_AccountID" allowClear="true" name="Trunk">
+                                                                    @if(!empty($Trunks))
+                                                                        <option value="">Select</option>
+                                                                        @foreach ($Trunks as $Trunk)
+                                                                            <option value="{{$Trunk->id}}">{{$Trunk->title}}</option>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </select>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="control-label">Account Tag</label>
+                                                                <label class="control-label">Tag</label>
                                                                 <input class="form-control tags" name="tag" type="text" >
                                                             </div>
                                                             <div class="form-group">
@@ -250,11 +257,11 @@ $("#btnModeClose").on("click", function (e) {
                             d.Cld= $searchFilter.Cld,
                             d.Prefix = $searchFilter.Prefix,
                             d.Tag= $searchFilter.Tag,
-                            d.StartDate= $searchFilter.StartDate,
-                            d.EndDate= $searchFilter.EndDate
+                            d.StartDate =  $searchFilter.StartDate,
+                            d.EndDate = $searchFilter.EndDate
                         },
                     },
-                    "aaSorting": [[1, "asc"]],
+                    "aaSorting": [[0, "asc"]],
                     "language": {                
                                     "infoFiltered": ""
                                 },
@@ -289,10 +296,16 @@ $("#btnModeClose").on("click", function (e) {
            }
         });
     });
-    $(function () {
-        $(".datepicker").datepicker({ 
-                autoclose: true, 
-                todayHighlight: true
+    $(document).ready(function() {
+        var myDate = new Date();
+        $('#datepicker').datepicker();
+        $('#datepicker').datepicker('setDate', myDate);
+        $('#datepicker1').datepicker();
+        $('#datepicker1').datepicker('setDate', myDate);
+
+
+        $('.timepicker').datetimepicker({
+            format: 'HH:mm:ss'
         });
     });
 

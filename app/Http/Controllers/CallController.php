@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Validator;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\Client;
 use Yajra\DataTables\DataTables;
+use App\Models\Trunk;
 use DateTime;
+use Date;
 use File;
 
 class CallController extends Controller
@@ -16,17 +18,37 @@ class CallController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data= CallHistory::query('')->get();  
+            $data = CallHistory::query();
+            if(($request->has('StartDate') && $request->has('EndDate'))){
+                $start =  strtotime($request->input('StartDate'));
+                $start = $start*1000;
+                $end = strtotime($request->input('EndDate'));
+                $end = $end*1000;
+                $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+            }
+            if(!empty($request->Account)){
+                $data->where('account_id', $request->Account);
+            }
+            if(!empty($request->zerovaluecost)){
+                if($request->zerovaluecost == 1){
+                    $data->where('fee', 0);
+                }
+                if($request->zerovaluecost == 2){
+                    $data->where('fee','!=', 0);
+                }
+                if($request->zerovaluecost == 0){
+                    $data;
+                }
+            }
+            if(!empty($request->Cli)){
+                $data->where('callere164', $request->Cli);
+            }
+            if(!empty($request->Cld)){
+                $data->where('calleee164', $request->Cld);
+            }
+            $data = $data->get();
+          
             return Datatables::of($data)
-                ->filter(function ($instance) use ($request) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if(!empty($request->Account)){
-                            if($row['account_id'] == $request->Account){
-                                return $row;
-                            }
-                        }
-                    });
-                })
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
                     $account = Client::where('id',$row->account_id)->first();
@@ -37,7 +59,6 @@ class CallController extends Controller
                     $value = $row->starttime;
                     $startTime =  $date->setTimestamp($value/1000);
                     return !empty($startTime) ? $startTime->format('Y-m-d H:i:s') : "";
-
                 })
                 ->addColumn('Disconnect_time', function($row){
                     $date = new \DateTime();
@@ -76,36 +97,50 @@ class CallController extends Controller
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;
                     return $btn;
-                })
+                }) 
                 ->rawColumns(['action'])
                 ->make(true);
         }
         $Accounts = Client::where("customer", "=",1)->get();
-        return view('call.call-history-index',compact('Accounts'));
+        $Trunks = Trunk::where("status", "=",1)->get();
+        return view('call.call-history-index',compact('Accounts','Trunks'));
     }
 
 
     public function VendorIndex(Request $request)
     {
         if ($request->ajax()) {
-            $data= CallHistory::query('')->get();  
+           
+            $data = CallHistory::query();
+            if(($request->has('StartDate') && $request->has('EndDate'))){
+                $start =  strtotime($request->input('StartDate'));
+                $start = $start*1000;
+                $end = strtotime($request->input('EndDate'));
+                $end = $end*1000;
+                $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+            }
+            if(!empty($request->Account)){
+                $data->where('account_id', $request->Account);
+            }
+            if(!empty($request->zerovaluecost)){
+                if($request->zerovaluecost == 1){
+                    $data->where('agentfee', 0);
+                }
+                if($request->zerovaluecost == 2){
+                    $data->where('agentfee','!=', 0);
+                }
+                if($request->zerovaluecost == 0){
+                    $data;
+                }
+            }
+            if(!empty($request->Cli)){
+                $data->where('callere164', $request->Cli);
+            }
+            if(!empty($request->Cld)){
+                $data->where('calleee164', $request->Cld);
+            }
+            $data = $data->get();
             return Datatables::of($data)
-            ->filter(function ($instance) use ($request) {
-                $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                          
-                    if(!empty($request->Account)){
-                        if($row['account_id'] == $request->Account){
-                            return $row;
-                        }
-                    }
-                    if(!empty($request->StartDate)){
-                        $start = \Carbon\Carbon::parse($request->StartDate);
-                        $end = \Carbon\Carbon::parse($request->EndDate);
-                        $get_all_user = CallHistory::whereDate('starttime','<=',$end->format('m-d-y'))
-                        ->whereDate('stoptime','>=',$start->format('m-d-y'));
-                    }
-                });
-            })
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
                     $account = Client::where('id',$row->account_id)->first();
@@ -161,7 +196,8 @@ class CallController extends Controller
                 ->make(true);
         }
         $Accounts = Client::where("Vendor", "=",1)->get();
-        return view('call.vendor-index',compact('Accounts'));
+        $Trunks = Trunk::where("status", "=",1)->get();
+        return view('call.vendor-index',compact('Accounts','Trunks'));
     }
 
 

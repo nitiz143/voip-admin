@@ -47,7 +47,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Name</th>
+                                                    <th>Account Name</th>
                                                     <th>Connect Time</th>
                                                     <th>Disconnect Time</th>
                                                     <th>Billed Duration (sec)</th>
@@ -62,6 +62,10 @@
                                             <tbody>
             
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div><!-- /.card-body -->
                                     <div class="modal" id="ajaxModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -95,7 +99,7 @@
                                                             <label class="control-label small_label" for="field-1">Start Date</label>
                                                             <div class="row">
                                                                 <div class="col-sm-6">
-                                                                    <input type="text" name="StartDate" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
+                                                                    <input type="text" name="StartDate" class="form-control datepicker" id="datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
                                                                 </div>
                                                                 <div class="col-sm-6">
                                                                     <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
@@ -106,7 +110,8 @@
                                                             <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
                                                             <div class="row">
                                                                 <div class="col-sm-6">
-                                                                    <input type="text" name="EndDate" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
+                                                                    <input type="text" name="EndDate" 
+                                                                    id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
                                                                 </div>
                                                                 <div class="col-sm-6">
                                                                     <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
@@ -117,10 +122,10 @@
                                                             <label for="field-1" class="control-label">Currency</label>
                                                             <select class="form-control" name="CurrencyID"></select>
                                                         </div> --}}
-                                                        <div class="form-group">
+                                                        {{-- <div class="form-group">
                                                             <label class="control-label small_label" for="field-1">Type</label>
                                                             <select class="form-control" id="bulk_AccountID" allowClear="true" name="CDRType"></select>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="form-group">
                                                             <label class="control-label" for="field-1">Gateway</label>
                                                             <select class="form-control" id="bluk_CompanyGatewayID" name="CompanyGatewayID"></select>
@@ -146,7 +151,9 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="field-1" class="control-label">Show</label>
-                                                            <select class="form-control" id="bulk_AccountID" allowClear="true" name="zerovaluecost"></select>
+                                                            <select class="form-control" id="bulk_AccountID" allowClear="true" name="zerovaluecost">
+                                                                <option value="0">All</option><option value="1">Zero Cost</option><option value="2">Non Zero Cost</option>
+                                                            </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="control-label" for="field-1">Prefix</label>
@@ -154,7 +161,14 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="control-label" for="field-1">Trunk</label>
-                                                            <select class="form-control" id="bulk_AccountID" allowClear="true" name="Trunk"></select>
+                                                            <select class="form-control" id="bulk_AccountID" allowClear="true" name="Trunk">
+                                                                @if(!empty($Trunks))
+                                                                    <option value="">Select</option>
+                                                                    @foreach ($Trunks as $Trunk)
+                                                                        <option value="{{$Trunk->id}}">{{$Trunk->title}}</option>
+                                                                    @endforeach
+                                                                @endif
+                                                            </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="control-label">Account Tag</label>
@@ -202,8 +216,16 @@
 
     $(document).ready(function() {
         var $searchFilter = {};
+        var TotalCall = 0;
+        var TotalDuration = 0;
+        var TotalCost = 0;
+        var CurrencyCode = 0;
         $("#cdr_filter").submit(function(e) {
             e.preventDefault();
+            var starttime = $("#cdr_filter input[name='StartTime']").val();
+            if(starttime =='00:00:01'){
+                starttime = '00:00:00';
+            }
             $searchFilter.Trunk = $("#cdr_filter select[name='Trunk']").val();
             $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
             $searchFilter.Gateway = $("#cdr_filter select[name='GatewayID']").val();
@@ -212,8 +234,20 @@
             $searchFilter.Cld = $("#cdr_filter input[name='CLD']").val();
             $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
             $searchFilter.Tag = $("#cdr_filter input[name='tag']").val();
-            $searchFilter.Start_date = $("#cdr_filter input[name='StartDate']").val();
-            $searchFilter.End_date = $("#cdr_filter input[name='EndDate']").val();
+            $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
+            $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
+            $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
+            // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
+            if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
+                $.notify("Please Select a Start date", "Error", toastr_opts);
+                return false;
+            }
+            if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
+                $.notify("Please Select a End date", "Error", toastr_opts);
+                return false;
+            }
+            $searchFilter.StartDate += ' '+starttime;
+            $searchFilter.EndDate += ' '+$("#cdr_filter [name='EndTime']").val();
             var table = $('.data-table').DataTable({
                     "bDestroy": true, // Destroy when resubmit form
                     "bProcessing": true,
@@ -224,16 +258,16 @@
                             d.Trunk= $searchFilter.Trunk,
                             d.Account= $searchFilter.Account,
                             d.Gateway = $searchFilter.Country,
-                            d.zerovaluecost= $searchFilter.zerovaluecost,
-                            d.Cli= $searchFilter.Cli,
-                            d.Cld= $searchFilter.Cld,
+                            d.zerovaluecost = $searchFilter.zerovaluecost,
+                            d.Cli = $searchFilter.Cli,
+                            d.Cld = $searchFilter.Cld,
                             d.Prefix = $searchFilter.Prefix,
-                            d.Tag= $searchFilter.Tag,
-                            d.Start_date= $searchFilter.Start_date,
-                            d.End_date= $searchFilter.End_date
+                            d.Tag = $searchFilter.Tag,
+                            d.StartDate = $searchFilter.StartDate,
+                            d.EndDate = $searchFilter.EndDate
                         },
                     },
-                    "aaSorting": [[1, "asc"]],
+                    "aaSorting": [[0, "asc"]],
                     "language": {                
                                     "infoFiltered": ""
                                 },
@@ -250,6 +284,24 @@
                         {data:'calleee164',name:'calleee164'},
                         {data:'action',name:'action', orderable: false, searchable: false},
                     ],
+                   
+                    "fnFooterCallback": function ( row, data, start, end, display ) {
+                       
+                        if (end > 0) {
+                            $(row).html('');
+                            for (var i = 0; i < $('.data-table thead th').length; i++) {
+                                var a = document.createElement('td');
+                                $(a).html('');
+                                $(row).append(a);
+                            }
+                            $($(row).children().get(0)).html('<strong>Total</strong>')
+                            $($(row).children().get(3)).html('<strong>'+TotalCall+' Calls</strong>');
+                            $($(row).children().get(4)).html('<strong>'+TotalDuration+' (mm:ss)</strong>');
+                            $($(row).children().get(5)).html('<strong> $' + TotalCost + '</strong>');
+                        }else{
+                            $(".data-table").find('tfoot').find('tr').html('');
+                        }
+                    }
             });
             $('#FilterModel').modal('hide');
         });
@@ -269,12 +321,17 @@
            }
         });
     });
-    $(function () {
-        $(".datepicker").datepicker({ 
-            autoclose: true, 
-            todayHighlight: true
+    $(document).ready(function() {
+        var myDate = new Date();
+        $('#datepicker').datepicker();
+        $('#datepicker').datepicker('setDate', myDate);
+        $('#datepicker1').datepicker();
+        $('#datepicker1').datepicker('setDate', myDate);
+        $('.timepicker').datetimepicker({
+            format: 'HH:mm:ss'
         });
     });
+   
 
     $(document).on('click','.callhistoryForm',function(e){
         // $("#ajaxModel").modal();
