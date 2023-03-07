@@ -5,7 +5,9 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-
+                    <div class="header mt-2">
+                        <h4 class="title ">Customer CDR</h4>
+                    </div>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -38,11 +40,9 @@
                                     </div>
                                 </div>
                                 <div class="panel-body tabs-menu-body">
-                                    <div class="card-header">
-                                        <h1 class="card-title ">Customer CDR</h1>
-                                    </div>
+                                
                                     <!-- /.card-header -->
-                                    <div class="card-body">
+                                    <div class="panel-body mt-3">
                                         <table class="table table-bordered data-table">
                                             <thead>
                                                 <tr>
@@ -128,7 +128,14 @@
                                                         </div> --}}
                                                         <div class="form-group">
                                                             <label class="control-label" for="field-1">Gateway</label>
-                                                            <select class="form-control" id="bluk_CompanyGatewayID" name="CompanyGatewayID"></select>
+                                                            <select class="form-control" id="bluk_CompanyGatewayID" name="CompanyGatewayID">
+                                                                @if(!empty($Gateways))
+                                                                <option value="">Select</option>
+                                                                    @foreach ($Gateways as $Gateway)
+                                                                        <option value="{{$Gateway->host}}">{{$Gateway->host}}</option>
+                                                                    @endforeach
+                                                                @endif
+                                                            </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="control-label" for="field-1">Account</label>
@@ -159,7 +166,7 @@
                                                             <label class="control-label" for="field-1">Prefix</label>
                                                             <input type="text" name="area_prefix" class="form-control mid_fld "  value=""  />
                                                         </div>
-                                                        <div class="form-group">
+                                                        {{-- <div class="form-group">
                                                             <label class="control-label" for="field-1">Trunk</label>
                                                             <select class="form-control" id="bulk_AccountID" allowClear="true" name="Trunk">
                                                                 @if(!empty($Trunks))
@@ -173,7 +180,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Account Tag</label>
                                                             <input class="form-control tags" name="tag" type="text" >
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="form-group">
                                                             <br/>
                                                             <input type="hidden" name="ResellerOwner" value="0">
@@ -219,21 +226,20 @@
         var TotalCall = 0;
         var TotalDuration = 0;
         var TotalCost = 0;
-        var CurrencyCode = 0;
         $("#cdr_filter").submit(function(e) {
             e.preventDefault();
             var starttime = $("#cdr_filter input[name='StartTime']").val();
             if(starttime =='00:00:01'){
                 starttime = '00:00:00';
             }
-            $searchFilter.Trunk = $("#cdr_filter select[name='Trunk']").val();
+            // $searchFilter.Trunk = $("#cdr_filter select[name='Trunk']").val();
             $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
             $searchFilter.Gateway = $("#cdr_filter select[name='GatewayID']").val();
             $searchFilter.zerovaluecost = $("#cdr_filter select[name='zerovaluecost']").val();
             $searchFilter.Cli = $("#cdr_filter input[name='CLI']").val();
             $searchFilter.Cld = $("#cdr_filter input[name='CLD']").val();
             $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
-            $searchFilter.Tag = $("#cdr_filter input[name='tag']").val();
+            // $searchFilter.Tag = $("#cdr_filter input[name='tag']").val();
             $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
             $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
             $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
@@ -284,24 +290,48 @@
                         {data:'calleee164',name:'calleee164'},
                         {data:'action',name:'action', orderable: false, searchable: false},
                     ],
-                   
                     "fnFooterCallback": function ( row, data, start, end, display ) {
-                       
-                        if (end > 0) {
-                            $(row).html('');
-                            for (var i = 0; i < $('.data-table thead th').length; i++) {
-                                var a = document.createElement('td');
-                                $(a).html('');
-                                $(row).append(a);
-                            }
-                            $($(row).children().get(0)).html('<strong>Total</strong>')
-                            $($(row).children().get(3)).html('<strong>'+TotalCall+' Calls</strong>');
-                            $($(row).children().get(4)).html('<strong>'+TotalDuration+' (mm:ss)</strong>');
-                            $($(row).children().get(5)).html('<strong> $' + TotalCost + '</strong>');
-                        }else{
-                            $(".data-table").find('tfoot').find('tr').html('');
-                        }
-                    }
+                        var api = this.api(), data;
+
+                        /* converting to interger to find total */
+                        var intVal = function ( i ) {
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '')*1 :
+                                typeof i === 'number' ?
+                                    i : 0;
+                        };
+
+                        var calls = api.column( 3 ).data().reduce( function (a, b) {
+                                    return table.data().length;
+                                }, 0 );
+
+                        var minitus = api.column( 4 ).data().reduce( function (a, b) {
+                            b = b.split(".");
+                            var min = b[0]||0;
+                            var sec = b[1]||0;    
+                            return a + intVal(min*60)+intVal(sec);
+                            }, 0);
+                            minitus  = Math.floor(minitus  / 60)+":" + minitus % 60
+
+
+                        var amount = api.column( 5 ).data().reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                       if (end > 0) {
+                           $(row).html('');
+                           for (var i = 0; i < $('.data-table thead th').length; i++) {
+                               var a = document.createElement('td');
+                               $(a).html('');
+                               $(row).append(a);
+                           }
+                           $($(row).children().get(0)).html('<strong>Total</strong>')
+                           $($(row).children().get(3)).html('<strong>'+calls+' Calls</strong>');
+                           $($(row).children().get(4)).html('<strong>'+minitus+' (mm:ss)</strong>');
+                           $($(row).children().get(5)).html('<strong> $' + amount.toFixed(2) + '</strong>');
+                       }else{
+                           $(".data-table").find('tfoot').find('tr').html('');
+                       }
+                   }
             });
             $('#FilterModel').modal('hide');
         });

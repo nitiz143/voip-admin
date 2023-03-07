@@ -9,6 +9,7 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\Client;
 use Yajra\DataTables\DataTables;
 use App\Models\Trunk;
+use App\Models\Setting;
 use DateTime;
 use Date;
 use File;
@@ -39,6 +40,9 @@ class CallController extends Controller
                 if($request->zerovaluecost == 0){
                     $data;
                 }
+            }
+            if(!empty($request->Gateway)){
+                $data;
             }
             if(!empty($request->Cli)){
                 $data->where('callere164', $request->Cli);
@@ -103,7 +107,8 @@ class CallController extends Controller
         }
         $Accounts = Client::where("customer", "=",1)->get();
         $Trunks = Trunk::where("status", "=",1)->get();
-        return view('call.call-history-index',compact('Accounts','Trunks'));
+        $Gateways = Setting::query()->get();
+        return view('call.call-history-index',compact('Accounts','Trunks','Gateways'));
     }
 
 
@@ -132,6 +137,9 @@ class CallController extends Controller
                 if($request->zerovaluecost == 0){
                     $data;
                 }
+            }
+            if(!empty($request->Gateway)){
+                $data;
             }
             if(!empty($request->Cli)){
                 $data->where('callere164', $request->Cli);
@@ -181,11 +189,11 @@ class CallController extends Controller
                 })
                 ->addColumn('Trunk', function($row){
                     $account = Client::where('id',$row->account_id)->first();
-                   if(!empty($account->customer_authentication_rule)){
+                    if(!empty($account->customer_authentication_rule)){
                         if($account->customer_authentication_rule == "6"){
                             return "other";
                         }
-                   }
+                    }
                       
                 })
                 ->addColumn('action', function($row){
@@ -197,7 +205,8 @@ class CallController extends Controller
         }
         $Accounts = Client::where("Vendor", "=",1)->get();
         $Trunks = Trunk::where("status", "=",1)->get();
-        return view('call.vendor-index',compact('Accounts','Trunks'));
+        $Gateways = Setting::query()->get();
+        return view('call.vendor-index',compact('Accounts','Trunks','Gateways'));
     }
 
 
