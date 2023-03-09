@@ -149,31 +149,34 @@ class ClientController extends Controller
 
         $client = Client::create($request->all());
         if(!empty($client)){
-            $billingdata["account_id"] = $client->id;
-            $billingdata["billing_class"] = $request->billing_class;
-            $billingdata["billing_type"] = $request->billing_type;
-            $billingdata["billing_timezone"] = $request->billing_timezone;
-            $billingdata["billing_startdate"] = $request->billing_startdate;
-            $billingdata["billing_cycle"] = $request->billing_cycle;
-            if($request->billing_cycle == 'in_specific_days'){
-                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;
-            }elseif ($request->billing_cycle == 'monthly_anniversary') {
-                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_monthly;
-            }elseif ($request->billing_cycle == 'weekly') {
-                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
-            }else{
-                $billingdata["billing_cycle_startday"] = NULL;
-            }
-            $billingdata["auto_pay"] = $request->auto_pay;
-            $billingdata["auto_pay_method"] = $request->auto_pay_method;
-            $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;
-            $billingdata["next_invoice_date"] = $request->next_invoice_date;
-            $billingdata["next_charge_date"] = $request->next_charge_date;
+            if(!empty($request->billing_status) && $request->billing_status == 'active'){
+                $billingdata["account_id"] = $client->id;
+                $billingdata["billing_class"] = $request->billing_class;
+                $billingdata["billing_type"] = $request->billing_type;
+                $billingdata["billing_timezone"] = $request->billing_timezone;
+                $billingdata["billing_startdate"] = $request->billing_startdate;
+                $billingdata["billing_cycle"] = $request->billing_cycle;
+                if($request->billing_cycle == 'in_specific_days'){
+                    $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;
+                }elseif ($request->billing_cycle == 'monthly_anniversary') {
+                    $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_monthly;
+                }elseif ($request->billing_cycle == 'weekly') {
+                    $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
+                }else{
+                    $billingdata["billing_cycle_startday"] = NULL;
+                }
+                $billingdata["auto_pay"] = $request->auto_pay;
+                $billingdata["auto_pay_method"] = $request->auto_pay_method;
+                $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;
+                $billingdata["next_invoice_date"] = $request->next_invoice_date;
+                $billingdata["next_charge_date"] = $request->next_charge_date;
 
-            if(Billing::create($billingdata)){
-                return response()->json(['message' =>  __('Account Created Successfully'),'success'=>true,'redirect_url' => route('client.index')]);
+                if(Billing::create($billingdata)){
+                    return response()->json(['message' =>  __('Account Created Successfully'),'success'=>true,'redirect_url' => route('client.index')]);
+                }
             }
         }
+        return response()->json(['message' =>  __('Account Created Successfully'),'success'=>true,'redirect_url' => route('client.index')]);
      }
      /**
      * Show the form for editing the specified resource.
@@ -223,6 +226,13 @@ class ClientController extends Controller
             if($request->vendor_authentication_rule == 6){
                 $rules['vendor_authentication_value'] = 'required';
             }
+            if(!empty($request->billing_status) && $request->billing_status == 'active'){
+                $rules['billing_class'] = 'required';
+                $rules['billing_type'] = 'required';
+                $rules['billing_timezone'] = 'required';
+                $rules['billing_startdate'] = 'required';
+                $rules['billing_cycle'] = 'required';
+            }
             if(!empty($request->billing_cycle)){
                 if($request->billing_cycle == 'in_specific_days' || $request->billing_cycle == 'monthly_anniversary' || $request->billing_cycle == 'weekly'){
                     $rules['billing_cycle_startday'] = 'required';
@@ -248,7 +258,7 @@ class ClientController extends Controller
         $user =  Client::updateOrCreate([
             'id'   => $request->id,
          ],$request->all());
-
+        if(!empty($request->billing_status) && $request->billing_status == 'active'){
             $billingdata["account_id"] = $user->id;
             $billingdata["billing_class"] = $request->billing_class;
             $billingdata["billing_type"] = $request->billing_type;
@@ -274,6 +284,7 @@ class ClientController extends Controller
             $billingdata["outbound_discount_plan"] = $request->outbound_discount_plan;
             $billingdata["inbound_discount_plan"] = $request->inbound_discount_plan;
             Billing::updateOrCreate(['id' => $request->billing_id],$billingdata);
+        }
 
          return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => route('client.index')]);
 

@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('download:cron')->everyFiveMinutes();
         $schedule->command('csvImport:cron')->everyTenMinutes();
         $schedule->command('account:cron')->everyFifteenMinutes();
-        
+        $schedule->command('Billing:cron')->everyFiveMinutes();
     }
 
     /**

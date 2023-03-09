@@ -43,16 +43,18 @@ $("#billing_cycle").change(function () {
                 $('#next_charge_date').val(chargedate);
             }
             else if(data < a.getDay()){
+               
                 //for invoice date
                 const next_date = new Date(start_date);
                 next_date.setDate(next_date.getDate() + (data - 1 - next_date.getDay() + 7) % 7 + 1);
                 var date = moment(next_date).format("YYYY-MM-DD");  
+                console.log(date)
                 $('.next_invoice_date').val(date);
 
                 //for next charge date
-                count = count-1;
-                const charge_date = new Date(start_date);
-                charge_date.setDate(charge_date.getDate() + 5);
+               
+                const charge_date = new Date(date);
+                charge_date.setDate(charge_date.getDate() -  1);
                 var chargedate = moment(charge_date).format("YYYY-MM-DD");  
                 $('#next_charge_date').val(chargedate);
             }

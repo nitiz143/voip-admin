@@ -40,10 +40,8 @@
                                     </div>
                                 </div>
                                 <div class="panel-body tabs-menu-body">
-                                
-                                    <!-- /.card-header -->
                                     <div class="panel-body mt-3">
-                                        <table class="table table-bordered data-table">
+                                        <table class="table table-bordered data-table w-100">
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -55,7 +53,6 @@
                                                     <th>Avg. Rate/Min</th>
                                                     <th>Callere</th>
                                                     <th>Calleee</th>
-                                                    {{-- <th>Trunk</th> --}}
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -122,10 +119,7 @@
                                                             <label for="field-1" class="control-label">Currency</label>
                                                             <select class="form-control" name="CurrencyID"></select>
                                                         </div> --}}
-                                                        {{-- <div class="form-group">
-                                                            <label class="control-label small_label" for="field-1">Type</label>
-                                                            <select class="form-control" id="bulk_AccountID" allowClear="true" name="CDRType"></select>
-                                                        </div> --}}
+                                                       
                                                         <div class="form-group">
                                                             <label class="control-label" for="field-1">Gateway</label>
                                                             <select class="form-control" id="bluk_CompanyGatewayID" name="CompanyGatewayID">
@@ -166,21 +160,7 @@
                                                             <label class="control-label" for="field-1">Prefix</label>
                                                             <input type="text" name="area_prefix" class="form-control mid_fld "  value=""  />
                                                         </div>
-                                                        {{-- <div class="form-group">
-                                                            <label class="control-label" for="field-1">Trunk</label>
-                                                            <select class="form-control" id="bulk_AccountID" allowClear="true" name="Trunk">
-                                                                @if(!empty($Trunks))
-                                                                    <option value="">Select</option>
-                                                                    @foreach ($Trunks as $Trunk)
-                                                                        <option value="{{$Trunk->id}}">{{$Trunk->title}}</option>
-                                                                    @endforeach
-                                                                @endif
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="control-label">Account Tag</label>
-                                                            <input class="form-control tags" name="tag" type="text" >
-                                                        </div> --}}
+                                                       
                                                         <div class="form-group">
                                                             <br/>
                                                             <input type="hidden" name="ResellerOwner" value="0">
@@ -302,21 +282,21 @@
                         };
 
                         var calls = api.column( 3 ).data().reduce( function (a, b) {
-                                    return table.data().length;
-                                }, 0 );
+                            return table.data().length;
+                        }, 0 );
 
                         var minitus = api.column( 4 ).data().reduce( function (a, b) {
                             b = b.split(".");
                             var min = b[0]||0;
                             var sec = b[1]||0;    
                             return a + intVal(min*60)+intVal(sec);
-                            }, 0);
-                            minitus  = Math.floor(minitus  / 60)+":" + minitus % 60
+                        }, 0);
+                        minitus  = Math.floor(minitus  / 60)+":" + minitus % 60
 
 
                         var amount = api.column( 5 ).data().reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
+                            return intVal(a) + intVal(b);
+                        }, 0 );
                        if (end > 0) {
                            $(row).html('');
                            for (var i = 0; i < $('.data-table thead th').length; i++) {

@@ -78,14 +78,7 @@ class CallController extends Controller
                         $cost = "$0.0";
                     return $cost;
                 })
-                ->addColumn('Trunk', function($row){
-                    $account = Client::where('id',$row->account_id)->first();
-                   if(!empty($account->customer_authentication_rule)){
-                        if($account->customer_authentication_rule == "6"){
-                            return "other";
-                        }
-                    }
-                })
+              
                 ->addColumn('billing_duration', function($row){
                     $date = new \DateTime();
                     $value = $row->starttime;
@@ -186,15 +179,6 @@ class CallController extends Controller
                   
                     $totalDuration =  $stopTime->diff( $startTime)->format('%S');
                     return   $totalDuration;
-                })
-                ->addColumn('Trunk', function($row){
-                    $account = Client::where('id',$row->account_id)->first();
-                    if(!empty($account->customer_authentication_rule)){
-                        if($account->customer_authentication_rule == "6"){
-                            return "other";
-                        }
-                    }
-                      
                 })
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;

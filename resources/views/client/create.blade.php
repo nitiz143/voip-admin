@@ -602,7 +602,7 @@
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label for="billing_class">Billing Class</label>
+                                                    <label for="billing_class">Billing Class<span style="color:red;">*</span></label>
                                                     <select class="custom-select form-control" name="billing_class"
                                                         id="billing_class">
                                                         <option value="">Select</option>
@@ -612,7 +612,7 @@
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label for="billing_type">Billing Type</label>
+                                                    <label for="billing_type">Billing Type<span style="color:red;">*</span></label>
                                                     <select class="custom-select form-control" name="billing_type"
                                                         id="billing_type">
                                                         <option value="">Select Billing Type</option>
@@ -625,7 +625,7 @@
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group" twelvehour="true">
-                                                    <label for="billing_timezone">Billing Timezone</label>
+                                                    <label for="billing_timezone">Billing Timezone<span style="color:red;">*</span></label>
                                                     <div class="form-group timepicker" twelvehour="true">
                                                         <select class="form-control selectpicker"
                                                             name="billing_timezone" id="billing_timezone"></select>
@@ -634,7 +634,7 @@
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>Billing Start Date</label>
+                                                    <label>Billing Start Date<span style="color:red;">*</span></label>
                                                     <input type="text" class="form-control datepicker billing_start_date"  data-date-format="yyyy-mm-dd" id="billing_startdate"
                                                         name="billing_startdate" value="">
                                                 </div>
@@ -643,7 +643,7 @@
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label for="billing_cycle">Billing Cycle</label>
+                                                    <label for="billing_cycle">Billing Cycle<span style="color:red;">*</span></label>
                                                     <select class="custom-select form-control" name="billing_cycle"
                                                         id="billing_cycle">
                                                         <option class="billing_options" value="">Select</option>

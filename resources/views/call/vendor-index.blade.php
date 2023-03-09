@@ -43,20 +43,18 @@
                                 <div class="panel-body tabs-menu-body">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <!-- /.card-header -->
                                             <div class="panel-body mt-3">
-                                                <table class="table table-bordered data-table">
+                                                <table class="table table-bordered data-table  w-100">
                                                     <thead>
                                                         <tr>
                                                             <th>ID</th>
                                                             <th>Account Name</th>
                                                             <th>Connect Time</th>
-                                                            <th>Discon4nect Time</th>
+                                                            <th>Disconnect Time</th>
                                                             <th>Billed Duration (sec)</th>
                                                             <th>Cost</th>
                                                             <th>Callere</th>
                                                             <th>Calleee</th>
-                                                            {{-- <th>Trunk</th> --}}
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
@@ -160,21 +158,7 @@
                                                                 <label class="control-label" for="field-1">Prefix</label>
                                                                 <input type="text" name="area_prefix" class="form-control mid_fld "  value=""  />
                                                             </div>
-                                                            {{-- <div class="form-group">
-                                                                    <label class="control-label" for="field-1">Trunk</label>
-                                                                    <select class="form-control" id="bulk_AccountID" allowClear="true" name="Trunk">
-                                                                        @if(!empty($Trunks))
-                                                                            <option value="">Select</option>
-                                                                            @foreach ($Trunks as $Trunk)
-                                                                                <option value="{{$Trunk->id}}">{{$Trunk->title}}</option>
-                                                                            @endforeach
-                                                                        @endif
-                                                                    </select>
-                                                                </div> --}}
-                                                            {{-- <div class="form-group">
-                                                                    <label class="control-label">Tag</label>
-                                                                    <input class="form-control tags" name="tag" type="text" >
-                                                                </div> --}}
+                                                           
                                                             <div class="form-group">
                                                                 <br/>
                                                                 <input type="hidden" name="ResellerOwner" value="0">
