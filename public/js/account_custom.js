@@ -196,7 +196,7 @@ $("#billing_cycle").change(function () {
         var date = moment(next_date).format("YYYY-MM-DD");  
         $('.next_invoice_date').val(date);
 
-        //for next charge date
+        //for invoice date
         const charge_date = new Date(start_date);
         charge_date.setDate(charge_date.getDate() + 1);
         var chargedate = moment(charge_date).format("YYYY-MM-DD");  
@@ -208,9 +208,56 @@ $("#billing_cycle").change(function () {
         $('#week').addClass('d-none');
         $('#in_specific_days').addClass('d-none');
         $('#monthly_anniversary').addClass('d-none');
-        var today = new Date(start_date);
-        var quarter = Math.floor((today.getMonth() + 3) / 3);
-       
+        var date = new Date(start_date);    
+        var firstday = new Date(date.getFullYear(),0,1); // XXXX/01/01
+        var diff = Math.ceil((date - firstday) / 86400000); 
+        // a quarter is about 365/4 
+        quarter =  parseInt( diff / ( 365/ 4 )) + 1 
+        if (quarter == 1)
+        {
+            date.setMonth(3, 1);
+            var quarter1 = moment(date).format("YYYY-MM-DD");  
+            $('.next_invoice_date').val(quarter1);
+
+            var next_charge_date = new Date(quarter1);
+            next_charge_date.setDate(next_charge_date.getDate() - 1);
+            var quarter2 = moment(next_charge_date).format("YYYY-MM-DD");  
+            $('#next_charge_date').val(quarter2);
+        }
+        if (quarter == 2)
+        {
+            date.setMonth(6, 1);charge_date
+            var quarter1 = moment(date).format("YYYY-MM-DD");  
+            $('.next_invoice_date').val(quarter1);
+
+            var next_charge_date = new Date(quarter1);
+            next_charge_date.setDate(next_charge_date.getDate() - 1);
+            var quarter2 = moment(next_charge_date).format("YYYY-MM-DD");  
+            $('#next_charge_date').val(quarter2);
+        }
+        if (quarter == 3)
+        {
+            date.setMonth(9, 1);
+            var quarter1 = moment(date).format("YYYY-MM-DD");  
+            $('.next_invoice_date').val(quarter1);
+
+            var next_charge_date = new Date(quarter1);
+            next_charge_date.setDate(next_charge_date.getDate() - 1);
+            var quarter2 = moment(next_charge_date).format("YYYY-MM-DD");  
+            $('#next_charge_date').val(quarter2);
+        }
+        if (quarter == 4)
+        {
+            date.setMonth(12, 1);
+            var quarter1 = moment(date).format("YYYY-MM-DD");  
+            $('.next_invoice_date').val(quarter1);
+
+            var next_charge_date = new Date(quarter1);
+            next_charge_date.setDate(next_charge_date.getDate() - 1);
+            var quarter2 = moment(next_charge_date).format("YYYY-MM-DD");  
+            $('#next_charge_date').val(quarter2);
+            
+        }
     }
     else {
         $('.next_invoice_date').val('');
@@ -218,6 +265,7 @@ $("#billing_cycle").change(function () {
         $('#week').addClass('d-none');
         $('#in_specific_days').addClass('d-none');
         $('#monthly_anniversary').addClass('d-none');
+        
     }
 });
 
@@ -233,6 +281,66 @@ $(document.body).on('change',".billing_start_date",function (e) {
             $('.next_invoice_date').val(date);
             $('#next_charge_date').val($(this).val());
         }
+
+        //quarterly
+        if(bill == "quarterly"){
+            $('.next_invoice_date').val('');
+            $('#next_charge_date').val('');
+            $('#week').addClass('d-none');
+            $('#in_specific_days').addClass('d-none');
+            $('#monthly_anniversary').addClass('d-none');
+            var date = new Date($(this).val());    
+            var firstday = new Date(date.getFullYear(),0,1); // XXXX/01/01
+            var diff = Math.ceil((date - firstday) / 86400000); 
+            // a quarter is about 365/4 
+            quarter =  parseInt( diff / ( 365/ 4 )) + 1 
+            if (quarter == 1)
+            {
+                date.setMonth(3, 1);
+                var quarter1 = moment(date).format("YYYY-MM-DD");  
+                $('.next_invoice_date').val(quarter1);
+    
+                var next_charge_date = new Date(quarter1);
+                next_charge_date.setDate(next_charge_date.getDate() - 1);
+                var quarter2 = moment(next_charge_date).format("YYYY-MM-DD");  
+                $('#next_charge_date').val(quarter2);
+            }
+            if (quarter == 2)
+            {
+                date.setMonth(6, 1);
+                var quarter1 = moment(date).format("YYYY-MM-DD");  
+                $('.next_invoice_date').val(quarter1);
+    
+                var next_charge_date = new Date(quarter1);
+                next_charge_date.setDate(next_charge_date.getDate() - 1);
+                var quarter2 = moment(next_charge_date).format("YYYY-MM-DD");  
+                $('#next_charge_date').val(quarter2);
+            }
+            if (quarter == 3)
+            {
+                date.setMonth(9, 1);
+                var quarter1 = moment(date).format("YYYY-MM-DD");  
+                $('.next_invoice_date').val(quarter1);
+    
+                var next_charge_date = new Date(quarter1);
+                next_charge_date.setDate(next_charge_date.getDate() - 1);
+                var quarter2 = moment(next_charge_date).format("YYYY-MM-DD");  
+                $('#next_charge_date').val(quarter2);
+            }
+            if (quarter == 4)
+            {
+                date.setMonth(12, 1);
+                var quarter1 = moment(date).format("YYYY-MM-DD");  
+                $('.next_invoice_date').val(quarter1);
+    
+                var next_charge_date = new Date(quarter1);
+                next_charge_date.setDate(next_charge_date.getDate() - 1);
+                var quarter2 = moment(next_charge_date).format("YYYY-MM-DD");  
+                $('#next_charge_date').val(quarter2);
+                
+            }
+        }
+        
         if(bill == "fortnightly"){
             //for invoice date
             const next_date = new Date($(this).val());
