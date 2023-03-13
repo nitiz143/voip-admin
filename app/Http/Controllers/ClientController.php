@@ -110,6 +110,7 @@ class ClientController extends Controller
         $rules = array(
 
             'account_name'=>'required',
+            'country'=>'required',
         );
 
         if(!empty($request->billing_status) && $request->billing_status == 'active'){
@@ -219,6 +220,7 @@ class ClientController extends Controller
             $rules = array(
 
                 'account_name'=>'required',
+                'country'=>'required',
             );
             if($request->customer_authentication_rule == 6){
                 $rules['customer_authentication_value'] = 'required';
@@ -235,7 +237,13 @@ class ClientController extends Controller
             }
             if(!empty($request->billing_cycle)){
                 if($request->billing_cycle == 'in_specific_days' || $request->billing_cycle == 'monthly_anniversary' || $request->billing_cycle == 'weekly'){
-                    $rules['billing_cycle_startday'] = 'required';
+                    if($request->billing_cycle == 'weekly'){
+                        $rules['billing_cycle_startday'] = 'required';
+                    }elseif ($request->billing_cycle == 'in_specific_days') {
+                        $rules['billing_cycle_startday_for_days'] = 'required';
+                    }elseif ($request->billing_cycle == 'monthly_anniversary') {
+                        $rules['billing_cycle_startday_for_monthly'] = 'required';
+                    }
                 }
             }
         }

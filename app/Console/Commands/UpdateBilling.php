@@ -44,22 +44,19 @@ class UpdateBilling extends Command
                 $data = array();
                 if($bill->billing_cycle == 'daily'){
                     try{
-                        $next_invoice_date = \Carbon\Carbon::parse($bill->next_invoice_date)->format('Y-m-d');
-                        $next_charge_date = \Carbon\Carbon::parse($bill->next_charge_date)->format('Y-m-d');
+                        $next_invoice_date = $bill->next_invoice_date;
+                        $next_charge_date = $bill->next_charge_date;
                         $yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
                         $now = \Carbon\Carbon::now()->format('Y-m-d');
     
-                        if(!empty($next_invoice_date)){
-                            if($next_invoice_date == $now){
+                        if(!empty($next_invoice_date) && !empty($next_charge_date)){
+                            if($next_invoice_date == $now && $next_charge_date < $now){
                                 $data['last_invoice_date'] =  $next_invoice_date;
                                 $data['next_invoice_date'] =  \Carbon\Carbon::tomorrow()->format('Y-m-d');
-                            
-                            }
-                        }
-                        if(!empty($next_charge_date)){
-                            if($next_charge_date == $yesterday){
+
                                 $data['last_charge_date'] =  $yesterday;
                                 $data['next_charge_date'] =  \Carbon\Carbon::now()->format('Y-m-d');
+                            
                             }
                         }
                         Billing::where('id',$bill->id)->update($data);
@@ -70,22 +67,114 @@ class UpdateBilling extends Command
                 }
                 if($bill->billing_cycle == 'weekly'){
                     try{
-                        $next_invoice_date = \Carbon\Carbon::parse($bill->next_invoice_date)->format('Y-m-d');
-                        $next_charge_date = \Carbon\Carbon::parse($bill->next_charge_date)->format('Y-m-d');
+                        $next_invoice_date = $bill->next_invoice_date;
+                        $next_charge_date = $bill->next_charge_date;
                         $now = \Carbon\Carbon::now()->format('Y-m-d');
                         $days = 7;
-                        if(!empty($next_invoice_date)){
-                            if($next_invoice_date == $now){
+                        if(!empty($next_invoice_date) && !empty($next_charge_date)){
+                            if($next_invoice_date == $now && $next_charge_date < $now){
                                 $data['last_invoice_date'] =  $next_invoice_date;
-                                $data['next_invoice_date'] =  \Carbon\Carbon::parse($next_invoice_date)->addDays(7);
-                            
+                                $data['next_invoice_date'] =  \Carbon\Carbon::parse($next_invoice_date)->addDays(7)->format('Y-m-d');
+                                $data['last_charge_date'] =  $next_charge_date;
+                                $data['next_charge_date'] = \Carbon\Carbon::parse( $next_charge_date)->addDays(7)->format('Y-m-d');
                             }
                         }
-                        if(!empty($next_charge_date)){
-                            if($next_charge_date == $yesterday){
+                        Billing::where('id',$bill->id)->update($data);
+                    }
+                    catch (\Exception $e) {
+                        dd($e);
+                    }
+                }
+                if($bill->billing_cycle == 'monthly'){
+                    try{
+                        $next_invoice_date = $bill->next_invoice_date;
+                        $next_charge_date = $bill->next_charge_date;
+                        $now = \Carbon\Carbon::now()->format('Y-m-d');
+                        if(!empty($next_invoice_date) && !empty($next_charge_date)){
+                           
+                            if($next_invoice_date == $now && $next_charge_date < $now){
+                                $data['last_invoice_date'] =  $next_invoice_date;
+                                $data['next_invoice_date'] =  date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-01'))));
+                                $date =   date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-01'))));
                                 $data['last_charge_date'] =  $next_charge_date;
-                                $data['next_charge_date'] = \Carbon\Carbon::parse( $next_charge_date)->addDays(7);
+                                $data['next_charge_date'] = date('Y-m-d', strtotime($date. ' - 1 days'));
                             }
+                        }
+                        Billing::where('id',$bill->id)->update($data);
+                    }
+                    catch (\Exception $e) {
+                        dd($e);
+                    }
+                }
+                if($bill->billing_cycle == 'yearly'){
+                    try{
+                        $next_invoice_date = $bill->next_invoice_date;
+                        $next_charge_date = $bill->next_charge_date;
+                        $now = \Carbon\Carbon::now()->format('Y-m-d');
+                        if(!empty($next_invoice_date) && !empty($next_charge_date)){
+                           
+                            if($next_invoice_date == $now && $next_charge_date < $now){
+                                $data['last_invoice_date'] =  $next_invoice_date;
+                                $data['next_invoice_date'] =  \Carbon\Carbon::parse($next_invoice_date)->addYear()->format('Y-m-d');
+                                $data['last_charge_date'] =  $next_charge_date;
+                                $data['next_charge_date'] = \Carbon\Carbon::parse( $next_charge_date)->addYear()->format('Y-m-d');
+                            }
+                        }
+                        Billing::where('id',$bill->id)->update($data);
+                    }
+                    catch (\Exception $e) {
+                        dd($e);
+                    }
+                }
+                if($bill->billing_cycle == 'in_specific_days'){
+                    try{
+                        $next_invoice_date = $bill->next_invoice_date;
+                        $next_charge_date = $bill->next_charge_date;
+                        $now = \Carbon\Carbon::now()->format('Y-m-d');
+                        if(!empty($next_invoice_date) && !empty($next_charge_date)){
+                           
+                            if($next_invoice_date == $now && $next_charge_date < $now){
+                                $data['last_invoice_date'] =  $next_invoice_date;
+                                $data['next_invoice_date'] =  \Carbon\Carbon::parse($next_invoice_date)->addDays($bill->billing_cycle_startday)->format('Y-m-d');
+                                $data['last_charge_date'] =  $next_charge_date;
+                                $data['next_charge_date'] = \Carbon\Carbon::parse( $next_charge_date)->addDays($bill->billing_cycle_startday)->format('Y-m-d');
+                            }
+                        }
+                        Billing::where('id',$bill->id)->update($data);
+                    }
+                    catch (\Exception $e) {
+                        dd($e);
+                    }
+                }
+                if($bill->billing_cycle == 'monthly_anniversary'){
+                    try{
+                        $next_invoice_date = $bill->next_invoice_date;
+                        $next_charge_date = $bill->next_charge_date;
+                        $now = \Carbon\Carbon::now()->format('Y-m-d');
+                        if(!empty($next_invoice_date) && !empty($next_charge_date)){
+                           
+                            if($next_invoice_date == $now && $next_charge_date < $now){
+                                $data['last_invoice_date'] =  $next_invoice_date;
+                                $data['next_invoice_date'] =  date('Y-m-d', strtotime($next_invoice_date. ' + 1 months'));
+                                $date =   date('Y-m-d', strtotime($next_invoice_date. ' + 1 months'));
+                                $data['last_charge_date'] =  $next_charge_date;
+                                $data['next_charge_date'] = date('Y-m-d', strtotime($date. ' - 1 days'));
+                            }
+                        }
+                        Billing::where('id',$bill->id)->update($data);
+                    }
+                    catch (\Exception $e) {
+                        dd($e);
+                    }
+                }
+                if($bill->billing_cycle == 'fortnightly'){
+                    try{
+                        $next_invoice_date = $bill->next_invoice_date;
+                        $next_charge_date = $bill->next_charge_date;
+                        $now = \Carbon\Carbon::now()->format('Y-m-d');
+                        
+                        if(!empty($next_invoice_date) && !empty($next_charge_date)){
+                            
                         }
                         Billing::where('id',$bill->id)->update($data);
                     }

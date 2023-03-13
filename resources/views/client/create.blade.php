@@ -328,7 +328,7 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="country">Country</label>
+                                            <label for="country">Country<span style="color:red;">*</span></label>
                                             <select class="custom-select form-control-border border-width-2"
                                                 name="country" id="country">
                                                 <option selected disabled>--Select Country--</option>
@@ -662,21 +662,21 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group d-none" id="in_specific_days">
                                                     <label for="billing_cycle_startday">Billing Cycle - for
-                                                        Days*</label>
+                                                        Days<span style="color:red;">*</span></label>
                                                     <input type="number" name="billing_cycle_startday_for_days"
                                                         class="form-control billing_cycle_startday" id="number_only"
                                                         value="">
                                                 </div>
                                                 <div class="form-group d-none" id="monthly_anniversary">
                                                     <label for="billing_cycle_startday">Billing Cycle - Monthly
-                                                        Anniversary Date*</label>
+                                                        Anniversary Date<span style="color:red;">*</span></label>
                                                     <input type="text" name="billing_cycle_startday_for_monthly"
                                                         class="form-control datepicker billing_cycle_startday" data-date-format="yyyy-mm-dd"
                                                         value="">
                                                 </div>
                                                 <div class="form-group d-none" id="week">
                                                     <label for="billing_cycle_startday">Billing Cycle Start of
-                                                        Day</label>
+                                                        Day<span style="color:red;">*</span></label>
                                                     <select
                                                         class="custom-select form-control billing_cycle_startday"
                                                         name="billing_cycle_startday" id="billing_cycle_startday">
