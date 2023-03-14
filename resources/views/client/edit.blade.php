@@ -1227,7 +1227,7 @@
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label for="next_charge_date">Next Charge Date</label>
-                                                            <input type="text" class="form-control datepicker" name="next_charge_date"  data-date-format="yyyy-mm-dd" id="next_charge_date"
+                                                            <input type="text" class="form-control" name="next_charge_date"  data-date-format="yyyy-mm-dd" id="next_charge_date"
                                                                 value="" readonly>
                                                         </div>
                                                     </div>
