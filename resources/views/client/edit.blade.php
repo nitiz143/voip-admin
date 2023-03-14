@@ -993,7 +993,7 @@
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     @if($user->billing_status=='active')
-                                                        <div class="form-group">
+                                                        <div class="form-group mt-3">
                                                             <label for="billing_cycle">Billing Cycle<span style="color:red;">*</span></label>
                                                             <select class="custom-select  form-control hidden" name="billing_cycle"
                                                                 id="billing_cycle">
@@ -1028,7 +1028,7 @@
                                                                     billing_cycle)){{$billingdata->billing_cycle=='yearly' ?
                                                                     'selected' : ''}} @endif>Yearly</option>
                                                             </select>
-                                                            <span class="bill_cycle_edit_text ml-2">
+                                                            <span class="bill_cycle_edit_text ml-2 ">
                                                                 @if(!empty($billingdata->billing_cycle))
                                                                 {{ $billingdata->billing_cycle}} 
                                                                 @endif
@@ -1227,7 +1227,7 @@
                                                     <div class="col-xl-6">
                                                         <div class="form-group">
                                                             <label for="next_charge_date">Next Charge Date</label>
-                                                            <input type="text" class="form-control" name="next_charge_date"  data-date-format="yyyy-mm-dd" id="next_charge_date"
+                                                            <input type="text" class="form-control datepicker" name="next_charge_date"  data-date-format="yyyy-mm-dd" id="next_charge_date"
                                                                 value="" readonly>
                                                         </div>
                                                     </div>

@@ -167,20 +167,29 @@ class UpdateBilling extends Command
                         dd($e);
                     }
                 }
-                if($bill->billing_cycle == 'fortnightly'){
+                if($bill->billing_cycle == 'quarterly'){
                     try{
                         $next_invoice_date = $bill->next_invoice_date;
                         $next_charge_date = $bill->next_charge_date;
                         $now = \Carbon\Carbon::now()->format('Y-m-d');
                         
                         if(!empty($next_invoice_date) && !empty($next_charge_date)){
-                            
+                            if($next_invoice_date == $now && $next_charge_date < $now){
+                                $data['last_invoice_date'] =  $next_invoice_date;
+                                $data['next_invoice_date'] =  date('Y-m-d', strtotime($next_invoice_date. ' + 3 months'));
+                                $date =   date('Y-m-d', strtotime($next_invoice_date. ' + 3 months'));
+                                $data['last_charge_date'] =  $next_charge_date;
+                                $data['next_charge_date'] = date('Y-m-d', strtotime($date. ' - 1 days'));
+                            }
                         }
                         Billing::where('id',$bill->id)->update($data);
                     }
                     catch (\Exception $e) {
                         dd($e);
                     }
+                }
+                if($bill->billing_cycle == 'fortnightly'){
+                   
                 }
             }
         }

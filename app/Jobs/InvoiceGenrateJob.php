@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use PDF;
 
 class InvoiceGenrateJob implements ShouldQueue
 {
@@ -30,6 +31,13 @@ class InvoiceGenrateJob implements ShouldQueue
      */
     public function handle()
     {
-        //
+       
+        $data = [
+            'title' => 'testing',
+            'date' => date('m/d/Y')
+        ];
+          
+        $pdf = PDF::loadView('invoicepdf', compact('data'))->setPaper('a4');
+        return $pdf->download('test.pdf');
     }
 }
