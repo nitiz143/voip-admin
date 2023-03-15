@@ -286,10 +286,7 @@
                         }, 0 );
 
                         var minitus = api.column( 4 ).data().reduce( function (a, b) {
-                            b = b.split(".");
-                            var min = b[0]||0;
-                            var sec = b[1]||0;    
-                            return a + intVal(min*60)+intVal(sec);
+                            return intVal(a) + intVal(b);
                         }, 0);
                         minitus  = Math.floor(minitus  / 60)+":" + minitus % 60
 
@@ -304,7 +301,7 @@
                                $(a).html('');
                                $(row).append(a);
                            }
-                           $($(row).children().get(0)).html('<strong>Total</strong>')
+                           $($(row).children().get(0)).html('<strong>Total</strong>');
                            $($(row).children().get(3)).html('<strong>'+calls+' Calls</strong>');
                            $($(row).children().get(4)).html('<strong>'+minitus+' (mm:ss)</strong>');
                            $($(row).children().get(5)).html('<strong> $' + amount.toFixed(2) + '</strong>');

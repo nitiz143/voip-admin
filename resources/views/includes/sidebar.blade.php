@@ -154,7 +154,7 @@
                     @endphp
                     @if(!empty($company))
                         <li class="nav-item ">
-                            <a href="{{route('company.edit',$company->id)}}" class="nav-link {{ Request::is('company') ? 'active' : '' }}">
+                            <a href="{{route('company.edit',$company->id)}}" class="nav-link {{ Request::is('company','company/*') ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-building"></i>
                                 <p>
                                 Company
