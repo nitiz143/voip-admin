@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ExportHistory extends Model
 {
     use HasFactory;
-	protected $fillable = ['clinic_id','user_id','report_type','file_name','file','status'];
+	protected $fillable = ['client_id','user_id','report_type','file_name','file','status','Invoice_no'];
 }

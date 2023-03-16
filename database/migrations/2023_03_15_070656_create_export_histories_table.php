@@ -16,7 +16,7 @@ class CreateExportHistoriesTable extends Migration
         Schema::create('export_histories', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->default('0');
-            $table->integer('clinic_id')->default('0');
+            $table->integer('client_id')->default('0');
             $table->string('report_type');
             $table->string('file_name')->nullable();
             $table->longText('file')->nullable();

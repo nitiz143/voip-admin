@@ -12,6 +12,7 @@ use App\Models\Trunk;
 use App\Models\Setting;
 use App\Models\ExportHistory;
 use App\Jobs\InvoiceGenrateJob;
+use App\Utils\RandomUtil;
 use DateTime;
 use Date;
 use File;
@@ -182,7 +183,9 @@ class CallController extends Controller
                     $value1 = $row->stoptime;
                     $stopTime =  $date1->setTimestamp($value1/1000);
                   
-                    $totalDuration =  $stopTime->diff( $startTime)->format('%S');
+                    $now = \Carbon\Carbon::parse($startTime);
+                    $emitted = \Carbon\Carbon::parse($stopTime);
+                    $totalDuration =   $emitted ->diffInSeconds($now);
                     return   $totalDuration;
                 })
                 ->addColumn('action', function($row){
@@ -301,11 +304,24 @@ class CallController extends Controller
     }
     public function invoice_export(Request $request){
         if(request()->ajax()){
+            $validator = Validator::make($request->all(), [
+                'AccountID' => 'required',
+                ]);
+
+                if ($validator->fails())
+                {
+                    $response = \Response::json([
+                            'success' => false,
+                            'errors' => $validator->getMessageBag()->toArray()
+                        ]);
+                    return $response;
+                }
             $data = array();
-            $data['clinic_id'] = !empty($request->AccountID) ? $request->AccountID : " ";
+            $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : " ";
             $data['user_id'] = Auth::user()->id;
             $data['report_type'] = "invoice_pdf_export";
             $data['status'] = 'pending';
+            $data['Invoice_no'] =  RandomUtil::randomString('Invoice_');
             $code = random_int(100000, 999999);
             $data['file_name'] = date('YmdHis').'-'.$code.".pdf";
             $exporthistory = ExportHistory::create($data);

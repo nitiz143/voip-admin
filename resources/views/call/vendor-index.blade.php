@@ -96,6 +96,7 @@
                                                     </div>
                                                     <div class="modal-body" >
                                                         <form novalidate class="form-horizontal form-groups-bordered validate"  id="cdr_filter">
+                                                            <input type="hidden" name="type" class="form-control"  value="Vendor"  />
                                                             <div class="form-group">
                                                                 <label class="control-label small_label" for="field-1">Start Date</label>
                                                                 <div class="row">
@@ -282,21 +283,18 @@ $("#btnModeClose").on("click", function (e) {
                         };
 
                         var calls = api.column( 3 ).data().reduce( function (a, b) {
-                                    return table.data().length;
-                                }, 0 );
+                            return table.data().length;
+                        }, 0 );
 
                         var minitus = api.column( 4 ).data().reduce( function (a, b) {
-                            b = b.split(".");
-                            var hours = b[0]||0;
-                            var min = b[1]||0;    
-                            return a + intVal(hours*60)+intVal(min);
-                            }, 0);
-                            minitus  = Math.floor(minitus  / 60)+":" + minitus % 60
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                        minitus  = Math.floor(minitus  / 60)+":" + minitus % 60
 
 
                         var amount = api.column( 5 ).data().reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    }, 0 );
+                            return intVal(a) + intVal(b);
+                        }, 0 );
                        if (end > 0) {
                            $(row).html('');
                            for (var i = 0; i < $('.data-table thead th').length; i++) {
@@ -307,7 +305,7 @@ $("#btnModeClose").on("click", function (e) {
                            $($(row).children().get(0)).html('<strong>Total</strong>')
                            $($(row).children().get(3)).html('<strong>'+calls+' Calls</strong>');
                            $($(row).children().get(4)).html('<strong>'+minitus+'(mm:ss)</strong>');
-                           $($(row).children().get(5)).html('<strong> $' + amount.toFixed(2) + '</strong>');
+                           $($(row).children().get(5)).html('<strong> $' + amount + '</strong>');
                        }else{
                            $(".data-table").find('tfoot').find('tr').html('');
                        }
