@@ -11,6 +11,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
+                        <a type="submit" class="btn btn-primary mb-4 mr-2 float-right w-10 export" data-type="all_invoice_export">invoice genrate</a>
                         <a href="" class="btn btn-primary mb-4 float-right w-10" id="Filter">Filter</a>
                         <a href="{{ route('cdr.create') }}" class="btn btn-primary mb-4 ml-2 float-right w-10" id="createzoneModal">Import</a>
                     </ol>
@@ -92,6 +93,7 @@
                                                 </div>
                                                 <div class="modal-body" >
                                                     <form novalidate class="form-horizontal form-groups-bordered validate" method="post" id="cdr_filter">
+                                                        <input type="hidden" name="type" class="form-control"  value="Customer"  />
                                                         <div class="form-group">
                                                             <label class="control-label small_label" for="field-1">Start Date</label>
                                                             <div class="row">
@@ -355,7 +357,32 @@
         });
     });
 
+    $('.export').on("click",function(e){
+            e.preventDefault();
+            // var type = $(this).data('type');
+            // var getVal = $("#export_type").val(type);
+             $.ajax({
+                type: "POST",
+                url: "{{url('/invoice_export')}}",
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                data : $('#cdr_filter').serialize(),
+                success: function(result) {
+                    if(result.success == true){
+                        $.notify(result.message, 'success');
+                    }else{
+                        $.each(result.errors, function (k, e) {
+                            $.notify(e, 'error');
+                        });
+                    }
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            });
 
+        });
 
 
 

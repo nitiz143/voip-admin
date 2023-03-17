@@ -47,6 +47,14 @@ class InvoiceGenrateJob implements ShouldQueue
         
         if($type == "Vendor"){
             $query = CallHistory::query('*');
+            if((!empty( $StartDate ) && !empty( $EndDate ))){
+                $start =  strtotime($StartDate);
+                $start = $start*1000;
+                $end = strtotime($EndDate);
+                $end = $end*1000;
+                $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+            }
+
             if(!empty( $AccountID )) {
                 $query->where('call_histories.account_id', $AccountID);
             }
@@ -61,6 +69,22 @@ class InvoiceGenrateJob implements ShouldQueue
                     $query;
                 }
             }
+           
+            $invoices = $query->get();
+            $cost = "";
+            if(!empty( $invoices)){
+                $cost = $invoices->sum('agentfee');
+            }
+            $account ="";
+            if(!empty($AccountID)){
+                $account = Client::where('id',$AccountID)->with('billing')->first();
+            }
+            $user = "Vendor";
+            $data = ExportHistory::find($this->exporthistory_id);
+            $pdf = PDF::loadView('invoicepdf', compact('invoices','cost','user','account','data'))->setPaper('a4');
+        }  
+        if($type == "Customer"){
+            $query = CallHistory::query('*');
             if((!empty( $StartDate ) && !empty( $EndDate ))){
                 $start =  strtotime($StartDate);
                 $start = $start*1000;
@@ -69,17 +93,33 @@ class InvoiceGenrateJob implements ShouldQueue
                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
 
+            if(!empty( $AccountID )) {
+                $query->where('call_histories.account_id', $AccountID);
+            }
+            if(!empty( $zerovaluecost )) {
+                if($zerovaluecost == 1){
+                    $query->where('fee', 0);
+                }
+                if($zerovaluecost == 2){
+                    $query->where('fee','!=', 0);
+                }
+                if($zerovaluecost == 0){
+                    $query;
+                }
+            }
+           
             $invoices = $query->get();
             $cost = "";
             if(!empty( $invoices)){
-                $cost =  $invoices->sum('agentfee');
+                $cost = $invoices->sum('fee');
             }
             $account ="";
-            if(!empty(  $AccountID)){
+            if(!empty($AccountID)){
                 $account = Client::where('id',$AccountID)->with('billing')->first();
             }
-            $user = "Vendor";
-            $pdf = PDF::loadView('invoicepdf', compact('invoices','cost','user','account'))->setPaper('a4');
+            $user = "Customer";
+            $data = ExportHistory::find($this->exporthistory_id);
+            $pdf = PDF::loadView('invoicepdf', compact('invoices','cost','user','account','data'))->setPaper('a4');
         }
 
    

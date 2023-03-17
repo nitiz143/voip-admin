@@ -18,17 +18,29 @@
         <div class="col-md-12 form-group mt-3">
             <div class="from_address" style="float:left;width:50%;">
                 <h2 class="invoice_title">Invoice To:</h2>
-                <h5>{{__('name')}}: &nbsp;{{!empty($account->account_name) ? $account->account_name : ''}}</h5>
-                <h5>{{__('email')}}:  &nbsp;{{!empty($account->email) ? $account->email : ''}}</h5>
-                <h5>{{__('phone')}}: &nbsp;{{!empty($account->phone) ? $account->phone : ''}}</h5>
-                <h5>{{__('address')}}: &nbsp;{{!empty($account->city) ? $account->city : ''}},{{!empty($account->postzip) ? $account->postzip : ''}},{{!empty($account->country) ? $account->country : ''}}</h5>
+                <h5>{{__('Name')}}: &nbsp;{{!empty($account->account_name) ? $account->account_name : ''}}</h5>
+                <h5>{{__('Email')}}:  &nbsp;{{!empty($account->email) ? $account->email : ''}}</h5>
+                <h5>{{__('Phone')}}: &nbsp;{{!empty($account->phone) ? $account->phone : ''}}</h5>
+                <h5>{{__('Address')}}: &nbsp;{{!empty($account->city) ? $account->city : ''}},{{!empty($account->postzip) ? $account->postzip : ''}},{{!empty($account->country) ? $account->country : ''}}</h5>
             </div>
             <div class="to_address text-right">
-                <h2 class="invoice_title">Invoice Detail</h2>
-                <h4>{{__('invoice no')}}:</h4>
-                <h5>{{__('due')}}:</h5>
-                <h5>{{__('next date')}}:</h5>
-                <h5>{{__('end date')}}:</h5>
+                <h2 class="Invoice_title">Invoice Detail</h2>
+                <h4>{{__('Invoice no')}}: &nbsp;{{!empty($data->Invoice_no) ? $data->Invoice_no : ''}}</h4>
+                <h5>{{__('Invoice Date')}}:&nbsp;{{!empty($account->billing[0]->next_invoice_date) ? $account->billing[0]->next_invoice_date : ''}}</h5>
+                <h5>{{__('Due')}}:&nbsp;{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->addDays(5)->format('Y-m-d') : ''}}</h5>
+                @if($account->billing[0]->billing_class == 'daily')
+                    <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->format('Y-m-d') : ''}}</h5>
+                @elseif ($account->billing[0]->billing_class = 'monthly')
+                    <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subMonth()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</h5>
+                @elseif ($account->billing[0]->billing_class = 'weekly')
+                    <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday(7)->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</h5>
+                @elseif ($account->billing[0]->billing_class = 'yearly')
+                    <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subYear()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</h5>
+                @else
+                    <h5>{{__('Invoice Period')}}: </h5>
+                @endif
+              
+              
             </div>
         </div>
         
@@ -100,22 +112,28 @@
         <div class="col-md-12">
             <table class="table w-100">
                 <tr style="margin-bottom:30px;background: #2e3e4e;color: #fff;" class="item_table_header">
-                <th style="width:14%">{{ __('Title') }}</th>
-                <th style="width:14%">{{ __('Description') }}</th>
-                <th style="width:14%">{{ __('Price') }}</th>
-                <th style="width:14%">{{ __('Quantity') }}</th>
-                <th style="width:14%">{{ __('Date From') }}</th>
-                <th style="width:14%">{{ __('Date To') }}</th>
-                <th style="width:14%">{{ __('TOTAL') }}</th>
+                <th style="width:20%">{{ __('Title') }}</th>
+                <th style="width:20%">{{ __('Description') }}</th>
+                <th style="width:20%">{{ __('Price') }}</th>
+                <th style="width:20%">{{ __('Quantity') }}</th>
+                <th style="width:20%">{{ __('TOTAL') }}</th>
                 </tr>
                 <tbody id="items">
                     <tr class="items">
                         <td>Usage</td>
-                        <td>From 20-02-2023 To 26-02-2023</td>
+                        @if($account->billing[0]->billing_class == 'daily')
+                            <td>From &nbsp;{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->format('Y-m-d') : ''}}</td>
+                        @elseif ($account->billing[0]->billing_class = 'monthly')
+                            <td>From &nbsp;{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subMonth()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</td>
+                        @elseif ($account->billing[0]->billing_class = 'weekly')
+                            <td>From &nbsp;{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday(7)->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</td>
+                        @elseif ($account->billing[0]->billing_class = 'yearly')
+                            <td>From &nbsp;{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subYear()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</td>
+                        @else
+                            <td> </td>
+                        @endif
                         <td>${{ $cost }}</td>
                         <td>1</td>
-                        <td>20-02-2023</td>
-                        <td>26-02-2023</td>
                         <td>${{ $cost }}</td>
                     </tr>
                 </tbody>
@@ -159,7 +177,7 @@
                     <th style="width:14%">{{ __('Avg Rate/Min') }}</th>
                     <th style="width:14%">{{ __('Cost') }}</th>
                     </tr>
-                    @foreach($invoices as $invoice)
+                        @foreach($invoices as $invoice)
                             <tbody id="items">
                                 <tr class="items">
                                     <td></td>
@@ -167,20 +185,46 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    @php
+                                        $date = new \DateTime();
+                                        $value = $invoice->starttime;
+                                        $startTime =  $date->setTimestamp($value/1000);
+
+                                        $date1 = new \DateTime();
+                                        $value1 = $invoice->stoptime;
+                                        $stopTime =  $date1->setTimestamp($value1/1000);
+                                    
+                                    
+                                        $totalDuration =    $startTime->diff($stopTime)->format('%m:%s');
+                                    @endphp
+                                    <td>{{ $totalDuration }}</td>
+                                    <td>{{ $totalDuration }}</td>
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    @if($user == 'Vendor')
+                                @if($user == 'Vendor')
                                     <td>${{ $invoice->agentfee }}</td>
-                                    @endif
-                                    @if($user == 'Customer')
+                                @endif
+                                @if($user == 'Customer')
                                     <td>${{ $invoice->fee }}</td>
-                                    @endif
-                                  
+                                @endif
                                 </tr>
                             </tbody>
                         @endforeach
-                   
+                        <tfoot>
+                            <tr>
+                                <th colspan="5">calls</th>
+                                <th>Duration</th>
+                                <th>Billed Duration</th>
+                                <th></th>
+                                <th>Charge</th>
+                            </tr>
+                            <tr>
+                                <td colspan="5"></td>
+                                <td ></td>
+                                <td ></td>
+                                <td ></td>
+                                <td >{{$cost}}</td>
+                            </tr>
+                        </tfoot>
                 </table>
             </div>
             <div class="row">
