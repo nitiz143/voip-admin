@@ -306,7 +306,7 @@
                            $($(row).children().get(0)).html('<strong>Total</strong>');
                            $($(row).children().get(3)).html('<strong>'+calls+' Calls</strong>');
                            $($(row).children().get(4)).html('<strong>'+minitus+' (mm:ss)</strong>');
-                           $($(row).children().get(5)).html('<strong> $' + amount+ '</strong>');
+                           $($(row).children().get(5)).html('<strong> $' + amount.toFixed(6)+ '</strong>');
                        }else{
                            $(".data-table").find('tfoot').find('tr').html('');
                        }

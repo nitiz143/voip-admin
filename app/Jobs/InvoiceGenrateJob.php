@@ -71,9 +71,25 @@ class InvoiceGenrateJob implements ShouldQueue
             }
            
             $invoices = $query->get();
-            $cost = "";
+            $count_duration=[];
+            $total_cost = "";
             if(!empty( $invoices)){
-                $cost = $invoices->sum('agentfee');
+                $total_cost = $invoices->sum('agentfee');
+               
+                foreach ($invoices as $key => $invoice) {
+                    
+                    $date = new \DateTime();
+                    $value = $invoice->starttime;
+                    $startTime =  $date->setTimestamp($value/1000);
+
+                    $date1 = new \DateTime();
+                    $value1 = $invoice->stoptime;
+                    $stopTime =  $date1->setTimestamp($value1/1000);
+                
+                
+                    $count_duration[]  =    $startTime->diff($stopTime)->format('%s');
+                }
+             
             }
             $account ="";
             if(!empty($AccountID)){
@@ -81,7 +97,7 @@ class InvoiceGenrateJob implements ShouldQueue
             }
             $user = "Vendor";
             $data = ExportHistory::find($this->exporthistory_id);
-            $pdf = PDF::loadView('invoicepdf', compact('invoices','cost','user','account','data'))->setPaper('a4');
+            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration'))->setPaper('a4');
         }  
         if($type == "Customer"){
             $query = CallHistory::query('*');
@@ -109,9 +125,25 @@ class InvoiceGenrateJob implements ShouldQueue
             }
            
             $invoices = $query->get();
-            $cost = "";
+           
+            $count_duration="";
+            $total_cost = "";
             if(!empty( $invoices)){
-                $cost = $invoices->sum('fee');
+                $total_cost = $invoices->sum('fee');
+               
+                foreach ($invoices as $key => $invoice) {
+                    
+                    $date = new \DateTime();
+                    $value = $invoice->starttime;
+                    $startTime =  $date->setTimestamp($value/1000);
+
+                    
+                    $value1 = $invoice->stoptime;
+                    $stopTime =  $date->setTimestamp($value1/1000);
+                
+                
+                    $count_duration[]  =    $startTime->diff($stopTime)->format('%s');
+                }
             }
             $account ="";
             if(!empty($AccountID)){
@@ -119,7 +151,7 @@ class InvoiceGenrateJob implements ShouldQueue
             }
             $user = "Customer";
             $data = ExportHistory::find($this->exporthistory_id);
-            $pdf = PDF::loadView('invoicepdf', compact('invoices','cost','user','account','data'))->setPaper('a4');
+            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration'))->setPaper('a4');
         }
 
    

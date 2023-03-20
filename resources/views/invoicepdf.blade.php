@@ -12,7 +12,7 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <img src="{{ public_path('assets/dist/img/download.png')}}" style="width: 260px; height: 100px" alt="logo" >
+                <img src="{{ public_path('assets/dist/img/download.png')}}" style="width: 260px; height: 100px; margin-bottom:30px;" alt="logo" >
             </div>
         </div>
         <div class="col-md-12 form-group mt-3">
@@ -56,10 +56,10 @@
                 </tr>
                 <tbody id="items">
                     <tr class="items">
-                        <td>${{$cost}}</td>
+                        <td>${{$total_cost}}</td>
                         <td>${{00.00}}</td>
                         <td>${{00.00}}</td>
-                        <td>{{$cost}}</td>
+                        <td>{{$total_cost}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -73,14 +73,14 @@
                     <tr>
                         <th style="width:75%" class="text-right">{{ __('Sub Total') }}</th>
                         <td class="text-right">
-                            <span id="subTotal">${{ $cost }}</span>
+                            <span id="subTotal">${{ $total_cost }}</span>
                         </td>
                     </tr>
                     <tr class="amount_due">
                         <th  style="width:75%"  class="text-right">{{ __('Grand Total') }}:</th>
                         <td class="text-right">
                             <hr class="separator">
-                            <span id="grandTotal">${{ $cost }}</span>
+                            <span id="grandTotal">${{ $total_cost }}</span>
                             <hr class="separator">
                         </td>
                     </tr>
@@ -107,11 +107,13 @@
     <div class="container">
         <br><br>
         <div style="clear: both"></div>
-        <div style="margin-bottom:30px;background: #929597;color: #fff;" class="item_table_header"><h3> 
-            Usage</h3></div>
+        <div style="margin-bottom:10px;background: #929597;color: #fff;" class="item_table_header d-flex justify-content-between">
+            <div  style="float:left;width:50%; padding-left:10px;"><h3>Usage</h3></div>
+            <div class="text-right" style="padding-right:10px;"><h4>${{ $total_cost }}</h4></div>
+        </div>
         <div class="col-md-12">
             <table class="table w-100">
-                <tr style="margin-bottom:30px;background: #2e3e4e;color: #fff;" class="item_table_header">
+                <tr style="margin-bottom:10px;background: #2e3e4e;color: #fff;" class="item_table_header">
                 <th style="width:20%">{{ __('Title') }}</th>
                 <th style="width:20%">{{ __('Description') }}</th>
                 <th style="width:20%">{{ __('Price') }}</th>
@@ -132,9 +134,9 @@
                         @else
                             <td> </td>
                         @endif
-                        <td>${{ $cost }}</td>
+                        <td>${{ $total_cost }}</td>
                         <td>1</td>
-                        <td>${{ $cost }}</td>
+                        <td>${{ $total_cost }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -162,8 +164,9 @@
        <div class="container">
             <br><br>
             <div style="clear: both"></div>
-            <div style="margin-bottom:30px;background: #929597;color: #fff;" class="item_table_header"><h3> 
-                Usage</h3></div>
+            <div style="margin-bottom:10px; background: #929597;color: #fff;" class="item_table_header">
+                <h3> Usage</h3>
+            </div>
             <div class="col-md-12">
                 <table class="table w-100">
                     <tr style="margin-bottom:30px;background: #2e3e4e;color: #fff;" class="item_table_header">
@@ -190,9 +193,8 @@
                                         $value = $invoice->starttime;
                                         $startTime =  $date->setTimestamp($value/1000);
 
-                                        $date1 = new \DateTime();
                                         $value1 = $invoice->stoptime;
-                                        $stopTime =  $date1->setTimestamp($value1/1000);
+                                        $stopTime =  $date->setTimestamp($value1/1000);
                                     
                                     
                                         $totalDuration =    $startTime->diff($stopTime)->format('%m:%s');
@@ -209,20 +211,25 @@
                                 </tr>
                             </tbody>
                         @endforeach
-                        <tfoot>
-                            <tr>
-                                <th colspan="5">calls</th>
+                        <tfoot id="items">
+                            <tr class="items">
+                                <th colspan="4"></th>
+                                <th>Calls</th>
                                 <th>Duration</th>
                                 <th>Billed Duration</th>
                                 <th></th>
                                 <th>Charge</th>
                             </tr>
-                            <tr>
-                                <td colspan="5"></td>
+                            <tr class="items">
+                                <td colspan="4"></td>
+                                <td>{{$invoices->count();}}</td>
+                                @php
+                                   $time= sprintf( "%02.2d:%02.2d", floor( array_sum($count_duration) / 60 ), array_sum($count_duration) % 60 )
+                                @endphp
+                                <td >{{!empty($time) ? $time :"" }}</td>
+                                <td >{{!empty($time) ? $time :"" }}</td>
                                 <td ></td>
-                                <td ></td>
-                                <td ></td>
-                                <td >{{$cost}}</td>
+                                <td >{{$total_cost}}</td>
                             </tr>
                         </tfoot>
                 </table>
@@ -259,6 +266,7 @@
     .table>tr>td, .table>tr>th{padding: 8px;line-height: 1.42857143;vertical-align: top;}
     hr.separator{border-color:  #2e3e4e;margin-top: 10px;margin-bottom: 10px;}
     tbody#items>tr>td{border: 3px solid #fff !important;vertical-align: middle;padding: 8px;}
+    tfoot#items>tr>td{border: 3px solid #fff !important;vertical-align: middle;padding: 8px;}
     #items{background-color: #f1f1f1;}
     .form-group {margin-bottom: 1rem;}
     .from_address{width: 330px;height:200px;margin-bottom:1rem;float: left;}

@@ -88,13 +88,12 @@ class CallController extends Controller
                     $value = $row->starttime;
                     $startTime =  $date->setTimestamp($value/1000);
 
-                    $date1 = new \DateTime();
                     $value1 = $row->stoptime;
-                    $stopTime =  $date1->setTimestamp($value1/1000);
+                    $stopTime =  $date->setTimestamp($value1/1000);
                   
                     $now = \Carbon\Carbon::parse($startTime);
                     $emitted = \Carbon\Carbon::parse($stopTime);
-                    $totalDuration =   $emitted ->diffInSeconds($now);
+                    $totalDuration =   $emitted->diffInSeconds($now);
                     return   $totalDuration;
                 })
                 ->addColumn('action', function($row){
