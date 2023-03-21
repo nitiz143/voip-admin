@@ -10,6 +10,7 @@ use App\Models\Client;
 use Yajra\DataTables\DataTables;
 use App\Models\Trunk;
 use App\Models\Setting;
+use App\Models\Codes;
 use App\Models\ExportHistory;
 use App\Jobs\InvoiceGenrateJob;
 use App\Utils\RandomUtil;
@@ -54,6 +55,9 @@ class CallController extends Controller
             if(!empty($request->Cld)){
                 $data->where('calleee164', $request->Cld);
             }
+            if(!empty($request->Prefix)){
+                $data->where('callerareacode', $request->Prefix);
+            }
             $data = $data->get();
           
             return Datatables::of($data)
@@ -78,6 +82,10 @@ class CallController extends Controller
                         $cost = "$".$row->fee;
                     return $cost;
                 })
+                ->addColumn('Prefix', function($row){
+                        $Prefix = $row->callerareacode;
+                    return $Prefix;
+                })
                 ->addColumn('Avrage_cost', function($row){
                         $cost = "$0.0";
                     return $cost;
@@ -88,8 +96,9 @@ class CallController extends Controller
                     $value = $row->starttime;
                     $startTime =  $date->setTimestamp($value/1000);
 
+                    $date1 = new \DateTime();
                     $value1 = $row->stoptime;
-                    $stopTime =  $date->setTimestamp($value1/1000);
+                    $stopTime =  $date1->setTimestamp($value1/1000);
                   
                     $now = \Carbon\Carbon::parse($startTime);
                     $emitted = \Carbon\Carbon::parse($stopTime);
@@ -145,6 +154,9 @@ class CallController extends Controller
             if(!empty($request->Cld)){
                 $data->where('calleee164', $request->Cld);
             }
+            if(!empty($request->Prefix)){
+                $data->where('callerareacode', $request->Prefix);
+            }
             $data = $data->get();
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -186,6 +198,10 @@ class CallController extends Controller
                     $emitted = \Carbon\Carbon::parse($stopTime);
                     $totalDuration =   $emitted ->diffInSeconds($now);
                     return   $totalDuration;
+                })
+                ->addColumn('Prefix', function($row){
+                        $Prefix = $row->callerareacode;
+                    return $Prefix;
                 })
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;

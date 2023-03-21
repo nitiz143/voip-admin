@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <a type="submit" class="btn btn-primary mb-4 mr-2 float-right w-10 export" data-type="all_invoice_export">invoice genrate</a>
+                        <a type="submit" class="btn btn-primary mb-4 mr-2 float-right w-10 export" data-type="all_invoice_export">Invoice generate</a>
                         <a href="" class="btn btn-primary mb-4 float-right w-10" id="Filter">Filter</a>
                         <a href="{{ route('cdr.create') }}" class="btn btn-primary mb-4 ml-2 float-right w-10" id="createzoneModal">Import</a>
                     </ol>
@@ -54,8 +54,9 @@
                                                             <th>Disconnect Time</th>
                                                             <th>Billed Duration (sec)</th>
                                                             <th>Cost</th>
-                                                            <th>Callere</th>
-                                                            <th>Calleee</th>
+                                                            <th>CLI</th>
+                                                            <th>CLD</th>
+                                                            <th>Prefix</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
@@ -269,6 +270,7 @@ $("#btnModeClose").on("click", function (e) {
                         {data:'Cost',name:'Cost'},
                         {data:'callere164',name:'callere164'},
                         {data:'calleee164',name:'calleee164'},
+                        {data:'Prefix',name:'Prefix'},
                         {data:'action',name:'action', orderable: false, searchable: false},
                     ],
                     "fnFooterCallback": function ( row, data, start, end, display ) {

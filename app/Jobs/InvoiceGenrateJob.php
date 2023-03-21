@@ -126,24 +126,23 @@ class InvoiceGenrateJob implements ShouldQueue
            
             $invoices = $query->get();
            
-            $count_duration="";
+            $count_duration=[];
             $total_cost = "";
             if(!empty( $invoices)){
                 $total_cost = $invoices->sum('fee');
-               
-                foreach ($invoices as $key => $invoice) {
-                    
-                    $date = new \DateTime();
-                    $value = $invoice->starttime;
-                    $startTime =  $date->setTimestamp($value/1000);
+                    foreach ($invoices as $key => $invoice) {
+                        $date = new \DateTime();
+                        $value = $invoice->starttime;
+                        $startTime =  $date->setTimestamp($value/1000);
 
+                        $date1 = new \DateTime();
+                        $value1 = $invoice->stoptime;
+                        $stopTime =  $date1->setTimestamp($value1/1000);
                     
-                    $value1 = $invoice->stoptime;
-                    $stopTime =  $date->setTimestamp($value1/1000);
-                
-                
-                    $count_duration[]  =    $startTime->diff($stopTime)->format('%s');
-                }
+                        $now = \Carbon\Carbon::parse($startTime);
+                        $emitted = \Carbon\Carbon::parse($stopTime);
+                        $count_duration[] =   $emitted->diffInSeconds($now);
+                    }
             }
             $account ="";
             if(!empty($AccountID)){
