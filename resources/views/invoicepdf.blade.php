@@ -59,7 +59,7 @@
                             <td>${{$total_cost}}</td>
                             <td>${{00.00}}</td>
                             <td>${{00.00}}</td>
-                            <td>{{$total_cost}}</td>
+                            <td  class="text-right">${{$total_cost}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -184,21 +184,21 @@
                         <tbody id="items">
                             <tr class="items">
                                 <td></td>
-                                <td></td>
+                                <td>{{ $invoice->callerareacode }}</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 @php
-                                    $date = new \DateTime();
-                                    $value = $invoice->starttime;
-                                    $startTime =  $date->setTimestamp($value/1000);
-                                    $date1 = new \DateTime();
-                                    $value1 = $invoice->stoptime;
-                                    $stopTime =  $date1->setTimestamp($value1/1000);
+                                    // $date = new \DateTime();
+                                    // $value = $invoice->starttime;
+                                    // $startTime =  $date->setTimestamp($value/1000);
+                                    // $date1 = new \DateTime();
+                                    // $value1 = $invoice->stoptime;
+                                    // $stopTime =  $date1->setTimestamp($value1/1000);
 
-                                    $now = \Carbon\Carbon::parse($startTime);
-                                    $emitted = \Carbon\Carbon::parse($stopTime);
-                                    $totalDuration =   $emitted->diffInSeconds($now);
+                                    // $now = \Carbon\Carbon::parse($startTime);
+                                    // $emitted = \Carbon\Carbon::parse($stopTime);
+                                    $totalDuration =   $invoice->feetime;
                                 
                                     $totalDuration = sprintf( "%02.2d:%02.2d", floor($totalDuration / 60 ), $totalDuration % 60)
                                 @endphp

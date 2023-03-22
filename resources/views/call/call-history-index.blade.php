@@ -232,11 +232,11 @@
             $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
             // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
             if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
-                $.notify("Please Select a Start date", "Error", toastr_opts);
+                $.notify("Please Select a Start date", "Error");
                 return false;
             }
             if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
-                $.notify("Please Select a End date", "Error", toastr_opts);
+                $.notify("Please Select a End date", "Error");
                 return false;
             }
             $searchFilter.StartDate += ' '+starttime;

@@ -92,18 +92,18 @@ class CallController extends Controller
                 })
               
                 ->addColumn('billing_duration', function($row){
-                    $date = new \DateTime();
-                    $value = $row->starttime;
-                    $startTime =  $date->setTimestamp($value/1000);
+                    // $date = new \DateTime();
+                    // $value = $row->starttime;
+                    // $startTime =  $date->setTimestamp($value/1000);
 
-                    $date1 = new \DateTime();
-                    $value1 = $row->stoptime;
-                    $stopTime =  $date1->setTimestamp($value1/1000);
+                    // $date1 = new \DateTime();
+                    // $value1 = $row->stoptime;
+                    // $stopTime =  $date1->setTimestamp($value1/1000);
                   
-                    $now = \Carbon\Carbon::parse($startTime);
-                    $emitted = \Carbon\Carbon::parse($stopTime);
-                    $totalDuration =   $emitted->diffInSeconds($now);
-                    return   $totalDuration;
+                    // $now = \Carbon\Carbon::parse($startTime);
+                    // $emitted = \Carbon\Carbon::parse($stopTime);
+                    // $totalDuration =   $emitted->diffInSeconds($now);
+                    return  $row->feetime;
                 })
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;
@@ -186,18 +186,18 @@ class CallController extends Controller
                     return $cost;
                 })
                 ->addColumn('billing_duration', function($row){
-                    $date = new \DateTime();
-                    $value = $row->starttime;
-                    $startTime =  $date->setTimestamp($value/1000);
+                    // $date = new \DateTime();
+                    // $value = $row->starttime;
+                    // $startTime =  $date->setTimestamp($value/1000);
 
-                    $date1 = new \DateTime();
-                    $value1 = $row->stoptime;
-                    $stopTime =  $date1->setTimestamp($value1/1000);
-                  
-                    $now = \Carbon\Carbon::parse($startTime);
-                    $emitted = \Carbon\Carbon::parse($stopTime);
-                    $totalDuration =   $emitted ->diffInSeconds($now);
-                    return   $totalDuration;
+                    // $date1 = new \DateTime();
+                    // $value1 = $row->stoptime;
+                    // $stopTime =  $date1->setTimestamp($value1/1000);
+                
+                    // $now = \Carbon\Carbon::parse($startTime);
+                    // $emitted = \Carbon\Carbon::parse($stopTime);
+                    // $totalDuration =   $emitted ->diffInSeconds($now);
+                    return   $row->feetime;
                 })
                 ->addColumn('Prefix', function($row){
                         $Prefix = $row->callerareacode;
