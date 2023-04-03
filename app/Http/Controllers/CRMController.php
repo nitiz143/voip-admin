@@ -191,9 +191,31 @@ class CRMController extends Controller
 
     public function Convert_to_Client(Request $request)
     {
+       
         $rules = array(
             'account_name'=>'required',
+            'country'=>'required',
         );
+
+        if(!empty($request->billing_status) && $request->billing_status == 'active'){
+            $rules['billing_class'] = 'required';
+            $rules['billing_type'] = 'required';
+            $rules['billing_timezone'] = 'required';
+            $rules['billing_startdate'] = 'required';
+            $rules['billing_cycle'] = 'required';
+        
+        }
+        if(!empty($request->billing_cycle)){
+            if($request->billing_cycle == 'in_specific_days' || $request->billing_cycle == 'monthly_anniversary' || $request->billing_cycle == 'weekly'){
+                if($request->billing_cycle == 'weekly') {
+                    $rules['billing_cycle_startday'] = 'required';
+                }elseif ($request->billing_cycle == 'in_specific_days') {
+                    $rules['billing_cycle_startday_for_days'] = 'required';
+                }elseif ($request->billing_cycle == 'monthly_anniversary') {
+                    $rules['billing_cycle_startday_for_monthly'] = 'required';
+                }
+            }
+        }
 
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails())
@@ -228,38 +250,44 @@ class CRMController extends Controller
                 'lastname' => $request->lastname,
                 'email' => $request->email,
                 'phone' => $request->phone,
+                'account_name' =>$request->account_name,
+                'account_number' =>$request->account_number,
 
             ];
            
             $client = Client::create($data);
-            if(!empty($client)){
-                $billingdata["account_id"] = $client->id;
-                $billingdata["billing_class"] = $request->billing_class;
-                $billingdata["billing_type"] = $request->billing_type;
-                $billingdata["billing_timezone"] = $request->billing_timezone;
-                $billingdata["billing_startdate"] = $request->billing_startdate;
-                $billingdata["billing_cycle"] = $request->billing_cycle;
-                if($request->billing_cycle == 'in_specific_days'){
-                    $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;
-                }elseif ($request->billing_cycle == 'monthly_anniversary') {
-                    $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_monthly;
-                }elseif ($request->billing_cycle == 'weekly') {
-                    $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
-                }else{
-                    $billingdata["billing_cycle_startday"] = NULL;
-                }
-                $billingdata["auto_pay"] = $request->auto_pay;
-                $billingdata["auto_pay_method"] = $request->auto_pay_method;
-                $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;
-                $billingdata["next_invoice_date"] = $request->next_invoice_date;
-                $billingdata["next_charge_date"] = $request->next_charge_date;
-    
-                if(Billing::create($billingdata)){
-                    if($crm->delete()){
-
-                        return response()->json(['message' =>  __('CRM Convert to Account Successfully'),'success'=>true,'redirect_url' => route('client.index')]);
+            if(!empty($request->billing_status) && $request->billing_status == 'active'){
+                if(!empty($client)){
+                    $billingdata["account_id"] = $client->id;
+                    $billingdata["billing_class"] = $request->billing_class;
+                    $billingdata["billing_type"] = $request->billing_type;
+                    $billingdata["billing_timezone"] = $request->billing_timezone;
+                    $billingdata["billing_startdate"] = $request->billing_startdate;
+                    $billingdata["billing_cycle"] = $request->billing_cycle;
+                    if($request->billing_cycle == 'in_specific_days'){
+                        $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;
+                    }elseif ($request->billing_cycle == 'monthly_anniversary') {
+                        $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_monthly;
+                    }elseif ($request->billing_cycle == 'weekly') {
+                        $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
+                    }else{
+                        $billingdata["billing_cycle_startday"] = NULL;
+                    }
+                    $billingdata["auto_pay"] = $request->auto_pay;
+                    $billingdata["auto_pay_method"] = $request->auto_pay_method;
+                    $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;
+                    $billingdata["next_invoice_date"] = $request->next_invoice_date;
+                    $billingdata["next_charge_date"] = $request->next_charge_date;
+        
+                    if(Billing::create($billingdata)){
+                        if($crm->delete()){
+                            return response()->json(['message' =>  __('CRM Convert to Account Successfully'),'success'=>true,'redirect_url' => route('client.index')]);
+                        }
                     }
                 }
+            }
+            if($crm->delete()){
+                return response()->json(['message' =>  __('CRM Convert to Account Successfully'),'success'=>true,'redirect_url' => route('client.index')]);
             }
         }
     }
@@ -343,3 +371,15 @@ class CRMController extends Controller
         return response()->json(['message' =>  __('Comment Save Successfully'),'success'=>true]);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

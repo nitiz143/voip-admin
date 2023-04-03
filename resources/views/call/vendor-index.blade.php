@@ -5,10 +5,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-
+                    <div class="header mt-2">
+                        <h1 class="title ">Vendor CDR</h1>
+                      
+                    </div>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
+                        <a type="submit" class="btn btn-primary mb-4 mr-2 float-right w-10 export" data-type="all_invoice_export">Invoice generate</a>
                         <a href="" class="btn btn-primary mb-4 float-right w-10" id="Filter">Filter</a>
                         <a href="{{ route('cdr.create') }}" class="btn btn-primary mb-4 ml-2 float-right w-10" id="createzoneModal">Import</a>
                     </ol>
@@ -40,37 +44,31 @@
                                 <div class="panel-body tabs-menu-body">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h1 class="card-title ">Vendor CDR</h1>
-                                                  
-                                                </div>
-                                                
-                                                <!-- /.card-header -->
-                                                <div class="card-body">
-                                                    <table class="table table-bordered data-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>ID</th>
-                                                                <th>Account Name</th>
-                                                                <th>Connect Time</th>
-                                                                <th>Disconnect Time</th>
-                                                                <th>Billed Duration (sec)</th>
-                                                                <th>Cost</th>
-                                                                <th>Callere</th>
-                                                                <th>Calleee</th>
-                                                                {{-- <th>Trunk</th> --}}
-                                                                <th>Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                        
-                                                        </tbody>
-
-                                                        
-                                                    </table>
-                                                </div><!-- /.card-body -->
-                                            </div><!-- /.card -->
+                                            <div class="panel-body mt-3">
+                                                <table class="table table-bordered data-table  w-100">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Account Name</th>
+                                                            <th>Connect Time</th>
+                                                            <th>Disconnect Time</th>
+                                                            <th>Billed Duration (sec)</th>
+                                                            <th>Cost</th>
+                                                            <th>CLI</th>
+                                                            <th>CLD</th>
+                                                            <th>Prefix</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                    
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div><!-- /.card-body -->
                                         </div>
                         
                                         <div class="modal" id="ajaxModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -99,6 +97,7 @@
                                                     </div>
                                                     <div class="modal-body" >
                                                         <form novalidate class="form-horizontal form-groups-bordered validate"  id="cdr_filter">
+                                                            <input type="hidden" name="type" class="form-control"  value="Vendor"  />
                                                             <div class="form-group">
                                                                 <label class="control-label small_label" for="field-1">Start Date</label>
                                                                 <div class="row">
@@ -127,7 +126,14 @@
                                                             </div> --}}
                                                             <div class="form-group">
                                                                 <label class="control-label" for="field-1">Gateway</label>
-                                                                <select class="form-control" id="GatewayID" name="GatewayID"></select>
+                                                                <select class="form-control" id="GatewayID" name="GatewayID">
+                                                                    @if(!empty($Gateways))
+                                                                        <option value="">Select</option>
+                                                                        @foreach ($Gateways as $Gateway)
+                                                                            <option value="{{$Gateway->host}}">{{$Gateway->host}}</option>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label" for="field-1">Account</label>
@@ -155,21 +161,7 @@
                                                                 <label class="control-label" for="field-1">Prefix</label>
                                                                 <input type="text" name="area_prefix" class="form-control mid_fld "  value=""  />
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="field-1">Trunk</label>
-                                                                <select class="form-control" id="bulk_AccountID" allowClear="true" name="Trunk">
-                                                                    @if(!empty($Trunks))
-                                                                        <option value="">Select</option>
-                                                                        @foreach ($Trunks as $Trunk)
-                                                                            <option value="{{$Trunk->id}}">{{$Trunk->title}}</option>
-                                                                        @endforeach
-                                                                    @endif
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label">Tag</label>
-                                                                <input class="form-control tags" name="tag" type="text" >
-                                                            </div>
+                                                           
                                                             <div class="form-group">
                                                                 <br/>
                                                                 <input type="hidden" name="ResellerOwner" value="0">
@@ -213,6 +205,9 @@ $("#btnModeClose").on("click", function (e) {
 
     $(document).ready(function() {
         var $searchFilter = {};
+        var TotalCall = 0;
+        var TotalDuration = 0;
+        var TotalCost = 0;
         $("#cdr_filter").submit(function(e) {
             e.preventDefault();
             var starttime = $("#cdr_filter input[name='StartTime']").val();
@@ -220,24 +215,24 @@ $("#btnModeClose").on("click", function (e) {
                 starttime = '00:00:00';
             }
 
-            $searchFilter.Trunk = $("#cdr_filter select[name='Trunk']").val();
+            // $searchFilter.Trunk = $("#cdr_filter select[name='Trunk']").val();
             $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
             $searchFilter.Gateway = $("#cdr_filter select[name='GatewayID']").val();
             $searchFilter.zerovaluecost = $("#cdr_filter select[name='zerovaluecost']").val();
             $searchFilter.Cli = $("#cdr_filter input[name='CLI']").val();
             $searchFilter.Cld = $("#cdr_filter input[name='CLD']").val();
             $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
-            $searchFilter.Tag = $("#cdr_filter input[name='tag']").val();
+            // $searchFilter.Tag = $("#cdr_filter input[name='tag']").val();
             $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
             $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
             $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
             // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
             if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
-                $.notify("Please Select a Start date", "Error", toastr_opts);
+                $.notify("Please Select a Start date", "Error");
                 return false;
             }
             if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
-                $.notify("Please Select a End date", "Error", toastr_opts);
+                $.notify("Please Select a End date", "Error");
                 return false;
             }
             $searchFilter.StartDate += ' '+starttime;
@@ -275,8 +270,48 @@ $("#btnModeClose").on("click", function (e) {
                         {data:'Cost',name:'Cost'},
                         {data:'callere164',name:'callere164'},
                         {data:'calleee164',name:'calleee164'},
+                        {data:'Prefix',name:'Prefix'},
                         {data:'action',name:'action', orderable: false, searchable: false},
                     ],
+                    "fnFooterCallback": function ( row, data, start, end, display ) {
+                        var api = this.api(), data;
+
+                        /* converting to interger to find total */
+                        var intVal = function ( i ) {
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '')*1 :
+                                typeof i === 'number' ?
+                                    i : 0;
+                        };
+
+                        var calls = api.column( 3 ).data().reduce( function (a, b) {
+                            return table.data().length;
+                        }, 0 );
+
+                        var minitus = api.column( 4 ).data().reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                        minitus  = Math.floor(minitus  / 60)+":" + minitus % 60
+
+
+                        var amount = api.column( 5 ).data().reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+                       if (end > 0) {
+                           $(row).html('');
+                           for (var i = 0; i < $('.data-table thead th').length; i++) {
+                               var a = document.createElement('td');
+                               $(a).html('');
+                               $(row).append(a);
+                           }
+                           $($(row).children().get(0)).html('<strong>Total</strong>')
+                           $($(row).children().get(3)).html('<strong>'+calls+' Calls</strong>');
+                           $($(row).children().get(4)).html('<strong>'+minitus+'(mm:ss)</strong>');
+                           $($(row).children().get(5)).html('<strong> $'+amount.toFixed(6) + '</strong>');
+                       }else{
+                           $(".data-table").find('tfoot').find('tr').html('');
+                       }
+                   }
             });
             $('#FilterModel').modal('hide');
         });
@@ -296,6 +331,33 @@ $("#btnModeClose").on("click", function (e) {
            }
         });
     });
+
+    $('.export').on("click",function(e){
+            e.preventDefault();
+            // var type = $(this).data('type');
+            // var getVal = $("#export_type").val(type);
+             $.ajax({
+                type: "POST",
+                url: "{{url('/invoice_export')}}",
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                data : $('#cdr_filter').serialize(),
+                success: function(result) {
+                    if(result.success == true){
+                        $.notify(result.message, 'success');
+                    }else{
+                        $.each(result.errors, function (k, e) {
+                            $.notify(e, 'error');
+                        });
+                    }
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            });
+
+        });
     $(document).ready(function() {
         var myDate = new Date();
         $('#datepicker').datepicker();

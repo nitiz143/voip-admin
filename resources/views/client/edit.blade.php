@@ -297,7 +297,7 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <label for="country">Country</label>
+                                            <label for="country">Country<span style="color:red;">*</span></label>
                                             <select class="custom-select form-control-border border-width-2"
                                                 name="country" id="country">
                                                 <option selected disabled>--Select Country--</option>
@@ -933,7 +933,7 @@
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label for="billing_class">Billing Class</label>
+                                                        <label for="billing_class">Billing Class<span style="color:red;">*</span></label>
                                                         <select class="custom-select form-control" name="billing_class"
                                                             id="billing_class">
                                                             <option value="">Select</option>
@@ -945,7 +945,7 @@
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label for="billing_type">Billing Type</label>
+                                                        <label for="billing_type">Billing Type<span style="color:red;">*</span></label>
                                                         <select class="custom-select form-control" name="billing_type"
                                                             id="billing_type">
                                                             <option value="1" @if(!empty($billingdata->billing_type))
@@ -961,7 +961,7 @@
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group" twelvehour="true">
-                                                        <label for="billing_timezone">Billing Timezone</label>
+                                                        <label for="billing_timezone">Billing Timezone<span style="color:red;">*</span></label>
                                                         <div class="form-group timepicker" twelvehour="true">
                                                             <select class="form-control selectpicker"
                                                                 name="billing_timezone" id="billing_timezone"></select>
@@ -975,7 +975,7 @@
                                                 <div class="col-xl-6">
                                                     @if(!empty($billingdata->billing_startdate))
                                                         <div class="form-group mt-4">
-                                                            <label>Billing Start Date</label>
+                                                            <label>Billing Start Date<span style="color:red;">*</span></label>
                                                             <input  data-date-format="yyyy-mm-dd"  type="text"  class="form-control hidden datepicker  billing_start_date" id="billing_start_date" name="billing_startdate"
                                                             value="{{ $billingdata->billing_startdate}}">
                                                             <span class="text ml-2">
@@ -984,7 +984,7 @@
                                                         </div>
                                                     @else
                                                         <div class="form-group ">
-                                                            <label>Billing Start Date</label>
+                                                            <label>Billing Start Date<span style="color:red;">*</span></label>
                                                             <input  data-date-format="yyyy-mm-dd"  type="text"  class="form-control datepicker  billing_start_date" id="billing_start_date" name="billing_startdate" value="">
                                                         </div>
                                                     @endif
@@ -992,55 +992,94 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6">
-                                                    <div class="form-group">
-                                                        <label for="billing_cycle">Billing Cycle</label>
-                                                        <select class="custom-select  form-control hidden" name="billing_cycle"
-                                                            id="billing_cycle">
-                                                            <option value="">Select</option>
-                                                            <option value="daily" @if(!empty($billingdata->
-                                                                billing_cycle)) {{$billingdata->billing_cycle=='daily' ?
-                                                                'selected' : ''}} @endif>Daily</option>
-                                                            <option value="fortnightly" @if(!empty($billingdata->
-                                                                billing_cycle))
-                                                                {{$billingdata->billing_cycle=='fortnightly' ?
-                                                                'selected' : ''}} @endif>Fortnightly</option>
-                                                            <option value="in_specific_days" @if(!empty($billingdata->
-                                                                billing_cycle)){{$billingdata->billing_cycle=='in_specific_days'
-                                                                ? 'selected' : ''}} @endif>In Specific days</option>
-                                                            <option value="manual" @if(!empty($billingdata->
-                                                                billing_cycle)){{$billingdata->billing_cycle=='manual' ?
-                                                                'selected' : ''}} @endif>Manual</option>
-                                                            <option value="monthly" @if(!empty($billingdata->
-                                                                billing_cycle)){{$billingdata->billing_cycle=='monthly'
-                                                                ? 'selected' : ''}} @endif>Monthly</option>
-                                                            <option value="monthly_anniversary"
-                                                                @if(!empty($billingdata->
-                                                                billing_cycle)){{$billingdata->billing_cycle=='monthly_anniversary'
-                                                                ? 'selected' : ''}} @endif>Monthly anniversary</option>
-                                                            <option value="quarterly" @if(!empty($billingdata->
-                                                                billing_cycle)){{$billingdata->billing_cycle=='quarterly'
-                                                                ? 'selected' : ''}} @endif>Quarterly</option>
-                                                            <option value="weekly" @if(!empty($billingdata->
-                                                                billing_cycle)){{$billingdata->billing_cycle=='weekly' ?
-                                                                'selected' : ''}} @endif>Weekly</option>
-                                                            <option value="yearly" @if(!empty($billingdata->
-                                                                billing_cycle)){{$billingdata->billing_cycle=='yearly' ?
-                                                                'selected' : ''}} @endif>Yearly</option>
-                                                        </select>
-                                                        <span class="bill_cycle_edit_text ml-2">
-                                                            @if(!empty($billingdata->billing_cycle))
-                                                             {{ $billingdata->billing_cycle}} 
-                                                            @endif
-                                                        </span>
-                                                        <span><a href="#" class=" btn btn-dark btn-sm Edit_bill_cycle ml-2" style="font-size: 8px;" ><i class="fas fa-pen"></i></a></span>
-                                                    </div>
+                                                    @if($user->billing_status=='active')
+                                                        <div class="form-group mt-3">
+                                                            <label for="billing_cycle">Billing Cycle<span style="color:red;">*</span></label>
+                                                            <select class="custom-select  form-control hidden" name="billing_cycle"
+                                                                id="billing_cycle">
+                                                                <option value="">Select</option>
+                                                                <option value="daily" @if(!empty($billingdata->
+                                                                    billing_cycle)) {{$billingdata->billing_cycle=='daily' ?
+                                                                    'selected' : ''}} @endif>Daily</option>
+                                                                <option value="fortnightly" @if(!empty($billingdata->
+                                                                    billing_cycle))
+                                                                    {{$billingdata->billing_cycle=='fortnightly' ?
+                                                                    'selected' : ''}} @endif>Fortnightly</option>
+                                                                <option value="in_specific_days" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='in_specific_days'
+                                                                    ? 'selected' : ''}} @endif>In Specific days</option>
+                                                                <option value="manual" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='manual' ?
+                                                                    'selected' : ''}} @endif>Manual</option>
+                                                                <option value="monthly" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='monthly'
+                                                                    ? 'selected' : ''}} @endif>Monthly</option>
+                                                                <option value="monthly_anniversary"
+                                                                    @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='monthly_anniversary'
+                                                                    ? 'selected' : ''}} @endif>Monthly anniversary</option>
+                                                                <option value="quarterly" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='quarterly'
+                                                                    ? 'selected' : ''}} @endif>Quarterly</option>
+                                                                <option value="weekly" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='weekly' ?
+                                                                    'selected' : ''}} @endif>Weekly</option>
+                                                                <option value="yearly" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='yearly' ?
+                                                                    'selected' : ''}} @endif>Yearly</option>
+                                                            </select>
+                                                            <span class="bill_cycle_edit_text ml-2 ">
+                                                                @if(!empty($billingdata->billing_cycle))
+                                                                {{ $billingdata->billing_cycle}} 
+                                                                @endif
+                                                            </span>
+                                                            {{-- <span><a href="#" class=" btn btn-dark btn-sm Edit_bill_cycle ml-2" style="font-size: 8px;" ><i class="fas fa-pen"></i></a></span> --}}
+                                                        </div>
+                                                    @else
+                                                        <div class="form-group">
+                                                            <label for="billing_cycle">Billing Cycle<span style="color:red;">*</span></label>
+                                                            <select class="custom-select  form-control " name="billing_cycle"
+                                                                id="billing_cycle">
+                                                                <option value="">Select</option>
+                                                                <option value="daily" @if(!empty($billingdata->
+                                                                    billing_cycle)) {{$billingdata->billing_cycle=='daily' ?
+                                                                    'selected' : ''}} @endif>Daily</option>
+                                                                <option value="fortnightly" @if(!empty($billingdata->
+                                                                    billing_cycle))
+                                                                    {{$billingdata->billing_cycle=='fortnightly' ?
+                                                                    'selected' : ''}} @endif>Fortnightly</option>
+                                                                <option value="in_specific_days" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='in_specific_days'
+                                                                    ? 'selected' : ''}} @endif>In Specific days</option>
+                                                                <option value="manual" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='manual' ?
+                                                                    'selected' : ''}} @endif>Manual</option>
+                                                                <option value="monthly" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='monthly'
+                                                                    ? 'selected' : ''}} @endif>Monthly</option>
+                                                                <option value="monthly_anniversary"
+                                                                    @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='monthly_anniversary'
+                                                                    ? 'selected' : ''}} @endif>Monthly anniversary</option>
+                                                                <option value="quarterly" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='quarterly'
+                                                                    ? 'selected' : ''}} @endif>Quarterly</option>
+                                                                <option value="weekly" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='weekly' ?
+                                                                    'selected' : ''}} @endif>Weekly</option>
+                                                                <option value="yearly" @if(!empty($billingdata->
+                                                                    billing_cycle)){{$billingdata->billing_cycle=='yearly' ?
+                                                                    'selected' : ''}} @endif>Yearly</option>
+                                                            </select>
+                                                        </div>
+                                                    @endif
                                                    
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="form-group  {{@$billingdata->billing_cycle !='in_specific_days' ? 'd-none' : ''}} "
                                                         id="in_specific_days">
                                                         <label for="billing_cycle_startday">Billing Cycle - for
-                                                            Days*</label>
+                                                            Days<span style="color:red;">*</span></label>
                                                         <input type="text" name="billing_cycle_startday_for_days"
                                                             class="form-control billing_cycle_startday" id="number_only"
                                                             value="{{ @$billingdata->billing_cycle_startday }}">
@@ -1048,15 +1087,15 @@
                                                     <div class="form-group  {{@$billingdata->billing_cycle !='monthly_anniversary' ? 'd-none' : ''}} "
                                                         id="monthly_anniversary">
                                                         <label for="billing_cycle_startday">Billing Cycle - Monthly
-                                                            Anniversary Date*</label>
-                                                        <input type="date" name="billing_cycle_startday_for_monthly"
-                                                            class="form-control billing_cycle_startday"
+                                                            Anniversary Date<span style="color:red;">*</span></label>
+                                                        <input type="text" name="billing_cycle_startday_for_monthly"
+                                                            class="form-control datepicker billing_cycle_startday" data-date-format="yyyy-mm-dd"
                                                             value="{{ @$billingdata->billing_cycle_startday}}">
                                                     </div>
                                                     <div class="form-group  {{@$billingdata->billing_cycle !='weekly' ? 'd-none' : ''}} "
                                                         id="week">
                                                         <label for="billing_cycle_startday">Billing Cycle Start of
-                                                            Day</label>
+                                                            Day<span style="color:red;">*</span></label>
                                                         <select
                                                             class="custom-select form-control billing_cycle_startday"
                                                             name="billing_cycle_startday" id="billing_cycle_startday">
@@ -1118,65 +1157,82 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                            <div class="form-group">
-                                                <label for="send_invoice_via_email">Send Invoice By Email</label>
-                                                <select class="custom-select form-control" name="send_invoice_via_email"
-                                                    id="send_invoice_via_email">
-                                                    <option value="">Please select an Option</option>
-                                                    <option value="1" @if(!empty($billingdata->
-                                                        send_invoice_via_email)){{$billingdata->send_invoice_via_email==1
-                                                        ? "selected" : ''}} @endif>Automatically</option>
-                                                    <option value="2" @if(!empty($billingdata->send_invoice_via_email))
-                                                        {{$billingdata->send_invoice_via_email==2 ? "selected" : ''}}
-                                                        @endif>After Admin Review</option>
-                                                </select>
+                                           
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="send_invoice_via_email">Send Invoice By Email</label>
+                                                        <select class="custom-select form-control" name="send_invoice_via_email"
+                                                            id="send_invoice_via_email">
+                                                            <option value="">Please select an Option</option>
+                                                            <option value="1" @if(!empty($billingdata->
+                                                                send_invoice_via_email)){{$billingdata->send_invoice_via_email==1
+                                                                ? "selected" : ''}} @endif>Automatically</option>
+                                                            <option value="2" @if(!empty($billingdata->send_invoice_via_email))
+                                                                {{$billingdata->send_invoice_via_email==2 ? "selected" : ''}}
+                                                                @endif>After Admin Review</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                            <div class="form-group">
-                                                <input type="hidden" name="last_invoice_date" value="{{@$billingdata->last_invoice_date}}">
-                                                <label for="last_invoice_date">Last Invoice Date</label>
-                                                <span>{{@$billingdata->last_invoice_date}}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <div class="form-group d-flex">
-                                                <label for="next_invoice_date">Next Invoice Date</label>
-                                                <input class="form-control datepicker hidden next_invoice_date" id="next_invoice_date" data-date-format="yyyy-mm-dd" name="next_invoice_date" type="text" style="width: 50%; margin-left:10px;" value=" @if(!empty($billingdata->next_invoice_date)){{ $billingdata->next_invoice_date}}@endif">
+                                            @if($user->billing_status=='active')
+                                                <div class="row">
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <input type="hidden" name="last_invoice_date" value="{{@$billingdata->last_invoice_date}}">
+                                                            <label for="last_invoice_date">Last Invoice Date</label>
+                                                            <span>{{@$billingdata->last_invoice_date}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group d-flex">
+                                                            <label for="next_invoice_date">Next Invoice Date</label>
+                                                            <input class="form-control datepicker hidden next_invoice_date" id="next_invoice_date" data-date-format="yyyy-mm-dd" name="next_invoice_date" type="text" style="width: 50%; margin-left:10px;" value=" @if(!empty($billingdata->next_invoice_date)){{ $billingdata->next_invoice_date}}@endif">
+                                                            
+                                                            <span class="next_invoice_edit_text ml-2 next_invoice_date">
+                                                                @if(!empty($billingdata->next_invoice_date))
+                                                                {{ $billingdata->next_invoice_date}} 
+                                                                @endif
+                                                            </span>
+                                                            {{-- <span><a href="#" class=" btn btn-dark btn-sm Edit ml-2"  style="font-size: 8px;"><i class="fas fa-pen" ></i></a></span> --}}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 
-                                                <span class="next_invoice_edit_text ml-2 next_invoice_date">
-                                                    @if(!empty($billingdata->next_invoice_date))
-                                                     {{ $billingdata->next_invoice_date}} 
-                                                    @endif
-                                                </span>
-                                                <span><a href="#" class=" btn btn-dark btn-sm Edit ml-2"  style="font-size: 8px;"><i class="fas fa-pen" ></i></a></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                            <div class="form-group">
-                                                <input type="hidden" name="last_charge_date" value="{{@$billingdata->last_charge_date}}">
-                                                <label for="last_charge_date">Last Charge Date</label>
-                                                <span>{{@$billingdata->last_charge_date}}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <div class="form-group">
-                                                <input type="hidden" name="next_charge_date" value="{{@$billingdata->next_charge_date}}">
-                                                <label for="next_charge_date">Next Charge Date</label>
-                                                <span>{{@$billingdata->next_charge_date}}</span>
-                                            </div>
+                                                <div class="row">
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <input type="hidden" name="last_charge_date" value="{{@$billingdata->last_charge_date}}">
+                                                            <label for="last_charge_date">Last Charge Date</label>
+                                                            <span>{{@$billingdata->last_charge_date}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <input type="hidden" name="next_charge_date" value="{{@$billingdata->next_charge_date}}">
+                                                            <label for="next_charge_date">Next Charge Date</label>
+                                                            <span>{{@$billingdata->next_charge_date}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div class="row">
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <label for="next_invoice_date">Next Invoice Date</label>
+                                                            <input type="text" class="form-control datepicker next_invoice_date" id="next_invoice_date" data-date-format="yyyy-mm-dd" name="next_invoice_date"
+                                                                value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6">
+                                                        <div class="form-group">
+                                                            <label for="next_charge_date">Next Charge Date</label>
+                                                            <input type="text" class="form-control datepicker" name="next_charge_date"  data-date-format="yyyy-mm-dd" id="next_charge_date"
+                                                                value="" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

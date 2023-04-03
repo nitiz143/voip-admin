@@ -9,9 +9,15 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\Client;
 use Yajra\DataTables\DataTables;
 use App\Models\Trunk;
+use App\Models\Setting;
+use App\Models\Codes;
+use App\Models\ExportHistory;
+use App\Jobs\InvoiceGenrateJob;
+use App\Utils\RandomUtil;
 use DateTime;
 use Date;
 use File;
+use Auth;
 
 class CallController extends Controller
 {
@@ -40,11 +46,17 @@ class CallController extends Controller
                     $data;
                 }
             }
+            if(!empty($request->Gateway)){
+                $data;
+            }
             if(!empty($request->Cli)){
                 $data->where('callere164', $request->Cli);
             }
             if(!empty($request->Cld)){
                 $data->where('calleee164', $request->Cld);
+            }
+            if(!empty($request->Prefix)){
+                $data->where('callerareacode', $request->Prefix);
             }
             $data = $data->get();
           
@@ -70,29 +82,28 @@ class CallController extends Controller
                         $cost = "$".$row->fee;
                     return $cost;
                 })
+                ->addColumn('Prefix', function($row){
+                        $Prefix = $row->callerareacode;
+                    return $Prefix;
+                })
                 ->addColumn('Avrage_cost', function($row){
                         $cost = "$0.0";
                     return $cost;
                 })
-                ->addColumn('Trunk', function($row){
-                    $account = Client::where('id',$row->account_id)->first();
-                   if(!empty($account->customer_authentication_rule)){
-                        if($account->customer_authentication_rule == "6"){
-                            return "other";
-                        }
-                    }
-                })
+              
                 ->addColumn('billing_duration', function($row){
-                    $date = new \DateTime();
-                    $value = $row->starttime;
-                    $startTime =  $date->setTimestamp($value/1000);
+                    // $date = new \DateTime();
+                    // $value = $row->starttime;
+                    // $startTime =  $date->setTimestamp($value/1000);
 
-                    $date1 = new \DateTime();
-                    $value1 = $row->stoptime;
-                    $stopTime =  $date1->setTimestamp($value1/1000);
+                    // $date1 = new \DateTime();
+                    // $value1 = $row->stoptime;
+                    // $stopTime =  $date1->setTimestamp($value1/1000);
                   
-                    $totalDuration =  $stopTime->diff( $startTime)->format('%S');
-                    return   $totalDuration;
+                    // $now = \Carbon\Carbon::parse($startTime);
+                    // $emitted = \Carbon\Carbon::parse($stopTime);
+                    // $totalDuration =   $emitted->diffInSeconds($now);
+                    return  $row->feetime;
                 })
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;
@@ -103,7 +114,8 @@ class CallController extends Controller
         }
         $Accounts = Client::where("customer", "=",1)->get();
         $Trunks = Trunk::where("status", "=",1)->get();
-        return view('call.call-history-index',compact('Accounts','Trunks'));
+        $Gateways = Setting::query()->get();
+        return view('call.call-history-index',compact('Accounts','Trunks','Gateways'));
     }
 
 
@@ -133,11 +145,17 @@ class CallController extends Controller
                     $data;
                 }
             }
+            if(!empty($request->Gateway)){
+                $data;
+            }
             if(!empty($request->Cli)){
                 $data->where('callere164', $request->Cli);
             }
             if(!empty($request->Cld)){
                 $data->where('calleee164', $request->Cld);
+            }
+            if(!empty($request->Prefix)){
+                $data->where('callerareacode', $request->Prefix);
             }
             $data = $data->get();
             return Datatables::of($data)
@@ -168,25 +186,22 @@ class CallController extends Controller
                     return $cost;
                 })
                 ->addColumn('billing_duration', function($row){
-                    $date = new \DateTime();
-                    $value = $row->starttime;
-                    $startTime =  $date->setTimestamp($value/1000);
+                    // $date = new \DateTime();
+                    // $value = $row->starttime;
+                    // $startTime =  $date->setTimestamp($value/1000);
 
-                    $date1 = new \DateTime();
-                    $value1 = $row->stoptime;
-                    $stopTime =  $date1->setTimestamp($value1/1000);
-                  
-                    $totalDuration =  $stopTime->diff( $startTime)->format('%S');
-                    return   $totalDuration;
+                    // $date1 = new \DateTime();
+                    // $value1 = $row->stoptime;
+                    // $stopTime =  $date1->setTimestamp($value1/1000);
+                
+                    // $now = \Carbon\Carbon::parse($startTime);
+                    // $emitted = \Carbon\Carbon::parse($stopTime);
+                    // $totalDuration =   $emitted ->diffInSeconds($now);
+                    return   $row->feetime;
                 })
-                ->addColumn('Trunk', function($row){
-                    $account = Client::where('id',$row->account_id)->first();
-                   if(!empty($account->customer_authentication_rule)){
-                        if($account->customer_authentication_rule == "6"){
-                            return "other";
-                        }
-                   }
-                      
+                ->addColumn('Prefix', function($row){
+                        $Prefix = $row->callerareacode;
+                    return $Prefix;
                 })
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;
@@ -197,7 +212,8 @@ class CallController extends Controller
         }
         $Accounts = Client::where("Vendor", "=",1)->get();
         $Trunks = Trunk::where("status", "=",1)->get();
-        return view('call.vendor-index',compact('Accounts','Trunks'));
+        $Gateways = Setting::query()->get();
+        return view('call.vendor-index',compact('Accounts','Trunks','Gateways'));
     }
 
 
@@ -300,6 +316,41 @@ class CallController extends Controller
          $account = Client::where('id',$callhistory->account_id)->first();
          return view('call.viewcallhistory',compact('callhistory','account'));
 
+    }
+    public function invoice_export(Request $request){
+        if(request()->ajax()){
+            $validator = Validator::make($request->all(), [
+                'AccountID' => 'required',
+                ]);
+
+                if ($validator->fails())
+                {
+                    $response = \Response::json([
+                            'success' => false,
+                            'errors' => $validator->getMessageBag()->toArray()
+                        ]);
+                    return $response;
+                }
+            $data = array();
+            $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : " ";
+            $data['user_id'] = Auth::user()->id;
+            $data['report_type'] = "invoice_pdf_export";
+            $data['status'] = 'pending';
+            $data['Invoice_no'] =  RandomUtil::randomString('Invoice_');
+            $code = random_int(100000, 999999);
+            $data['file_name'] = date('YmdHis').'-'.$code.".pdf";
+            $exporthistory = ExportHistory::create($data);
+            if(!empty($exporthistory)){
+                $exporthistory_id = $exporthistory->id;
+                $authUser = Auth::user();
+                $invoice_pdf = new InvoiceGenrateJob($request,$authUser,$exporthistory_id);
+                dispatch($invoice_pdf);
+                return response()->json(array(
+                    'success' => true,
+                    'message'=> __('file_download_msg')
+                ), 200);
+            }    
+        }
     }
 
 

@@ -63,5 +63,10 @@ class Client extends Model
         'billing_status',
      ];
 
+     public function billing()
+    {
+        return $this->hasMany(Billing::class,'account_id');
+    }
+
    
 }
