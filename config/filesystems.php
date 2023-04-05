@@ -72,6 +72,16 @@ return [
             'root' =>  env('SFTP_PATH','/'),
             'timeout' => 10,
           ],
+          'digitalocean' => [ 
+            'driver' => 's3', 
+            'key' => env('DIGITALOCEAN_SPACES_KEY'), 
+            'secret' => env('DIGITALOCEAN_SPACES_SECRET'), 
+            'endpoint' => env('DIGITALOCEAN_SPACES_ENDPOINT'), 
+            'region' => env('DIGITALOCEAN_SPACES_REGION'), 
+            'url' => env('DIGITALOCEAN_SPACES_URL'),
+            'bucket' => env('DIGITALOCEAN_SPACES_BUCKET'), 
+            'visibility' => 'public',
+        ],
 
     ],
 

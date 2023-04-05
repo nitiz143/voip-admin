@@ -43,23 +43,27 @@ class AccountCron extends Command
         $callhistory =array();
         if(!empty($accounts)){
             foreach ($accounts as $key => $account) {
-                //for other
-                if($account->customer_authentication_rule == 6){
-                    $data['account_id'] =  $account->id;
-                    $callhistory[] = CallHistory::where('customeraccount',$account->customer_authentication_value)->orwhere('customername',$account->customer_authentication_value)->update($data);
-                }
-                //for customername
-                if($account->customer_authentication_rule == 2){
-                    $data['account_id'] =  $account->id;
-                    $callhistory[] = CallHistory::where('customername',$account->customer_authentication_value)->update($data);
-                }
-                //for customeraccount
-                if($account->customer_authentication_rule == 3){
-                    $data['account_id'] =  $account->id;
-                    $callhistory[] = CallHistory::where('customeraccount',$account->customer_authentication_value)->update($data);
+                if(!empty($account->customer_authentication_rule)){       
+  
+                    //for other
+                    if($account->customer_authentication_rule == 6){
+                        $data['account_id'] =  $account->id;
+                        $callhistory[] = CallHistory::where('customeraccount',$account->customer_authentication_value)->orwhere('customername',$account->customer_authentication_value)->update($data);
+                    }
+                    //for customername
+                    if($account->customer_authentication_rule == 2){
+                        $data['account_id'] =  $account->id;
+                        $callhistory[] = CallHistory::where('customername',$account->customer_authentication_value)->update($data);
+                    }
+                    //for customeraccount
+                    if($account->customer_authentication_rule == 3){
+                        $data['account_id'] =  $account->id;
+                        $callhistory[] = CallHistory::where('customeraccount',$account->customer_authentication_value)->update($data);
+                    }
                 }
             
             }
+            
         }
     }
 }

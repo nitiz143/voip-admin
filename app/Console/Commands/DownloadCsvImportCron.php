@@ -9,8 +9,8 @@ use Illuminate\Console\Command;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
-
-
+use Illuminate\Support\Facades\Storage;
+use Rap2hpoutre\FastExcel\FastExcel;
 class DownloadCsvImportCron extends Command
 {
     /**
@@ -36,17 +36,6 @@ class DownloadCsvImportCron extends Command
     {
         parent::__construct();
     }
-
-    public function readCSV($csvFile, $array)
-    {
-        $file_handle = fopen('public/storage/'.$csvFile, 'r');
-        while (!feof($file_handle)) {
-            $line_of_text[] = fgetcsv($file_handle, 0, $array['delimiter']);
-        }
-        fclose($file_handle);
-        return $line_of_text;
-    }
-
     /**
      * Execute the console command.
      *
@@ -57,101 +46,98 @@ class DownloadCsvImportCron extends Command
         $tasks = CronJob::where('cron_type','Download VOS SFTP File')->first();
         $created_at  = Carbon::now();
         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-
+        
         $csvImport = CsvImport::where('status',1)->first();
-        // $data = [
-        //     'status' => 1,
-        //     'csv_file' => $newest['file'],
-        // ];
         if(!empty($csvImport)){
-            $customerArr  = $this->readCSV($csvImport->csv_file,array('delimiter' => ','));
-            // $csv_import_id = CsvImport::create($data);
-            for ($i = 0; $i < count($customerArr); $i ++)
-            {
-                $history = [
-                    'callere164'=>$customerArr[$i] ? $customerArr[$i][0] : '',
-                    'calleraccesse164'=>$customerArr[$i] ? $customerArr[$i][1] : '',
-                    'calleee164'=>$customerArr[$i] ? $customerArr[$i][2] : '',
-                    'calleeaccesse164'=>$customerArr[$i] ? $customerArr[$i][3] : '',
-                    'callerip'=>$customerArr[$i] ? $customerArr[$i][4] : '',
-                    'callercodec'=>$customerArr[$i] ? $customerArr[$i][5] : '',
-                    'callergatewayid'=>$customerArr[$i] ? $customerArr[$i][6] : '',
-                    'callerproductid'=>	$customerArr[$i] ? $customerArr[$i][7] : '',
-                    'callertogatewaye164'=>$customerArr[$i] ? $customerArr[$i][8] : '',
-                    'callertype'=>$customerArr[$i] ? $customerArr[$i][9] : '',
-                    'calleeip'=>$customerArr[$i] ? $customerArr[$i][10] : '',
-                    'calleecodec'=>$customerArr[$i] ? $customerArr[$i][11] : '',
-                    'calleegatewayid'=>$customerArr[$i] ? $customerArr[$i][12] : '',
-                    'calleeproductid'=>	$customerArr[$i] ? $customerArr[$i][13] : '',
-                    'calleetogatewaye164'=>$customerArr[$i] ? $customerArr[$i][14] : '',
-                    'calleetype'=>$customerArr[$i] ? $customerArr[$i][15] : '',
-                    'billingmode'=>$customerArr[$i] ? $customerArr[$i][16] : '',
-                    'calllevel'=>$customerArr[$i] ? $customerArr[$i][17] : '',
-                    'agentfeetime'=>$customerArr[$i] ? $customerArr[$i][18] : '',
-                    'starttime'=>$customerArr[$i] ? $customerArr[$i][19] : '',
-                    'stoptime'=>$customerArr[$i] ? $customerArr[$i][20] : '',
-                    'callerpdd'=>$customerArr[$i] ? $customerArr[$i][21] : '',
-                    'calleepdd'=>$customerArr[$i] ? $customerArr[$i][22] : '',
-                    'holdtime'=>$customerArr[$i] ? $customerArr[$i][23] : '',
-                    'callerareacode'=>$customerArr[$i] ? $customerArr[$i][24] : '',
-                    'feetime'=>$customerArr[$i] ? $customerArr[$i][25] : '',
-                    'fee'=>$customerArr[$i] ? $customerArr[$i][26] : '',
-                    'tax'=>$customerArr[$i] ? $customerArr[$i][27] : '',
-                    'suitefee'=>$customerArr[$i] ? $customerArr[$i][28] : '',
-                    'suitefeetime'=>$customerArr[$i] ? $customerArr[$i][29] : '',
-                    'incomefee'=>$customerArr[$i] ? $customerArr[$i][30] : '',
-                    'incometax'=>$customerArr[$i] ? $customerArr[$i][31] : '',
-                    'customeraccount'=>$customerArr[$i] ? $customerArr[$i][32] : '',
-                    'customername'=>$customerArr[$i] ? $customerArr[$i][33] : '',
-                    'calleeareacode'=>$customerArr[$i] ? $customerArr[$i][34] : '',
-                    'agentfee'=>$customerArr[$i] ? $customerArr[$i][35] : '',
-                    'agenttax'=>$customerArr[$i] ? $customerArr[$i][36] : '',
-                    'agentsuitefee'=>$customerArr[$i] ? $customerArr[$i][37] : '',
-                    'agentsuitefeetime'=>$customerArr[$i] ? $customerArr[$i][38] : '',
-                    'agentaccount'=>$customerArr[$i] ? $customerArr[$i][39] : '',
-                    'agentname'=>$customerArr[$i] ? $customerArr[$i][40] : '',
-                    'flowno'=>$customerArr[$i] ? $customerArr[$i][41] : '',
-                    'softswitchname'=>$customerArr[$i] ? $customerArr[$i][42] : '',
-                    'softswitchcallid'=>$customerArr[$i] ? $customerArr[$i][43] : '',
-                    'callercallid'=>$customerArr[$i] ? $customerArr[$i][44] : '',
-                    'calleecallid'=>$customerArr[$i] ? $customerArr[$i][45] : '',
-                    'rtpforward'=>$customerArr[$i] ? $customerArr[$i][46] : '',
-                    'enddirection'=>$customerArr[$i] ? $customerArr[$i][47] : '',
-                    'endreason'=>$customerArr[$i] ? $customerArr[$i][48] : '',
-                    'billingtype'=>$customerArr[$i] ? $customerArr[$i][49] : '',
-                    'cdrlevel'=>$customerArr[$i] ? $customerArr[$i][50] : '',
-                    'agentcdr_id'=>$customerArr[$i] ? $customerArr[$i][51] : '',
-                    'transactionid'=>$customerArr[$i] ? $customerArr[$i][52] : '',
-                ];
-                $getcsv = CsvImport::find($csvImport->id);
-
-                if(!empty($getcsv)){
-                    if(!empty($customerArr[$i][0])){
-                        if(CallHistory::create($history)){
-                            $getcsv->update(['status' => 2]);
-                        }
+            if(Storage::disk('public')->put($csvImport->csv_file, Storage::disk('digitalocean')->get('voip/'.$csvImport->csv_file))){               
+                $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
+                    return $line; 
+                });
+                if(!empty($callarr)){
+                    foreach($callarr as $i=>$call){
+                        $history = [
+                            'callere164'=>$call[0] ? $call[0] : '',
+                            'calleraccesse164'=>$call[1] ? $call[1] : '',
+                            'calleee164'=>$call[2] ? $call[2] : '',
+                            'calleeaccesse164'=>$call[3] ? $call[3] : '',
+                            'callerip'=>$call[4] ? $call[4] : '',
+                            'callercodec'=>$call[5] ? $call[5] : '',
+                            'callergatewayid'=>$call[6] ? $call[6] : '',
+                            'callerproductid'=>	$call[7] ? $call[7] : '',
+                            'callertogatewaye164'=>$call[8] ? $call[8] : '',
+                            'callertype'=>$call[9] ? $call[9] : '',
+                            'calleeip'=>$call[10] ? $call[10] : '',
+                            'calleecodec'=>$call[11] ? $call[11] : '',
+                            'calleegatewayid'=>$call[12] ? $call[12] : '',
+                            'calleeproductid'=>	$call[13] ? $call[13] : '',
+                            'calleetogatewaye164'=>$call[14] ? $call[14] : '',
+                            'calleetype'=>$call[15] ? $call[15] : '',
+                            'billingmode'=>$call[16] ? $call[16] : '',
+                            'calllevel'=>$call[17] ? $call[17] : '',
+                            'agentfeetime'=>$call[18] ? $call[18] : '',
+                            'starttime'=>$call[19] ? $call[19] : '',
+                            'stoptime'=>$call[20] ? $call[20] : '',
+                            'callerpdd'=>$call[21] ? $call[21] : '',
+                            'calleepdd'=>$call[22] ? $call[22] : '',
+                            'holdtime'=>$call[23] ? $call[23] : '',
+                            'callerareacode'=>$call[24] ? $call[24] : '',
+                            'feetime'=>$call[25] ? $call[25] : '',
+                            'fee'=>$call[26] ? $call[26] : '',
+                            'tax'=>$call[27] ? $call[27] : '',
+                            'suitefee'=>$call[28] ? $call[28] : '',
+                            'suitefeetime'=>$call[29] ? $call[29] : '',
+                            'incomefee'=>$call[30] ? $call[30] : '',
+                            'incometax'=>$call[31] ? $call[31] : '',
+                            'customeraccount'=>$call[32] ? $call[32] : '',
+                            'customername'=>$call[33] ? $call[33] : '',
+                            'calleeareacode'=>$call[34] ? $call[34] : '',
+                            'agentfee'=>$call[35] ? $call[35] : '',
+                            'agenttax'=>$call[36] ? $call[36] : '',
+                            'agentsuitefee'=>$call[37] ? $call[37] : '',
+                            'agentsuitefeetime'=>$call[38] ? $call[38] : '',
+                            'agentaccount'=>$call[39] ? $call[39] : '',
+                            'agentname'=>$call[40] ? $call[40] : '',
+                            'flowno'=>$call[41] ? $call[41] : '',
+                            'softswitchname'=>$call[42] ? $call[42] : '',
+                            'softswitchcallid'=>$call[43] ? $call[43] : '',
+                            'callercallid'=>$call[44] ? $call[44] : '',
+                            'calleecallid'=>$call[45] ? $call[45] : '',
+                            'rtpforward'=>$call[46] ? $call[46] : '',
+                            'enddirection'=>$call[47] ? $call[47] : '',
+                            'endreason'=>$call[48] ? $call[48] : '',
+                            'billingtype'=>$call[49] ? $call[49] : '',
+                            'cdrlevel'=>$call[50] ? $call[50] : '',
+                            'agentcdr_id'=>$call[51] ? $call[51] : '',
+                        ];
+                        CallHistory::create($history);
                     }
+                    $getcsv = CsvImport::find($csvImport->id);
+                    $getcsv->update(['status' => 2]);
+                    Storage::disk('public')->delete($csvImport->csv_file);
                     $updated_at  = Carbon::now();
                     CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at,'start_time' => ''));
-
                 }
+               
+           
+            }
 
-            }
+
+           
         }
-        if(!empty($getcsv)){
-            Mail::raw("This Job is run Sucessfully", function($message) use ($tasks)
-                {
-                    $message->from('TestSucess@gmail.com');
-                    $message->to($tasks->success_email)->subject('Sucessfully');
-                });
-        }
-        else{
-                Mail::raw("There is a Error", function($message) use ($tasks)
-                {
-                    $message->from('TestError@gmail.com');
-                    $message->to($tasks->error_email)->subject('Error');
-                });
-            }
+        // if(!empty($getcsv)){
+        //     Mail::raw("This Job is run Sucessfully", function($message) use ($tasks)
+        //         {
+        //             $message->from('nitiz143@gmail.com');
+        //             $message->to($tasks->success_email)->subject('Sucessfully');
+        //         });
+        // }
+        // else{
+        //         Mail::raw("There is a Error", function($message) use ($tasks)
+        //         {
+        //             $message->from('nitiz143@gmail.com');
+        //             $message->to($tasks->error_email)->subject('Error');
+        //         });
+        //     }
         // return 0;
     }
 }

@@ -79,31 +79,52 @@ class CallController extends Controller
                     return !empty($stopTime) ? $stopTime->format('Y-m-d H:i:s') : "";
                 })
                 ->addColumn('Cost', function($row){
-                        $cost = "$".$row->fee;
-                    return $cost;
+                    if(!empty($row->fee)){
+                        $cost = "$".($row->fee?? '0.00');
+                    }else{
+                        return '$0.00';
+                    }
+                        
+                    
                 })
                 ->addColumn('Prefix', function($row){
                         $Prefix = $row->callerareacode;
                     return $Prefix;
                 })
                 ->addColumn('Avrage_cost', function($row){
-                        $cost = "$0.0";
-                    return $cost;
+                    $date = new \DateTime();
+                    $value = $row->starttime;
+                    $startTime =  $date->setTimestamp($value/1000);
+
+                    $date1 = new \DateTime();
+                    $value1 = $row->stoptime;
+                    $stopTime =  $date1->setTimestamp($value1/1000);
+                  
+                    $timeFirst  = strtotime($startTime->format('Y-m-d H:i:s'));
+                    $timeSecond = strtotime($stopTime->format('Y-m-d H:i:s'));
+                    $differenceInmin = ($timeSecond - $timeFirst)/60;
+                    if(!empty($row->fee)){
+                        $cost = $row->fee/$differenceInmin;
+                        return '$'.($cost ??'0.00');
+                    }else{
+                        return '$0.00';
+                    }
+                   
                 })
               
                 ->addColumn('billing_duration', function($row){
-                    // $date = new \DateTime();
-                    // $value = $row->starttime;
-                    // $startTime =  $date->setTimestamp($value/1000);
+                    $date = new \DateTime();
+                    $value = $row->starttime;
+                    $startTime =  $date->setTimestamp($value/1000);
 
-                    // $date1 = new \DateTime();
-                    // $value1 = $row->stoptime;
-                    // $stopTime =  $date1->setTimestamp($value1/1000);
+                    $date1 = new \DateTime();
+                    $value1 = $row->stoptime;
+                    $stopTime =  $date1->setTimestamp($value1/1000);
                   
-                    // $now = \Carbon\Carbon::parse($startTime);
-                    // $emitted = \Carbon\Carbon::parse($stopTime);
-                    // $totalDuration =   $emitted->diffInSeconds($now);
-                    return  $row->feetime;
+                    $timeFirst  = strtotime($startTime->format('Y-m-d H:i:s'));
+                    $timeSecond = strtotime($stopTime->format('Y-m-d H:i:s'));
+                    $differenceInSeconds = $timeSecond - $timeFirst;
+                    return  $differenceInSeconds;
                 })
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;

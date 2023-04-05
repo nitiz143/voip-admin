@@ -14,7 +14,7 @@ use File;
 use App\Models\ExportHistory;
 use App\Models\CallHistory;
 use App\Models\Client;
-
+use Illuminate\Support\Facades\Storage;
 
 class InvoiceGenrateJob implements ShouldQueue
 {
@@ -147,17 +147,14 @@ class InvoiceGenrateJob implements ShouldQueue
             $data = ExportHistory::find($this->exporthistory_id);
             $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration'))->setPaper('a4');
         }
+   
 
    
        
         if(!empty($pdf)){      
             $exporthistory_arr = ExportHistory::find($this->exporthistory_id);
-            $destinationPath = public_path('invoice');
-            if (!file_exists($destinationPath)) {
-                File::isDirectory($destinationPath) or File::makeDirectory($destinationPath, 0777, true, true);
-            }
-            $pdf_data = File::put($destinationPath.'/'.$exporthistory_arr->file_name, $pdf->output());
-            $exporthistory_arr['file'] =  $pdf_data;
+            Storage::disk('digitalocean')->put('voip/pdf/'.$exporthistory_arr->file_name,$pdf->output(),'public');
+            $exporthistory_arr['file'] =  $exporthistory_arr->file_name;
             $exporthistory_arr['status'] = 'complete';
             $exporthistory_arr->save();
         } 
