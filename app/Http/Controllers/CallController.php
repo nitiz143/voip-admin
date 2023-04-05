@@ -80,7 +80,7 @@ class CallController extends Controller
                 })
                 ->addColumn('Cost', function($row){
                     if(!empty($row->fee)){
-                        $cost = "$".($row->fee?? '0.00');
+                        return "$".$row->fee;
                     }else{
                         return '$0.00';
                     }
@@ -92,39 +92,21 @@ class CallController extends Controller
                     return $Prefix;
                 })
                 ->addColumn('Avrage_cost', function($row){
-                    $date = new \DateTime();
-                    $value = $row->starttime;
-                    $startTime =  $date->setTimestamp($value/1000);
-
-                    $date1 = new \DateTime();
-                    $value1 = $row->stoptime;
-                    $stopTime =  $date1->setTimestamp($value1/1000);
-                  
-                    $timeFirst  = strtotime($startTime->format('Y-m-d H:i:s'));
-                    $timeSecond = strtotime($stopTime->format('Y-m-d H:i:s'));
-                    $differenceInmin = ($timeSecond - $timeFirst)/60;
-                    if(!empty($row->fee)){
-                        $cost = $row->fee/$differenceInmin;
-                        return '$'.($cost ??'0.00');
+                    if(!empty($row->feetime)){
+                        $timepersec = $row->fee/$row->feetime;
+                        $persec =  round($timepersec, 7);
+                        return  '$'.$persec*60;                    
                     }else{
                         return '$0.00';
                     }
                    
-                })
-              
-                ->addColumn('billing_duration', function($row){
-                    $date = new \DateTime();
-                    $value = $row->starttime;
-                    $startTime =  $date->setTimestamp($value/1000);
-
-                    $date1 = new \DateTime();
-                    $value1 = $row->stoptime;
-                    $stopTime =  $date1->setTimestamp($value1/1000);
-                  
-                    $timeFirst  = strtotime($startTime->format('Y-m-d H:i:s'));
-                    $timeSecond = strtotime($stopTime->format('Y-m-d H:i:s'));
-                    $differenceInSeconds = $timeSecond - $timeFirst;
-                    return  $differenceInSeconds;
+                })->addColumn('billing_duration', function($row){
+                    if(!empty($row->feetime)){
+                        return  $row->feetime;
+                    }else{
+                        return 0;
+                    }
+                   
                 })
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;
@@ -178,7 +160,7 @@ class CallController extends Controller
             if(!empty($request->Prefix)){
                 $data->where('callerareacode', $request->Prefix);
             }
-            $data = $data->get();
+            $data = $data;
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
@@ -207,24 +189,12 @@ class CallController extends Controller
                     return $cost;
                 })
                 ->addColumn('billing_duration', function($row){
-                    // $date = new \DateTime();
-                    // $value = $row->starttime;
-                    // $startTime =  $date->setTimestamp($value/1000);
-
-                    // $date1 = new \DateTime();
-                    // $value1 = $row->stoptime;
-                    // $stopTime =  $date1->setTimestamp($value1/1000);
-                
-                    // $now = \Carbon\Carbon::parse($startTime);
-                    // $emitted = \Carbon\Carbon::parse($stopTime);
-                    // $totalDuration =   $emitted ->diffInSeconds($now);
                     return   $row->feetime;
                 })
                 ->addColumn('Prefix', function($row){
                         $Prefix = $row->callerareacode;
                     return $Prefix;
-                })
-                ->addColumn('action', function($row){
+                })->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;
                     return $btn;
                 })

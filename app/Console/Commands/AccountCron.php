@@ -39,7 +39,7 @@ class AccountCron extends Command
      */
     public function handle()
     {
-        $accounts = Client::query('')->get();
+        $accounts = Client::get();
         $callhistory =array();
         if(!empty($accounts)){
             foreach ($accounts as $key => $account) {

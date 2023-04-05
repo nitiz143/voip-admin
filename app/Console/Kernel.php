@@ -25,11 +25,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
-        $tasks = CronJob::all();
 
-        $schedule->command('download:cron')->everyFiveMinutes();
+        
         $schedule->command('csvImport:cron')->everyTenMinutes();
-        $schedule->command('account:cron')->everyFifteenMinutes();
+        $schedule->command('download:cron')->cron('*/15 * * * *')->withoutOverlapping();        
+        $schedule->command('account:cron')->cron('*/15 * * * *')->withoutOverlapping();
       //  $schedule->command('Billing:cron')->everyFiveMinutes();
     }
 

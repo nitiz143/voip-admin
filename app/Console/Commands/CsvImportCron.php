@@ -87,7 +87,7 @@ class CsvImportCron extends Command
                                         Storage::disk('digitalocean')->put('voip/'.$newest, Storage::disk('sftp')->get($newest),'public');
                                     }
                                     // check if file already exist
-                                    $csvImport = CsvImport::where('csv_file',$newest)->where('status',2)->first();
+                                    $csvImport = CsvImport::where('csv_file',$newest)->first();
                                     if(empty($csvImport)){
                                         $data = [
                                             'status' => 1,

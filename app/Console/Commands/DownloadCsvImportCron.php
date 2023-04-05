@@ -55,7 +55,7 @@ class DownloadCsvImportCron extends Command
                 });
                 if(!empty($callarr)){
                     foreach($callarr as $i=>$call){
-                        $history = [
+                        $history[] = [
                             'callere164'=>$call[0] ? $call[0] : '',
                             'calleraccesse164'=>$call[1] ? $call[1] : '',
                             'calleee164'=>$call[2] ? $call[2] : '',
@@ -109,11 +109,15 @@ class DownloadCsvImportCron extends Command
                             'cdrlevel'=>$call[50] ? $call[50] : '',
                             'agentcdr_id'=>$call[51] ? $call[51] : '',
                         ];
-                        CallHistory::create($history);
+                       
+                      
                     }
-                    $getcsv = CsvImport::find($csvImport->id);
-                    $getcsv->update(['status' => 2]);
-                    Storage::disk('public')->delete($csvImport->csv_file);
+                    if(!empty($history)){
+                        CallHistory::insert($history);
+                        $getcsv = CsvImport::find($csvImport->id);
+                        $getcsv->update(['status' => 2]);
+                        Storage::disk('public')->delete($csvImport->csv_file);
+                    }
                     $updated_at  = Carbon::now();
                     CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at,'start_time' => ''));
                 }
