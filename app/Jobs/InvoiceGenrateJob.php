@@ -41,10 +41,10 @@ class InvoiceGenrateJob implements ShouldQueue
     {
         $type = $this->data['type'];
         $AccountID = $this->data['AccountID'];
-        $StartDate = $this->data['StartDate'];
-        $EndDate = $this->data['EndDate'];
+        $StartDate = $this->data['StartDate'] .' '. $this->data['StartTime'];
+        $EndDate = $this->data['EndDate'] .' '. $this->data['EndTime'];
         $zerovaluecost = $this->data['zerovaluecost'];
-        
+    
         if($type == "Vendor"){
             $query = CallHistory::query('*');
             if((!empty( $StartDate ) && !empty( $EndDate ))){
@@ -120,32 +120,28 @@ class InvoiceGenrateJob implements ShouldQueue
             }
            
             $invoices = $query->get();
-           
             $count_duration=[];
             $total_cost = "";
             if(!empty( $invoices)){
                 $total_cost = $invoices->sum('fee');
                     foreach ($invoices as $key => $invoice) {
-                        // $date = new \DateTime();
-                        // $value = $invoice->starttime;
-                        // $startTime =  $date->setTimestamp($value/1000);
-
-                        // $date1 = new \DateTime();
-                        // $value1 = $invoice->stoptime;
-                        // $stopTime =  $date1->setTimestamp($value1/1000);
-                    
-                        // $now = \Carbon\Carbon::parse($startTime);
-                        // $emitted = \Carbon\Carbon::parse($stopTime);
                         $count_duration[] =   $invoice->feetime;
                     }
             }
+
+          
             $account ="";
             if(!empty($AccountID)){
                 $account = Client::where('id',$AccountID)->with('billing')->first();
             }
             $user = "Customer";
             $data = ExportHistory::find($this->exporthistory_id);
-            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration'))->setPaper('a4');
+
+
+            
+        //    echo view('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration','StartDate','EndDate'));
+        //    die;
+            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration','StartDate','EndDate'))->setPaper('a4');
         }
    
 

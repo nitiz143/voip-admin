@@ -26,9 +26,9 @@
                 <div class="to_address text-right">
                     <h2 class="Invoice_title">Invoice Detail</h2>
                     <h4>{{__('Invoice no')}}: &nbsp;{{!empty($data->Invoice_no) ? $data->Invoice_no : ''}}</h4>
-                    <h5>{{__('Invoice Date')}}:&nbsp;{{!empty($account->billing[0]->next_invoice_date) ? $account->billing[0]->next_invoice_date : ''}}</h5>
+                    <h5>{{__('Invoice Date')}}:&nbsp;{{!empty($account->billing[0]->next_invoice_date) ? $account->billing[0]->next_invoice_date : date('Y-m-d')}}</h5>
                     <h5>{{__('Due')}}:&nbsp;{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->addDays(5)->format('Y-m-d') : ''}}</h5>
-                    @if($account->billing[0]->billing_class == 'daily')
+                   {{-- @if($account->billing[0]->billing_class == 'daily')
                         <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->format('Y-m-d') : ''}}</h5>
                     @elseif ($account->billing[0]->billing_class = 'monthly')
                         <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subMonth()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</h5>
@@ -36,9 +36,9 @@
                         <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday(7)->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</h5>
                     @elseif ($account->billing[0]->billing_class = 'yearly')
                         <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subYear()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</h5>
-                    @else
-                        <h5>{{__('Invoice Period')}}: </h5>
-                    @endif
+                    @else--}}
+                        <h5>{{__('Invoice Period')}}: {{$StartDate}} - {{$EndDate}}</h5>
+                   
                 
                 
                 </div>
@@ -123,17 +123,9 @@
                     <tbody id="items">
                         <tr class="items">
                             <td>Usage</td>
-                            @if($account->billing[0]->billing_class == 'daily')
-                                <td>From &nbsp;{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->format('Y-m-d') : ''}}</td>
-                            @elseif ($account->billing[0]->billing_class = 'monthly')
-                                <td>From &nbsp;{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subMonth()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</td>
-                            @elseif ($account->billing[0]->billing_class = 'weekly')
-                                <td>From &nbsp;{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday(7)->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</td>
-                            @elseif ($account->billing[0]->billing_class = 'yearly')
-                                <td>From &nbsp;{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subYear()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</td>
-                            @else
-                                <td> </td>
-                            @endif
+      
+                            <td>From &nbsp;{{$StartDate}} to {{$EndDate}}</td>
+                            
                             <td>${{ $total_cost }}</td>
                             <td>1</td>
                             <td>${{ $total_cost }}</td>
@@ -170,41 +162,48 @@
             <div class="col-md-12">
                 <table class="table w-100">
                     <tr style="margin-bottom:30px;background: #2e3e4e;color: #fff;" class="item_table_header">
-                        <th style="width:14%">{{ __('Trunk') }}</th>
+                        <!-- <th style="width:14%">{{ __('Trunk') }}</th> -->
                         <th style="width:14%">{{ __('Prefix') }}</th>
-                        <th style="width:14%">{{ __('Country') }}</th>
+                        <!-- <th style="width:14%">{{ __('Country') }}</th> -->
                         <th style="width:14%">{{ __('Description') }}</th>
                         <th style="width:14%">{{ __('No of calls') }}</th>
-                        <th style="width:14%">{{ __('Duration (mm:ss)') }}</th>
-                        <th style="width:14%">{{ __('Billed Duration (mm:ss)') }}</th>
+                        <th style="width:14%">{{ __('Duration') }}</th>
+                        <th style="width:14%">{{ __('Billed Duration') }}</th>
                         <th style="width:14%">{{ __('Avg Rate/Min') }}</th>
                         <th style="width:14%">{{ __('Cost') }}</th>
                     </tr>
                     @foreach($invoices as $invoice)
                         <tbody id="items">
                             <tr class="items">
-                                <td></td>
+                                <!-- <td></td> -->
                                 <td>{{ $invoice->callerareacode }}</td>
+                                <!-- <td></td> -->
                                 <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>1</td>
+                               
+                                <td>{{$invoice->feetime}}</td>
                                 @php
-                                    // $date = new \DateTime();
-                                    // $value = $invoice->starttime;
-                                    // $startTime =  $date->setTimestamp($value/1000);
-                                    // $date1 = new \DateTime();
-                                    // $value1 = $invoice->stoptime;
-                                    // $stopTime =  $date1->setTimestamp($value1/1000);
-
-                                    // $now = \Carbon\Carbon::parse($startTime);
-                                    // $emitted = \Carbon\Carbon::parse($stopTime);
-                                    $totalDuration =   $invoice->feetime;
-                                
-                                    $totalDuration = sprintf( "%02.2d:%02.2d", floor($totalDuration / 60 ), $totalDuration % 60)
+                                    $sdate = new \DateTime();
+                                    $startTime =  $sdate->setTimestamp($invoice->starttime/1000);
+                                    $edate = new \DateTime();
+                                    $stoptime =  $edate->setTimestamp($invoice->stoptime/1000);
+                                     
                                 @endphp
-                                <td>{{ $totalDuration }}</td>
-                                <td>{{ $totalDuration }}</td>
-                                <td></td>
+                                <td>{{ $startTime->format('Y-m-d H:i:s') .' - '. $stoptime->format('Y-m-d H:i:s')}}</td>
+                                <td>
+
+                                @php
+                                if(!empty($invoice->feetime)){
+                                    $timepersec = $invoice->fee/$invoice->feetime;
+                                    $persec =  round($timepersec, 7);
+                                    $fee = '$'.$persec*60;                    
+                                }else{
+                                    $fee = '$0.00';
+                                }
+
+                                @endphp
+                                {{$fee}}
+                                </td>
                                 @if($user == 'Vendor')
                                     <td>${{ $invoice->agentfee }}</td>
                                 @endif
@@ -219,8 +218,6 @@
                             <th colspan="4"></th>
                             <th>Calls</th>
                             <th>Duration</th>
-                            <th>Billed Duration</th>
-                            <th></th>
                             <th>Charge</th>
                         </tr>
                         <tr class="items">
@@ -230,8 +227,8 @@
                                 $time= sprintf( "%02.2d:%02.2d", floor( array_sum($count_duration) / 60 ), array_sum($count_duration) % 60 )
                             @endphp
                             <td >{{!empty($time) ? $time :"" }}</td>
-                            <td >{{!empty($time) ? $time :"" }}</td>
-                            <td ></td>
+               
+    
                             <td >${{$total_cost}}</td>
                         </tr>
                     </tfoot>

@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/Customer_cdr_show', [App\Http\Controllers\CallController::class, 'index'])->name('Customer_cdr_show.index');
     Route::get('/Vendor_cdr_show', [App\Http\Controllers\CallController::class, 'VendorIndex'])->name('vendorCdr.index');
     Route::get('/getCallhistory','App\Http\Controllers\CallController@getCallhistory')->name('getCallhistory');
-    Route::post('/invoice_export', 'App\Http\Controllers\CallController@invoice_export');
+    Route::get('/invoice_export', 'App\Http\Controllers\CallController@invoice_export');
     Route::resource('/users','App\Http\Controllers\UserController');
     Route::post('getUsers','App\Http\Controllers\UserController@getUsers')->name('getUsers');
     // Route::get('autocomplete','App\Http\Controllers\UserController@autocomplete')->name('autocomplete');

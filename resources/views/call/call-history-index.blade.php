@@ -368,7 +368,7 @@
             // var type = $(this).data('type');
             // var getVal = $("#export_type").val(type);
              $.ajax({
-                type: "POST",
+                type: "get",
                 url: "{{url('/invoice_export')}}",
                 headers: {
                     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')

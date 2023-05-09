@@ -309,7 +309,7 @@ class CallController extends Controller
 
     }
     public function invoice_export(Request $request){
-        if(request()->ajax()){
+    
             $validator = Validator::make($request->all(), [
                 'AccountID' => 'required',
                 ]);
@@ -341,7 +341,7 @@ class CallController extends Controller
                     'message'=> __('file_download_msg')
                 ), 200);
             }    
-        }
+        
     }
 
 
