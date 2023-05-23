@@ -598,7 +598,8 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="product d-none">
+                                    <!-- <div class="product d-none"> -->
+                                    <div class="product ">
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
@@ -648,11 +649,11 @@
                                                         id="billing_cycle">
                                                         <option class="billing_options" value="">Select</option>
                                                         <option class="billing_options" value="daily">Daily</option>
-                                                        <option class="billing_options" value="fortnightly">Fortnightly</option>
-                                                        <option class="billing_options" value="in_specific_days">In Specific days</option>
-                                                        <option  class="billing_options" value="manual">Manual</option>
+                                                        <!-- <option class="billing_options" value="fortnightly">Fortnightly</option> -->
+                                                        <!-- <option class="billing_options" value="in_specific_days">In Specific days</option> -->
+                                                        <!-- <option  class="billing_options" value="manual">Manual</option> -->
                                                         <option class="billing_options" value="monthly">Monthly</option>
-                                                        <option class="billing_options" value="monthly_anniversary">Monthly anniversary</option>
+                                                        <!-- <option class="billing_options" value="monthly_anniversary">Monthly anniversary</option> -->
                                                         <option class="billing_options" value="quarterly">Quarterly</option>
                                                         <option class="billing_options" value="weekly">Weekly</option>
                                                         <option class="billing_options" value="yearly">Yearly</option>
@@ -782,5 +783,37 @@
             todayHighlight: true
         });
     });
+
+    $(document).ready(function(){
+        let billingStartInput =  $('input[name=billing_startdate]');
+        let nextInvoiceDate = $('#next_invoice_date, #next_charge_date');
+        // let nextChargeDate = $('#next_charge_date');
+
+        let billingStartDate,tomorrow,cycle;
+        // let tomorrow;
+        // let cycle;
+        billingStartInput.on('change', function(){
+            billingStartDate = $(this).val();
+            if(cycle == 'daily'){
+                tomorrow = new Date(billingStartDate); // The Date object returns today's timestamp
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                $('#next_invoice_date, #next_charge_date').val(tomorrow)
+                // nextChargeDate.val(tomorrow)
+            }
+        });
+        
+        $("select[name=billing_cycle]").on('change', function(){
+            cycle = $(this).val(); 
+            console.log(`cycle`, cycle)
+            if(cycle == 'daily'){
+                tomorrow = new Date(billingStartDate); // The Date object returns today's timestamp
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                $('#next_invoice_date, #next_charge_date').val(tomorrow)
+                // nextChargeDate.val(tomorrow)
+            }
+
+        })
+
+    })
 </script>
 @endsection
