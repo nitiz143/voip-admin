@@ -648,11 +648,7 @@
                                                         id="billing_cycle">
                                                         <option class="billing_options" value="">Select</option>
                                                         <option class="billing_options" value="daily">Daily</option>
-                                                        <option class="billing_options" value="fortnightly">Fortnightly</option>
-                                                        <option class="billing_options" value="in_specific_days">In Specific days</option>
-                                                        <option  class="billing_options" value="manual">Manual</option>
                                                         <option class="billing_options" value="monthly">Monthly</option>
-                                                        <option class="billing_options" value="monthly_anniversary">Monthly anniversary</option>
                                                         <option class="billing_options" value="quarterly">Quarterly</option>
                                                         <option class="billing_options" value="weekly">Weekly</option>
                                                         <option class="billing_options" value="yearly">Yearly</option>

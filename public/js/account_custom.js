@@ -239,7 +239,7 @@ $("#billing_cycle").change(function () {
         }
         if (quarter == 2)
         {
-            date.setMonth(6, 1);charge_date
+            date.setMonth(6, 1);
             var quarter1 = moment(date).format("YYYY-MM-DD");  
             $('.next_invoice_date').val(quarter1);
 

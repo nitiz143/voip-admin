@@ -82,9 +82,9 @@ class CsvImportCron extends Command
                          $newest = $files->first();                  
                             if(!empty($newest)){
                                     if($setting->protocol == 1){
-                                        Storage::disk('digitalocean')->put('voip/'.$newest, Storage::disk('ftp')->get($newest),'public');
+                                        Storage::put('voip/'.$newest, Storage::disk('ftp')->get($newest),'public');
                                     }else{
-                                        Storage::disk('digitalocean')->put('voip/'.$newest, Storage::disk('sftp')->get($newest),'public');
+                                        Storage::put('voip/'.$newest, Storage::disk('sftp')->get($newest),'public');
                                     }
                                     // check if file already exist
                                     $csvImport = CsvImport::where('csv_file',$newest)->first();

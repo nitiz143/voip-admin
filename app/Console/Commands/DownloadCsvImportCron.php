@@ -49,7 +49,7 @@ class DownloadCsvImportCron extends Command
         
         $csvImport = CsvImport::where('status',1)->first();
         if(!empty($csvImport)){
-            if(Storage::disk('public')->put($csvImport->csv_file, Storage::disk('digitalocean')->get('voip/'.$csvImport->csv_file))){               
+            if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){               
                 $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
                     return $line; 
                 });

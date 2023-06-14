@@ -1001,38 +1001,25 @@
                                                                 <option value="daily" @if(!empty($billingdata->
                                                                     billing_cycle)) {{$billingdata->billing_cycle=='daily' ?
                                                                     'selected' : ''}} @endif>Daily</option>
-                                                                <option value="fortnightly" @if(!empty($billingdata->
-                                                                    billing_cycle))
-                                                                    {{$billingdata->billing_cycle=='fortnightly' ?
-                                                                    'selected' : ''}} @endif>Fortnightly</option>
-                                                                <option value="in_specific_days" @if(!empty($billingdata->
-                                                                    billing_cycle)){{$billingdata->billing_cycle=='in_specific_days'
-                                                                    ? 'selected' : ''}} @endif>In Specific days</option>
-                                                                <option value="manual" @if(!empty($billingdata->
-                                                                    billing_cycle)){{$billingdata->billing_cycle=='manual' ?
-                                                                    'selected' : ''}} @endif>Manual</option>
-                                                                <option value="monthly" @if(!empty($billingdata->
-                                                                    billing_cycle)){{$billingdata->billing_cycle=='monthly'
-                                                                    ? 'selected' : ''}} @endif>Monthly</option>
-                                                                <option value="monthly_anniversary"
-                                                                    @if(!empty($billingdata->
-                                                                    billing_cycle)){{$billingdata->billing_cycle=='monthly_anniversary'
-                                                                    ? 'selected' : ''}} @endif>Monthly anniversary</option>
-                                                                <option value="quarterly" @if(!empty($billingdata->
-                                                                    billing_cycle)){{$billingdata->billing_cycle=='quarterly'
-                                                                    ? 'selected' : ''}} @endif>Quarterly</option>
-                                                                <option value="weekly" @if(!empty($billingdata->
-                                                                    billing_cycle)){{$billingdata->billing_cycle=='weekly' ?
-                                                                    'selected' : ''}} @endif>Weekly</option>
-                                                                <option value="yearly" @if(!empty($billingdata->
-                                                                    billing_cycle)){{$billingdata->billing_cycle=='yearly' ?
-                                                                    'selected' : ''}} @endif>Yearly</option>
-                                                            </select>
-                                                            <span class="bill_cycle_edit_text ml-2 ">
-                                                                @if(!empty($billingdata->billing_cycle))
-                                                                {{ $billingdata->billing_cycle}} 
-                                                                @endif
-                                                            </span>
+                                                                    <option value="monthly" @if(!empty($billingdata->
+                                                                        billing_cycle)){{$billingdata->billing_cycle=='monthly'
+                                                                        ? 'selected' : ''}} @endif>Monthly</option>
+                                                               
+                                                                        <option value="quarterly" @if(!empty($billingdata->
+                                                                            billing_cycle)){{$billingdata->billing_cycle=='quarterly'
+                                                                            ? 'selected' : ''}} @endif>Quarterly</option>
+                                                                    <option value="weekly" @if(!empty($billingdata->
+                                                                        billing_cycle)){{$billingdata->billing_cycle=='weekly' ?
+                                                                        'selected' : ''}} @endif>Weekly</option>
+                                                                    <option value="yearly" @if(!empty($billingdata->
+                                                                        billing_cycle)){{$billingdata->billing_cycle=='yearly' ?
+                                                                        'selected' : ''}} @endif>Yearly</option>
+                                                                </select>
+                                                                <span class="bill_cycle_edit_text ml-2 ">
+                                                                    @if(!empty($billingdata->billing_cycle))
+                                                                    {{ $billingdata->billing_cycle}} 
+                                                                    @endif
+                                                                </span>
                                                             {{-- <span><a href="#" class=" btn btn-dark btn-sm Edit_bill_cycle ml-2" style="font-size: 8px;" ><i class="fas fa-pen"></i></a></span> --}}
                                                         </div>
                                                     @else

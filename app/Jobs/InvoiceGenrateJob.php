@@ -149,7 +149,7 @@ class InvoiceGenrateJob implements ShouldQueue
        
         if(!empty($pdf)){      
             $exporthistory_arr = ExportHistory::find($this->exporthistory_id);
-            Storage::disk('digitalocean')->put('voip/pdf/'.$exporthistory_arr->file_name,$pdf->output(),'public');
+            Storage::put('voip/pdf/'.$exporthistory_arr->file_name,$pdf->output(),'public');
             $exporthistory_arr['file'] =  $exporthistory_arr->file_name;
             $exporthistory_arr['status'] = 'complete';
             $exporthistory_arr->save();
