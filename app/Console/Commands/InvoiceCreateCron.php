@@ -192,8 +192,8 @@ class InvoiceCreateCron extends Command
                                     $code = random_int(100000, 999999);
                                     $data['file_name'] = date('YmdHis').'-'.$code.".pdf";
                                     $exporthistory = ExportHistory::create($data);
-                                    $value = Client::where('id',$client->billing[0]->account_id)->get();
 
+                                    $value = Client::where('id',$client->billing[0]->account_id)->get();
                                     $value['type'] = "Customer";
                                     $value['AccountID'] = $client->billing[0]->account_id;
                                     $value['StartDate'] =  \Carbon\Carbon::parse($next_invoice_date)->subYear()->format('Y-m-d');
@@ -201,6 +201,7 @@ class InvoiceCreateCron extends Command
                                     $value['zerovaluecost'] =  0;
                                     $value['StartTime'] =  "00:00:00";
                                     $value['EndTime'] =  "23:59:59";
+
                                     if(!empty($exporthistory)){
                                         $exporthistory_id = $exporthistory->id;
                                         $authUser = 0;
@@ -221,34 +222,157 @@ class InvoiceCreateCron extends Command
                         }
                     }
                     
-                    // if($client->billing[0]->billing_cycle  == 'quarterly'){
-                    //     try{
-                    //         $next_invoice_date = $client->billing->next_invoice_date;
-                    //         $next_charge_date = $client->billing->next_charge_date;
-                    //         $now = \Carbon\Carbon::now()->format('Y-m-d');
-                    //         if(!empty($next_invoice_date) && !empty($next_charge_date)){
-                    //             if($next_invoice_date <= $now && $next_charge_date < $now){
-                    //                 $data['client_id'] = !empty($request->id) ? $request->id : " ";
-                    //                 $data['user_id'] = Auth::user()->id;
-                    //                 $data['report_type'] = "invoice_pdf_export";
-                    //                 $data['status'] = 'pending';
-                    //                 $data['Invoice_no'] =  RandomUtil::randomString('Invoice_');
-                    //                 $code = random_int(100000, 999999);
-                    //                 $data['file_name'] = date('YmdHis').'-'.$code.".pdf";
-                    //                 $exporthistory = ExportHistory::create($data);
-                    //                 if(!empty($exporthistory)){
-                    //                     $exporthistory_id = $exporthistory->id;
-                    //                     $authUser = Auth::user();
-                    //                     $invoice_pdf = new InvoiceGenrateJob($request,$authUser,$exporthistory_id);
-                    //                     dispatch($invoice_pdf);
-                    //                 }    
-                    //             }
-                    //         }
-                    //     }
-                    //     catch (\Exception $e) {
-                    //         dd($e);
-                    //     }
-                    // }
+                    if($client->billing[0]->billing_cycle  == 'quarterly'){
+                        try{
+                            $next_invoice_date = $client->billing[0]->next_invoice_date;
+                            $next_charge_date = $client->billing[0]->next_charge_date;
+                            $now = \Carbon\Carbon::now();
+                            $currentYear = Carbon::now()->format('Y');
+                            $quarter =  $now->quarter;
+                          
+                            if(!empty($next_invoice_date) && !empty($next_charge_date)){
+                                if($next_invoice_date <= $now && $next_charge_date < $now){
+                                    if ($quarter == 1)
+                                    {
+                                        $data['client_id'] = !empty($client->id) ? $client->id : " ";
+                                        $data['report_type'] = "invoice_pdf_export";
+                                        $data['status'] = 'pending';
+                                        $data['Invoice_no'] =  RandomUtil::randomString('Invoice_');
+                                        $code = random_int(100000, 999999);
+                                        $data['file_name'] = date('YmdHis').'-'.$code.".pdf";
+                                        $exporthistory = ExportHistory::create($data);
+    
+                                        $value = Client::where('id',$client->billing[0]->account_id)->get();
+                                        $value['type'] = "Customer";
+                                        $value['AccountID'] = $client->billing[0]->account_id;
+                                        $value['StartDate'] =  \Carbon\Carbon::parse($next_invoice_date)->subMonth(3)->format('Y-m-d');
+                                        $value['EndDate'] =  $now;
+                                        $value['zerovaluecost'] =  0;
+                                        $value['StartTime'] =  "00:00:00";
+                                        $value['EndTime'] =  "23:59:59";
+    
+                                        if(!empty($exporthistory)){
+                                            $exporthistory_id = $exporthistory->id;
+                                            $authUser = 0;
+                                            $invoice_pdf = new InvoiceGenrateJob($value,$authUser,$exporthistory_id);
+                                            dispatch($invoice_pdf);
+                                        }  
+                                        $billing_data['last_invoice_date'] =  $next_invoice_date;
+                                        $billing_data['next_invoice_date'] =  Carbon::createMidnightDate($currentYear,4,1)->format('Y-m-d');
+                                        $billing_data['last_charge_date'] =  $next_charge_date;
+                                        $billing_data['next_charge_date'] = Carbon::createMidnightDate($currentYear,3,31)->format('Y-m-d');
+        
+                                        Billing::where('id',$client->billing[0]->id)->update($billing_data);
+        
+                                    }
+                                    if ($quarter == 2)
+                                    {
+                                        $data['client_id'] = !empty($client->id) ? $client->id : " ";
+                                        $data['report_type'] = "invoice_pdf_export";
+                                        $data['status'] = 'pending';
+                                        $data['Invoice_no'] =  RandomUtil::randomString('Invoice_');
+                                        $code = random_int(100000, 999999);
+                                        $data['file_name'] = date('YmdHis').'-'.$code.".pdf";
+                                        $exporthistory = ExportHistory::create($data);
+    
+                                        $value = Client::where('id',$client->billing[0]->account_id)->get();
+                                        $value['type'] = "Customer";
+                                        $value['AccountID'] = $client->billing[0]->account_id;
+                                        $value['StartDate'] =  \Carbon\Carbon::parse($next_invoice_date)->subMonth(3)->format('Y-m-d');
+                                        $value['EndDate'] =  $now;
+                                        $value['zerovaluecost'] =  0;
+                                        $value['StartTime'] =  "00:00:00";
+                                        $value['EndTime'] =  "23:59:59";
+    
+                                        if(!empty($exporthistory)){
+                                            $exporthistory_id = $exporthistory->id;
+                                            $authUser = 0;
+                                            $invoice_pdf = new InvoiceGenrateJob($value,$authUser,$exporthistory_id);
+                                            dispatch($invoice_pdf);
+                                        }  
+                                        $billing_data['last_invoice_date'] =  $next_invoice_date;
+                                        $billing_data['next_invoice_date'] =  Carbon::createMidnightDate($currentYear,7,1)->format('Y-m-d');
+                                        $billing_data['last_charge_date'] =  $next_charge_date;
+                                        $billing_data['next_charge_date'] = Carbon::createMidnightDate($currentYear,6,30)->format('Y-m-d');
+        
+                                        Billing::where('id',$client->billing[0]->id)->update($billing_data);
+                                    }
+                                    if ($quarter == 3)
+                                    {
+                                        $data['client_id'] = !empty($client->id) ? $client->id : " ";
+                                        $data['report_type'] = "invoice_pdf_export";
+                                        $data['status'] = 'pending';
+                                        $data['Invoice_no'] =  RandomUtil::randomString('Invoice_');
+                                        $code = random_int(100000, 999999);
+                                        $data['file_name'] = date('YmdHis').'-'.$code.".pdf";
+                                        $exporthistory = ExportHistory::create($data);
+    
+                                        $value = Client::where('id',$client->billing[0]->account_id)->get();
+                                        $value['type'] = "Customer";
+                                        $value['AccountID'] = $client->billing[0]->account_id;
+                                        $value['StartDate'] =  \Carbon\Carbon::parse($next_invoice_date)->subMonth(3)->format('Y-m-d');
+                                        $value['EndDate'] =  $now;
+                                        $value['zerovaluecost'] =  0;
+                                        $value['StartTime'] =  "00:00:00";
+                                        $value['EndTime'] =  "23:59:59";
+    
+                                        if(!empty($exporthistory)){
+                                            $exporthistory_id = $exporthistory->id;
+                                            $authUser = 0;
+                                            $invoice_pdf = new InvoiceGenrateJob($value,$authUser,$exporthistory_id);
+                                            dispatch($invoice_pdf);
+                                        }  
+
+                                        $billing_data['last_invoice_date'] =  $next_invoice_date;
+                                        $billing_data['next_invoice_date'] =  Carbon::createMidnightDate($currentYear, 10,1)->format('Y-m-d');
+                                        $billing_data['last_charge_date'] =  $next_charge_date;
+                                        $billing_data['next_charge_date'] = Carbon::createMidnightDate($currentYear,9,30)->format('Y-m-d');
+        
+                                        Billing::where('id',$client->billing[0]->id)->update($billing_data);
+                                    }
+                                    if ($quarter == 4)
+                                    {
+                                        $data['client_id'] = !empty($client->id) ? $client->id : " ";
+                                        $data['report_type'] = "invoice_pdf_export";
+                                        $data['status'] = 'pending';
+                                        $data['Invoice_no'] =  RandomUtil::randomString('Invoice_');
+                                        $code = random_int(100000, 999999);
+                                        $data['file_name'] = date('YmdHis').'-'.$code.".pdf";
+                                        $exporthistory = ExportHistory::create($data);
+    
+                                        $value = Client::where('id',$client->billing[0]->account_id)->get();
+                                        $value['type'] = "Customer";
+                                        $value['AccountID'] = $client->billing[0]->account_id;
+                                        $value['StartDate'] =  \Carbon\Carbon::parse($next_invoice_date)->subMonth(3)->format('Y-m-d');
+                                        $value['EndDate'] =  $now;
+                                        $value['zerovaluecost'] =  0;
+                                        $value['StartTime'] =  "00:00:00";
+                                        $value['EndTime'] =  "23:59:59";
+    
+                                        if(!empty($exporthistory)){
+                                            $exporthistory_id = $exporthistory->id;
+                                            $authUser = 0;
+                                            $invoice_pdf = new InvoiceGenrateJob($value,$authUser,$exporthistory_id);
+                                            dispatch($invoice_pdf);
+                                        }  
+                                        $Year = Carbon::now();
+                                        $nextYear = $Year->addYear();
+                                        $firstDateOfNextYear = $nextYear->startOfYear();
+                                        $formattedDate = $firstDateOfNextYear->format('Y-m-d');
+                                      
+                                        $billing_data['last_invoice_date'] =  $next_invoice_date;
+                                        $billing_data['next_invoice_date'] =  $formattedDate;
+                                        $billing_data['last_charge_date'] =  $next_charge_date;
+                                        $billing_data['next_charge_date'] = Carbon::createMidnightDate($currentYear,12,31)->format('Y-m-d');
+                                        Billing::where('id',$client->billing[0]->id)->update($billing_data);
+                                    }
+                                }
+                            }
+                        }
+                        catch (\Exception $e) {
+                            dd($e);
+                        }
+                    }
                 }
             }
         }

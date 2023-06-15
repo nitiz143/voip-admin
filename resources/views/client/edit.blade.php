@@ -1031,23 +1031,11 @@
                                                                 <option value="daily" @if(!empty($billingdata->
                                                                     billing_cycle)) {{$billingdata->billing_cycle=='daily' ?
                                                                     'selected' : ''}} @endif>Daily</option>
-                                                                <option value="fortnightly" @if(!empty($billingdata->
-                                                                    billing_cycle))
-                                                                    {{$billingdata->billing_cycle=='fortnightly' ?
-                                                                    'selected' : ''}} @endif>Fortnightly</option>
-                                                                <option value="in_specific_days" @if(!empty($billingdata->
-                                                                    billing_cycle)){{$billingdata->billing_cycle=='in_specific_days'
-                                                                    ? 'selected' : ''}} @endif>In Specific days</option>
-                                                                <option value="manual" @if(!empty($billingdata->
-                                                                    billing_cycle)){{$billingdata->billing_cycle=='manual' ?
-                                                                    'selected' : ''}} @endif>Manual</option>
+    
                                                                 <option value="monthly" @if(!empty($billingdata->
                                                                     billing_cycle)){{$billingdata->billing_cycle=='monthly'
                                                                     ? 'selected' : ''}} @endif>Monthly</option>
-                                                                <option value="monthly_anniversary"
-                                                                    @if(!empty($billingdata->
-                                                                    billing_cycle)){{$billingdata->billing_cycle=='monthly_anniversary'
-                                                                    ? 'selected' : ''}} @endif>Monthly anniversary</option>
+                                                              
                                                                 <option value="quarterly" @if(!empty($billingdata->
                                                                     billing_cycle)){{$billingdata->billing_cycle=='quarterly'
                                                                     ? 'selected' : ''}} @endif>Quarterly</option>

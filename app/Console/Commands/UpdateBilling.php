@@ -56,9 +56,9 @@ class UpdateBilling extends Command
 
                                 $data['last_charge_date'] =  $yesterday;
                                 $data['next_charge_date'] =  \Carbon\Carbon::now()->format('Y-m-d');
-                            
+                        
                             }
-                        }
+                        }    
                         Billing::where('id',$bill->id)->update($data);
                     }
                     catch (\Exception $e) {
@@ -182,9 +182,6 @@ class UpdateBilling extends Command
                     catch (\Exception $e) {
                         dd($e);
                     }
-                }
-                if($bill->billing_cycle == 'fortnightly'){
-                   
                 }
             }
         }

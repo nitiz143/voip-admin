@@ -117,59 +117,7 @@ $("#billing_cycle").change(function () {
         var chargeyeardate = moment(charge_year_date).format("YYYY-MM-DD");  
         $('#next_charge_date').val(chargeyeardate);
 
-    } else if ($(this).val() == 'in_specific_days') {
-        $('.next_invoice_date').val('');
-        $('#next_charge_date').val('');
-        $('#week').addClass('d-none');
-        $('#monthly_anniversary').addClass('d-none');
-        $('#in_specific_days').removeClass('d-none');
-        $(".billing_cycle_startday").change(function () {
-            const specific =  parseInt($('.billing_cycle_startday').val(), 10);
-            const start_date1 = new Date(start_date);
-            start_date1.setDate(start_date1.getDate() + specific);
-            var date = moment(start_date1).format("YYYY-MM-DD");  
-            $('.next_invoice_date').val(date);
-
-            const charge_date = new Date(date);
-            charge_date.setDate(charge_date.getDate() - 1 );
-            var chargedate = moment(charge_date).format("YYYY-MM-DD"); 
-            $('#next_charge_date').val(chargedate);
-        });
-       
-    } else if ($(this).val() == 'monthly_anniversary') {
-        $('.next_invoice_date').val('');
-        $('#next_charge_date').val('');
-        $('#week').addClass('d-none');
-        $('#in_specific_days').addClass('d-none');
-        $('#monthly_anniversary').removeClass('d-none');
-       
-        //for invoice date
-        const next_date = new Date(start_date);
-        next_date.setMonth(next_date.getDate() + 1, 1);
-        var date = moment(next_date).format("YYYY-MM-DD");  
-        $('.next_invoice_date').val(date);
-
-        //for next charge date
-        const charge_date = new Date(start_date);
-        charge_date.setDate(charge_date.getDate() + 1);
-        var chargedate = moment(charge_date).format("YYYY-MM-DD");  
-        $('#next_charge_date').val(chargedate);
-
-        $(".billing_cycle_startday").change(function () {
-            //for invoice date
-            const next_date = new Date($(this).val());
-            next_date.setDate(next_date.getDate() );
-            var date = moment(next_date).format("YYYY-MM-DD");  
-            $('.next_invoice_date').val(date);
-
-            //for next charge date
-            const charge_date = new Date($(this).val());
-            charge_date.setDate(charge_date.getDate() - 1);
-            var chargedate = moment(charge_date).format("YYYY-MM-DD");  
-            $('#next_charge_date').val(chargedate);
-        });
-
-    } else if($(this).val() == 'daily') {
+    }else if($(this).val() == 'daily') {
         $('.next_invoice_date').val('');
         $('#next_charge_date').val('');
         $('#week').addClass('d-none');
@@ -183,37 +131,6 @@ $("#billing_cycle").change(function () {
         $('.next_invoice_date').val(date);
         $('#next_charge_date').val(start_date);
 
-    }else if($(this).val() == 'fortnightly') {
-        $('.next_invoice_date').val('');
-        $('#next_charge_date').val('');
-        $('#week').addClass('d-none');
-        $('#in_specific_days').addClass('d-none');
-        $('#monthly_anniversary').addClass('d-none');
-        var date = new Date(start_date);
-        next_date = new Date(date.getFullYear(), date.getMonth(), 16)
-        if(date < next_date){
-             //for invoice date
-            var date1 = moment(next_date).format("YYYY-MM-DD");  
-            $('.next_invoice_date').val(date1);
-
-            //for invoice date
-            const charge_date = new Date(date1);
-            charge_date.setDate(charge_date.getDate() - 1);
-            var chargedate = moment(charge_date).format("YYYY-MM-DD");  
-            $('#next_charge_date').val(chargedate);
-        }
-        if(date >= next_date){
-           
-            next_date.setMonth(next_date.getMonth() + 1, 1);
-            var date = moment(next_date).format("YYYY-MM-DD");  
-            $('.next_invoice_date').val(date);
-    
-            //for next charge date
-            const charge_date = new Date(date);
-            charge_date.setDate(charge_date.getDate() - 1);
-            var chargedate = moment(charge_date).format("YYYY-MM-DD");  
-            $('#next_charge_date').val(chargedate);
-        }
     }
     else if($(this).val() == 'quarterly') {
         $('.next_invoice_date').val('');
