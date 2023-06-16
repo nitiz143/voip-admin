@@ -76,16 +76,10 @@ class InvoiceGenrateJob implements ShouldQueue
             if(!empty($invoices)){
                 $total_cost = $invoices->sum('agentfee');
                     foreach ($invoices as $key => $invoice) {
-                        // $date = new \DateTime();
-                        // $value = $invoice->starttime;
-                        // $startTime =  $date->setTimestamp($value/1000);
-
-                        // $date1 = new \DateTime();
-                        // $value1 = $invoice->stoptime;
-                        // $stopTime =  $date1->setTimestamp($value1/1000);
                         $count_duration[] =   $invoice->feetime;
                     }
             }
+            $invoices = $invoices->groupBy('callerareacode');
             $account ="";
             if(!empty($AccountID)){
                 $account = Client::where('id',$AccountID)->with('billing')->first();
@@ -129,7 +123,7 @@ class InvoiceGenrateJob implements ShouldQueue
                     }
             }
 
-          
+            $invoices = $invoices->groupBy('callerareacode');
             $account ="";
             if(!empty($AccountID)){
                 $account = Client::where('id',$AccountID)->with('billing')->first();
@@ -139,8 +133,7 @@ class InvoiceGenrateJob implements ShouldQueue
 
 
             
-        //    echo view('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration','StartDate','EndDate'));
-        //    die;
+     
             $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration','StartDate','EndDate'))->setPaper('a4');
         }
    

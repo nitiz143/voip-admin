@@ -141,7 +141,6 @@ $("#billing_cycle").change(function () {
         var date = new Date(start_date);    
         var firstday = new Date(date.getFullYear(),0,1); // XXXX/01/01
         var diff = Math.ceil((date - firstday) / 86400000); 
-        // a quarter is about 365/4 
         quarter =  parseInt( diff / ( 365/ 4 )) + 1 
         if (quarter == 1)
         {

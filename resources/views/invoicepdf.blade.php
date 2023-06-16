@@ -4,7 +4,6 @@
         <title>Invoice</title>
     </head>
     <body>
-    
         <div class="container">
             <div class="col-12 text-right">
                 <h3>Invoice From</h3>
@@ -38,9 +37,6 @@
                         <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subYear()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</h5>
                     @else--}}
                         <h5>{{__('Invoice Period')}}: {{$StartDate}} - {{$EndDate}}</h5>
-                   
-                
-                
                 </div>
             </div>
             
@@ -123,9 +119,7 @@
                     <tbody id="items">
                         <tr class="items">
                             <td>Usage</td>
-      
                             <td>From &nbsp;{{$StartDate}} to {{$EndDate}}</td>
-                            
                             <td>${{ $total_cost }}</td>
                             <td>1</td>
                             <td>${{ $total_cost }}</td>
@@ -172,46 +166,46 @@
                         <th style="width:14%">{{ __('Avg Rate/Min') }}</th>
                         <th style="width:14%">{{ __('Cost') }}</th>
                     </tr>
-                    @foreach($invoices as $invoice)
-                        <tbody id="items">
-                            <tr class="items">
-                                <!-- <td></td> -->
-                                <td>{{ $invoice->callerareacode }}</td>
-                                <!-- <td></td> -->
-                                <td></td>
-                                <td>1</td>
-                               
-                                <td>{{$invoice->feetime}}</td>
-                                @php
-                                    $sdate = new \DateTime();
-                                    $startTime =  $sdate->setTimestamp($invoice->starttime/1000);
-                                    $edate = new \DateTime();
-                                    $stoptime =  $edate->setTimestamp($invoice->stoptime/1000);
-                                     
-                                @endphp
-                                <td>{{ $startTime->format('Y-m-d H:i:s') .' - '. $stoptime->format('Y-m-d H:i:s')}}</td>
-                                <td>
+                    @foreach($invoices as $values)
+                        @foreach($values as $invoice)
+                            <tbody id="items">
+                                <tr class="items">
+                                    <td>{{ $invoice->callerareacode }}</td>
+                                    <td></td>
+                                    <td>1</td>
+                                    <td>{{$invoice->feetime}}</td>
 
-                                @php
-                                if(!empty($invoice->feetime)){
-                                    $timepersec = $invoice->fee/$invoice->feetime;
-                                    $persec =  round($timepersec, 7);
-                                    $fee = '$'.$persec*60;                    
-                                }else{
-                                    $fee = '$0.00';
-                                }
+                                    @php
+                                        $sdate = new \DateTime();
+                                        $startTime =  $sdate->setTimestamp($invoice->starttime/1000);
+                                        $edate = new \DateTime();
+                                        $stoptime =  $edate->setTimestamp($invoice->stoptime/1000);
+                                        
+                                    @endphp
 
-                                @endphp
-                                {{$fee}}
-                                </td>
-                                @if($user == 'Vendor')
-                                    <td>${{ $invoice->agentfee }}</td>
-                                @endif
-                                @if($user == 'Customer')
-                                    <td>${{ $invoice->fee }}</td>
-                                @endif
-                            </tr>
-                        </tbody>
+                                    <td>{{ $startTime->format('Y-m-d H:i:s') .' - '. $stoptime->format('Y-m-d H:i:s')}}</td>
+
+                                    <td>
+                                        @php
+                                        if(!empty($invoice->feetime)){
+                                            $timepersec = $invoice->fee/$invoice->feetime;
+                                            $persec =  round($timepersec, 7);
+                                            $fee = '$'.$persec*60;                    
+                                        }else{
+                                            $fee = '$0.00';
+                                        }
+                                        @endphp
+                                        {{$fee}}
+                                    </td>
+                                    @if($user == 'Vendor')
+                                        <td>${{ $invoice->agentfee }}</td>
+                                    @endif
+                                    @if($user == 'Customer')
+                                        <td>${{ $invoice->fee }}</td>
+                                    @endif
+                                </tr>
+                            </tbody>
+                        @endforeach
                     @endforeach
                     <tfoot id="items">
                         <tr class="items">
@@ -227,8 +221,6 @@
                                 $time= sprintf( "%02.2d:%02.2d", floor( array_sum($count_duration) / 60 ), array_sum($count_duration) % 60 )
                             @endphp
                             <td >{{!empty($time) ? $time :"" }}</td>
-               
-    
                             <td >${{$total_cost}}</td>
                         </tr>
                     </tfoot>

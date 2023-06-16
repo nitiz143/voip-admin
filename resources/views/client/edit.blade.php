@@ -1059,14 +1059,7 @@
                                                             class="form-control billing_cycle_startday" id="number_only"
                                                             value="{{ @$billingdata->billing_cycle_startday }}">
                                                     </div>
-                                                    <div class="form-group  {{@$billingdata->billing_cycle !='monthly_anniversary' ? 'd-none' : ''}} "
-                                                        id="monthly_anniversary">
-                                                        <label for="billing_cycle_startday">Billing Cycle - Monthly
-                                                            Anniversary Date<span style="color:red;">*</span></label>
-                                                        <input type="text" name="billing_cycle_startday_for_monthly"
-                                                            class="form-control datepicker billing_cycle_startday" data-date-format="yyyy-mm-dd"
-                                                            value="{{ @$billingdata->billing_cycle_startday}}">
-                                                    </div>
+                                                   
                                                     <div class="form-group  {{@$billingdata->billing_cycle !='weekly' ? 'd-none' : ''}} "
                                                         id="week">
                                                         <label for="billing_cycle_startday">Billing Cycle Start of
