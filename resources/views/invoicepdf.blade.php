@@ -166,47 +166,36 @@
                         <th style="width:14%">{{ __('Avg Rate/Min') }}</th>
                         <th style="width:14%">{{ __('Cost') }}</th>
                     </tr>
-                    @foreach($invoices as $values)
-                        @foreach($values as $invoice)
+                    @if(!empty($invoices))
+                        @foreach($invoices as $key => $values)
                             <tbody id="items">
                                 <tr class="items">
-                                    <td>{{ $invoice->callerareacode }}</td>
+                                    <td>{{ $key }}</td>
                                     <td></td>
-                                    <td>1</td>
-                                    <td>{{$invoice->feetime}}</td>
-
+                                    <td>{{$values->count()}}</td>
                                     @php
-                                        $sdate = new \DateTime();
-                                        $startTime =  $sdate->setTimestamp($invoice->starttime/1000);
-                                        $edate = new \DateTime();
-                                        $stoptime =  $edate->setTimestamp($invoice->stoptime/1000);
-                                        
-                                    @endphp
-
-                                    <td>{{ $startTime->format('Y-m-d H:i:s') .' - '. $stoptime->format('Y-m-d H:i:s')}}</td>
-
-                                    <td>
-                                        @php
-                                        if(!empty($invoice->feetime)){
-                                            $timepersec = $invoice->fee/$invoice->feetime;
+                                        $Duration_count = array();
+                                        foreach ($values as $invoice){
+                                            $Duration_count[] = $invoice->feetime;
+                                            $timepersec = $values->sum('fee')/$values->sum('feetime');
                                             $persec =  round($timepersec, 7);
-                                            $fee = '$'.$persec*60;                    
-                                        }else{
-                                            $fee = '$0.00';
+                                            $fee= $persec*60;
                                         }
-                                        @endphp
-                                        {{$fee}}
-                                    </td>
+                                        $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 )
+                                    @endphp
+                                    <td>{{$Duration}}</td>
+                                    <td>{{$Duration}}</td>
+                                    <td>{{!empty($fee) ? '$'.$fee : "$ 0.00"}}</td>
                                     @if($user == 'Vendor')
-                                        <td>${{ $invoice->agentfee }}</td>
+                                        <td>${{$values->sum('agentfee')}}</td>
                                     @endif
                                     @if($user == 'Customer')
-                                        <td>${{ $invoice->fee }}</td>
+                                        <td>${{ $values->sum('fee') }}</td>
                                     @endif
                                 </tr>
                             </tbody>
                         @endforeach
-                    @endforeach
+                    @endif
                     <tfoot id="items">
                         <tr class="items">
                             <th colspan="4"></th>
@@ -216,7 +205,7 @@
                         </tr>
                         <tr class="items">
                             <td colspan="4"></td>
-                            <td>{{$invoices->count();}}</td>
+                            <td>{{$calls}}</td>
                             @php
                                 $time= sprintf( "%02.2d:%02.2d", floor( array_sum($count_duration) / 60 ), array_sum($count_duration) % 60 )
                             @endphp

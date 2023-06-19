@@ -67,8 +67,8 @@ class InvoiceCreateCron extends Command
                                     $value = Client::where('id',$client->billing[0]->account_id)->get();
                                     $value['type'] = "Customer";
                                     $value['AccountID'] = $client->billing[0]->account_id;
-                                    $value['StartDate'] =  $now;
-                                    $value['EndDate'] =  $now;
+                                    $value['StartDate'] =   $yesterday;
+                                    $value['EndDate'] =   $yesterday;
                                     $value['zerovaluecost'] =  0;
                                     $value['StartTime'] =  "00:00:00";
                                     $value['EndTime'] =  "23:59:59";

@@ -72,6 +72,7 @@ class InvoiceGenrateJob implements ShouldQueue
            
             $invoices = $query->get();
             $count_duration=[];
+            $calls = $invoices->count();
             $total_cost = "";
             if(!empty($invoices)){
                 $total_cost = $invoices->sum('agentfee');
@@ -86,7 +87,7 @@ class InvoiceGenrateJob implements ShouldQueue
             }
             $user = "Vendor";
             $data = ExportHistory::find($this->exporthistory_id);
-            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration'))->setPaper('a4');
+            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration','calls'))->setPaper('a4');
         }  
         if($type == "Customer"){
             $query = CallHistory::query('*');
@@ -116,11 +117,12 @@ class InvoiceGenrateJob implements ShouldQueue
             $invoices = $query->get();
             $count_duration=[];
             $total_cost = "";
+            $calls = $invoices->count();
             if(!empty( $invoices)){
                 $total_cost = $invoices->sum('fee');
-                    foreach ($invoices as $key => $invoice) {
-                        $count_duration[] =   $invoice->feetime;
-                    }
+                foreach ($invoices as $key => $invoice) {
+                    $count_duration[] =   $invoice->feetime;
+                }
             }
 
             $invoices = $invoices->groupBy('callerareacode');
@@ -131,15 +133,9 @@ class InvoiceGenrateJob implements ShouldQueue
             $user = "Customer";
             $data = ExportHistory::find($this->exporthistory_id);
 
-
-            
-     
-            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration','StartDate','EndDate'))->setPaper('a4');
+            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration','StartDate','EndDate','calls'))->setPaper('a4');
         }
-   
 
-   
-       
         if(!empty($pdf)){      
             $exporthistory_arr = ExportHistory::find($this->exporthistory_id);
             Storage::put('voip/pdf/'.$exporthistory_arr->file_name,$pdf->output(),'public');

@@ -14,6 +14,7 @@ use App\Models\Codes;
 use App\Models\ExportHistory;
 use App\Jobs\InvoiceGenrateJob;
 use App\Utils\RandomUtil;
+use Carbon\Carbon;
 use DateTime;
 use Date;
 use File;
@@ -342,6 +343,42 @@ class CallController extends Controller
                 ), 200);
             }    
         
+    }
+    public function export_history(Request $request){
+        if ($request->ajax()) {
+            $data = ExportHistory::query('');
+           
+            return Datatables::of($data)
+            ->addColumn('created_at', function($row){
+                return Carbon::parse($row->created_at)->format('d/m/Y H:i:s');
+
+            })
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+
+                    $btn = '<a href="'.url('/export-history-download',$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+
+                    return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+        return view("call.export-history");
+    }
+    public function download_export_history(Request $request){
+        $invoice = ExportHistory::where('id',$request->id)->first();
+
+        if (file_exists( storage_path('app/voip/pdf/' . $invoice->file_name))) {
+            $file= storage_path('app/voip/pdf/'.$invoice->file_name);
+
+            $headers = array(
+                      'Content-Type: application/pdf',
+                    );
+            return response()->download($file, $invoice->file_name, $headers);
+        }   
+        else{
+            return \Redirect::back()->withErrors(['msg' => 'this file is not longer avialable']);
+        }
     }
 
 
