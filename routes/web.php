@@ -34,8 +34,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/Vendor_cdr_show', [App\Http\Controllers\CallController::class, 'VendorIndex'])->name('vendorCdr.index');
     Route::get('/getCallhistory','App\Http\Controllers\CallController@getCallhistory')->name('getCallhistory');
     Route::get('/invoice_export', 'App\Http\Controllers\CallController@invoice_export');
-    Route::get('/export_history', 'App\Http\Controllers\CallController@export_history')->name('export.history');
-    Route::get('/export-history-download/{id}', 'App\Http\Controllers\CallController@download_export_history');
+    Route::get('/export_history/{type}', 'App\Http\Controllers\CallController@export_history')->name('export.history');
+    Route::get('/export-history-download/{id}','App\Http\Controllers\CallController@download_export_history');
 
     Route::resource('/users','App\Http\Controllers\UserController');
     Route::post('getUsers','App\Http\Controllers\UserController@getUsers')->name('getUsers');

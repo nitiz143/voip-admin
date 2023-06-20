@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ExportHistory;
+
 
 class Client extends Model
 {
@@ -66,6 +68,10 @@ class Client extends Model
      public function billing()
     {
         return $this->hasMany(Billing::class,'account_id');
+    }
+    public function export_history()
+    {
+        return $this->hasMany(ExportHistory::class);
     }
 
    

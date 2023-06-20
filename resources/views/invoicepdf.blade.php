@@ -27,16 +27,7 @@
                     <h4>{{__('Invoice no')}}: &nbsp;{{!empty($data->Invoice_no) ? $data->Invoice_no : ''}}</h4>
                     <h5>{{__('Invoice Date')}}:&nbsp;{{!empty($account->billing[0]->next_invoice_date) ? $account->billing[0]->next_invoice_date : date('Y-m-d')}}</h5>
                     <h5>{{__('Due')}}:&nbsp;{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->addDays(5)->format('Y-m-d') : ''}}</h5>
-                   {{-- @if($account->billing[0]->billing_class == 'daily')
-                        <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->format('Y-m-d') : ''}}</h5>
-                    @elseif ($account->billing[0]->billing_class = 'monthly')
-                        <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subMonth()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</h5>
-                    @elseif ($account->billing[0]->billing_class = 'weekly')
-                        <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday(7)->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</h5>
-                    @elseif ($account->billing[0]->billing_class = 'yearly')
-                        <h5>{{__('Invoice Period')}}:{{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subYear()->format('Y-m-d') : ''}} to {{!empty($account->billing[0]->next_invoice_date) ? \Carbon\Carbon::parse($account->billing[0]->next_invoice_date)->subday()->format('Y-m-d') : ''}}</h5>
-                    @else--}}
-                        <h5>{{__('Invoice Period')}}: {{$StartDate}} - {{$EndDate}}</h5>
+                    <h5>{{__('Invoice Period')}}: {{$StartDate}} - {{$EndDate}}</h5>
                 </div>
             </div>
             
@@ -55,7 +46,7 @@
                             <td>${{$total_cost}}</td>
                             <td>${{00.00}}</td>
                             <td>${{00.00}}</td>
-                            <td  class="text-right">${{$total_cost}}</td>
+                            <td class="text-right">${{$total_cost}}</td>
                         </tr>
                     </tbody>
                 </table>

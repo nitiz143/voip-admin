@@ -12,6 +12,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
+                        <a type="submit" href="{{ route('export.history',"vendor") }}" class="btn btn-primary mb-4 mr-2 float-right w-10 " >Export History</a>
                         <a type="submit" class="btn btn-primary mb-4 mr-2 float-right w-10 export" data-type="all_invoice_export">Invoice generate</a>
                         <a href="" class="btn btn-primary mb-4 float-right w-10" id="Filter">Filter</a>
                         <a href="{{ route('cdr.create') }}" class="btn btn-primary mb-4 ml-2 float-right w-10" id="createzoneModal">Import</a>

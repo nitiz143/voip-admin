@@ -304,7 +304,7 @@ class CallController extends Controller
 
     public function getCallhistory(Request $request)
     {
-         $callhistory =  CallHistory::find($request->id);
+         $callhistory = CallHistory::find($request->id);
          $account = Client::where('id',$callhistory->account_id)->first();
          return view('call.viewcallhistory',compact('callhistory','account'));
 
@@ -346,21 +346,39 @@ class CallController extends Controller
     }
     public function export_history(Request $request){
         if ($request->ajax()) {
-            $data = ExportHistory::query('');
-           
+            $search = 1 ;
+            if($request->type == "customer"){
+                $data = ExportHistory::whereHas('clients', function($q) use($search){
+                    $q->where('customer', '=', $search);
+                });
+            }
+            if($request->type == "vendor"){
+                $data = ExportHistory::whereHas('clients', function($q) use($search){
+                    $q->where('Vendor', '=', $search);
+                });
+            }
             return Datatables::of($data)
             ->addColumn('created_at', function($row){
                 return Carbon::parse($row->created_at)->format('d/m/Y H:i:s');
-
+            })
+            ->addColumn('status', function($row){
+               if($row->status == "pending"){
+                    $badge = '<span class="badge badge-warning">Pending</span>';
+               }else{
+                    $badge = '<span class="badge badge-info">Completed</span>';
+               }
+               return $badge;
+            })
+            ->addColumn('client', function($row){
+                return !empty($row->clients->company) ? $row->clients->company : "";
             })
             ->addIndexColumn()
             ->addColumn('action', function($row){
+                $btn = '<a href="'.url('/export-history-download',$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
 
-                    $btn = '<a href="'.url('/export-history-download',$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
-
-                    return $btn;
+                return $btn;
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action','status'])
             ->make(true);
         }
         return view("call.export-history");
@@ -368,16 +386,14 @@ class CallController extends Controller
     public function download_export_history(Request $request){
         $invoice = ExportHistory::where('id',$request->id)->first();
 
-        if (file_exists( storage_path('app/voip/pdf/' . $invoice->file_name))) {
-            $file= storage_path('app/voip/pdf/'.$invoice->file_name);
+        if(file_exists( storage_path('app/voip/pdf/'.$invoice->file_name))) {
 
-            $headers = array(
-                      'Content-Type: application/pdf',
-                    );
+            $file= storage_path('app/voip/pdf/'.$invoice->file_name);
+            $headers = array('Content-Type: application/pdf',);
             return response()->download($file, $invoice->file_name, $headers);
         }   
         else{
-            return \Redirect::back()->withErrors(['msg' => 'this file is not longer avialable']);
+            return \Redirect::back()->withErrors(['msg' => 'This file is not longer avialable']);
         }
     }
 
