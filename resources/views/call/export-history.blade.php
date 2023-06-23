@@ -39,7 +39,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Client</th>
-                                        <th>Invoice No</th>
+                                        <th>Report type</th>
                                         <th>Status</th>
                                         <th>Created At</th>
                                         <th>Action</th>
@@ -68,7 +68,7 @@
         columns: [
             {data:'id',name:'id'},
             {data:'client',name:'client'},
-            {data:'Invoice_no',name:'Invoice_no'},
+            {data:'report_type',name:'report_type'},
             {data:'status',name:'status'},
             {data:'created_at',name:'created_at'},
             {data:'action',name:'action', orderable: false, searchable: false},

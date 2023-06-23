@@ -198,7 +198,6 @@ class InvoiceCreateCron extends Command
                                     $value['AccountID'] = $client->billing[0]->account_id;
                                     $value['StartDate'] =  \Carbon\Carbon::parse($next_invoice_date)->subYear()->format('Y-m-d');
                                     $value['EndDate'] =  $now;
-                                    $value['zerovaluecost'] =  0;
                                     $value['StartTime'] =  "00:00:00";
                                     $value['EndTime'] =  "23:59:59";
 

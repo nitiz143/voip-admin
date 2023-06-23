@@ -59,7 +59,7 @@
                                                     <th>Avg. Rate/Min</th>
                                                     <th>CLI</th>
                                                     <th>CLD</th>
-                                                    <th>Prefix</th>
+                                                    <th>Country-code</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -123,12 +123,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        {{-- <div class="form-group">
-                                                            <label for="field-1" class="control-label">Currency</label>
-                                                            <select class="form-control" name="CurrencyID"></select>
-                                                        </div> --}}
                                                        
-                                                        <div class="form-group">
+                                                        {{-- <div class="form-group">
                                                             <label class="control-label" for="field-1">Gateway</label>
                                                             <select class="form-control" id="bluk_CompanyGatewayID" name="CompanyGatewayID">
                                                                 @if(!empty($Gateways))
@@ -138,9 +134,9 @@
                                                                     @endforeach
                                                                 @endif
                                                             </select>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="form-group">
-                                                            <label class="control-label" for="field-1">Account</label>
+                                                            <label class="control-label" for="field-1">Customer List</label>
                                                             <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
                                                                 @if(!empty($Accounts))
                                                                 <option value="">Select</option>
@@ -150,7 +146,20 @@
                                                                 @endif
                                                             </select>
                                                         </div>
+
                                                         <div class="form-group">
+                                                            <label class="control-label" for="field-1">Report</label>
+                                                            <select class="form-control" id="report" allowClear="true" name="report">
+                                                                <option value="">Select</option>
+                                                                <option value="Customer-Summary">Customer Summary</option>
+                                                                <option value="Customer-Hourly">Customer Hourly</option>
+                                                                <option value="Customer-Report">Customer Report</option>
+                                                                <option value="Account-Manage">Account Manage</option>
+                                                                <option value="Margin-Report">Margin Report</option>
+                                                                <option value="Negative-Report">Negative Report</option>
+                                                            </select>
+                                                        </div>
+                                                        {{-- <div class="form-group">
                                                             <label class="control-label" for="field-1">CLI</label>
                                                             <input type="text" name="CLI" class="form-control mid_fld "  value=""  />
                                                         </div>
@@ -167,7 +176,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label" for="field-1">Prefix</label>
                                                             <input type="text" name="area_prefix" class="form-control mid_fld "  value=""  />
-                                                        </div>
+                                                        </div> --}}
                                                        
                                                         <div class="form-group">
                                                             <br/>

@@ -313,6 +313,7 @@ class CallController extends Controller
     
             $validator = Validator::make($request->all(), [
                 'AccountID' => 'required',
+                'report' => 'required',
                 ]);
 
                 if ($validator->fails())
@@ -326,7 +327,7 @@ class CallController extends Controller
             $data = array();
             $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : " ";
             $data['user_id'] = Auth::user()->id;
-            $data['report_type'] = "invoice_pdf_export";
+            $data['report_type'] = $request->report;
             $data['status'] = 'pending';
             $data['Invoice_no'] =  RandomUtil::randomString('Invoice_');
             $code = random_int(100000, 999999);

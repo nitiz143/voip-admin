@@ -125,7 +125,7 @@
                                                                 <label for="field-1" class="control-label">Currency</label>
                                                                 <select class="form-control" name="CurrencyID"></select>
                                                             </div> --}}
-                                                            <div class="form-group">
+                                                            {{-- <div class="form-group">
                                                                 <label class="control-label" for="field-1">Gateway</label>
                                                                 <select class="form-control" id="GatewayID" name="GatewayID">
                                                                     @if(!empty($Gateways))
@@ -135,9 +135,9 @@
                                                                         @endforeach
                                                                     @endif
                                                                 </select>
-                                                            </div>
+                                                            </div> --}}
                                                             <div class="form-group">
-                                                                <label class="control-label" for="field-1">Account</label>
+                                                                <label class="control-label" for="field-1">Vendors List</label>
                                                                 <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">  
                                                                 @if(!empty($Accounts))
                                                                     <option value="">Select</option>
@@ -146,7 +146,21 @@
                                                                     @endforeach
                                                                 @endif</select>
                                                             </div>
-                                                            <div class="form-group">
+
+
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="field-1">Report</label>
+                                                            <select class="form-control" id="report" allowClear="true" name="report">
+                                                                <option value="">Select</option>
+                                                                <option value="Vender-Summary">Vender Summary</option>
+                                                                <option value="Vender-Hourly">Vender Hourly</option>
+                                                                <option value="Vender-Report">Vender Report</option>
+                                                                <option value="Account-Manage">Account Manage</option>
+                                                                <option value="Margin-Report">Margin Report</option>
+                                                                <option value="Negative-Report">Negative Report</option>
+                                                            </select>
+                                                        </div>
+                                                            {{-- <div class="form-group">
                                                                 <label class="control-label" for="field-1">CLI</label>
                                                                 <input type="text" name="CLI" class="form-control mid_fld "  value=""  />
                                                             </div>
@@ -161,7 +175,7 @@
                                                             <div class="form-group">
                                                                 <label class="control-label" for="field-1">Prefix</label>
                                                                 <input type="text" name="area_prefix" class="form-control mid_fld "  value=""  />
-                                                            </div>
+                                                            </div> --}}
                                                            
                                                             <div class="form-group">
                                                                 <br/>

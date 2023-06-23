@@ -14,6 +14,7 @@ use File;
 use App\Models\ExportHistory;
 use App\Models\CallHistory;
 use App\Models\Client;
+use App\Models\Country;
 use Illuminate\Support\Facades\Storage;
 
 class InvoiceGenrateJob implements ShouldQueue
@@ -43,7 +44,6 @@ class InvoiceGenrateJob implements ShouldQueue
         $AccountID = $this->data['AccountID'];
         $StartDate = $this->data['StartDate'] .' '. $this->data['StartTime'];
         $EndDate = $this->data['EndDate'] .' '. $this->data['EndTime'];
-        $zerovaluecost = $this->data['zerovaluecost'];
     
         if($type == "Vendor"){
             $query = CallHistory::query('*');
@@ -57,17 +57,6 @@ class InvoiceGenrateJob implements ShouldQueue
 
             if(!empty( $AccountID )) {
                 $query->where('call_histories.account_id', $AccountID);
-            }
-            if(!empty( $zerovaluecost )) {
-                if($zerovaluecost == 1){
-                    $query->where('agentfee', 0);
-                }
-                if($zerovaluecost == 2){
-                    $query->where('agentfee','!=', 0);
-                }
-                if($zerovaluecost == 0){
-                    $query;
-                }
             }
            
             $invoices = $query->get();
@@ -102,18 +91,7 @@ class InvoiceGenrateJob implements ShouldQueue
             if(!empty( $AccountID )) {
                 $query->where('call_histories.account_id', $AccountID);
             }
-            if(!empty( $zerovaluecost )) {
-                if($zerovaluecost == 1){
-                    $query->where('fee', 0);
-                }
-                if($zerovaluecost == 2){
-                    $query->where('fee','!=', 0);
-                }
-                if($zerovaluecost == 0){
-                    $query;
-                }
-            }
-           
+          
             $invoices = $query->get();
             $count_duration=[];
             $total_cost = "";
@@ -133,7 +111,7 @@ class InvoiceGenrateJob implements ShouldQueue
             $user = "Customer";
             $data = ExportHistory::find($this->exporthistory_id);
 
-            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration','StartDate','EndDate','calls'))->setPaper('a4');
+            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration','StartDate','EndDate','calls',))->setPaper('a4');
         }
 
         if(!empty($pdf)){      
