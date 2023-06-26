@@ -152,9 +152,9 @@
                                                             <label class="control-label" for="field-1">Report</label>
                                                             <select class="form-control" id="report" allowClear="true" name="report">
                                                                 <option value="">Select</option>
-                                                                <option value="Vender-Summary">Vender Summary</option>
-                                                                <option value="Vender-Hourly">Vender Hourly</option>
-                                                                <option value="Vender-Report">Vender Report</option>
+                                                                <option value="Vendor-Summary">Vendor Summary</option>
+                                                                <option value="Vendor-Hourly">Vendor Hourly</option>
+                                                                <option value="Vendor-Report">Vendor Report</option>
                                                                 <option value="Account-Manage">Account Manage</option>
                                                                 <option value="Margin-Report">Margin Report</option>
                                                                 <option value="Negative-Report">Negative Report</option>
@@ -352,7 +352,7 @@ $("#btnModeClose").on("click", function (e) {
             // var type = $(this).data('type');
             // var getVal = $("#export_type").val(type);
              $.ajax({
-                type: "POST",
+                type: "get",
                 url: "{{url('/invoice_export')}}",
                 headers: {
                     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')

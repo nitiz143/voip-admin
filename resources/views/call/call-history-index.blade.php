@@ -139,7 +139,7 @@
                                                             <label class="control-label" for="field-1">Customer List</label>
                                                             <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
                                                                 @if(!empty($Accounts))
-                                                                <option value="">Select</option>
+                                                                    <option value="">Select</option>
                                                                     @foreach ( $Accounts as $Account )
                                                                         <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
                                                                     @endforeach
@@ -179,7 +179,6 @@
                                                         </div> --}}
                                                        
                                                         <div class="form-group">
-                                                            <br/>
                                                             <input type="hidden" name="ResellerOwner" value="0">
                                                             <button type="submit" class="btn btn-primary btn-md btn-icon icon-left">
                                                                 <i class="entypo-search"></i>

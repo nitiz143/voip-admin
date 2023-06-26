@@ -166,7 +166,7 @@
                             @endphp
                             <tbody id="items">
                                 <tr class="items">
-                                    <td>{{!empty($country) ? $country->name : ""}}</td>
+                                    <td>{{!empty($country->name) ? $country->name : ""}}</td>
                                     <td>{{$values->count()}}</td>
 
                                     @php

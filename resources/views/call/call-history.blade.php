@@ -60,9 +60,6 @@
 
 @endsection
 @section('page_js')
-
-
-
 <script>
      function save(formdata,url){
         $('#global-loader').show();

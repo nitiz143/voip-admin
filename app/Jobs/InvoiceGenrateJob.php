@@ -44,6 +44,7 @@ class InvoiceGenrateJob implements ShouldQueue
         $AccountID = $this->data['AccountID'];
         $StartDate = $this->data['StartDate'] .' '. $this->data['StartTime'];
         $EndDate = $this->data['EndDate'] .' '. $this->data['EndTime'];
+        $Report =  $this->data['report'];
     
         if($type == "Vendor"){
             $query = CallHistory::query('*');
