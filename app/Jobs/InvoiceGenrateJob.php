@@ -45,8 +45,8 @@ class InvoiceGenrateJob implements ShouldQueue
         $StartDate = $this->data['StartDate'] .' '. $this->data['StartTime'];
         $EndDate = $this->data['EndDate'] .' '. $this->data['EndTime'];
         $Report =  $this->data['report'];
-    
         if($type == "Vendor"){
+           
             $query = CallHistory::query('*');
             if((!empty( $StartDate ) && !empty( $EndDate ))){
                 $start =  strtotime($StartDate);
@@ -62,12 +62,16 @@ class InvoiceGenrateJob implements ShouldQueue
            
             $invoices = $query->get();
             $count_duration=[];
-            $calls = $invoices->count();
+            $count_vendor_duration=[];
+            $total_vendor_cost ="";
             $total_cost = "";
+            $calls = $invoices->count();
             if(!empty($invoices)){
-                $total_cost = $invoices->sum('agentfee');
+                $total_cost = $invoices->sum('fee');
+                $total_vendor_cost = $invoices->sum('agentfee');
                     foreach ($invoices as $key => $invoice) {
                         $count_duration[] =   $invoice->feetime;
+                        $count_vendor_duration[] =  $invoice->agentfeetime;
                     }
             }
             $invoices = $invoices->groupBy('callerareacode');
@@ -77,7 +81,7 @@ class InvoiceGenrateJob implements ShouldQueue
             }
             $user = "Vendor";
             $data = ExportHistory::find($this->exporthistory_id);
-            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration','calls'))->setPaper('a4');
+            $pdf = PDF::loadView('invoicepdf', compact('invoices','Report','total_cost','user','account','data','count_duration','calls','StartDate','EndDate','total_vendor_cost','count_vendor_duration'))->setPaper('a4','landscape');
         }  
         if($type == "Customer"){
             $query = CallHistory::query('*');
@@ -95,12 +99,16 @@ class InvoiceGenrateJob implements ShouldQueue
           
             $invoices = $query->get();
             $count_duration=[];
+            $count_vendor_duration=[];
             $total_cost = "";
+            $total_vendor_cost ="";
             $calls = $invoices->count();
             if(!empty( $invoices)){
                 $total_cost = $invoices->sum('fee');
+                $total_vendor_cost = $invoices->sum('agentfee');
                 foreach ($invoices as $key => $invoice) {
                     $count_duration[] =   $invoice->feetime;
+                    $count_vendor_duration[] =  $invoice->agentfeetime;
                 }
             }
 
@@ -112,7 +120,7 @@ class InvoiceGenrateJob implements ShouldQueue
             $user = "Customer";
             $data = ExportHistory::find($this->exporthistory_id);
 
-            $pdf = PDF::loadView('invoicepdf', compact('invoices','total_cost','user','account','data','count_duration','StartDate','EndDate','calls',))->setPaper('a4');
+            $pdf = PDF::loadView('invoicepdf', compact('invoices','Report','total_cost','user','account','data','count_duration','StartDate','EndDate','calls','total_vendor_cost','count_vendor_duration'))->setPaper('a4','landscape');
         }
 
         if(!empty($pdf)){      

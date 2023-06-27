@@ -148,13 +148,13 @@
                                                             </div>
 
 
-                                                        <div class="form-group">
-                                                            <label class="control-label" for="field-1">Report</label>
-                                                            <select class="form-control" id="report" allowClear="true" name="report">
-                                                                <option value="">Select</option>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="field-1">Report</label>
+                                                                <select class="form-control" id="report" allowClear="true" name="report">
+                                                                    <option value="">Select</option>
                                                                 <option value="Vendor-Summary">Vendor Summary</option>
                                                                 <option value="Vendor-Hourly">Vendor Hourly</option>
-                                                                <option value="Vendor-Report">Vendor Report</option>
+                                                                <option value="Customer/Vendor-Report">Vendor/Customer Report</option>
                                                                 <option value="Account-Manage">Account Manage</option>
                                                                 <option value="Margin-Report">Margin Report</option>
                                                                 <option value="Negative-Report">Negative Report</option>

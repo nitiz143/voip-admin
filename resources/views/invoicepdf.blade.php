@@ -74,7 +74,7 @@
                     </table>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-top: 2%">
                 <div class="col-md-12 mt-5" >
                     <h4>Bank Details</h4>
                     <h4>US to US Transfer only</h4>
@@ -118,7 +118,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row">
+            <div class="row" style="margin-top: 14%">
                 <div class="col-md-12 mt-5" >
                     <h4>Bank Details</h4>
                     <h4>US to US Transfer only</h4>
@@ -145,82 +145,307 @@
                 <div  style="width:50%; padding-left:10px;"><h3> Usage</h3></div>
             </div>
             <div class="col-md-12">
-                <table class="table w-100">
-                    <tr style="margin-bottom:30px;background: #2e3e4e;color: #fff;" class="item_table_header">
-                   {{-- <th style="width:14%">{{ __('Trunk') }}</th> 
-                        <th style="width:14%">{{ __('Prefix') }}</th> --}}
-                        <th style="width:14%">{{ __('Country') }}</th> 
-                        <th style="width:14%">{{ __('Total calls') }}</th>
-                        <th style="width:14%">{{ __('Completed') }}</th>
-                        <th style="width:14%">{{ __('ASR(%)') }}</th>
-                        <th style="width:14%">{{ __('ACD(Sec)') }}</th>
-                        <th style="width:14%">{{ __('Duration') }}</th>
-                        <th style="width:14%">{{ __('Billed Duration') }}</th>
-                        <th style="width:14%">{{ __('Avg Rate/Min') }}</th>
-                        <th style="width:14%">{{ __('Total Cost') }}</th>
-                    </tr>
-                    @if(!empty($invoices))
-                        @foreach($invoices as $key => $values)
-                            @php
-                               $country = App\Models\Country::where('phonecode',$key)->first();
-                            @endphp
-                            <tbody id="items">
-                                <tr class="items">
-                                    <td>{{!empty($country->name) ? $country->name : ""}}</td>
-                                    <td>{{$values->count()}}</td>
+                @if(!empty($Report))
+                    @if($Report == 'Customer/Vendor-Report')
+                        <div style="float: left; width: 40%; margin-left:-4%">
+                            <table class="table w-50" style="width: 40%">
+                                <!--- customer ----->
+                                <div  style="width:50%; padding-left:10px;"><h3> Customer</h3></div>
 
-                                    @php
-                                        $Duration_count = array();
-                                        $completed_count = array();
-                                        foreach ($values as $invoice){
-                                            $Duration_count[] = $invoice->feetime;
-                                            if($invoice->feetime != 0) {
-                                                $completed_count[] = $invoice->feetime;
-                                            }
-                                            $timepersec = $values->sum('fee')/$values->sum('feetime');
-                                            $persec =  round($timepersec, 7);
-                                            $fee= $persec*60;
-                                        }
-                                        $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 )
-                                    @endphp
-
-                                    <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
-                                    <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}%</td>
-                                    <td>{{\Str::limit( array_sum($completed_count) /  count($completed_count), 5) }} </td>
-                                    <td>{{$Duration}}</td>
-                                    <td>{{$Duration}}</td>
-                                    <td>{{!empty($fee) ? '$'.$fee : "$ 0.00"}}</td>
-
-                                    @if($user == 'Vendor')
-                                        <td>${{$values->sum('agentfee')}}</td>
-                                    @endif
-                                    @if($user == 'Customer')
-                                        <td>${{ $values->sum('fee') }}</td>
-                                    @endif
+                                <tr style="margin-bottom:30px;background: #2e3e4e;color: #fff;" class="item_table_header">
+                                    <th >{{ __('Country') }}</th> 
+                                    <th >{{ __('Total calls') }}</th>
+                                    <th >{{ __('Completed') }}</th>
+                                    <th>{{ __('ASR(%)') }}</th>
+                                    <th >{{ __('ACD(Sec)') }}</th>
+                                    {{-- <th >{{ __('Duration') }}</th> --}}
+                                    <th >{{ __('Billed Duration') }}</th>
+                                    <th >{{ __('Avg Rate/Min') }}</th>
+                                    <th >{{ __('Total Cost') }}</th>
                                 </tr>
-                            </tbody>
-                        @endforeach
+                                @if(!empty($invoices))
+                                    @foreach($invoices as $key => $values)
+                                        @php
+                                        $country = App\Models\Country::where('phonecode',$key)->first();
+                                        @endphp
+                                        <tbody id="items">
+                                            <tr class="items">
+                                                <td>{{!empty($country->name) ? $country->name : ""}}</td>
+                                                <td>{{$values->count()}}</td>
+
+                                                @php
+                                                    $Duration_count = array();
+                                                    $completed_count = array();
+                                                    foreach ($values as $invoice){
+                                                        $Duration_count[] = $invoice->feetime;
+                                                        if($invoice->feetime != 0) {
+                                                            $completed_count[] = $invoice->feetime;
+                                                        }
+                                                        $fee ="";
+                                                        if($values->sum('fee') != 0 || $values->sum('feetime') != 0){
+                                                            $timepersec = $values->sum('fee')/$values->sum('feetime');
+                                                            $persec =  round($timepersec, 7);
+                                                            $fee= $persec*60;
+                                                        }
+                                                    }
+                                                    $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
+                                                    $sec = "";
+                                                    if(array_sum($completed_count) != 0 && count($completed_count) != 0){
+                                                        $sec =  array_sum($completed_count) /  count($completed_count);
+                                                    }
+                                                @endphp
+
+                                                <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
+                                                <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}%</td>
+                                                <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
+                                                {{-- <td>{{$Duration}}</td> --}}
+                                                <td>{{$Duration}}</td>
+                                                <td>{{!empty($fee) ? '$'.$fee : "$ 0.00"}}</td>
+                                                <td>${{ $values->sum('fee') }}</td>
+                                            </tr>
+                                        </tbody>
+                                    @endforeach
+                                @endif
+                                <tfoot id="items">
+                                    <tr class="items">
+                                        <th colspan="5"></th>
+                                        <th>Calls</th>
+                                        <th>Duration</th>
+                                        <th>Charge</th>
+                                    </tr>
+                                    <tr class="items">
+                                        <td colspan="5"></td>
+                                        <td>{{!empty($calls) ? $calls : "" }}</td>
+                                        @php
+                                            $time= sprintf( "%02.2d:%02.2d", floor( array_sum($count_duration) / 60 ), array_sum($count_duration) % 60 )
+                                        @endphp
+                                        <td >{{!empty($time) ? $time :"" }}</td>
+                                        <td >${{!empty($total_cost) ? $total_cost : ""}}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div style="float: right; width: 40%; margin-right:8%">
+                            <!------- vendor -------->
+                            <table class="table w-50" style="width: 40%">
+                                <div  style="width:50%; padding-left:10px;"><h3> Vendor</h3></div>
+                                    <tr style="margin-bottom:30px;background: #2e3e4e;color: #fff;" class="item_table_header">
+                                        <th >{{ __('Country') }}</th> 
+                                        <th>{{ __('Total calls') }}</th>
+                                        <th >{{ __('Completed') }}</th>
+                                        <th >{{ __('ASR(%)') }}</th>
+                                        <th >{{ __('ACD(Sec)') }}</th>
+                                        {{-- <th >{{ __('Duration') }}</th> --}}
+                                        <th >{{ __('Billed Duration') }}</th>
+                                        <th >{{ __('Avg Rate/Min') }}</th>
+                                        <th >{{ __('Total Cost') }}</th>
+                                    </tr>
+                                    @if(!empty($invoices))
+                                        @foreach($invoices as $key => $values)
+                                            @php
+                                            $country = App\Models\Country::where('phonecode',$key)->first();
+                                            @endphp
+                                            <tbody id="items">
+                                                <tr class="items">
+                                                    <td>{{!empty($country->name) ? $country->name : ""}}</td>
+                                                    <td>{{$values->count()}}</td>
+        
+                                                    @php
+                                                        $Duration_count = array();
+                                                        $completed_count = array();
+                                                        foreach ($values as $invoice){
+                                                            $Duration_count[] = $invoice->agentfeetime;
+                                                            if($invoice->agentfeetime != 0) {
+                                                                $completed_count[] = $invoice->agentfeetime;
+                                                            }
+                                                            $agentfee ="";
+                                                            if($values->sum('agentfee') != 0 || $values->sum('agentfeetime') != 0){
+                                                                $timepersec = $values->sum('agentfee')/$values->sum('feetime');
+                                                                $persec =  round($timepersec, 7);
+                                                                $agentfee= $persec*60;
+                                                            }
+                                                        }
+                                                        $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
+                                                        $sec = "";
+                                                        if(array_sum($completed_count) != 0 && count($completed_count) != 0){
+                                                            $sec =  array_sum($completed_count) /  count($completed_count);
+                                                        }
+                                                    @endphp
+        
+                                                    <td>{{!empty($completed_count) ? count($completed_count) : "0"}}</td>
+                                                    <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}%</td>
+                                                    <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}} </td>
+                                                    {{-- <td>{{$Duration}}</td> --}}
+                                                    <td>{{$Duration}}</td>
+                                                    <td>{{!empty($agentfee) ? '$'.$agentfee : "$ 0.00"}}</td>
+                                                    <td>${{ $values->sum('agentfee') }}</td>
+                                                </tr>
+                                            </tbody>
+                                        @endforeach
+                                    @endif
+                                    <tfoot id="items">
+                                        <tr class="items">
+                                            <th colspan="5"></th>
+                                            <th>Calls</th>
+                                            <th>Duration</th>
+                                            <th>Charge</th>
+                                        </tr>
+                                        <tr class="items">
+                                            <td colspan="5"></td>
+                                            <td>{{!empty($calls) ? $calls :""}}</td>
+                                            @php
+                                                $time= sprintf( "%02.2d:%02.2d", floor( array_sum($count_vendor_duration) / 60 ), array_sum($count_vendor_duration) % 60 )
+                                            @endphp
+                                            <td >{{!empty($time) ? $time :"" }}</td>
+                                            <td >${{!empty($total_vendor_cost) ? $total_vendor_cost: ""}}</td>
+                                        </tr>
+                                    </tfoot>
+
+                            </table>
+                        </div>
+                    @else
+                        <table class="table w-100">
+                            <tr style="margin-bottom:30px;background: #2e3e4e;color: #fff;" class="item_table_header">
+                                <th style="width:14%">{{ __('Country') }}</th> 
+                                <th style="width:14%">{{ __('Total calls') }}</th>
+                                <th style="width:14%">{{ __('Completed') }}</th>
+                                <th style="width:14%">{{ __('ASR(%)') }}</th>
+                                <th style="width:14%">{{ __('ACD(Sec)') }}</th>
+                                <th style="width:14%">{{ __('Duration') }}</th>
+                                <th style="width:14%">{{ __('Billed Duration') }}</th>
+                                <th style="width:14%">{{ __('Avg Rate/Min') }}</th>
+                                <th style="width:14%">{{ __('Total Cost') }}</th>
+                            </tr>
+                            <!-------------------------- for Customers ------------------->
+                            @if($user == 'Customer')
+                                @if(!empty($invoices))
+                                    @foreach($invoices as $key => $values)
+                                        @php
+                                        $country = App\Models\Country::where('phonecode',$key)->first();
+                                        @endphp
+                                        <tbody id="items">
+                                            <tr class="items">
+                                                <td>{{!empty($country->name) ? $country->name : ""}}</td>
+                                                <td>{{$values->count()}}</td>
+                                                @php
+                                                    $Duration_count = array();
+                                                    $completed_count = array();
+                                                    foreach ($values as $invoice){
+                                                        $Duration_count[] = $invoice->feetime;
+                                                        if($invoice->feetime != 0) {
+                                                            $completed_count[] = $invoice->feetime;
+                                                        }
+                                                        $fee ="";
+                                                        if($values->sum('fee') != 0 || $values->sum('feetime') != 0){
+                                                            $timepersec = $values->sum('fee')/$values->sum('feetime');
+                                                            $persec =  round($timepersec, 7);
+                                                            $fee= $persec*60;
+                                                        }
+                                                    }
+                                                    $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
+                                                    $sec = "";
+                                                    if(array_sum($completed_count) != 0 && count($completed_count) != 0){
+                                                        $sec =  array_sum($completed_count) /  count($completed_count);
+                                                    }
+                                                @endphp
+
+                                                <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
+                                                <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}%</td>
+                                                <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}} </td>
+                                                <td>{{$Duration}}</td>
+                                                <td>{{$Duration}}</td>
+                                                <td>{{!empty($fee) ? '$'.$fee : "$ 0.00"}}</td>
+                                                <td>${{ $values->sum('fee') }}</td>
+                                            </tr>
+                                        </tbody>
+                                    @endforeach
+                                @endif
+                                <tfoot id="items">
+                                    <tr class="items">
+                                        <th colspan="6"></th>
+                                        <th>Calls</th>
+                                        <th>Duration</th>
+                                        <th>Charge</th>
+                                    </tr>
+                                    <tr class="items">
+                                        <td colspan="6"></td>
+                                        <td>{{!empty($calls) ? $calls:""}}</td>
+                                        @php
+                                            $time= sprintf( "%02.2d:%02.2d", floor( array_sum($count_duration) / 60 ), array_sum($count_duration) % 60 )
+                                        @endphp
+                                        <td >{{!empty($time) ? $time :"" }}</td>
+                                        <td >${{!empty($total_cost) ? $total_cost :""}}</td>
+                                    </tr>
+                                </tfoot>
+                            @endif
+                            <!-------------------------- for vendors ------------------->
+                            @if($user == 'Vendor')
+                                @if(!empty($invoices))
+                                    @foreach($invoices as $key => $values)
+                                        @php
+                                        $country = App\Models\Country::where('phonecode',$key)->first();
+                                        @endphp
+                                        <tbody id="items">
+                                            <tr class="items">
+                                                <td>{{!empty($country->name) ? $country->name : ""}}</td>
+                                                <td>{{$values->count()}}</td>
+    
+                                                @php
+                                                    $Duration_count = array();
+                                                    $completed_count = array();
+                                                    foreach ($values as $invoice){
+                                                        $Duration_count[] = $invoice->agentfeetime;
+                                                        if($invoice->agentfeetime != 0) {
+                                                            $completed_count[] = $invoice->agentfeetime;
+                                                        }
+                                                        $agentfee ="";
+                                                        if($values->sum('agentfee') != 0 || $values->sum('agentfeetime') != 0){
+                                                            $timepersec = $values->sum('agentfee')/$values->sum('feetime');
+                                                            $persec =  round($timepersec, 7);
+                                                            $agentfee= $persec*60;
+                                                        }
+                                                    }
+                                                    $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
+                                                    $sec = "";
+                                                    if(array_sum($completed_count) != 0 && count($completed_count) != 0){
+                                                        $sec =  array_sum($completed_count) /  count($completed_count);
+                                                    }
+                                                @endphp
+    
+                                                <td>{{!empty($completed_count) ? count($completed_count) : "0"}}</td>
+                                                <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}%</td>
+                                                <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}} </td>
+                                                <td>{{$Duration}}</td>
+                                                <td>{{$Duration}}</td>
+                                                <td>{{!empty($agentfee) ? '$'.$agentfee : "$ 0.00"}}</td>
+                                                <td>${{ $values->sum('agentfee') }}</td>
+                                            </tr>
+                                        </tbody>
+                                    @endforeach
+                                    <tfoot id="items">
+                                        <tr class="items">
+                                            <th colspan="6"></th>
+                                            <th>Calls</th>
+                                            <th>Duration</th>
+                                            <th>Charge</th>
+                                        </tr>
+                                        <tr class="items">
+                                            <td colspan="6"></td>
+                                            <td>{{!empty($calls) ? $calls : ""}}</td>
+                                            @php
+                                                $time= sprintf( "%02.2d:%02.2d", floor( array_sum($count_vendor_duration) / 60 ), array_sum($count_vendor_duration) % 60 )
+                                            @endphp
+                                            <td >{{!empty($time) ? $time :"" }}</td>
+                                            <td >${{!empty($total_vendor_cost) ? $total_vendor_cost : ""}}</td>
+                                        </tr>
+                                    </tfoot>
+                                @endif
+                            @endif
+                        </table>
                     @endif
-                    <tfoot id="items">
-                        <tr class="items">
-                            <th colspan="6"></th>
-                            <th>Calls</th>
-                            <th>Duration</th>
-                            <th>Charge</th>
-                        </tr>
-                        <tr class="items">
-                            <td colspan="6"></td>
-                            <td>{{$calls}}</td>
-                            @php
-                                $time= sprintf( "%02.2d:%02.2d", floor( array_sum($count_duration) / 60 ), array_sum($count_duration) % 60 )
-                            @endphp
-                            <td >{{!empty($time) ? $time :"" }}</td>
-                            <td >${{$total_cost}}</td>
-                        </tr>
-                    </tfoot>
-                </table>
+                @endif
             </div>
-            <div class="row">
+            <div class="row" style="margin-top: 34%" >
                 <div class="col-md-12 mt-5" >
                     <h4>Bank Details</h4>
                     <h4>US to US Transfer only</h4>
@@ -248,8 +473,10 @@
     .col-sm-6{width: 50%;float: left;}
     table {border-spacing: 0;border-collapse: collapse;}
     .table {width: 100%;max-width: 100%;margin-bottom: 20px;}
-    .item_table_header>th{padding: 8px;line-height: 1.42857143;vertical-align: top;}
-    .table>tr>td, .table>tr>th{padding: 8px;line-height: 1.42857143;vertical-align: top;}
+    .d-flex{display: flex;}
+    .d-flex table{flex:0 0 50%;}
+    .item_table_header>th{padding: 8px 0;line-height: 1.42857143;vertical-align: top;}
+    .table>tr>td, .table>tr>th{padding: 8px 0;line-height: 1.42857143;vertical-align: top;}
     hr.separator{border-color:  #2e3e4e;margin-top: 10px;margin-bottom: 10px;}
     tbody#items>tr>td{border: 3px solid #fff !important;vertical-align: middle;padding: 8px;}
     tfoot#items>tr>td{border: 3px solid #fff !important;vertical-align: middle;padding: 8px;}

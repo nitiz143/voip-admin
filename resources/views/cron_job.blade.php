@@ -109,14 +109,14 @@
 
                                 </div>
                             </div>
-                        <div id="display" style="display:none">
-                            <div class="form-row">
-                                <div class="col-xl-6 mb-3">
-                                    <label>Alert Active Email Time</label>
-                                    <input type="text" name="Alert" id="Alert" class="form-control">
+                            <div id="display" style="display:none">
+                                <div class="form-row">
+                                    <div class="col-xl-6 mb-3">
+                                        <label>Alert Active Email Time</label>
+                                        <input type="text" name="Alert" id="Alert" class="form-control">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                             <div id="data" style="display:none">
                                 <div class="form-row">
                                     <div class="col-xl-6 mb-3">

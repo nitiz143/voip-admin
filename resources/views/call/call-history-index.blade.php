@@ -153,7 +153,7 @@
                                                                 <option value="">Select</option>
                                                                 <option value="Customer-Summary">Customer Summary</option>
                                                                 <option value="Customer-Hourly">Customer Hourly</option>
-                                                                <option value="Customer-Report">Customer Report</option>
+                                                                <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
                                                                 <option value="Account-Manage">Account Manage</option>
                                                                 <option value="Margin-Report">Margin Report</option>
                                                                 <option value="Negative-Report">Negative Report</option>
