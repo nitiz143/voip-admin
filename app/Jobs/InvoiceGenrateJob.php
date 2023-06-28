@@ -45,8 +45,8 @@ class InvoiceGenrateJob implements ShouldQueue
         $StartDate = $this->data['StartDate'] .' '. $this->data['StartTime'];
         $EndDate = $this->data['EndDate'] .' '. $this->data['EndTime'];
         $Report =  $this->data['report'];
-        if($type == "Vendor"){
-           
+
+        if($type == "Vendor"){   
             $query = CallHistory::query('*');
             if((!empty( $StartDate ) && !empty( $EndDate ))){
                 $start =  strtotime($StartDate);
@@ -119,7 +119,6 @@ class InvoiceGenrateJob implements ShouldQueue
             }
             $user = "Customer";
             $data = ExportHistory::find($this->exporthistory_id);
-
             $pdf = PDF::loadView('invoicepdf', compact('invoices','Report','total_cost','user','account','data','count_duration','StartDate','EndDate','calls','total_vendor_cost','count_vendor_duration'))->setPaper('a4','landscape');
         }
 

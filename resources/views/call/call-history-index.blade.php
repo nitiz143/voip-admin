@@ -228,14 +228,12 @@
             if(starttime =='00:00:01'){
                 starttime = '00:00:00';
             }
-            // $searchFilter.Trunk = $("#cdr_filter select[name='Trunk']").val();
             $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
             $searchFilter.Gateway = $("#cdr_filter select[name='GatewayID']").val();
             $searchFilter.zerovaluecost = $("#cdr_filter select[name='zerovaluecost']").val();
             $searchFilter.Cli = $("#cdr_filter input[name='CLI']").val();
             $searchFilter.Cld = $("#cdr_filter input[name='CLD']").val();
             $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
-            // $searchFilter.Tag = $("#cdr_filter input[name='tag']").val();
             $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
             $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
             $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
@@ -399,7 +397,7 @@
 
         });
 
-
+    
 
 </script>
 

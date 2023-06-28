@@ -13,6 +13,8 @@ use App\Models\Setting;
 use App\Models\Codes;
 use App\Models\ExportHistory;
 use App\Jobs\InvoiceGenrateJob;
+use App\Jobs\DownloadCsvXlsx;
+use App\Models\ExportXlsxCsvHistory;
 use App\Utils\RandomUtil;
 use Carbon\Carbon;
 use DateTime;
@@ -350,12 +352,12 @@ class CallController extends Controller
             $search = 1 ;
             if($request->type == "customer"){
                 $data = ExportHistory::whereHas('clients', function($q) use($search){
-                    $q->where('customer', '=', $search);
+                    $q->where('customer', '=', $search)->where('report_type','!=','Vendor-Summary')->where('report_type','!=','Vendor-Hourly');
                 });
             }
             if($request->type == "vendor"){
                 $data = ExportHistory::whereHas('clients', function($q) use($search){
-                    $q->where('Vendor', '=', $search);
+                    $q->where('Vendor', '=', $search)->where('report_type','!=','Customer-Summary')->where('report_type','!=','Customer-Hourly');
                 });
             }
             return Datatables::of($data)

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ExportHistory;
-
+use App\Models\CallHistory;
 
 class Client extends Model
 {
@@ -72,6 +72,11 @@ class Client extends Model
     public function export_history()
     {
         return $this->hasMany(ExportHistory::class);
+    }
+
+    public function call_history()
+    {
+        return $this->hasMany(CallHistory::class);
     }
 
    
