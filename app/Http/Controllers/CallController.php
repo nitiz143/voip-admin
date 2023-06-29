@@ -14,7 +14,7 @@ use App\Models\Codes;
 use App\Models\ExportHistory;
 use App\Jobs\InvoiceGenrateJob;
 use App\Jobs\DownloadCsvXlsx;
-use App\Models\ExportXlsxCsvHistory;
+use App\Models\ExportCsvXlsxHistory;
 use App\Utils\RandomUtil;
 use Carbon\Carbon;
 use DateTime;
@@ -38,29 +38,29 @@ class CallController extends Controller
             if(!empty($request->Account)){
                 $data->where('account_id', $request->Account);
             }
-            if(!empty($request->zerovaluecost)){
-                if($request->zerovaluecost == 1){
-                    $data->where('fee', 0);
-                }
-                if($request->zerovaluecost == 2){
-                    $data->where('fee','!=', 0);
-                }
-                if($request->zerovaluecost == 0){
-                    $data;
-                }
-            }
-            if(!empty($request->Gateway)){
-                $data;
-            }
-            if(!empty($request->Cli)){
-                $data->where('callere164', $request->Cli);
-            }
-            if(!empty($request->Cld)){
-                $data->where('calleee164', $request->Cld);
-            }
-            if(!empty($request->Prefix)){
-                $data->where('callerareacode', $request->Prefix);
-            }
+            // if(!empty($request->zerovaluecost)){
+            //     if($request->zerovaluecost == 1){
+            //         $data->where('fee', 0);
+            //     }
+            //     if($request->zerovaluecost == 2){
+            //         $data->where('fee','!=', 0);
+            //     }
+            //     if($request->zerovaluecost == 0){
+            //         $data;
+            //     }
+            // }
+            // if(!empty($request->Gateway)){
+            //     $data;
+            // }
+            // if(!empty($request->Cli)){
+            //     $data->where('callere164', $request->Cli);
+            // }
+            // if(!empty($request->Cld)){
+            //     $data->where('calleee164', $request->Cld);
+            // }
+            // if(!empty($request->Prefix)){
+            //     $data->where('callerareacode', $request->Prefix);
+            // }
             $data = $data->get();
           
             return Datatables::of($data)
@@ -87,8 +87,6 @@ class CallController extends Controller
                     }else{
                         return '$0.00';
                     }
-                        
-                    
                 })
                 ->addColumn('Prefix', function($row){
                         $Prefix = $row->callerareacode;
@@ -140,30 +138,30 @@ class CallController extends Controller
             if(!empty($request->Account)){
                 $data->where('account_id', $request->Account);
             }
-            if(!empty($request->zerovaluecost)){
-                if($request->zerovaluecost == 1){
-                    $data->where('agentfee', 0);
-                }
-                if($request->zerovaluecost == 2){
-                    $data->where('agentfee','!=', 0);
-                }
-                if($request->zerovaluecost == 0){
-                    $data;
-                }
-            }
-            if(!empty($request->Gateway)){
-                $data;
-            }
-            if(!empty($request->Cli)){
-                $data->where('callere164', $request->Cli);
-            }
-            if(!empty($request->Cld)){
-                $data->where('calleee164', $request->Cld);
-            }
-            if(!empty($request->Prefix)){
-                $data->where('callerareacode', $request->Prefix);
-            }
-            $data = $data;
+            // if(!empty($request->zerovaluecost)){
+            //     if($request->zerovaluecost == 1){
+            //         $data->where('agentfee', 0);
+            //     }
+            //     if($request->zerovaluecost == 2){
+            //         $data->where('agentfee','!=', 0);
+            //     }
+            //     if($request->zerovaluecost == 0){
+            //         $data;
+            //     }
+            // }
+            // if(!empty($request->Gateway)){
+            //     $data;
+            // }
+            // if(!empty($request->Cli)){
+            //     $data->where('callere164', $request->Cli);
+            // }
+            // if(!empty($request->Cld)){
+            //     $data->where('calleee164', $request->Cld);
+            // }
+            // if(!empty($request->Prefix)){
+            //     $data->where('callerareacode', $request->Prefix);
+            // }
+            $data = $data->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
@@ -398,6 +396,128 @@ class CallController extends Controller
         else{
             return \Redirect::back()->withErrors(['msg' => 'This file is not longer avialable']);
         }
+    }
+
+    public function export_history_xlsx(Request $request){
+        $validator = Validator::make($request->all(), [
+            'AccountID' => 'required',
+            ]);
+
+            if ($validator->fails())
+            {
+                $response = \Response::json([
+                        'success' => false,
+                        'errors' => $validator->getMessageBag()->toArray()
+                    ]);
+                return $response;
+            }
+        $data = array();
+        $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : " ";
+        $data['user_id'] = Auth::user()->id;
+        $data['type'] = "Excel-report";
+        $data['status'] = 'pending';
+        $code = random_int(100000, 999999);
+        $data['file_name'] = date('YmdHis').'-'.$code.".xlsx";
+        $exporthistory = ExportCsvXlsxHistory::create($data);
+        if(!empty($exporthistory)){
+            $exporthistory_type = 'Xlsx_file';
+            $exporthistory_id = $exporthistory->id;
+            $authUser = Auth::user();
+            $Excel = new DownloadCsvXlsx($request,$authUser,$exporthistory_id,$exporthistory_type);
+            dispatch($Excel);
+            return response()->json(array(
+                'success' => true,
+                'message'=> __('Excel file_download_msg')
+            ), 200);
+        }    
+    }
+
+    public function export_history_csv(Request $request){
+        $validator = Validator::make($request->all(), [
+            'AccountID' => 'required',
+        ]);
+
+        if($validator->fails())
+        {
+            $response = \Response::json([
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ]);
+            return $response;
+        }
+        $data = array();
+        $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : " ";
+        $data['user_id'] = Auth::user()->id;
+        $data['type'] = "Csv-report";
+        $data['status'] = 'pending';
+        $code = random_int(100000, 999999);
+        $data['file_name'] = date('YmdHis').'-'.$code.".csv";
+        $exporthistory = ExportCsvXlsxHistory::create($data);
+        if(!empty($exporthistory)){
+            $exporthistory_type = 'Csv_file';
+            $exporthistory_id = $exporthistory->id;
+            $authUser = Auth::user();
+            $Csv = new DownloadCsvXlsx($request,$authUser,$exporthistory_id,$exporthistory_type);
+            dispatch($Csv);
+            return response()->json(array(
+                'success' => true,
+                'message'=> __('Csv file_download_msg')
+            ), 200);
+        }    
+    }
+
+    public function export_csv_history(Request $request){
+        if ($request->ajax()) {
+    
+           
+            $data = ExportCsvXlsxHistory::query();
+            return Datatables::of($data)
+            ->addColumn('created_at', function($row){
+                return Carbon::parse($row->created_at)->format('d/m/Y H:i:s');
+            })
+            ->addColumn('status', function($row){
+               if($row->status == "pending"){
+                    $badge = '<span class="badge badge-warning">Pending</span>';
+               }else{
+                    $badge = '<span class="badge badge-info">Completed</span>';
+               }
+               return $badge;
+            })
+            ->addColumn('client', function($row){
+                return !empty($row->clients->company) ? $row->clients->company : "";
+            })
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                $btn = '<a href="'.url('/export-csv-history-download',$row->type."/".$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+
+                return $btn;
+            })
+            ->rawColumns(['action','status'])
+            ->make(true);
+        }
+        return view("call.export-csv-history");
+    }
+    public function download_csv_export_history(Request $request){
+        $data = ExportCsvXlsxHistory::where('id',$request->id)->first();
+            if($request->type =="Excel-report"){
+                if(file_exists( public_path('storage/excel_files/'.$data->file_name))) {
+                    $file= public_path('storage/excel_files/'.$data->file_name);
+                    $headers = array('Content-Type: application/pdf',);
+                    return response()->download($file, $data->file_name, $headers);
+                }   
+                else{
+                    return \Redirect::back()->withErrors(['msg' => 'This file is not longer avialable']);
+                }
+            }else{
+                if(file_exists( public_path('storage/csv_files/'.$data->file_name))) {
+                    $file= public_path('storage/csv_files/'.$data->file_name);
+                    $headers = array('Content-Type: application/pdf',);
+                    return response()->download($file, $data->file_name, $headers);
+                }   
+                else{
+                    return \Redirect::back()->withErrors(['msg' => 'This file is not longer avialable']);
+                }
+            }
     }
 
 

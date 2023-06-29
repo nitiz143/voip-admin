@@ -73,6 +73,10 @@ class Client extends Model
     {
         return $this->hasMany(ExportHistory::class);
     }
+    public function export_csv_history()
+    {
+        return $this->hasMany(ExportCsvXlsxHistory::class);
+    }
 
     public function call_history()
     {

@@ -8,13 +8,14 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <div class="header mt-2">
                         <h4 class="title ">Customer CDR</h4>
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-8">
                     <ol class="breadcrumb float-sm-right">
+                        {{-- <a type="submit" href="{{ route('export-csv.history') }}" class="btn btn-primary mb-4 mr-2 float-right w-10 " >Csv History</a> --}}
                         <a type="submit" href="{{ route('export.history',"customer") }}" class="btn btn-primary mb-4 mr-2 float-right w-10 " >Export History</a>
                         <a type="submit" class="btn btn-primary mb-4 mr-2 float-right w-10 export" data-type="all_invoice_export">Invoice generate</a>
                         <a href="" class="btn btn-primary mb-4 float-right w-10" id="Filter">Filter</a>
@@ -146,7 +147,6 @@
                                                                 @endif
                                                             </select>
                                                         </div>
-
                                                         <div class="form-group">
                                                             <label class="control-label" for="field-1">Report</label>
                                                             <select class="form-control" id="report" allowClear="true" name="report">
@@ -184,6 +184,12 @@
                                                                 <i class="entypo-search"></i>
                                                                 Search
                                                             </button>
+                                                            <a href="#" data-value="xlsx"class="btn btn-primary save-collection btn-md" style="border: 1px solid gray;" id="ToolTables_table-4_0">
+                                                                <undefined>EXCEL</undefined>
+                                                            </a>
+                                                            <a  href="#" class="btn btn-primary save-collection btn-md" style="border: 1px solid gray;" id="ToolTables_table-4_1">
+                                                                <undefined>CSV</undefined>
+                                                            </a>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -327,20 +333,49 @@
             });
             $('#FilterModel').modal('hide');
         });
-    });
 
-    $(document).on('click','.callhistoryForm',function(e){
-        // $("#ajaxModel").modal();
-        var id = $(this).data('id')
-        $.ajax({
-           type:'get',
-           url:"{{ route('getCallhistory') }}",
-           data:{id,id},
-           success:function(data){
-              console.log(data);
-              $('#callForm').html(data);
-              $("#ajaxModel").modal('show');
-           }
+        $('#ToolTables_table-4_0').on("click",function(e){
+            e.preventDefault();
+            $.ajax({
+                type:'get',
+                url:"{{ url('export-history/xlsx') }}",
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: $('#cdr_filter').serialize(),
+                success: function(result) {
+                    if(result.success == true){
+                        $.notify(result.message,'success');
+                    }else{
+                        $.each(result.errors, function (k, e) {
+                            $.notify(e, 'error');
+                        });
+                    }
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            });
+        });
+        $('#ToolTables_table-4_1').on("click",function(e){
+            e.preventDefault();
+            $.ajax({
+                type:'get',
+                url:"{{ url('export-history/csv') }}",
+                data: $('#cdr_filter').serialize(),
+                success: function(result) {
+                    if(result.success == true){
+                        $.notify(result.message, 'success');
+                    }else{
+                        $.each(result.errors, function (k, e) {
+                            $.notify(e, 'error');
+                        });
+                    }
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            });
         });
     });
     $(document).ready(function() {
