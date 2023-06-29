@@ -139,7 +139,7 @@
                                                             <label class="control-label" for="field-1">Customer List</label>
                                                             <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
                                                                 @if(!empty($Accounts))
-                                                                <option value="">Select</option>
+                                                                    <option value="">Select</option>
                                                                     @foreach ( $Accounts as $Account )
                                                                         <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
                                                                     @endforeach
@@ -153,7 +153,7 @@
                                                                 <option value="">Select</option>
                                                                 <option value="Customer-Summary">Customer Summary</option>
                                                                 <option value="Customer-Hourly">Customer Hourly</option>
-                                                                <option value="Customer-Report">Customer Report</option>
+                                                                <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
                                                                 <option value="Account-Manage">Account Manage</option>
                                                                 <option value="Margin-Report">Margin Report</option>
                                                                 <option value="Negative-Report">Negative Report</option>
@@ -179,7 +179,6 @@
                                                         </div> --}}
                                                        
                                                         <div class="form-group">
-                                                            <br/>
                                                             <input type="hidden" name="ResellerOwner" value="0">
                                                             <button type="submit" class="btn btn-primary btn-md btn-icon icon-left">
                                                                 <i class="entypo-search"></i>
@@ -229,14 +228,12 @@
             if(starttime =='00:00:01'){
                 starttime = '00:00:00';
             }
-            // $searchFilter.Trunk = $("#cdr_filter select[name='Trunk']").val();
             $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
             $searchFilter.Gateway = $("#cdr_filter select[name='GatewayID']").val();
             $searchFilter.zerovaluecost = $("#cdr_filter select[name='zerovaluecost']").val();
             $searchFilter.Cli = $("#cdr_filter input[name='CLI']").val();
             $searchFilter.Cld = $("#cdr_filter input[name='CLD']").val();
             $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
-            // $searchFilter.Tag = $("#cdr_filter input[name='tag']").val();
             $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
             $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
             $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
@@ -400,7 +397,7 @@
 
         });
 
-
+    
 
 </script>
 

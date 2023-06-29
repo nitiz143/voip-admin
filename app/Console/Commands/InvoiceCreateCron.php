@@ -72,6 +72,7 @@ class InvoiceCreateCron extends Command
                                     $value['zerovaluecost'] =  0;
                                     $value['StartTime'] =  "00:00:00";
                                     $value['EndTime'] =  "23:59:59";
+                                    $value['report'] =  "invoice_pdf_export";
                                     if(!empty($exporthistory)){
                                         $exporthistory_id = $exporthistory->id;
                                         $authUser = 0;
@@ -115,6 +116,8 @@ class InvoiceCreateCron extends Command
                                     $value['zerovaluecost'] =  0;
                                     $value['StartTime'] =  "00:00:00";
                                     $value['EndTime'] =  "23:59:59";
+                                    $value['report'] =  "invoice_pdf_export";
+
                                     if(!empty($exporthistory)){
                                         $exporthistory_id = $exporthistory->id;
                                         $authUser = 0;
@@ -157,6 +160,8 @@ class InvoiceCreateCron extends Command
                                     $value['zerovaluecost'] =  0;
                                     $value['StartTime'] =  "00:00:00";
                                     $value['EndTime'] =  "23:59:59";
+                                    $value['report'] =  "invoice_pdf_export";
+
 
                                     if(!empty($exporthistory)){
                                         $exporthistory_id = $exporthistory->id;
@@ -200,6 +205,8 @@ class InvoiceCreateCron extends Command
                                     $value['EndDate'] =  $now;
                                     $value['StartTime'] =  "00:00:00";
                                     $value['EndTime'] =  "23:59:59";
+                                    $value['report'] =  "invoice_pdf_export";
+
 
                                     if(!empty($exporthistory)){
                                         $exporthistory_id = $exporthistory->id;
@@ -249,6 +256,8 @@ class InvoiceCreateCron extends Command
                                         $value['zerovaluecost'] =  0;
                                         $value['StartTime'] =  "00:00:00";
                                         $value['EndTime'] =  "23:59:59";
+                                        $value['report'] =  "invoice_pdf_export";
+
     
                                         if(!empty($exporthistory)){
                                             $exporthistory_id = $exporthistory->id;
@@ -282,6 +291,8 @@ class InvoiceCreateCron extends Command
                                         $value['zerovaluecost'] =  0;
                                         $value['StartTime'] =  "00:00:00";
                                         $value['EndTime'] =  "23:59:59";
+                                        $value['report'] =  "invoice_pdf_export";
+
     
                                         if(!empty($exporthistory)){
                                             $exporthistory_id = $exporthistory->id;
@@ -314,6 +325,8 @@ class InvoiceCreateCron extends Command
                                         $value['zerovaluecost'] =  0;
                                         $value['StartTime'] =  "00:00:00";
                                         $value['EndTime'] =  "23:59:59";
+                                        $value['report'] =  "invoice_pdf_export";
+
     
                                         if(!empty($exporthistory)){
                                             $exporthistory_id = $exporthistory->id;
@@ -347,6 +360,8 @@ class InvoiceCreateCron extends Command
                                         $value['zerovaluecost'] =  0;
                                         $value['StartTime'] =  "00:00:00";
                                         $value['EndTime'] =  "23:59:59";
+                                        $value['report'] =  "invoice_pdf_export";
+
     
                                         if(!empty($exporthistory)){
                                             $exporthistory_id = $exporthistory->id;

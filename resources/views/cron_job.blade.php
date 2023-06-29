@@ -21,96 +21,94 @@
     }
     </style>
 <div class="content-wrapper mt-3">
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
 
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-
-                        </ol>
-                    </div>
                 </div>
-            </div><!-- /.container-fluid -->
-        </section>
-        <section class="content">
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
 
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h1 class="card-title">Cron Job</h1>
-                                <a href="" class="btn btn-primary mb-4  float-right pull-right" data-bs-toggle="modal" data-bs-target="#CronModal" id="createCronModal">Add New</a>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered border text-nowrap mb-0 w-100" id="table">
-                                        <thead>
-                                            <tr>
-                                                <th>PID</th>
-                                                <th>Title</th>
-                                                <th>Running Since</th>
-                                                <th>Start Time</th>
-                                                <th>End Time</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <!-- /.card-body -->
-                        </div>
-            <!-- /.card -->
-                    </div>
+                    </ol>
                 </div>
             </div>
-            <div class="modal fade" id="CronModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add Cron Job</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div><!-- /.container-fluid -->
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h1 class="card-title">Cron Job</h1>
+                            <a href="" class="btn btn-primary mb-4  float-right pull-right" data-bs-toggle="modal" data-bs-target="#CronModal" id="createCronModal">Add New</a>
                         </div>
-                        <form action="{{route('cron.store')}}" method="POST" id="cronForm">
-                            @csrf
-                            <div class="modal-body">
-                                <input type="hidden" value="" name="id" id="id">
-                                <div class="form-row">
-                                    <div class="col-xl-12 mb-3">
-                                        <label>Job title</label>
-                                        <input type="text" name="job_title" id="job_title" class="form-control" >
-                                    </div>
-                                </div>
-                                <div class="form-row ">
-                                    <div class="col-xl-12 mb-3">
-                                        <label>Cron type</label>
-                                        <select class="form-control cron_type" name="cron_type" id="cron_type">
-                                            <option value="">Select type</option>
-                                            <option value="Download VOS SFTP File">Download VOS SFTP File</option>
-                                            <option value="Active job Cron Email">Active job Cron Email</option>
-                                        </select>
-                                    </div>
-                                </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered border text-nowrap mb-0 w-100" id="table">
+                                    <thead>
+                                        <tr>
+                                            <th>PID</th>
+                                            <th>Title</th>
+                                            <th>Running Since</th>
+                                            <th>Start Time</th>
+                                            <th>End Time</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                <div class="form-row" id="gate" style="display:none">
-                                    <div class="col-xl-12 mb-3">
-                                        <label>Gateway</label>
-                                        <select class="form-control" name="gateway" id="gateway">
-                                            <option value="">Select gateway</option>
-                                            <option value=""></option>
-                                            <option value=""></option>
-                                        </select>
-
-                                    </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                     <!-- /.card -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="CronModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Cron Job</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{route('cron.store')}}" method="POST" id="cronForm">
+                        @csrf
+                        <div class="modal-body">
+                            <input type="hidden" value="" name="id" id="id">
+                            <div class="form-row">
+                                <div class="col-xl-12 mb-3">
+                                    <label>Job title</label>
+                                    <input type="text" name="job_title" id="job_title" class="form-control" >
                                 </div>
+                            </div>
+                            <div class="form-row ">
+                                <div class="col-xl-12 mb-3">
+                                    <label>Cron type</label>
+                                    <select class="form-control cron_type" name="cron_type" id="cron_type">
+                                        <option value="">Select type</option>
+                                        <option value="Download VOS SFTP File">Download VOS SFTP File</option>
+                                        <option value="Active job Cron Email">Active job Cron Email</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row" id="gate" style="display:none">
+                                <div class="col-xl-12 mb-3">
+                                    <label>Gateway</label>
+                                    <select class="form-control" name="gateway" id="gateway">
+                                        <option value="">Select gateway</option>
+                                        <option value=""></option>
+                                        <option value=""></option>
+                                    </select>
+
+                                </div>
+                            </div>
                             <div id="display" style="display:none">
                                 <div class="form-row">
                                     <div class="col-xl-6 mb-3">
@@ -119,80 +117,80 @@
                                     </div>
                                 </div>
                             </div>
-                                <div id="data" style="display:none">
-                                    <div class="form-row">
-                                        <div class="col-xl-6 mb-3">
-                                            <label>Max File Download Limit</label>
-                                            <input type="text" name="download_limit" id="download" class="form-control">
-                                        </div>
-                                        <div class="col-xl-6 mb-3">
-                                            <label>Threshold Time(Minute)</label>
-                                            <input type="text" name="threshold" id="threshold" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
+                            <div id="data" style="display:none">
                                 <div class="form-row">
                                     <div class="col-xl-6 mb-3">
-                                        <label>Success Email</label>
-                                        <input type="email" name="success_email" id="success_email"class="form-control">
+                                        <label>Max File Download Limit</label>
+                                        <input type="text" name="download_limit" id="download" class="form-control">
                                     </div>
                                     <div class="col-xl-6 mb-3">
-                                        <label>Error Email</label>
-                                        <input type="email" name="error_email" id="error_email" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-xl-6 mb-3">
-                                        <label>Job Time</label>
-                                        <select class="form-control cron" name="job_time" id="job_time">
-                                            <option value="">Select Runtime</option>
-                                            {{-- <option value="Second">Second</option> --}}
-                                            <option value="everyMinute">everyMinute</option>
-                                            <option value="hourly">hourly</option>
-                                            <option value="daily">daily</option>
-                                            <option value="monthly">monthly</option>
-                                        </select>
-                                    </div> 
-                                    <div class="col-xl-6 mb-3  job_intervel">
-                                        <label>Job Interval</label>
-                                        <select class="form-control intervel" name="job_intervel" id="job_intervel">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-xl-6 mb-3">
-                                        <label>Job Day</label><br>
-                                        <select class="form-control js-example-basic-multiple" name="job_day[]"  id="job_day" data-placeholder="Choose day" multiple="multiple">
-                                            <option value="Mon">Monday</option>
-                                            <option value="Tue">Tuesday</option>
-                                            <option value="Wedn">Wednesday</option>
-                                            <option value="Thu">Thursday</option>
-                                            <option value="Fri">Friday</option>
-                                            <option value="Sat">Saturday</option>
-                                            <option value="Sun">Sunday</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-xl-6 mb-3 mb-3">
-                                        <label>Status</label><br>
-                                        <select class="form-control" name="status" id="status">
-                                            <option value="">Select status</option>
-                                            <option value="0">Active</option>
-                                            <option value="1">Inactive</option>
-                                        </select>
+                                        <label>Threshold Time(Minute)</label>
+                                        <input type="text" name="threshold" id="threshold" class="form-control">
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" id="save" class="btn btn-primary">Save</button>
+                            <div class="form-row">
+                                <div class="col-xl-6 mb-3">
+                                    <label>Success Email</label>
+                                    <input type="email" name="success_email" id="success_email"class="form-control">
+                                </div>
+                                <div class="col-xl-6 mb-3">
+                                    <label>Error Email</label>
+                                    <input type="email" name="error_email" id="error_email" class="form-control">
+                                </div>
                             </div>
-                        </form>
-                    </div>
+                            <div class="form-row">
+                                <div class="col-xl-6 mb-3">
+                                    <label>Job Time</label>
+                                    <select class="form-control cron" name="job_time" id="job_time">
+                                        <option value="">Select Runtime</option>
+                                        {{-- <option value="Second">Second</option> --}}
+                                        <option value="everyMinute">everyMinute</option>
+                                        <option value="hourly">hourly</option>
+                                        <option value="daily">daily</option>
+                                        <option value="monthly">monthly</option>
+                                    </select>
+                                </div> 
+                                <div class="col-xl-6 mb-3  job_intervel">
+                                    <label>Job Interval</label>
+                                    <select class="form-control intervel" name="job_intervel" id="job_intervel">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-xl-6 mb-3">
+                                    <label>Job Day</label><br>
+                                    <select class="form-control js-example-basic-multiple" name="job_day[]"  id="job_day" data-placeholder="Choose day" multiple="multiple">
+                                        <option value="Mon">Monday</option>
+                                        <option value="Tue">Tuesday</option>
+                                        <option value="Wedn">Wednesday</option>
+                                        <option value="Thu">Thursday</option>
+                                        <option value="Fri">Friday</option>
+                                        <option value="Sat">Saturday</option>
+                                        <option value="Sun">Sunday</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-xl-6 mb-3 mb-3">
+                                    <label>Status</label><br>
+                                    <select class="form-control" name="status" id="status">
+                                        <option value="">Select status</option>
+                                        <option value="0">Active</option>
+                                        <option value="1">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" id="save" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 </div>
 
 @endsection
