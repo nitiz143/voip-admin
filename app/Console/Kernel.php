@@ -15,6 +15,9 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //Commands\Cron_job::class,
         Commands\CsvImportCron::class,
+        Commands\DownloadCsvImportCron::class,
+        Commands\AccountCron::class,
+        Commands\InvoiceCreateCron::class,
     ];
     /**
      * Define the application's command schedule.
@@ -26,9 +29,9 @@ class Kernel extends ConsoleKernel
     {
 
 
-        
+
         $schedule->command('csvImport:cron')->everyTenMinutes();
-        $schedule->command('download:cron')->cron('*/15 * * * *')->withoutOverlapping();        
+        $schedule->command('download:cron')->cron('*/15 * * * *')->withoutOverlapping();
         $schedule->command('account:cron')->cron('*/15 * * * *')->withoutOverlapping();
         $schedule->command('invoice_create:cron')->everyFiveMinutes()->withoutOverlapping();
       //  $schedule->command('Billing:cron')->everyFiveMinutes();
