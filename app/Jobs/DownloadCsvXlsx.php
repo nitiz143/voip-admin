@@ -12,6 +12,7 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\CallHistory;
 use App\Models\ExportCsvXlsxHistory;
 use Illuminate\Support\Facades\Storage;
+use OpenSpout\Writer\XLSX\Options;
 use File;
 
 class DownloadCsvXlsx implements ShouldQueue
@@ -66,7 +67,7 @@ class DownloadCsvXlsx implements ShouldQueue
                     $stopTime =  $date2->setTimestamp($stopTime/1000);
 
                     $data =array();
-                    $data['Id'] =  $value->id;
+                    $data['Account Holder Name'] = !empty($value->clients->firstname) ? $value->clients->firstname. $value->clients->lastname :"";
                     $data['callere164'] =   !empty($value->callere164) ? $value->callere164 :"";
                     $data['calleraccesse164'] =   !empty($value->calleraccesse164) ? $value->calleraccesse164 :"";
                     $data['calleee164'] =   !empty($value->calleee164) ? $value->calleee164 :"";
@@ -185,7 +186,10 @@ class DownloadCsvXlsx implements ShouldQueue
                     File::isDirectory($destinationPath) or File::makeDirectory($destinationPath, 0777, true, true);
                 }
                 $exporthistory_arr = ExportCsvXlsxHistory::find($this->exporthistory_id);
-                $excel = (new FastExcel($list))->export($destinationPath.$exporthistory_arr->file_name);
+                $excel = (new FastExcel($list))->configureWriterUsing(function($writer){
+                    $option2 = new Options();
+                    $option2->setColumnWidth(100, 1);
+                })->export($destinationPath.$exporthistory_arr->file_name);
                 $exporthistory_arr['file'] =  $exporthistory_arr->file_name;
                 $exporthistory_arr['status'] = 'complete';
                 $exporthistory_arr->save();
@@ -208,7 +212,7 @@ class DownloadCsvXlsx implements ShouldQueue
                     $stopTime =  $date2->setTimestamp($stopTime/1000);
                   
                     $data =array();
-                    $data['Id'] =  $value->id;
+                    $data['Account Holder Name'] = !empty($value->clients->firstname) ? $value->clients->firstname. $value->clients->lastname :"";
                     $data['callere164'] =   !empty($value->callere164) ? $value->callere164 :"";
                     $data['calleraccesse164'] =   !empty($value->calleraccesse164) ? $value->calleraccesse164 :"";
                     $data['calleee164'] =   !empty($value->calleee164) ? $value->calleee164 :"";

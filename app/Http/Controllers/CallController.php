@@ -468,8 +468,6 @@ class CallController extends Controller
 
     public function export_csv_history(Request $request){
         if ($request->ajax()) {
-    
-           
             $data = ExportCsvXlsxHistory::query();
             return Datatables::of($data)
             ->addColumn('created_at', function($row){
@@ -499,25 +497,25 @@ class CallController extends Controller
     }
     public function download_csv_export_history(Request $request){
         $data = ExportCsvXlsxHistory::where('id',$request->id)->first();
-            if($request->type =="Excel-report"){
-                if(file_exists( public_path('storage/excel_files/'.$data->file_name))) {
-                    $file= public_path('storage/excel_files/'.$data->file_name);
-                    $headers = array('Content-Type: application/pdf',);
-                    return response()->download($file, $data->file_name, $headers);
-                }   
-                else{
-                    return \Redirect::back()->withErrors(['msg' => 'This file is not longer avialable']);
-                }
-            }else{
-                if(file_exists( public_path('storage/csv_files/'.$data->file_name))) {
-                    $file= public_path('storage/csv_files/'.$data->file_name);
-                    $headers = array('Content-Type: application/pdf',);
-                    return response()->download($file, $data->file_name, $headers);
-                }   
-                else{
-                    return \Redirect::back()->withErrors(['msg' => 'This file is not longer avialable']);
-                }
+        if($request->type =="Excel-report"){
+            if(file_exists( public_path('storage/excel_files/'.$data->file_name))) {
+                $file= public_path('storage/excel_files/'.$data->file_name);
+                $headers = array('Content-Type: application/xlsx',);
+                return response()->download($file, $data->file_name, $headers);
+            }   
+            else{
+                return \Redirect::back()->withErrors(['msg' => 'This file is not longer avialable']);
             }
+        }else{
+            if(file_exists( public_path('storage/csv_files/'.$data->file_name))) {
+                $file= public_path('storage/csv_files/'.$data->file_name);
+                $headers = array('Content-Type: application/csv',);
+                return response()->download($file, $data->file_name, $headers);
+            }   
+            else{
+                return \Redirect::back()->withErrors(['msg' => 'This file is not longer avialable']);
+            }
+        }
     }
 
 
