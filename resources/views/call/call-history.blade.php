@@ -25,13 +25,10 @@
             <div class="row">
                 <!-- left column -->
                 <div class="col-md-6">
-                    <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Import CSV</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         <form action="{{ route('cdr.store') }}" method="POST" id="form" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
@@ -45,13 +42,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.card-body -->
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
                     </div>
-                    <!-- /.card -->
                 </div>
             </div>
         </div>

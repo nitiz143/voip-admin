@@ -38,29 +38,7 @@ class CallController extends Controller
             if(!empty($request->Account)){
                 $data->where('account_id', $request->Account);
             }
-            // if(!empty($request->zerovaluecost)){
-            //     if($request->zerovaluecost == 1){
-            //         $data->where('fee', 0);
-            //     }
-            //     if($request->zerovaluecost == 2){
-            //         $data->where('fee','!=', 0);
-            //     }
-            //     if($request->zerovaluecost == 0){
-            //         $data;
-            //     }
-            // }
-            // if(!empty($request->Gateway)){
-            //     $data;
-            // }
-            // if(!empty($request->Cli)){
-            //     $data->where('callere164', $request->Cli);
-            // }
-            // if(!empty($request->Cld)){
-            //     $data->where('calleee164', $request->Cld);
-            // }
-            // if(!empty($request->Prefix)){
-            //     $data->where('callerareacode', $request->Prefix);
-            // }
+
             $data = $data->get();
           
             return Datatables::of($data)
@@ -138,29 +116,6 @@ class CallController extends Controller
             if(!empty($request->Account)){
                 $data->where('account_id', $request->Account);
             }
-            // if(!empty($request->zerovaluecost)){
-            //     if($request->zerovaluecost == 1){
-            //         $data->where('agentfee', 0);
-            //     }
-            //     if($request->zerovaluecost == 2){
-            //         $data->where('agentfee','!=', 0);
-            //     }
-            //     if($request->zerovaluecost == 0){
-            //         $data;
-            //     }
-            // }
-            // if(!empty($request->Gateway)){
-            //     $data;
-            // }
-            // if(!empty($request->Cli)){
-            //     $data->where('callere164', $request->Cli);
-            // }
-            // if(!empty($request->Cld)){
-            //     $data->where('calleee164', $request->Cld);
-            // }
-            // if(!empty($request->Prefix)){
-            //     $data->where('callerareacode', $request->Prefix);
-            // }
             $data = $data->get();
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -304,9 +259,18 @@ class CallController extends Controller
 
     public function getCallhistory(Request $request)
     {
-         $callhistory = CallHistory::find($request->id);
-         $account = Client::where('id',$callhistory->account_id)->first();
-         return view('call.viewcallhistory',compact('callhistory','account'));
+        $callhistory = CallHistory::find($request->id);
+        $account = Client::where('id',$callhistory->account_id)->first();
+
+        $date = new \DateTime();
+        $value = $callhistory->starttime;
+        $startTime =  $date->setTimestamp($value/1000);
+
+        $date2 = new \DateTime();
+        $value2 = $callhistory->stoptime;
+        $stopTime =  $date2->setTimestamp($value2/1000);
+
+         return view('call.viewcallhistory',compact('callhistory','account','stopTime','startTime'));
 
     }
     public function invoice_export(Request $request){

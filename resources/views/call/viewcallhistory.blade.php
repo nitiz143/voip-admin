@@ -89,11 +89,11 @@
     </tr>
     <tr>
         <td>Starttime</td>
-        <td>{{$callhistory->starttime}}</td>
+        <td>{{$startTime->format('Y-m-d H:i:s')}}</td>
     </tr>
     <tr>
         <td>Stoptime</td>
-        <td>{{$callhistory->stoptime}}</td>
+        <td>{{$stopTime->format('Y-m-d H:i:s')}}</td>
     </tr>
     <tr>
         <td>Calleepdd</td>

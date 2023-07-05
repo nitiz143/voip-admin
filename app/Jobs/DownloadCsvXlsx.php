@@ -57,8 +57,7 @@ class DownloadCsvXlsx implements ShouldQueue
             $date2 = new \DateTime();
             $startTime="";
             $stopTime="";
-            $timepersec="";
-            $persec="";
+        
             if(!$downloads->isEmpty()){
                 foreach ( $downloads as $key => $value) {
                     $startTime = $value->starttime;
@@ -68,21 +67,21 @@ class DownloadCsvXlsx implements ShouldQueue
 
                     $data =array();
                     $data['Account Holder Name'] = !empty($value->clients->firstname) ? $value->clients->firstname. $value->clients->lastname :"";
-                    $data['callere164'] =   !empty($value->callere164) ? $value->callere164 :"";
-                    $data['calleraccesse164'] =   !empty($value->calleraccesse164) ? $value->calleraccesse164 :"";
-                    $data['calleee164'] =   !empty($value->calleee164) ? $value->calleee164 :"";
-                    $data['calleeaccesse164'] =   !empty($value->calleeaccesse164) ? $value->calleeaccesse164 :"";
+                    $data['callere'] =   !empty($value->callere164) ? $value->callere164 :"";
+                    $data['calleraccesse'] =   !empty($value->calleraccesse164) ? $value->calleraccesse164 :"";
+                    $data['calleee'] =   !empty($value->calleee164) ? $value->calleee164 :"";
+                    $data['calleeaccesse'] =   !empty($value->calleeaccesse164) ? $value->calleeaccesse164 :"";
                     $data['callerip'] =   !empty($value->callerip) ? $value->callerip :"";
                     $data['callercodec'] =   !empty($value->callercodec) ? $value->callercodec :"";
-                    $data['callergatewayid'] =   !empty($value->callergatewayid) ? $value->callergatewayid :"";
-                    $data['callerproductid'] =   !empty($value->callerproductid) ? $value->callerproductid :"";
-                    $data['callertogatewaye164'] =   !empty($value->callertogatewaye164) ? $value->callertogatewaye164 :"";
+                    $data['callergatewayid'] =  !empty($value->callergatewayid) ? $value->callergatewayid :"";
+                    $data['callerproductid'] =  !empty($value->callerproductid) ? $value->callerproductid :"";
+                    $data['callertogatewaye'] = !empty($value->callertogatewaye164) ?$value->callertogatewaye164 :"";
                     $data['callertype'] =   !empty($value->callertype) ? $value->callertype :"";
                     $data['calleeip'] =   !empty($value->calleeip) ? $value->calleeip :"";
                     $data['calleecodec'] =   !empty($value->calleecodec) ? $value->calleecodec :"";
                     $data['calleegatewayid'] =   !empty($value->calleegatewayid) ? $value->calleegatewayid :"";
                     $data['calleeproductid'] =   !empty($value->calleeproductid) ? $value->calleeproductid :"";
-                    $data['calleetogatewaye164'] =   !empty($value->calleetogatewaye164) ? $value->calleetogatewaye164 :"";
+                    $data['calleetogatewaye'] =   !empty($value->calleetogatewaye164) ? $value->calleetogatewaye164 :"";
                     $data['calleetype'] =   !empty($value->calleetype) ? $value->calleetype :"";
                     $data['billingmode'] =   !empty($value->billingmode) ? $value->billingmode :"";
                     $data['calllevel'] =   !empty($value->calllevel) ? $value->calllevel :"";
@@ -120,28 +119,30 @@ class DownloadCsvXlsx implements ShouldQueue
                     $data['billingtype']=!empty($value->billingtype) ? $value->billingtype :"0";
                     $data['cdrlevel']=!empty($value->cdrlevel) ? $value->cdrlevel :"0";
                     $data['agentcdr_id']=!empty($value->agentcdr_id) ? $value->agentcdr_id :"";
+                    $data['transactionid']=!empty($value->transactionid) ? $value->transactionid :"";
+
                    
                     $list[]= $data;
                 }
             }
             else{
                 $data =array();
-                $data['Id'] =  "";
-                $data['callere164'] =   "";
-                $data['calleraccesse164'] = "";
-                $data['calleee164'] =  "";
-                $data['calleeaccesse164'] =  "";
+                $data['Account Holder Name'] =  "";
+                $data['callere'] =   "";
+                $data['calleraccesse'] = "";
+                $data['calleee'] =  "";
+                $data['calleeaccesse'] =  "";
                 $data['callerip'] =  "";
                 $data['callercodec'] =  "";
                 $data['callergatewayid'] = "";
                 $data['callerproductid'] = "";
-                $data['callertogatewaye164'] =   "";
+                $data['callertogatewaye'] =   "";
                 $data['callertype'] =  "";
                 $data['calleeip'] =  "";
                 $data['calleecodec'] = "";
                 $data['calleegatewayid'] =  "";
                 $data['calleeproductid'] =  "";
-                $data['calleetogatewaye164'] ="";
+                $data['calleetogatewaye'] ="";
                 $data['calleetype'] = "";
                 $data['billingmode'] = "";
                 $data['calllevel'] =  "";
@@ -186,10 +187,7 @@ class DownloadCsvXlsx implements ShouldQueue
                     File::isDirectory($destinationPath) or File::makeDirectory($destinationPath, 0777, true, true);
                 }
                 $exporthistory_arr = ExportCsvXlsxHistory::find($this->exporthistory_id);
-                $excel = (new FastExcel($list))->configureWriterUsing(function($writer){
-                    $option2 = new Options();
-                    $option2->setColumnWidth(100, 1);
-                })->export($destinationPath.$exporthistory_arr->file_name);
+                $excel = (new FastExcel($list))->export($destinationPath.$exporthistory_arr->file_name);
                 $exporthistory_arr['file'] =  $exporthistory_arr->file_name;
                 $exporthistory_arr['status'] = 'complete';
                 $exporthistory_arr->save();
@@ -202,8 +200,6 @@ class DownloadCsvXlsx implements ShouldQueue
             $date2 = new \DateTime();
             $startTime="";
             $stopTime="";
-            $timepersec="";
-            $persec="";
             if(!$downloads->isEmpty()){
                 foreach ( $downloads as $key => $value) {
                     $startTime = $value->starttime;
@@ -213,21 +209,21 @@ class DownloadCsvXlsx implements ShouldQueue
                   
                     $data =array();
                     $data['Account Holder Name'] = !empty($value->clients->firstname) ? $value->clients->firstname. $value->clients->lastname :"";
-                    $data['callere164'] =   !empty($value->callere164) ? $value->callere164 :"";
-                    $data['calleraccesse164'] =   !empty($value->calleraccesse164) ? $value->calleraccesse164 :"";
-                    $data['calleee164'] =   !empty($value->calleee164) ? $value->calleee164 :"";
-                    $data['calleeaccesse164'] =   !empty($value->calleeaccesse164) ? $value->calleeaccesse164 :"";
+                    $data['callere'] =   !empty($value->callere164) ? $value->callere164 :"";
+                    $data['calleraccesse'] =   !empty($value->calleraccesse164) ? $value->calleraccesse164 :"";
+                    $data['calleee'] =   !empty($value->calleee164) ? $value->calleee164 :"";
+                    $data['calleeaccesse'] =   !empty($value->calleeaccesse164) ? $value->calleeaccesse164 :"";
                     $data['callerip'] =   !empty($value->callerip) ? $value->callerip :"";
                     $data['callercodec'] =   !empty($value->callercodec) ? $value->callercodec :"";
                     $data['callergatewayid'] =   !empty($value->callergatewayid) ? $value->callergatewayid :"";
                     $data['callerproductid'] =   !empty($value->callerproductid) ? $value->callerproductid :"";
-                    $data['callertogatewaye164'] =   !empty($value->callertogatewaye164) ? $value->callertogatewaye164 :"";
+                    $data['callertogatewaye'] = !empty($value->callertogatewaye164) ?$value->callertogatewaye164 :"";
                     $data['callertype'] =   !empty($value->callertype) ? $value->callertype :"";
                     $data['calleeip'] = !empty($value->calleeip) ? $value->calleeip :"";
                     $data['calleecodec'] = !empty($value->calleecodec) ? $value->calleecodec :"";
                     $data['calleegatewayid'] = !empty($value->calleegatewayid) ? $value->calleegatewayid :"";
                     $data['calleeproductid'] = !empty($value->calleeproductid) ? $value->calleeproductid :"";
-                    $data['calleetogatewaye164'] = !empty($value->calleetogatewaye164) ? $value->calleetogatewaye164 :"";
+                    $data['calleetogatewaye'] = !empty($value->calleetogatewaye164) ? $value->calleetogatewaye164 :"";
                     $data['calleetype'] = !empty($value->calleetype) ? $value->calleetype :"";
                     $data['billingmode'] = !empty($value->billingmode) ? $value->billingmode :"";
                     $data['calllevel'] = !empty($value->calllevel) ? $value->calllevel :"";
@@ -265,26 +261,27 @@ class DownloadCsvXlsx implements ShouldQueue
                     $data['billingtype']=!empty($value->billingtype) ? $value->billingtype :"0";
                     $data['cdrlevel']=!empty($value->cdrlevel) ? $value->cdrlevel :"0";
                     $data['agentcdr_id']=!empty($value->agentcdr_id) ? $value->agentcdr_id :"";
-                    $list[]= $data;
+                    $data['transactionid']=!empty($value->transactionid) ? $value->transactionid :"";
+                    $list[]= $data; 
                 }
             }else{
                 $data =array();
-                $data['Id'] =  "";
-                $data['callere164'] =   "";
-                $data['calleraccesse164'] = "";
-                $data['calleee164'] =  "";
-                $data['calleeaccesse164'] =  "";
+                $data['Account Holder Name'] =  "";
+                $data['callere'] =   "";
+                $data['calleraccesse'] = "";
+                $data['calleee'] =  "";
+                $data['calleeaccesse'] =  "";
                 $data['callerip'] =  "";
                 $data['callercodec'] =  "";
                 $data['callergatewayid'] = "";
                 $data['callerproductid'] = "";
-                $data['callertogatewaye164'] =   "";
+                $data['callertogatewaye'] =   "";
                 $data['callertype'] =  "";
                 $data['calleeip'] =  "";
                 $data['calleecodec'] = "";
                 $data['calleegatewayid'] =  "";
                 $data['calleeproductid'] =  "";
-                $data['calleetogatewaye164'] ="";
+                $data['calleetogatewaye'] ="";
                 $data['calleetype'] = "";
                 $data['billingmode'] = "";
                 $data['calllevel'] =  "";

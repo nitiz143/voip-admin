@@ -92,11 +92,9 @@ class InvoiceGenrateJob implements ShouldQueue
                 $end = $end*1000;
                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
-
             if(!empty( $AccountID )) {
                 $query->where('call_histories.account_id', $AccountID);
             }
-          
             $invoices = $query->get();
             $count_duration=[];
             $count_vendor_duration=[];
