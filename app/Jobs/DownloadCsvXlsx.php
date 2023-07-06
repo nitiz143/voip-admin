@@ -12,6 +12,7 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\CallHistory;
 use App\Models\ExportCsvXlsxHistory;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Country;
 use OpenSpout\Writer\XLSX\Options;
 use File;
 
@@ -50,136 +51,107 @@ class DownloadCsvXlsx implements ShouldQueue
         $end = $end*1000;  
 
         if($this->exporthistory_type == "Xlsx_file"){
-            $downloads = CallHistory::where([['starttime' ,'>=', $start],['stoptime', '<=',  $end],['account_id',$AccountID]])->with('clients')->get();
+            $query = CallHistory::query('*');
+            if((!empty( $StartDate ) && !empty( $EndDate ))){
+                $start =  strtotime($StartDate);
+                $start = $start*1000;
+                $end = strtotime($EndDate);
+                $end = $end*1000;
+                $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+            }
+
+            if(!empty( $AccountID )) {
+                $query->where('call_histories.account_id', $AccountID);
+            }
+           
+            $invoices = $query->get();
+            $downloads = $invoices->groupBy('customeraccount');
 
             $list =array();
-            $date = new \DateTime();
-            $date2 = new \DateTime();
-            $startTime="";
-            $stopTime="";
-        
             if(!$downloads->isEmpty()){
-                foreach ( $downloads as $key => $value) {
-                    $startTime = $value->starttime;
-                    $stopTime = $value->stoptime;
-                    $startTime =  $date->setTimestamp($startTime/1000);
-                    $stopTime =  $date2->setTimestamp($stopTime/1000);
+                foreach ($downloads as $key => $value) {
+                    $Duration_count = array();
+                    $completed_count = array();
+                    $Agent_Duration_count = array();
+                    $completed_agent_count =array();
+                    $customer_fee ="";
+                    if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
+                        $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $persec =  round($timepersec, 7);
+                        $customer_fee= $persec*60;
+                    }
 
-                    $data =array();
-                    $data['Account Holder Name'] = !empty($value->clients->firstname) ? $value->clients->firstname. $value->clients->lastname :"";
-                    $data['callere'] =   !empty($value->callere164) ? $value->callere164 :"";
-                    $data['calleraccesse'] =   !empty($value->calleraccesse164) ? $value->calleraccesse164 :"";
-                    $data['calleee'] =   !empty($value->calleee164) ? $value->calleee164 :"";
-                    $data['calleeaccesse'] =   !empty($value->calleeaccesse164) ? $value->calleeaccesse164 :"";
-                    $data['callerip'] =   !empty($value->callerip) ? $value->callerip :"";
-                    $data['callercodec'] =   !empty($value->callercodec) ? $value->callercodec :"";
-                    $data['callergatewayid'] =  !empty($value->callergatewayid) ? $value->callergatewayid :"";
-                    $data['callerproductid'] =  !empty($value->callerproductid) ? $value->callerproductid :"";
-                    $data['callertogatewaye'] = !empty($value->callertogatewaye164) ?$value->callertogatewaye164 :"";
-                    $data['callertype'] =   !empty($value->callertype) ? $value->callertype :"";
-                    $data['calleeip'] =   !empty($value->calleeip) ? $value->calleeip :"";
-                    $data['calleecodec'] =   !empty($value->calleecodec) ? $value->calleecodec :"";
-                    $data['calleegatewayid'] =   !empty($value->calleegatewayid) ? $value->calleegatewayid :"";
-                    $data['calleeproductid'] =   !empty($value->calleeproductid) ? $value->calleeproductid :"";
-                    $data['calleetogatewaye'] =   !empty($value->calleetogatewaye164) ? $value->calleetogatewaye164 :"";
-                    $data['calleetype'] =   !empty($value->calleetype) ? $value->calleetype :"";
-                    $data['billingmode'] =   !empty($value->billingmode) ? $value->billingmode :"";
-                    $data['calllevel'] =   !empty($value->calllevel) ? $value->calllevel :"";
-                    $data['agentfeetime'] =   !empty($value->calleegatewayid) ? $value->calleegatewayid :"";
-                    $data['starttime'] =   !empty($startTime) ? $startTime->format('Y-m-d H:i:s') : "";
-                    $data['stoptime'] =   !empty($stopTime) ? $stopTime->format('Y-m-d H:i:s') : "";
-                    $data['callerpdd'] =   !empty($value->callerpdd) ? $value->callerpdd :"";
-                    $data['calleepdd'] =   !empty($value->calleepdd) ? $value->calleepdd :"";
-                    $data['holdtime'] =   !empty($value->holdtime) ? $value->holdtime :"0";
-                    $data['callerareacode'] =   !empty($value->callerareacode) ? $value->callerareacode :"";
-                    $data['feetime'] =   !empty($value->feetime) ? $value->feetime :"0";
-                    $data['fee']= !empty($value->fee) ? $value->fee :"0";
-                    $data['tax']= !empty($value->tax) ? $value->tax :"0";
-                    $data['suitefee']= !empty($value->suitefee) ? $value->suitefee :"0";
-                    $data['suitefeetime']=!empty($value->suitefeetime) ? $value->suitefeetime :"0";
-                    $data['incomefee']=!empty($value->incomefee) ? $value->incomefee :"0";
-                    $data['incometax']=!empty($value->incometax) ? $value->incometax :"0";
-                    $data['customeraccount']=!empty($value->customeraccount) ? $value->customeraccount :"";
-                    $data['customername']=!empty($value->customername) ? $value->customername :"";
-                    $data['calleeareacode']=!empty($value->calleeareacode) ? $value->calleeareacode :"";
-                    $data['agentfee']=!empty($value->agentfee) ? $value->agentfee :"0";
-                    $data['agenttax']=!empty($value->agenttax) ? $value->agenttax :"0";
-                    $data['agentsuitefee']=!empty($value->agentsuitefee) ? $value->agentsuitefee :"0";
-                    $data['agentsuitefeetime']=!empty($value->agentsuitefeetime) ? $value->agentsuitefeetime :"0";
-                    $data['agentaccount']=!empty($value->agentaccount) ? $value->agentaccount :"";
-                    $data['agentname']=!empty($value->agentname) ? $value->agentname :"";
-                    $data['flowno']=!empty($value->flowno) ? $value->flowno :"";
-                    $data['softswitchname']=!empty($value->softswitchname) ? $value->softswitchname :"";
-                    $data['softswitchcallid']=!empty($value->softswitchcallid) ? $value->softswitchcallid :"";
-                    $data['callercallid']=!empty($value->callercallid) ? $value->callercallid :"";
-                    $data['calleecallid']=!empty($value->calleecallid) ? $value->calleecallid :"";
-                    $data['rtpforward']=!empty($value->rtpforward) ? $value->rtpforward :"";
-                    $data['enddirection']=!empty($value->enddirection) ? $value->enddirection :"0";
-                    $data['endreason']=!empty($value->endreason) ? $value->endreason :"";
-                    $data['billingtype']=!empty($value->billingtype) ? $value->billingtype :"0";
-                    $data['cdrlevel']=!empty($value->cdrlevel) ? $value->cdrlevel :"0";
-                    $data['agentcdr_id']=!empty($value->agentcdr_id) ? $value->agentcdr_id :"";
-                    $data['transactionid']=!empty($value->transactionid) ? $value->transactionid :"";
+                    $agent_fee ="";
+                    if($value->sum('agentfee') != 0 && $value->sum('agentfeetime') != 0){
+                        $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $persec2 =  round($timepersec2, 7);
+                        $agent_fee= $persec2*60;
+                    }
+                  
+                    foreach ($value as $invoice){
+                        $Duration_count[] = $invoice->feetime;
+                        if($invoice->feetime != 0) {
+                            $completed_count[] = $invoice->feetime;
+                        }
 
-                   
+                        $Agent_Duration_count[] = $invoice->agentfeetime;
+                        if($invoice->agentfeetime != 0) {
+                            $completed_agent_count[] = $invoice->agentfeetime;
+                        }
+                    }
+                    
+                    
+                    $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
+                    $sec = "";
+                    if(array_sum($completed_count) != 0 && count($completed_count) != 0){
+                        $sec =  array_sum($completed_count) /  count($completed_count);
+                    }
+                    $country = Country::where('phonecode',$value[0]['callerareacode'])->first();
+                    $data['CustAccountCode'] = !empty($value[0]['customeraccount']) ? $value[0]['customeraccount'] :"";
+                    $data['Customer'] = !empty($value[0]['customername']) ? $value[0]['customername']:"";
+                    $data['CustDestination'] = !empty($country->name) ? $country->name:"";
+                    $data['VendAccountCode'] = !empty($value[0]['agentaccount']) ? $value[0]['agentaccount'] :"";
+                    $data['Vendor'] =   !empty($value[0]['agentname']) ? $value[0]['agentname'] :"";
+                    $data['Attempts'] =  $value->count() ;
+                    $data['Completed'] =   !empty($completed_count) ? count($completed_count) : "";
+                    $data['ASR'] = \Str::limit((count($completed_count)/$value->count() * 100),5).'%';
+                    $data['ACD'] = !empty($sec) ? \Str::limit($sec,5) :"0";
+                    $data['Raw Dur'] = !empty($Duration) ?$Duration :"";
+                    $data['Rnd Dur'] =   !empty($Duration) ? $Duration :"";
+                    $data['Revenue'] = '$'.$value->sum('agentfee');
+                    $data['Rev/Min'] = !empty($agent_fee) ? '$'.$agent_fee : "$ 0.00";
+                    $data['Cost'] =  '$'.$value->sum('fee');
+                    $data['Cost/Min'] = !empty($customer_fee) ? '$'.$customer_fee : "$ 0.00";
+                    $data['Margin'] ="";
+                    $data['Mar/Min'] ="";
+                    $data['Mar%'] ="";
+                    $data['CustProductGroup'] = "";
+                    $data['VendProductGroup'] = "";
                     $list[]= $data;
                 }
             }
             else{
                 $data =array();
-                $data['Account Holder Name'] =  "";
-                $data['callere'] =   "";
-                $data['calleraccesse'] = "";
-                $data['calleee'] =  "";
-                $data['calleeaccesse'] =  "";
-                $data['callerip'] =  "";
-                $data['callercodec'] =  "";
-                $data['callergatewayid'] = "";
-                $data['callerproductid'] = "";
-                $data['callertogatewaye'] =   "";
-                $data['callertype'] =  "";
-                $data['calleeip'] =  "";
-                $data['calleecodec'] = "";
-                $data['calleegatewayid'] =  "";
-                $data['calleeproductid'] =  "";
-                $data['calleetogatewaye'] ="";
-                $data['calleetype'] = "";
-                $data['billingmode'] = "";
-                $data['calllevel'] =  "";
-                $data['agentfeetime'] =  "";
-                $data['starttime'] = "";
-                $data['stoptime'] =   "";
-                $data['callerpdd'] = "";
-                $data['calleepdd'] = "";
-                $data['holdtime'] = "";
-                $data['callerareacode'] ="";
-                $data['feetime'] = "";
-                $data['fee']="";
-                $data['tax']= "";
-                $data['suitefee']= "";
-                $data['suitefeetime']="";
-                $data['incomefee']="";
-                $data['incometax']="";
-                $data['customeraccount']="";
-                $data['customername']="";
-                $data['calleeareacode']="";
-                $data['agentfee']="";
-                $data['agenttax']="";
-                $data['agentsuitefee']="";
-                $data['agentsuitefeetime']="";
-                $data['agentaccount']="";
-                $data['agentname']="";
-                $data['flowno']="";
-                $data['softswitchname']="";
-                $data['softswitchcallid']="";
-                $data['callercallid']="";
-                $data['calleecallid']="";
-                $data['rtpforward']="";
-                $data['enddirection']="";
-                $data['endreason']="";
-                $data['billingtype']="";
-                $data['cdrlevel']= "";
-                $data['agentcdr_id']="";
+                $data['CustAccountCode'] = "";
+                $data['Customer'] = "";
+                $data['CustDestination'] = "";
+                $data['VendAccountCode'] =  "";
+                $data['Vendor'] =  "";
+                $data['Attempts'] =  "" ;
+                $data['Completed'] =   "";
+                $data['ASR'] =  "";
+                $data['ACD'] =  "";
+                $data['Raw Dur'] = "";
+                $data['Rnd Dur'] =  "";
+                $data['Revenue'] = "";
+                $data['Rev/Min'] ="";
+                $data['Cost'] = "";
+                $data['Cost/Min'] =  "";
+                $data['Margin'] = "";
+                $data['Mar/Min'] = "";
+                $data['Mar%'] = "";
+                $data['CustProductGroup'] = "";
+                $data['VendProductGroup'] = "";
                 $list[]= $data;
             }
                 $destinationPath = public_path('storage/excel_files/');
@@ -193,132 +165,110 @@ class DownloadCsvXlsx implements ShouldQueue
                 $exporthistory_arr->save();
         }
         if($this->exporthistory_type == "Csv_file"){
-            $downloads = CallHistory::where([['starttime' ,'>=', $start],['stoptime', '<=',  $end],['account_id',$AccountID]])->with('clients')->get();
+            $query = CallHistory::query('*');
+            if((!empty( $StartDate ) && !empty( $EndDate ))){
+                $start =  strtotime($StartDate);
+                $start = $start*1000;
+                $end = strtotime($EndDate);
+                $end = $end*1000;
+                $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+            }
 
+            if(!empty( $AccountID )) {
+                $query->where('call_histories.account_id', $AccountID);
+            }
+           
+            $invoices = $query->get();
+            $downloads = $invoices->groupBy('customeraccount');
             $list =array();
-            $date = new \DateTime();
-            $date2 = new \DateTime();
-            $startTime="";
-            $stopTime="";
+            // $date = new \DateTime();
+            // $date2 = new \DateTime();
+            // $startTime="";
+            // $stopTime="";
+            $customer_fee ="";
+            $agent_fee ="";
             if(!$downloads->isEmpty()){
                 foreach ( $downloads as $key => $value) {
-                    $startTime = $value->starttime;
-                    $stopTime = $value->stoptime;
-                    $startTime =  $date->setTimestamp($startTime/1000);
-                    $stopTime =  $date2->setTimestamp($stopTime/1000);
-                  
-                    $data =array();
-                    $data['Account Holder Name'] = !empty($value->clients->firstname) ? $value->clients->firstname. $value->clients->lastname :"";
-                    $data['callere'] =   !empty($value->callere164) ? $value->callere164 :"";
-                    $data['calleraccesse'] =   !empty($value->calleraccesse164) ? $value->calleraccesse164 :"";
-                    $data['calleee'] =   !empty($value->calleee164) ? $value->calleee164 :"";
-                    $data['calleeaccesse'] =   !empty($value->calleeaccesse164) ? $value->calleeaccesse164 :"";
-                    $data['callerip'] =   !empty($value->callerip) ? $value->callerip :"";
-                    $data['callercodec'] =   !empty($value->callercodec) ? $value->callercodec :"";
-                    $data['callergatewayid'] =   !empty($value->callergatewayid) ? $value->callergatewayid :"";
-                    $data['callerproductid'] =   !empty($value->callerproductid) ? $value->callerproductid :"";
-                    $data['callertogatewaye'] = !empty($value->callertogatewaye164) ?$value->callertogatewaye164 :"";
-                    $data['callertype'] =   !empty($value->callertype) ? $value->callertype :"";
-                    $data['calleeip'] = !empty($value->calleeip) ? $value->calleeip :"";
-                    $data['calleecodec'] = !empty($value->calleecodec) ? $value->calleecodec :"";
-                    $data['calleegatewayid'] = !empty($value->calleegatewayid) ? $value->calleegatewayid :"";
-                    $data['calleeproductid'] = !empty($value->calleeproductid) ? $value->calleeproductid :"";
-                    $data['calleetogatewaye'] = !empty($value->calleetogatewaye164) ? $value->calleetogatewaye164 :"";
-                    $data['calleetype'] = !empty($value->calleetype) ? $value->calleetype :"";
-                    $data['billingmode'] = !empty($value->billingmode) ? $value->billingmode :"";
-                    $data['calllevel'] = !empty($value->calllevel) ? $value->calllevel :"";
-                    $data['agentfeetime'] = !empty($value->calleegatewayid) ? $value->calleegatewayid :"";
-                    $data['starttime'] = !empty($startTime) ? $startTime->format('Y-m-d H:i:s') : "";
-                    $data['stoptime'] = !empty($stopTime) ? $stopTime->format('Y-m-d H:i:s') : "";
-                    $data['callerpdd'] = !empty($value->callerpdd) ? $value->callerpdd :"";
-                    $data['calleepdd'] = !empty($value->calleepdd) ? $value->calleepdd :"";
-                    $data['holdtime'] = !empty($value->holdtime) ? $value->holdtime :"0";
-                    $data['callerareacode'] = !empty($value->callerareacode) ? $value->callerareacode :"";
-                    $data['feetime'] =  !empty($value->feetime) ? $value->feetime :"0";
-                    $data['fee'] = !empty($value->fee) ? $value->fee :"0";
-                    $data['tax'] = !empty($value->tax) ? $value->tax :"0";
-                    $data['suitefee'] = !empty($value->suitefee) ? $value->suitefee :"0";
-                    $data['suitefeetime'] = !empty($value->suitefeetime) ? $value->suitefeetime :"0";
-                    $data['incomefee'] = !empty($value->incomefee) ? $value->incomefee :"0";
-                    $data['incometax'] = !empty($value->incometax) ? $value->incometax :"0";
-                    $data['customeraccount'] = !empty($value->customeraccount) ? $value->customeraccount :"";
-                    $data['customername'] = !empty($value->customername) ? $value->customername :"";
-                    $data['calleeareacode'] = !empty($value->calleeareacode) ? $value->calleeareacode :"";
-                    $data['agentfee'] = !empty($value->agentfee) ? $value->agentfee :"0";
-                    $data['agenttax'] = !empty($value->agenttax) ? $value->agenttax :"0";
-                    $data['agentsuitefee'] = !empty($value->agentsuitefee) ? $value->agentsuitefee :"0";
-                    $data['agentsuitefeetime'] = !empty($value->agentsuitefeetime) ? $value->agentsuitefeetime :"0";
-                    $data['agentaccount']=!empty($value->agentaccount) ? $value->agentaccount :"";
-                    $data['agentname']=!empty($value->agentname) ? $value->agentname :"";
-                    $data['flowno']=!empty($value->flowno) ? $value->flowno :"";
-                    $data['softswitchname']=!empty($value->softswitchname) ? $value->softswitchname :"";
-                    $data['softswitchcallid']=!empty($value->softswitchcallid) ? $value->softswitchcallid :"";
-                    $data['callercallid']=!empty($value->callercallid) ? $value->callercallid :"";
-                    $data['calleecallid']=!empty($value->calleecallid) ? $value->calleecallid :"";
-                    $data['rtpforward']=!empty($value->rtpforward) ? $value->rtpforward :"";
-                    $data['enddirection']=!empty($value->enddirection) ? $value->enddirection :"0";
-                    $data['endreason']=!empty($value->endreason) ? $value->endreason :"";
-                    $data['billingtype']=!empty($value->billingtype) ? $value->billingtype :"0";
-                    $data['cdrlevel']=!empty($value->cdrlevel) ? $value->cdrlevel :"0";
-                    $data['agentcdr_id']=!empty($value->agentcdr_id) ? $value->agentcdr_id :"";
-                    $data['transactionid']=!empty($value->transactionid) ? $value->transactionid :"";
+                    $Duration_count = array();
+                    $completed_count = array();
+                    $Agent_Duration_count = array();
+                    $completed_agent_count =array();
+                   
+                    foreach ($value as $invoice){
+                       
+                        $Duration_count[] = $invoice->feetime;
+                        if($invoice->feetime != 0) {
+                            $completed_count[] = $invoice->feetime;
+                        }
+
+                        $Agent_Duration_count[] = $invoice->agentfeetime;
+                        if($invoice->agentfeetime != 0) {
+                            $completed_agent_count[] = $invoice->agentfeetime;
+                        }
+                      
+                    }
+                    if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
+                        $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $persec =  round($timepersec, 7);
+                        $customer_fee= $persec*60;
+                    }
+
+                   
+                    if($value->sum('agentfee') != 0 && $value->sum('agentfeetime') != 0){
+                        $timepersec2 = $value->sum('agentfee')/$value->sum('feetime');
+                        $persec2 =  round($timepersec2, 7);
+                        $agent_fee = $persec2*60;
+                    }
+                    $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
+                    $sec = "";
+                    if(array_sum($completed_count) != 0 && count($completed_count) != 0){
+                        $sec =  array_sum($completed_count) /  count($completed_count);
+                    }
+                    $country = Country::where('phonecode',$value[0]['callerareacode'])->first();
+                    $data['CustAccountCode'] = !empty($value[0]['customeraccount']) ? $value[0]['customeraccount'] :"";
+                    $data['Customer'] = !empty($value[0]['customername']) ? $value[0]['customername']:"";
+                    $data['CustDestination'] = !empty($country->name) ? $country->name:"";
+                    $data['VendAccountCode'] = !empty($value[0]['agentaccount']) ? $value[0]['agentaccount'] :"";
+                    $data['Vendor'] =   !empty($value[0]['agentname']) ? $value[0]['agentname'] :"";
+                    $data['Attempts'] =  $value->count() ;
+                    $data['Completed'] =   !empty($completed_count) ? count($completed_count) : "";
+                    $data['ASR'] =   \Str::limit((count($completed_count)/$value->count() * 100),5).'%';
+                    $data['ACD'] =   !empty($sec) ? \Str::limit($sec,5) :"0";
+                    $data['Raw Dur'] = !empty($Duration) ?$Duration :"";
+                    $data['Rnd Dur'] =   !empty($Duration) ? $Duration :"";
+                    $data['Revenue'] = '$'.$value->sum('agentfee');
+                    $data['Rev/Min'] = !empty($agent_fee) ? '$'.$agent_fee : "$ 0.00";
+                    $data['Cost'] =  '$'.$value->sum('fee');
+                    $data['Cost/Min'] = !empty($customer_fee) ? '$'.$customer_fee : "$ 0.00";
+                    $data['Margin'] = "";
+                    $data['Mar/Min'] ="";
+                    $data['Mar%'] ="";
+                    $data['CustProductGroup'] = "";
+                    $data['VendProductGroup'] = "";
                     $list[]= $data; 
                 }
             }else{
                 $data =array();
-                $data['Account Holder Name'] =  "";
-                $data['callere'] =   "";
-                $data['calleraccesse'] = "";
-                $data['calleee'] =  "";
-                $data['calleeaccesse'] =  "";
-                $data['callerip'] =  "";
-                $data['callercodec'] =  "";
-                $data['callergatewayid'] = "";
-                $data['callerproductid'] = "";
-                $data['callertogatewaye'] =   "";
-                $data['callertype'] =  "";
-                $data['calleeip'] =  "";
-                $data['calleecodec'] = "";
-                $data['calleegatewayid'] =  "";
-                $data['calleeproductid'] =  "";
-                $data['calleetogatewaye'] ="";
-                $data['calleetype'] = "";
-                $data['billingmode'] = "";
-                $data['calllevel'] =  "";
-                $data['agentfeetime'] =  "";
-                $data['starttime'] = "";
-                $data['stoptime'] =   "";
-                $data['callerpdd'] = "";
-                $data['calleepdd'] = "";
-                $data['holdtime'] = "";
-                $data['callerareacode'] ="";
-                $data['feetime'] = "";
-                $data['fee']="";
-                $data['tax']= "";
-                $data['suitefee']="";
-                $data['suitefeetime']="";
-                $data['incomefee']="";
-                $data['incometax']="";
-                $data['customeraccount']="";
-                $data['customername']="";
-                $data['calleeareacode']="";
-                $data['agentfee']="";
-                $data['agenttax']="";
-                $data['agentsuitefee']="";
-                $data['agentsuitefeetime']="";
-                $data['agentaccount']="";
-                $data['agentname']="";
-                $data['flowno']="";
-                $data['softswitchname']="";
-                $data['softswitchcallid']="";
-                $data['callercallid']="";
-                $data['calleecallid']="";
-                $data['rtpforward']="";
-                $data['enddirection']="";
-                $data['endreason']="";
-                $data['billingtype']="";
-                $data['cdrlevel']= "";
-                $data['agentcdr_id']="";
+                $data['CustAccountCode'] = "";
+                $data['Customer'] = "";
+                $data['CustDestination'] = "";
+                $data['VendAccountCode'] =  "";
+                $data['Vendor'] =  "";
+                $data['Attempts'] =  "" ;
+                $data['Completed'] =   "";
+                $data['ASR'] =  "";
+                $data['ACD'] =  "";
+                $data['Raw Dur'] = "";
+                $data['Rnd Dur'] =  "";
+                $data['Revenue'] = "";
+                $data['Rev/Min'] ="";
+                $data['Cost'] = "";
+                $data['Cost/Min'] =  "";
+                $data['Margin'] = "";
+                $data['Mar/Min'] = "";
+                $data['Mar%'] = "";
+                $data['CustProductGroup'] = "";
+                $data['VendProductGroup'] = "";
                 $list[]= $data;
             }
                 $destinationPath = public_path('storage/csv_files/');

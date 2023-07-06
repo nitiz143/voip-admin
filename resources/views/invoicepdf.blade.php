@@ -181,12 +181,12 @@
                                                         if($invoice->feetime != 0) {
                                                             $completed_count[] = $invoice->feetime;
                                                         }
-                                                        $fee ="";
-                                                        if($values->sum('fee') != 0 || $values->sum('feetime') != 0){
-                                                            $timepersec = $values->sum('fee')/$values->sum('feetime');
-                                                            $persec =  round($timepersec, 7);
-                                                            $fee= $persec*60;
-                                                        }
+                                                    }
+                                                    $fee ="";
+                                                    if($values->sum('fee') != 0 && $values->sum('feetime') != 0){
+                                                        $timepersec = $values->sum('fee')/$values->sum('feetime');
+                                                        $persec =  round($timepersec, 7);
+                                                        $fee= $persec*60;
                                                     }
                                                     $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                                     $sec = "";
@@ -257,12 +257,12 @@
                                                         if($invoice->agentfeetime != 0) {
                                                             $completed_count[] = $invoice->agentfeetime;
                                                         }
-                                                        $agentfee ="";
-                                                        if($values->sum('agentfee') != 0 || $values->sum('agentfeetime') != 0){
-                                                            $timepersec = $values->sum('agentfee')/$values->sum('feetime');
-                                                            $persec =  round($timepersec, 7);
-                                                            $agentfee= $persec*60;
-                                                        }
+                                                    }
+                                                    $agentfee ="";
+                                                    if($values->sum('agentfee') != 0 && $values->sum('agentfeetime') != 0){
+                                                        $timepersec = $values->sum('agentfee')/$values->sum('agentfeetime');
+                                                        $persec =  round($timepersec, 7);
+                                                        $agentfee= $persec*60;
                                                     }
                                                     $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                                     $sec = "";
@@ -331,12 +331,12 @@
                                                     if($invoice->feetime != 0) {
                                                         $completed_count[] = $invoice->feetime;
                                                     }
-                                                    $fee ="";
-                                                    if($values->sum('fee') != 0 || $values->sum('feetime') != 0){
-                                                        $timepersec = $values->sum('fee')/$values->sum('feetime');
-                                                        $persec =  round($timepersec, 7);
-                                                        $fee= $persec*60;
-                                                    }
+                                                }
+                                                $fee ="";
+                                                if($values->sum('fee') != 0 && $values->sum('feetime') != 0){
+                                                    $timepersec = $values->sum('fee')/$values->sum('feetime');
+                                                    $persec =  round($timepersec, 7);
+                                                    $fee= $persec*60;
                                                 }
                                                 $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                                 $sec = "";
@@ -405,12 +405,12 @@
                                                     if($invoice->agentfeetime != 0) {
                                                         $completed_count[] = $invoice->agentfeetime;
                                                     }
-                                                    $agentfee ="";
-                                                    if($values->sum('agentfee') != 0 || $values->sum('agentfeetime') != 0){
-                                                        $timepersec = $values->sum('agentfee')/$values->sum('feetime');
-                                                        $persec =  round($timepersec, 7);
-                                                        $agentfee= $persec*60;
-                                                    }
+                                                }
+                                                $agentfee ="";
+                                                if($values->sum('agentfee') != 0 && $values->sum('agentfeetime') != 0){
+                                                    $timepersec = $values->sum('agentfee')/$values->sum('feetime');
+                                                    $persec =  round($timepersec, 7);
+                                                    $agentfee= $persec*60;
                                                 }
                                                 $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                                 $sec = "";
@@ -484,7 +484,7 @@
                                                             $completed_count[] = $invoice->feetime;
                                                         }
                                                         $fee ="";
-                                                        if($values->sum('fee') != 0 || $values->sum('feetime') != 0){
+                                                        if($values->sum('fee') != 0 && $values->sum('feetime') != 0){
                                                             $timepersec = $values->sum('fee')/$values->sum('feetime');
                                                             $persec =  round($timepersec, 7);
                                                             $fee= $persec*60;
@@ -547,7 +547,7 @@
                                                             $completed_count[] = $invoice->agentfeetime;
                                                         }
                                                         $agentfee ="";
-                                                        if($values->sum('agentfee') != 0 || $values->sum('agentfeetime') != 0){
+                                                        if($values->sum('agentfee') != 0 && $values->sum('agentfeetime') != 0){
                                                             $timepersec = $values->sum('agentfee')/$values->sum('feetime');
                                                             $persec =  round($timepersec, 7);
                                                             $agentfee= $persec*60;

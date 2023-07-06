@@ -365,16 +365,16 @@ class CallController extends Controller
     public function export_history_xlsx(Request $request){
         $validator = Validator::make($request->all(), [
             'AccountID' => 'required',
-            ]);
+        ]);
 
-            if ($validator->fails())
-            {
-                $response = \Response::json([
-                        'success' => false,
-                        'errors' => $validator->getMessageBag()->toArray()
-                    ]);
-                return $response;
-            }
+        if ($validator->fails())
+        {
+            $response = \Response::json([
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ]);
+            return $response;
+        }
         $data = array();
         $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : " ";
         $data['user_id'] = Auth::user()->id;
