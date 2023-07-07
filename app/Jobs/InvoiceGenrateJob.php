@@ -69,10 +69,10 @@ class InvoiceGenrateJob implements ShouldQueue
             if(!empty($invoices)){
                 $total_cost = $invoices->sum('fee');
                 $total_vendor_cost = $invoices->sum('agentfee');
-                    foreach ($invoices as $key => $invoice) {
-                        $count_duration[] =   $invoice->feetime;
-                        $count_vendor_duration[] =  $invoice->agentfeetime;
-                    }
+                foreach ($invoices as $key => $invoice) {
+                    $count_duration[] =   $invoice->feetime;
+                    $count_vendor_duration[] =  $invoice->agentfeetime;
+                }
             }
             $invoices = $invoices->groupBy('callerareacode');
             $account ="";
@@ -109,7 +109,6 @@ class InvoiceGenrateJob implements ShouldQueue
                     $count_vendor_duration[] =  $invoice->agentfeetime;
                 }
             }
-
             $invoices = $invoices->groupBy('callerareacode');
             $account ="";
             if(!empty($AccountID)){

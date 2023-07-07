@@ -365,14 +365,15 @@ class CallController extends Controller
     public function export_history_xlsx(Request $request){
         $validator = Validator::make($request->all(), [
             'AccountID' => 'required',
+            'report' => 'required',
         ]);
 
         if ($validator->fails())
         {
             $response = \Response::json([
-                    'success' => false,
-                    'errors' => $validator->getMessageBag()->toArray()
-                ]);
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+            ]);
             return $response;
         }
         $data = array();
@@ -399,14 +400,15 @@ class CallController extends Controller
     public function export_history_csv(Request $request){
         $validator = Validator::make($request->all(), [
             'AccountID' => 'required',
+            'report' => 'required',
         ]);
 
         if($validator->fails())
         {
             $response = \Response::json([
-                    'success' => false,
-                    'errors' => $validator->getMessageBag()->toArray()
-                ]);
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+            ]);
             return $response;
         }
         $data = array();

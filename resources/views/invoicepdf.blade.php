@@ -150,8 +150,9 @@
                         <div style="float: left; width: 40%; margin-left:-4%">
                             <table class="table w-50" style="width: 40%">
                                 <!--- customer ----->
-                                <div  style="width:50%; padding-left:10px;"><h3> Customer</h3></div>
-
+                                <div  style="width:50%; padding-left:10px;">
+                                    <h3> Customer</h3>
+                                </div>
                                 <tr style="margin-bottom:30px;background: #2e3e4e;color: #fff;" class="item_table_header">
                                     <th >{{ __('Country') }}</th> 
                                     <th >{{ __('Total calls') }}</th>
@@ -228,7 +229,9 @@
                         <div style="float: right; width: 40%; margin-right:8%">
                             <!------- vendor -------->
                             <table class="table w-50" style="width: 40%">
-                                <div  style="width:50%; padding-left:10px;"><h3> Vendor</h3></div>
+                                <div  style="width:50%; padding-left:10px;">
+                                    <h3> Vendor</h3>
+                                </div>
                                 <tr style="margin-bottom:30px;background: #2e3e4e;color: #fff;" class="item_table_header">
                                     <th >{{ __('Country') }}</th> 
                                     <th>{{ __('Total calls') }}</th>
