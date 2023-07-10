@@ -124,7 +124,7 @@ class DownloadCsvXlsx implements ShouldQueue
                         $data['Rev/Min'] = !empty($customer_fee) ? '$'.$customer_fee : "$ 0.00";
                         $data['Cost'] =  '$'.$value->sum('agentfee');
                         $data['Cost/Min'] = !empty($agent_fee) ? '$'.$agent_fee : "$ 0.00";
-                        $data['Margin'] = $value->sum('fee')/$value->sum('agentfee');
+                        $data['Margin'] = "";
                         $data['Mar/Min'] ="";
                         $data['Mar%'] ="";
                         $data['CustProductGroup'] = "";

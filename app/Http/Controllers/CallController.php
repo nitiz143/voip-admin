@@ -416,7 +416,7 @@ class CallController extends Controller
         $data['user_id'] = Auth::user()->id;
         $data['type'] = "Csv-report";
         $data['status'] = 'pending';
-        $code = random_int(100000, 999999);
+        $code = random_int(100000,999999);
         $data['file_name'] = date('YmdHis').'-'.$code.".csv";
         $exporthistory = ExportCsvXlsxHistory::create($data);
         if(!empty($exporthistory)){
