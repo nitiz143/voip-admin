@@ -183,10 +183,10 @@
                                                                     <i class="entypo-search"></i>
                                                                     Search
                                                                 </button>
-                                                                <a href="#" data-value="xlsx"class="btn btn-primary save-collection btn-md" style="border: 1px solid gray;" id="ToolTables_table-4_0">
+                                                                <a href="#" data-value="xlsx"class="btn btn-primary save-collection btn-md" id="ToolTables_table-4_0">
                                                                     <undefined>EXCEL</undefined>
                                                                </a>
-                                                                <a  href="#" class="btn btn-primary save-collection btn-md" style="border: 1px solid gray;" id="ToolTables_table-4_1">
+                                                                <a  href="#" class="btn btn-primary save-collection btn-md"  id="ToolTables_table-4_1">
                                                                     <undefined>CSV</undefined>
                                                                 </a>
                                                             </div>

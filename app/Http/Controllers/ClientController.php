@@ -1326,13 +1326,4 @@ class ClientController extends Controller
             ->make(true);
         }
     }
-
-    // public function invoice_create(Request $request){
-    //     $billingdata = Billing::query('')->get();
-    //     foreach ($billingdata as $key => $billing) {
-           
-    //     }
-        
-    // }
-
 }

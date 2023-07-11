@@ -363,11 +363,18 @@ class CallController extends Controller
     }
 
     public function export_history_xlsx(Request $request){
-        $validator = Validator::make($request->all(), [
-            'AccountID' => 'required',
-            'report' => 'required',
-        ]);
 
+        if($request->report == 'Account-Manage'){
+            $validator = Validator::make($request->all(), [
+                'report' => 'required',
+            ]);
+        }
+        else{
+            $validator = Validator::make($request->all(), [
+                'AccountID' => 'required',
+                'report' => 'required',
+            ]);
+        }
         if ($validator->fails())
         {
             $response = \Response::json([
@@ -377,7 +384,7 @@ class CallController extends Controller
             return $response;
         }
         $data = array();
-        $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : " ";
+        $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : "0";
         $data['user_id'] = Auth::user()->id;
         $data['type'] = "Excel-report";
         $data['status'] = 'pending';
@@ -398,10 +405,17 @@ class CallController extends Controller
     }
 
     public function export_history_csv(Request $request){
-        $validator = Validator::make($request->all(), [
-            'AccountID' => 'required',
-            'report' => 'required',
-        ]);
+       if($request->report == 'Account-Manage'){
+            $validator = Validator::make($request->all(), [
+                'report' => 'required',
+            ]);
+        }
+        else{
+            $validator = Validator::make($request->all(), [
+                'AccountID' => 'required',
+                'report' => 'required',
+            ]);
+        }
 
         if($validator->fails())
         {
@@ -412,7 +426,7 @@ class CallController extends Controller
             return $response;
         }
         $data = array();
-        $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : " ";
+        $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : "0";
         $data['user_id'] = Auth::user()->id;
         $data['type'] = "Csv-report";
         $data['status'] = 'pending';
