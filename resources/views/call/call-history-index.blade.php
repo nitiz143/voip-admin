@@ -124,18 +124,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                       
-                                                        {{-- <div class="form-group">
-                                                            <label class="control-label" for="field-1">Gateway</label>
-                                                            <select class="form-control" id="bluk_CompanyGatewayID" name="CompanyGatewayID">
-                                                                @if(!empty($Gateways))
-                                                                <option value="">Select</option>
-                                                                    @foreach ($Gateways as $Gateway)
-                                                                        <option value="{{$Gateway->host}}">{{$Gateway->host}}</option>
-                                                                    @endforeach
-                                                                @endif
-                                                            </select>
-                                                        </div> --}}
                                                         <div class="form-group">
                                                             <label class="control-label" for="field-1">Customer List</label>
                                                             <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
@@ -208,10 +196,10 @@
 @endsection
 @section('page_js')
 <script>
- $("#Filter").on("click", function (e) {
-    e.preventDefault();
-    $('#FilterModel').modal('show');
-});
+    $("#Filter").on("click", function (e) {
+        e.preventDefault();
+        $('#FilterModel').modal('show');
+    });
 
     $("#filterClose").on("click", function (e) {
         e.preventDefault();
@@ -391,14 +379,12 @@
    
 
     $(document).on('click','.callhistoryForm',function(e){
-        // $("#ajaxModel").modal();
         var id = $(this).data('id')
         $.ajax({
            type:'get',
            url:"{{ route('getCallhistory') }}",
            data:{id,id},
            success:function(data){
-              console.log(data);
               $('#callForm').html(data);
               $("#ajaxModel").modal('show');
            }
@@ -407,8 +393,6 @@
 
     $('.export').on("click",function(e){
             e.preventDefault();
-            // var type = $(this).data('type');
-            // var getVal = $("#export_type").val(type);
              $.ajax({
                 type: "get",
                 url: "{{url('/invoice_export')}}",

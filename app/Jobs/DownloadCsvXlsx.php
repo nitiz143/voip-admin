@@ -187,8 +187,7 @@ class DownloadCsvXlsx implements ShouldQueue
                     foreach ($downloads as $key => $value) {
                         $Duration_count = array();
                         $completed_count = array();
-                        $Agent_Duration_count = array();
-                        $completed_agent_count = array();
+                    
                         $fee ="";
                         if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
                             $timepersec = $value->sum('fee')/$value->sum('feetime');
@@ -201,11 +200,6 @@ class DownloadCsvXlsx implements ShouldQueue
                             $Duration_count[] = $invoice->feetime;
                             if($invoice->feetime != 0) {
                                 $completed_count[] = $invoice->feetime;
-                            }
-
-                            $Agent_Duration_count[] = $invoice->agentfeetime;
-                            if($invoice->agentfeetime != 0) {
-                                $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
                         
@@ -284,16 +278,9 @@ class DownloadCsvXlsx implements ShouldQueue
                 $list =array();
                 if(!$downloads->isEmpty()){
                     foreach ($downloads as $key => $value) {
-                        $Duration_count = array();
-                        $completed_count = array();
                         $Agent_Duration_count = array();
                         $completed_agent_count =array();
-                        $customer_fee ="";
-                        if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
-                            $persec =  round($timepersec, 7);
-                            $customer_fee= $persec*60;
-                        }
+                       
 
                         $agent_fee ="";
                         if($value->sum('agentfee') != 0 && $value->sum('agentfeetime') != 0){
@@ -377,9 +364,7 @@ class DownloadCsvXlsx implements ShouldQueue
                     $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
                 }
 
-                // if(!empty( $AccountID )) {
-                //     $query->where('call_histories.account_id', $AccountID);
-                // }
+                
             
                 $invoices = $query->get();
                 $downloads = $invoices->groupBy('customeraccount');

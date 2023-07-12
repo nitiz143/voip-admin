@@ -122,21 +122,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            {{-- <div class="form-group">
-                                                                <label for="field-1" class="control-label">Currency</label>
-                                                                <select class="form-control" name="CurrencyID"></select>
-                                                            </div> --}}
-                                                            {{-- <div class="form-group">
-                                                                <label class="control-label" for="field-1">Gateway</label>
-                                                                <select class="form-control" id="GatewayID" name="GatewayID">
-                                                                    @if(!empty($Gateways))
-                                                                        <option value="">Select</option>
-                                                                        @foreach ($Gateways as $Gateway)
-                                                                            <option value="{{$Gateway->host}}">{{$Gateway->host}}</option>
-                                                                        @endforeach
-                                                                    @endif
-                                                                </select>
-                                                            </div> --}}
+                                                            
                                                             <div class="form-group">
                                                                 <label class="control-label" for="field-1">Vendors List</label>
                                                                 <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">  
