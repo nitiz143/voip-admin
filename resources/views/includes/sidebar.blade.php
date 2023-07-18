@@ -65,6 +65,22 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item ">
+                    <a href="{{ url('/export_history') }}" class="nav-link {{ Request::is('export_history','export_history/*') ? 'active' : '' }} ">
+                        <i class='nav-icon fas fa-file-invoice-dollar'></i>
+                        <p>
+                            Invoices
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="{{ url('/export_csv_history') }}" class="nav-link {{ Request::is('export_csv_history') ? 'active' : '' }} ">
+                        <i class="nav-icon fas fa-file-excel"></i>
+                        <p>
+                            Report
+                        </p>
+                    </a>
+                </li>
 
                 <li class="nav-item ">
                     <a href="{{url('/client')}}" class="nav-link {{ Request::is('client','client/*','client-customer/*','client-vendor/*') ? 'active' : '' }} ">

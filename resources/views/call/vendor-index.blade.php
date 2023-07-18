@@ -13,8 +13,8 @@
                 <div class="col-sm-8">
                     <ol class="breadcrumb float-sm-right">
                         {{-- <a type="submit" href="{{ route('export-csv.history') }}" class="btn btn-primary mb-4 mr-2 float-right w-10 " >Csv History</a> --}}
-                        <a type="submit" href="{{ route('export.history',"vendor") }}" class="btn btn-primary mb-4 mr-2 float-right w-10 " >Export History</a>
-                        <a type="submit" class="btn btn-primary mb-4 mr-2 float-right w-10 export" data-type="all_invoice_export">Invoice generate</a>
+                       
+                        {{-- <a type="submit" class="btn btn-primary mb-4 mr-2 float-right w-10 export" data-type="all_invoice_export">Invoice generate</a> --}}
                         <a href="" class="btn btn-primary mb-4 float-right w-10" id="Filter">Filter</a>
                         <a href="{{ route('cdr.create') }}" class="btn btn-primary mb-4 ml-2 float-right w-10" id="createzoneModal">Import</a>
                     </ol>
@@ -126,12 +126,13 @@
                                                             <div class="form-group">
                                                                 <label class="control-label" for="field-1">Vendors List</label>
                                                                 <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">  
-                                                                @if(!empty($Accounts))
-                                                                    <option value="">Select</option>
-                                                                    @foreach ( $Accounts as $Account )
-                                                                        <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
-                                                                    @endforeach
-                                                                @endif</select>
+                                                                    @if(!empty($Accounts))
+                                                                        <option value="">Select</option>
+                                                                        @foreach ( $Accounts as $Account )
+                                                                            <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label" for="field-1">Report</label>
@@ -169,12 +170,6 @@
                                                                     <i class="entypo-search"></i>
                                                                     Search
                                                                 </button>
-                                                                <a href="#" data-value="xlsx"class="btn btn-primary save-collection btn-md" id="ToolTables_table-4_0">
-                                                                    <undefined>EXCEL</undefined>
-                                                               </a>
-                                                                <a  href="#" class="btn btn-primary save-collection btn-md"  id="ToolTables_table-4_1">
-                                                                    <undefined>CSV</undefined>
-                                                                </a>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -320,50 +315,6 @@ $("#btnModeClose").on("click", function (e) {
             $('#FilterModel').modal('hide');
         });
 
-        $('#ToolTables_table-4_0').on("click",function(e){
-            e.preventDefault();
-            $.ajax({
-                type:'get',
-                url:"{{ url('export-history/xlsx') }}",
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: $('#cdr_filter').serialize(),
-                success: function(result) {
-                    if(result.success == true){
-                        $.notify(result.message, 'success');
-                    }else{
-                        $.each(result.errors, function (k, e) {
-                            $.notify(e, 'error');
-                        });
-                    }
-                },
-                error: function(result) {
-                    alert('error');
-                }
-            });
-
-        });
-        $('#ToolTables_table-4_1').on("click",function(e){
-            e.preventDefault();
-            $.ajax({
-                type:'get',
-                url:"{{ url('export-history/csv') }}",
-                data: $('#cdr_filter').serialize(),
-                success: function(result) {
-                    if(result.success == true){
-                        $.notify(result.message, 'success');
-                    }else{
-                        $.each(result.errors, function (k, e) {
-                            $.notify(e, 'error');
-                        });
-                    }
-                },
-                error: function(result) {
-                    alert('error');
-                }
-            });
-        });
     });
 
     $(document).on('click','.callhistoryForm',function(e){
@@ -380,30 +331,7 @@ $("#btnModeClose").on("click", function (e) {
         });
     });
 
-    $('.export').on("click",function(e){
-            e.preventDefault();
-             $.ajax({
-                type: "get",
-                url: "{{url('/invoice_export')}}",
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                },
-                data : $('#cdr_filter').serialize(),
-                success: function(result) {
-                    if(result.success == true){
-                        $.notify(result.message, 'success');
-                    }else{
-                        $.each(result.errors, function (k, e) {
-                            $.notify(e, 'error');
-                        });
-                    }
-                },
-                error: function(result) {
-                    alert('error');
-                }
-            });
-
-        });
+  
     $(document).ready(function() {
         var myDate = new Date();
         $('#datepicker').datepicker();

@@ -311,18 +311,9 @@ class CallController extends Controller
     }
     public function export_history(Request $request){
         if ($request->ajax()) {
-            $search = 1 ;
-            if($request->type == "customer"){
-                $data = ExportHistory::whereHas('clients', function($q) use($search){
-                    $q->where('customer', '=', $search)->where('report_type','!=','Vendor-Summary')->where('report_type','!=','Vendor-Hourly');
-                });
-            }
-            if($request->type == "vendor"){
-                $data = ExportHistory::whereHas('clients', function($q) use($search){
-                    $q->where('Vendor', '=', $search)->where('report_type','!=','Customer-Summary')->where('report_type','!=','Customer-Hourly');
-                });
-            }
+            $data = ExportHistory::query();
             return Datatables::of($data)
+            
             ->addColumn('created_at', function($row){
                 return Carbon::parse($row->created_at)->format('d/m/Y H:i:s');
             })
@@ -346,7 +337,8 @@ class CallController extends Controller
             ->rawColumns(['action','status'])
             ->make(true);
         }
-        return view("call.export-history");
+        $Accounts = Client::where("customer", "=",1)->get();
+        return view("call.export-history",compact('Accounts'));
     }
     public function download_export_history(Request $request){
         $invoice = ExportHistory::where('id',$request->id)->first();
@@ -473,7 +465,8 @@ class CallController extends Controller
             ->rawColumns(['action','status'])
             ->make(true);
         }
-        return view("call.export-csv-history");
+        $Accounts = Client::where("customer", "=",1)->get();
+        return view("call.export-csv-history",compact('Accounts'));
     }
     public function download_csv_export_history(Request $request){
         $data = ExportCsvXlsxHistory::where('id',$request->id)->first();

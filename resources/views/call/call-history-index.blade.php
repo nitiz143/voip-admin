@@ -15,9 +15,6 @@
                 </div>
                 <div class="col-sm-8">
                     <ol class="breadcrumb float-sm-right">
-                        {{-- <a type="submit" href="{{ route('export-csv.history') }}" class="btn btn-primary mb-4 mr-2 float-right w-10 " >Csv History</a> --}}
-                        <a type="submit" href="{{ route('export.history',"customer") }}" class="btn btn-primary mb-4 mr-2 float-right w-10 " >Export History</a>
-                        <a type="submit" class="btn btn-primary mb-4 mr-2 float-right w-10 export" data-type="all_invoice_export">Invoice generate</a>
                         <a href="" class="btn btn-primary mb-4 float-right w-10" id="Filter">Filter</a>
                         <a href="{{ route('cdr.create') }}" class="btn btn-primary mb-4 ml-2 float-right w-10" id="createzoneModal">Import</a>
                     </ol>
@@ -172,12 +169,12 @@
                                                                 <i class="entypo-search"></i>
                                                                 Search
                                                             </button>
-                                                            <a href="#" data-value="xlsx"class="btn btn-primary save-collection btn-md"  id="ToolTables_table-4_0">
+                                                            {{-- <a href="#" data-value="xlsx"class="btn btn-primary save-collection btn-md"  id="ToolTables_table-4_0">
                                                                 <undefined>EXCEL</undefined>
                                                             </a>
                                                             <a  href="#" class="btn btn-primary save-collection btn-md" id="ToolTables_table-4_1">
                                                                 <undefined>CSV</undefined>
-                                                            </a>
+                                                            </a> --}}
                                                         </div>
                                                     </form>
                                                 </div>
