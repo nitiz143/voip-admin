@@ -68,6 +68,14 @@
                                     <label for="csv_path">Csv Path</label>
                                     <input type="text" class="form-control" id="csv_path" name="csv_path" value="{{$setting->csv_path}}">
                                 </div>
+                                <div class="form-group">
+                                    <label for="select_protocol">Version</label>
+                                    <select class="custom-select form-control" name="version" id="version">
+                                        <option value="">Select Version</option>
+                                        <option value="1" {{"1" == $setting->version ? 'selected' : ''}}>V2.1.8.00</option>
+                                        <option value="2" {{"2" == $setting->version ? 'selected' : ''}}>V2.1.8.05</option>
+                                    </select>
+                                </div>
                             </div>
                             <!-- /.card-body -->
 

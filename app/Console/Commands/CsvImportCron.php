@@ -92,6 +92,8 @@ class CsvImportCron extends Command
                                         $data = [
                                             'status' => 1,
                                             'csv_file' => $newest,
+                                            'version' => $setting->version,
+                                            'setting_id' => $setting->id,
                                         ];
                                         CsvImport::create($data);
                                     }
@@ -103,7 +105,7 @@ class CsvImportCron extends Command
                                     //         $message->to($tasks->success_email)->subject('Sucessfully');
                                     //     });
                                     // }
-                                     $updated_at  = Carbon::now();
+                                    $updated_at  = Carbon::now();
                                     CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at,'start_time' => ''));
                                 }
                         }

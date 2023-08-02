@@ -63,15 +63,15 @@ class SettingController extends Controller
      */
     public function store(Request $request, Setting $setting)
     {
-        // dd($request->all());
         if(!empty($request->id)){
             $rules = array(
-            'protocol'=>'required',
-            'host'=>'required',
-            'port'=>'required',
-            'username'=>'required',
-            'csv_path'=>'required',
-                );
+                'protocol'=>'required',
+                'host'=>'required',
+                'port'=>'required',
+                'username'=>'required',
+                'csv_path'=>'required',
+                'version'=>'required',
+            );
         }else{
             $rules = array(
                 'protocol'=>'required',
@@ -80,8 +80,7 @@ class SettingController extends Controller
                 'username'=>'required',
                 'password'=> 'required',
                 'csv_path'=>'required',
-
-
+                'version'=>'required',
             );
 
         }
@@ -96,7 +95,7 @@ class SettingController extends Controller
         }
         if(!empty($request->id)){
             $setting = Setting::find($request->id);
-            $request['password'] = $request->password;
+            $request['password'] = $setting->password;
             //DB::table('users')->where('id',$request->id)->delete();
         }else{
             $request['password'] = Hash::make($request->password);
