@@ -19,7 +19,7 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-
+{{dd( Storage::get('voip/testing.xlsx'));}}
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -32,6 +32,14 @@
                         <form action="{{ route('cdr.store') }}" method="POST" id="form" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
+                                <div class="form-group">
+                                    <label for="select_protocol">Version</label>
+                                    <select class="custom-select form-control" name="version" id="version">
+                                        <option value="">Select Version</option>
+                                        <option value="1">V2.1.8.00</option>
+                                        <option value="2">V2.1.8.05</option>
+                                    </select>
+                                </div>
                                 <div class="form-group">
                                     <label for="exampleInputFile">File input</label>
                                     <div class="input-group">

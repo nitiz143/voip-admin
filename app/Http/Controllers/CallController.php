@@ -169,15 +169,13 @@ class CallController extends Controller
 
         $request->validate([
             'file' => 'required',
-
+            'version' => 'required',
         ]);
-
         $file  = $request->file;
-   
-        $name = time().'.'.$file->getClientOriginalExtension();
-        $path = $file->storeAs('public/csv', $name);
-        $users = (new FastExcel)->import(public_path('storage/csv/' .$name), function ($line) {
-       
+        if($request->version == 1 ){
+            $name = time().'.'.$file->getClientOriginalExtension();
+            $path = $file->storeAs('public/csv', $name);
+            $users = (new FastExcel)->import(public_path('storage/csv/' .$name), function ($line) {
                 $checkHistory = CallHistory::whereCallerId($line['id'])->first();
                 if(empty($checkHistory)){
                     return CallHistory::create([
@@ -238,7 +236,80 @@ class CallController extends Controller
 
                     ]);
                 }
-         });
+            });
+        }
+        if($request->version == 2 ){
+            $name = time().'.'.$file->getClientOriginalExtension();
+            $path = $file->storeAs('public/csv', $name);
+            $users = (new FastExcel)->import(public_path('storage/csv/' .$name), function ($line) {
+                $checkHistory = CallHistory::whereCallerId($line['id'])->first();
+                if(empty($checkHistory)){
+                    return CallHistory::create([
+                        'caller_id' => $line['id'],
+                        'callere164'=> $line['callere164'],
+                        'calleraccesse164'=> $line['calleraccesse164'],
+                        'calleee164'=> $line['calleee164'],
+                        'calleeaccesse164'=> $line['calleeaccesse164'],
+                        'callerip'=> $line['callerip'],
+                            'callerrtpip'=> $line['callerrtpip'],
+                        'callercodec'=> $line['callercodec'],
+                        'callergatewayid'=> $line['callergatewayid'],
+                        'callerproductid'=> $line['callerproductid'],
+                        'callertogatewaye164'=> $line['callertogatewaye164'],
+                        'callertype'=> $line['callertype'],
+                        'calleeip'=>$line['calleeip'],
+                            'calleertpip'=>$line['calleertpip'],
+                        'calleecodec'=> $line['calleecodec'],
+                        'calleegatewayid'=> $line['calleegatewayid'],
+                        'calleeproductid'=> $line['calleeproductid'],
+                        'calleetogatewaye164'=> $line['calleetogatewaye164'],
+                        'calleetype'=> $line['calleetype'],
+                        'billingmode'=> $line['billingmode'],
+                        'calllevel'=> $line['calllevel'],
+                        'agentfeetime'=> $line['agentfeetime'],
+                        'starttime'=> $line['starttime'],
+                        'stoptime'=> $line['stoptime'],
+                        'callerpdd'=> $line['callerpdd'],
+                        'calleepdd'=> $line['calleepdd'],
+                        'holdtime'=> $line['holdtime'],
+                        'callerareacode'=> $line['callerareacode'],
+                        'feetime'=> $line['feetime'],
+                        'fee'=> $line['fee'],
+                        'tax'=> $line['tax'],
+                        'suitefee'=> $line['suitefee'],
+                        'suitefeetime'=> $line['suitefeetime'],
+                        'incomefee'=> $line['incomefee'],
+                        'incometax'=> $line['incometax'],
+                        'customeraccount'=> $line['customeraccount'],
+                        'customername'=> $line['customername'],
+                        'calleeareacode'=> $line['calleeareacode'],
+                        'agentfee'=> $line['agentfee'],
+                        'agenttax'=> $line['agenttax'],
+                        'agentsuitefee'=> $line['agentsuitefee'],
+                        'agentsuitefeetime'=> $line['agentsuitefeetime'],
+                        'agentaccount'=> $line['agentaccount'],
+                        'agentname'=> $line['agentname'],
+                        'flowno'=> $line['flowno'],
+                        'softswitchname'=> $line['softswitchname'],
+                        'softswitchcallid'=> $line['softswitchcallid'],
+                        'callercallid'=> $line['callercallid'],
+                                'calleroriginalcallid'=> $line['calleroriginalcallid'],
+                        'calleecallid'=> $line['calleecallid'],
+                                'calleroriginalinfo'=> $line['calleroriginalinfo'],
+                        'rtpforward'=> $line['rtpforward'],
+                        'enddirection'=> $line['enddirection'],
+                        'endreason'=> $line['endreason'],
+                        'billingtype'=> $line['billingtype'],
+                        'cdrlevel'=> $line['cdrlevel'],
+                        'agentcdr_id'=> $line['agentcdr_id'],
+                                'sipreasonheader'=> $line['sipreasonheader'],
+                                'recordstarttime'=> $line['recordstarttime'],
+                        'transactionid'=> $line['transactionid'],
+                                'flownofirst'=> $line['flownofirst'],
+                    ]);
+                }
+            });
+        }
          return response()->json(['message' =>  __('Updated Successfully'),'success'=>true]);
     }
 
