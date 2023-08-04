@@ -30,7 +30,7 @@ Route::group(['middleware' => ['auth','activity']], function () {
     // Route::resource('/Customer_cdr_show','App\Http\Controllers\CallController');
     Route::get('/Upload-CDR', [App\Http\Controllers\CallController::class, 'create'])->name('cdr.create');
     Route::post('/Store-CDR', [App\Http\Controllers\CallController::class, 'store'])->name('cdr.store');
-    Route::get('/Customer_cdr_show', [App\Http\Controllers\CallController::class, 'index'])->name('Customer_cdr_show.index');
+    Route::get('/cdr_show', [App\Http\Controllers\CallController::class, 'index'])->name('cdr_show.index');
     Route::get('/Vendor_cdr_show', [App\Http\Controllers\CallController::class, 'VendorIndex'])->name('vendorCdr.index');
     Route::get('/getCallhistory','App\Http\Controllers\CallController@getCallhistory')->name('getCallhistory');
     Route::get('/invoice_export', 'App\Http\Controllers\CallController@invoice_export');

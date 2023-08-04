@@ -27,6 +27,7 @@ class CallController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            
             $data = CallHistory::query();
             if(($request->has('StartDate') && $request->has('EndDate'))){
                 $start =  strtotime($request->input('StartDate'));
@@ -95,9 +96,10 @@ class CallController extends Controller
                 ->make(true);
         }
         $Accounts = Client::where("customer", "=",1)->get();
+        $VAccounts = Client::where("Vendor", "=",1)->get();
         $Trunks = Trunk::where("status", "=",1)->get();
         $Gateways = Setting::query()->get();
-        return view('call.call-history-index',compact('Accounts','Trunks','Gateways'));
+        return view('call.call-history-index',compact('Accounts','VAccounts','Trunks','Gateways'));
     }
 
 
@@ -113,8 +115,9 @@ class CallController extends Controller
                 $end = $end*1000;
                 $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
-            if(!empty($request->Account)){
-                $data->where('account_id', $request->Account);
+            if(!empty($request->VAccount)){
+
+                $data->where('account_id', $request->VAccount);
             }
             $data = $data->get();
             return Datatables::of($data)
@@ -141,8 +144,13 @@ class CallController extends Controller
                     return $cost;
                 })
                 ->addColumn('Avrage_cost', function($row){
-                        $cost =  $cost = "$0.0";
-                    return $cost;
+                    if(!empty($row->agentfeetime)){
+                        $timepersec = $row->agentfee/$row->agentfeetime;
+                        $persec =  round($timepersec, 7);
+                        return  '$'.$persec*60;                    
+                    }else{
+                        return '$0.00';
+                    }
                 })
                 ->addColumn('billing_duration', function($row){
                     return   $row->feetime;
@@ -157,10 +165,6 @@ class CallController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        $Accounts = Client::where("Vendor", "=",1)->get();
-        $Trunks = Trunk::where("status", "=",1)->get();
-        $Gateways = Setting::query()->get();
-        return view('call.vendor-index',compact('Accounts','Trunks','Gateways'));
     }
 
 
