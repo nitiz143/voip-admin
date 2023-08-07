@@ -8,9 +8,9 @@
 
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    {{-- <ol class="breadcrumb float-sm-right">
                         <a href="" class="btn btn-primary mb-4 float-right w-10" id="Filter">Filter</a>
-                    </ol>
+                    </ol> --}}
                 </div>
             </div>
         </div>
@@ -32,6 +32,67 @@
                     <div class="card">
                         <div class="card-header">
                             <h1 class="card-title ">Export History</h1>
+                        </div>
+                        <div class="container-fluid  ml-2 mt-4">
+                            <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter">
+                                <input type="hidden" name="type" class="form-control"  value="Customer"  />
+                                <div class="form-group">
+                                    <label class="control-label small_label" for="field-1">Start Date</label>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <input type="text" name="StartDate" class="form-control datepicker" id="datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <input type="text" name="EndDate" 
+                                            id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field-1">Customer</label>
+                                    <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
+                                        @if(!empty($Accounts))
+                                            <option value="">Select</option>
+                                            @foreach ( $Accounts as $Account )
+                                                <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field-1">Report</label>
+                                    <select class="form-control" id="report" allowClear="true" name="report">
+                                        <option value="">Select</option>
+                                        <option value="Customer-Summary">Customer Summary</option>
+                                        <option value="Customer-Hourly">Customer Hourly</option>
+                                        <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
+                                        <option value="Account-Manage">Account Manage</option>
+                                        <option value="Margin-Report">Margin Report</option>
+                                        <option value="Negative-Report">Negative Report</option>
+                                    </select>
+                                </div>
+                                
+                            
+                                <div class="form-group">
+                                    <a href="#" data-value="xlsx"class="btn btn-primary save-collection btn-md"  id="ToolTables_table-4_0">
+                                        <undefined>EXCEL</undefined>
+                                    </a>
+                                    <a  href="#" class="btn btn-primary save-collection btn-md mt-2" id="ToolTables_table-4_1">
+                                        <undefined>CSV</undefined>
+                                    </a>
+                                </div>
+                            </form>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered data-table">
@@ -134,19 +195,15 @@
 @section('page_js')
 
 <script>
-    $("#Filter").on("click", function (e) {
-        e.preventDefault();
-        $('#FilterModel').modal('show');
-    });
-
-    $("#filterClose").on("click", function (e) {
-        e.preventDefault();
-        $("#FilterModel").modal("hide");
-    });
-
-    $("#btnModeClose").on("click", function (e) {
-        e.preventDefault();
-        $("#ajaxModel").modal("hide");
+  $(document).ready(function() {
+        var myDate = new Date();
+        $('#datepicker').datepicker();
+        $('#datepicker').datepicker('setDate', myDate);
+        $('#datepicker1').datepicker();
+        $('#datepicker1').datepicker('setDate', myDate);
+        $('.timepicker').datetimepicker({
+            format: 'HH:mm:ss'
+        });
     });
 
     var table = $('.data-table').DataTable({
