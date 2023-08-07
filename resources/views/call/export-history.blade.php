@@ -38,16 +38,16 @@
                                     <label class="control-label small_label" for="field-1">Start Date</label>
                                     <div class="d-flex gap-1">
                                         <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
-            
+
                                         <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
                                     </div>
                                 </div>
                                 <div class="form-group" style="max-width: 300px;">
                                     <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
                                     <div class="d-flex gap-1">
-                                        <input type="text" name="EndDate" 
+                                        <input type="text" name="EndDate"
                                         id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
-                                    
+
                                         <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@
             format: 'HH:mm:ss'
         });
     });
-   
+
 
 
     var table = $('.data-table').DataTable({
@@ -142,7 +142,7 @@
             var $searchFilter = {};
             var TotalCall = 0;
             var TotalDuration = 0;
-            var TotalCost = 0; 
+            var TotalCost = 0;
 
             var starttime = $("#cdr_filter input[name='StartTime']").val();
             if(starttime =='00:00:01'){
@@ -214,7 +214,7 @@
             });
 
         });
-   
+
 </script>
 
 @endsection
