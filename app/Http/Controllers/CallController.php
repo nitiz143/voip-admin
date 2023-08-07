@@ -38,10 +38,10 @@ class CallController extends Controller
             }
             if(!empty($request->Account)){
                 $data->where('account_id', $request->Account);
+                $data = $data->get();
+            }else{
+                $data = [];
             }
-
-            $data = $data->get();
-          
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
@@ -116,10 +116,11 @@ class CallController extends Controller
                 $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
             if(!empty($request->VAccount)){
-
                 $data->where('account_id', $request->VAccount);
+                $data = $data->get();
+            }else{
+                $data = [];
             }
-            $data = $data->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
@@ -255,14 +256,14 @@ class CallController extends Controller
                         'calleee164'=> $line['calleee164'],
                         'calleeaccesse164'=> $line['calleeaccesse164'],
                         'callerip'=> $line['callerip'],
-                            'callerrtpip'=> $line['callerrtpip'],
+                        'callerrtpip'=> $line['callerrtpip'],
                         'callercodec'=> $line['callercodec'],
                         'callergatewayid'=> $line['callergatewayid'],
                         'callerproductid'=> $line['callerproductid'],
                         'callertogatewaye164'=> $line['callertogatewaye164'],
                         'callertype'=> $line['callertype'],
                         'calleeip'=>$line['calleeip'],
-                            'calleertpip'=>$line['calleertpip'],
+                        'calleertpip'=>$line['calleertpip'],
                         'calleecodec'=> $line['calleecodec'],
                         'calleegatewayid'=> $line['calleegatewayid'],
                         'calleeproductid'=> $line['calleeproductid'],
@@ -297,19 +298,19 @@ class CallController extends Controller
                         'softswitchname'=> $line['softswitchname'],
                         'softswitchcallid'=> $line['softswitchcallid'],
                         'callercallid'=> $line['callercallid'],
-                                'calleroriginalcallid'=> $line['calleroriginalcallid'],
+                        'calleroriginalcallid'=> $line['calleroriginalcallid'],
                         'calleecallid'=> $line['calleecallid'],
-                                'calleroriginalinfo'=> $line['calleroriginalinfo'],
+                        'calleroriginalinfo'=> $line['calleroriginalinfo'],
                         'rtpforward'=> $line['rtpforward'],
                         'enddirection'=> $line['enddirection'],
                         'endreason'=> $line['endreason'],
                         'billingtype'=> $line['billingtype'],
                         'cdrlevel'=> $line['cdrlevel'],
                         'agentcdr_id'=> $line['agentcdr_id'],
-                                'sipreasonheader'=> $line['sipreasonheader'],
-                                'recordstarttime'=> $line['recordstarttime'],
+                        'sipreasonheader'=> $line['sipreasonheader'],
+                        'recordstarttime'=> $line['recordstarttime'],
                         'transactionid'=> $line['transactionid'],
-                                'flownofirst'=> $line['flownofirst'],
+                        'flownofirst'=> $line['flownofirst'],
                     ]);
                 }
             });

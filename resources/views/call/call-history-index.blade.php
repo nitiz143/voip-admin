@@ -21,73 +21,6 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-    <section>
-        <div class="container-fluid  ml-2">
-            <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-3" method="post" id="cdr_filter">
-                <input type="hidden" name="type" class="form-control"  value="Customer"  />
-                <div class="form-group" style="max-width: 300px;">
-                    <label class="control-label small_label" for="field-1">Start Date</label>
-                    <div class="d-flex gap-1">
-                            <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
-
-                            <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
-                    </div>
-                </div>
-                <div class="form-group" style="max-width: 300px;">
-                    <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
-                    <div class="d-flex gap-1">
-                        <input type="text" name="EndDate" 
-                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
-                    
-                        <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="field-1">Customer Account List</label>
-                    <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
-                        @if(!empty($Accounts))
-                            <option value="">Select</option>
-                            @foreach ( $Accounts as $Account )
-                                <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="field-1">Vendor Account List</label>
-                    <select class="form-control" id="bulk_VAccountID" allowClear="true" name="VAccountID">
-                        @if(!empty($VAccounts))
-                            <option value="">Select</option>
-                            @foreach ( $VAccounts as $VAccount )
-                                <option value="{{$VAccount->id}}">{{$VAccount->firstname}}{{$VAccount->lastname}}</option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
-                {{-- <div class="form-group">
-                    <label class="control-label" for="field-1">Report</label>
-                    <select class="form-control" id="report" allowClear="true" name="report">
-                        <option value="">Select</option>
-                        <option value="Customer-Summary">Customer Summary</option>
-                        <option value="Customer-Hourly">Customer Hourly</option>
-                        <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
-                        <option value="Account-Manage">Account Manage</option>
-                        <option value="Margin-Report">Margin Report</option>
-                        <option value="Negative-Report">Negative Report</option>
-                    </select>
-                </div> --}}
-                <div class="form-group">
-                    <input type="hidden" id="ActiveTab" name="ActiveTab" value="1">
-                    <button type="submit" class="btn btn-primary btn-md btn-icon " style="
-                    margin-top: 30px;">
-                        <i class="entypo-search"></i>
-                        Search
-                    </button>
-                </div>
-            </form>
-        </div>
-    </section>
-
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -110,6 +43,70 @@
                                 </div>
                                 <div class="tab-content">
                                     <div id="home" class="tab-pane fade in active show">
+                                        <div class="container-fluid  ml-2">
+                                            <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-3" method="post" id="cdr_filter">
+                                                <input type="hidden" name="type" class="form-control"  value="Customer"  />
+                                                <div class="form-group" style="max-width: 300px;">
+                                                    <label class="control-label small_label" for="field-1">Start Date</label>
+                                                    <div class="d-flex gap-1">
+                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
+                            
+                                                        <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style="max-width: 300px;">
+                                                    <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
+                                                    <div class="d-flex gap-1">
+                                                        <input type="text" name="EndDate" 
+                                                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
+                                                    
+                                                        <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group customer_Account">
+                                                    <label class="control-label" for="field-1">Customer Account List</label>
+                                                    <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID" required>
+                                                        @if(!empty($Accounts))
+                                                            <option value="">Select</option>
+                                                            @foreach ( $Accounts as $Account )
+                                                                <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                                <div class="form-group vendor_Account">
+                                                    <label class="control-label" for="field-1">Vendor Account List</label>
+                                                    <select class="form-control" id="bulk_VAccountID" allowClear="true" name="VAccountID" required>
+                                                        @if(!empty($VAccounts))
+                                                            <option value="">Select</option>
+                                                            @foreach ( $VAccounts as $VAccount )
+                                                                <option value="{{$VAccount->id}}">{{$VAccount->firstname}}{{$VAccount->lastname}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                                {{-- <div class="form-group">
+                                                    <label class="control-label" for="field-1">Report</label>
+                                                    <select class="form-control" id="report" allowClear="true" name="report">
+                                                        <option value="">Select</option>
+                                                        <option value="Customer-Summary">Customer Summary</option>
+                                                        <option value="Customer-Hourly">Customer Hourly</option>
+                                                        <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
+                                                        <option value="Account-Manage">Account Manage</option>
+                                                        <option value="Margin-Report">Margin Report</option>
+                                                        <option value="Negative-Report">Negative Report</option>
+                                                    </select>
+                                                </div> --}}
+                                                <div class="form-group">
+                                                    <input type="hidden" id="ActiveTab" name="ActiveTab" value="1">
+                                                    <button type="submit" class="btn btn-primary btn-md btn-icon " style="
+                                                    margin-top: 30px;">
+                                                        <i class="entypo-search"></i>
+                                                        Search
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                         <div class="panel-body tabs-menu-body">
                                             <div class="row">
                                                 <div class="col-sm-12">
@@ -186,6 +183,8 @@
     });
   
     $(document).ready(function() {
+        $(".customer_Account").show();
+        $(".vendor_Account").hide();
         var $searchFilter = {};
         var TotalCall = 0;
         var TotalDuration = 0;
@@ -214,6 +213,18 @@
             if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
                 $.notify("Please Select a End date", "Error");
                 return false;
+            }
+            if($searchFilter.ActiveTab == "1"){
+                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
+                    $.notify("Please Select a Account", "Error");
+                    return false;
+                }
+            }
+            if($searchFilter.ActiveTab == "2"){
+                if(typeof $searchFilter.VAccount  == 'undefined' || $searchFilter.VAccount.trim() == ''){
+                    $.notify("Please Select a Account", "Error");
+                    return false;
+                }
             }
             $searchFilter.StartDate += ' '+starttime;
             $searchFilter.EndDate += ' '+$("#cdr_filter [name='EndTime']").val();
@@ -384,53 +395,12 @@
         });
             
 
-        $('#ToolTables_table-4_0').on("click",function(e){
-            e.preventDefault();
-            $.ajax({
-                type:'get',
-                url:"{{ url('export-history/xlsx') }}",
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: $('#cdr_filter').serialize(),
-                success: function(result) {
-                    if(result.success == true){
-                        $.notify(result.message,'success');
-                    }else{
-                        $.each(result.errors, function (k, e) {
-                            $.notify(e, 'error');
-                        });
-                    }
-                },
-                error: function(result) {
-                    alert('error');
-                }
-            });
-        });
-        $('#ToolTables_table-4_1').on("click",function(e){
-            e.preventDefault();
-            $.ajax({
-                type:'get',
-                url:"{{ url('export-history/csv') }}",
-                data: $('#cdr_filter').serialize(),
-                success: function(result) {
-                    if(result.success == true){
-                        $.notify(result.message, 'success');
-                    }else{
-                        $.each(result.errors, function (k, e) {
-                            $.notify(e, 'error');
-                        });
-                    }
-                },
-                error: function(result) {
-                    alert('error');
-                }
-            });
-        });
 
             
         $('#customer').on('click', function() {
-            $("#ActiveTab").val($(this).data('id'))
+            $("#ActiveTab").val($(this).data('id'));
+            $(".customer_Account").show();
+            $(".vendor_Account").hide();
             var $searchFilter = {};
             var TotalCall = 0;
             var TotalDuration = 0;
@@ -544,6 +514,8 @@
             });
         });
         $('#vendor').on('click', function() {
+            $(".customer_Account").hide();
+            $(".vendor_Account").show();
             $("#ActiveTab").val($(this).data('id'))
             var $searchFilter = {};
             var TotalCall = 0;
@@ -683,30 +655,6 @@
         });
     });
 
-    $('.export').on("click",function(e){
-            e.preventDefault();
-             $.ajax({
-                type: "get",
-                url: "{{url('/invoice_export')}}",
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                },
-                data : $('#cdr_filter').serialize(),
-                success: function(result) {
-                    if(result.success == true){
-                        $.notify(result.message, 'success');
-                    }else{
-                        $.each(result.errors, function (k, e) {
-                            $.notify(e, 'error');
-                        });
-                    }
-                },
-                error: function(result) {
-                    alert('error');
-                }
-            });
-
-        });
 
     
 
