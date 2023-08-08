@@ -80,7 +80,6 @@
             {data:'callere164',name:'callere164'},
             {data:'calleraccesse164',name:'calleraccesse164'},
             {data:'calleee164',name:'calleee164'},
-
             {data:'action',name:'action', orderable: false, searchable: false},
         ]
     });

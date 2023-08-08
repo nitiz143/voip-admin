@@ -45,7 +45,7 @@ class CallController extends Controller
 
         $file  = $request->file;
         //  dd($file);
-        $name = time().'.'.$file->getClientOriginalExtension();
+        $name = time().'.'.$file->getClientOriginalExtnsion();
         $path = $file->storeAs('public/csv', $name);
         $users = (new FastExcel)->import(public_path('storage/csv/' .$name), function ($line) {
             // dd($line['id']);

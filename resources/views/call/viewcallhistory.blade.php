@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table table-bordered">
   <thead>
     <tr>
         <th scope="col">Name</th>
@@ -31,6 +31,14 @@
         <td>{{$callhistory->callerip}}</td>
     </tr>
     <tr>
+        <td>Callercodec</td>
+        <td>{{$callhistory->callercodec}}</td>
+    </tr>
+    <tr>
+        <td>Callergateway Id</td>
+        <td>{{$callhistory->callergatewayid}}</td>
+    </tr>
+    <tr>
         <td>Callerproductid</td>
         <td>{{$callhistory->callerproductid}}</td>
     </tr>
@@ -39,12 +47,20 @@
         <td>{{$callhistory->callertogatewaye164}}</td>
     </tr>
     <tr>
+        <td>Callertype</td>
+        <td>{{$callhistory->callertype}}</td>
+    </tr>
+    <tr>
         <td>Calleeip</td>
         <td>{{$callhistory->calleeip}}</td>
     </tr>
     <tr>
-        <td>calleegatewayh323 Id </td>
-        <td>{{$callhistory->callergatewayh323id}}</td>
+        <td>Calleecodec</td>
+        <td>{{$callhistory->calleecodec}}</td>
+    </tr>
+    <tr>
+        <td>Calleegatewayid</td>
+        <td>{{$callhistory->calleegatewayid}}</td>
     </tr>
     <tr>
         <td>Calleeproductid</td>
@@ -53,6 +69,10 @@
     <tr>
         <td> Calleetogatewaye164</td>
         <td>{{$callhistory->calleetogatewaye164}}</td>
+    </tr>	
+    <tr>
+        <td>Calleetype </td>
+        <td>{{$callhistory->calleetype}}</td>
     </tr>
     <tr>
         <td>Billingmode </td>
@@ -75,16 +95,20 @@
         <td>{{$callhistory->stoptime}}</td>
     </tr>
     <tr>
-        <td> Pdd</td>
-        <td>{{$callhistory->pdd}}</td>
+        <td>Callerpdd</td>
+        <td>{{$callhistory->callerpdd}}</td>
+    </tr> 
+    <tr>
+        <td>Calleepdd</td>
+        <td>{{$callhistory->calleepdd}}</td>
     </tr>
     <tr>
         <td> Holdtime</td>
         <td>{{$callhistory->holdtime}}</td>
     </tr>
     <tr>
-        <td>Feeprefix</td>
-        <td>{{$callhistory->feeprefix}}</td>
+        <td>Callerareacode</td>
+        <td>{{$callhistory->callerareacode}}</td>
     </tr>
     <tr>
         <td>Feetime</td>
@@ -93,6 +117,10 @@
     <tr>
         <td>Fee</td>
         <td>{{$callhistory->fee}}</td>
+    </tr>
+    <tr>
+        <td>Tax</td>
+        <td>{{$callhistory->tax}}</td>
     </tr>
     <tr>
         <td>Suitefee</td>
@@ -107,12 +135,24 @@
         <td>{{$callhistory->incomefee}}</td>
     </tr>
     <tr>
+        <td>Incometax</td>
+        <td>{{$callhistory->incometax}}</td>
+    </tr>
+    <tr>
+        <td>Customeraccount</td>
+        <td>{{$callhistory->customeraccount}}</td>
+    </tr>
+    <tr>
         <td>Customername</td>
         <td>{{$callhistory->customername}}</td>
     </tr>
     <tr>
-        <td>Agentfeeprefix</td>
-        <td>{{$callhistory->agentfeeprefix}}</td>
+        <td>Calleeareacode</td>
+        <td>{{$callhistory->calleeareacode}}</td>
+    </tr>
+    <tr>
+        <td>Agenttax</td>
+        <td>{{$callhistory->agenttax}}</td>
     </tr>
     <tr>
         <td>Agentfee</td>
@@ -139,9 +179,20 @@
         <td>{{$callhistory->flowno}}</td>
     </tr>
     <tr>
-        <td>Softswitchdn</td>
-        <td>{{$callhistory->softswitchdn}}</td>
+        <td>Softswitchname</td>
+        <td>{{$callhistory->softswitchname}}</td>
     </tr>
+    <tr>
+        <td>softswitchcallid</td>
+        <td>{{$callhistory->softswitchcallid}}</td>
+    </tr>	
+    <tr>
+        <td>Callercallid</td>
+        <td>{{$callhistory->callercallid}}</td>
+    </tr>
+    <tr>
+        <td>Rtpforward</td>
+        <td>{{$callhistory->rtpforward}}</td>
     <tr>
         <td>Enddirection</td>
         <td>{{$callhistory->enddirection}}</td>
@@ -151,12 +202,20 @@
         <td>{{$callhistory->endreason}}</td>
     </tr>
     <tr>
-        <td>Calleebilling</td>
-        <td>{{$callhistory->calleebilling}}</td>
+        <td>Billingtype</td>
+        <td>{{$callhistory->billingtype}}</td>
     </tr>
     <tr>
         <td>Cdrlevel</td>
         <td>{{$callhistory->cdrlevel}}</td>
+    </tr>
+    <tr>
+        <td>Agentcdr Id</td>
+        <td>{{$callhistory->agentcdr_id}}</td>
+    </tr>
+    <tr>
+        <td>Transaction Id</td>
+        <td>{{$callhistory->transactionid}}</td>
     </tr>
     <tr>
         <td>Subcdr Id</td>
