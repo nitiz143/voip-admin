@@ -29,8 +29,8 @@ class CompanyController extends Controller
         //         ->rawColumns(['action'])
         //         ->make(true);
         // }
-        $users = Company::query('')->get();
-        return view('company.index',compact('users'));
+        // $users = Company::query('')->get();
+        // return view('company.index',compact('users'));
     }
 
     /**
@@ -40,7 +40,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('company.create');
+        // return view('company.create');
     }
 
     /**

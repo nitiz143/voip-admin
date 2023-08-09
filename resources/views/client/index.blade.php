@@ -1,6 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('content')
+<style>
+    table {border-collapse:collapse; table-layout:fixed; }
+   table td {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+   table th {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+</style>
 <div class="content-wrapper mt-3">
     <section class="content-header">
         <div class="container-fluid">
@@ -16,19 +21,19 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            {{-- <div class="card-header">
-                                <h1 class="card-title">Users</h1>
-                                <a href="" class="btn btn-primary mb-4  float-right" id="createzoneModal">Create</a>
-                            </div> --}}
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table class="table table-bordered data-table" style="width: 100%">
-                                    <thead>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h1 class="card-title">Accounts</h1>
+                            <a href="{{ route('client.create') }}" class="btn btn-primary mb-4  float-right">Add New</a>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table class="table table-bordered data-table" style="width: 100%">
+                                <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Company</th>
@@ -38,22 +43,19 @@
                                         <th>Phone</th>
                                         <th>Created_at</th>
                                         <th>Updated_at</th>
-                                        <th>Action</th>
+                                        <th width="14%">Action</th>
                                     </tr>
-                                    </thead>
-                                    <tbody>
+                                </thead>
+                                <tbody>
 
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- /.card-body -->
-                        </div>
-            <!-- /.card -->
-                    </div>
+                                </tbody>
+                            </table>
+                        </div><!-- /.card-body -->
+                    </div><!-- /.card -->
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 </div>
 @endsection
 
@@ -66,7 +68,6 @@ var table = $('.data-table').DataTable({
         ajax: "{{ route('client.index') }}",
         columns: [
             {data:'id',name:'id'},
-            // {data:'lead_owner',name:'lead_owner'},
             {data:'company',name:'company'},
             {data:'firstname',name:'firstname'},
             {data:'lastname',name:'lastname'},

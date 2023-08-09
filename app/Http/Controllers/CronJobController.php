@@ -21,7 +21,21 @@ class CronJobController extends Controller
         $data = CronJob::query('');
             return Datatables::of($data)
 
-
+            ->editColumn('created_at', function($row){
+                return \Carbon\Carbon::parse($row->created_at)->format('Y-m-d h:i:s');
+            })
+            ->editColumn('updated_at', function($row){
+                return \Carbon\Carbon::parse($row->updated_at)->format('Y-m-d h:i:s');
+            })
+            ->editColumn('start_time', function($row){
+                $created_at = strtotime(\Carbon\Carbon::parse($row->created_at)->format('h:i:s'));
+                $now = strtotime(\Carbon\Carbon::now()->format('h:i:s'));
+                $diff = $now - $created_at;
+                $start_time = date('H:i:s', $diff);
+                if(!empty($row->start_time)){
+                    return $start_time;
+                }
+            })
             ->addColumn('action', function($row){
                 $actionBtn = '<a href="" class="delete btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm Delete"  data-id ="'.$row->id.'">Delete</a>';
 
@@ -51,8 +65,18 @@ class CronJobController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
-            if(!empty($request->typology_id)){
+        if(!empty($request->typology_id)){
+            $rules = array(
+                'job_title' => 'required',
+                'cron_type' => 'required',
+                'success_email' => 'required',
+                'error_email' => 'required',
+                'job_time' => 'required',
+                'job_intervel' => 'required',
+                'job_day' => 'required',
+                'status' => 'required',
+                );
+            }else{
                 $rules = array(
                     'job_title' => 'required',
                     'cron_type' => 'required',
@@ -61,55 +85,39 @@ class CronJobController extends Controller
                     'job_time' => 'required',
                     'job_intervel' => 'required',
                     'job_day' => 'required',
-                    'start_time' => 'required',
                     'status' => 'required',
-                    );
-                }else{
-                    $rules = array(
-                        'job_title' => 'required',
-                        'cron_type' => 'required',
-                        'success_email' => 'required',
-                        'error_email' => 'required',
-                        'job_time' => 'required',
-                        'job_intervel' => 'required',
-                        'job_day' => 'required',
-                        'start_time' => 'required',
-                        'status' => 'required',
-                    );
-                }
-                $validator = Validator::make($request->all(), $rules);
-                if ($validator->fails())
-                {
-                    $response = \Response::json([
-                            'success' => false,
-                            'errors' => $validator->getMessageBag()->toArray()
-                        ]);
-                    return $response;
-                }
+                );
+            }
+            $validator = Validator::make($request->all(), $rules);
             if ($validator->fails())
             {
-
-                return response()->json(['error'=>$validator->errors()]);
+                $response = \Response::json([
+                        'success' => false,
+                        'errors' => $validator->getMessageBag()->toArray()
+                    ]);
+                return $response;
             }
-            // $inprogress =  DB::table('monitored_scheduled_tasks')->select('name')->get();
-            // $agent_arr = CronJob::where('job_title','=', $inprogress);
-            // dd($agent_arr->id);
-            $data['job_day'] = json_encode($request->job_day);
-            $data['job_title'] = $request->job_title;
-            $data['cron_type'] = $request->cron_type;
-            $data['success_email'] = $request->success_email;
-            $data['error_email'] = $request->error_email;
-            $data['gateway'] = $request->gateway;
-            $data['Alert']= $request->Alert;
-            $data['download_limit']= $request->download_limit;
-            $data['threshold'] =$request->threshold;
-            $data['job_time'] = $request->job_time;
-            $data['job_intervel'] = $request->job_intervel;
-            $data['start_time'] = date('Y-m-d H:i:s', strtotime($request->start_time));
-            $data['status'] = $request->status;
-            CronJob::updateOrCreate(['id' => $request->id],$data);
+        if ($validator->fails())
+        {
 
-            return response()->json(['message'=>'updated_successfully','success'=>true]);
+            return response()->json(['error'=>$validator->errors()]);
+        }
+        $data['job_day'] = json_encode($request->job_day);
+        $data['job_title'] = $request->job_title;
+        $data['cron_type'] = $request->cron_type;
+        $data['success_email'] = $request->success_email;
+        $data['error_email'] = $request->error_email;
+        $data['gateway'] = $request->gateway;
+        $data['Alert']= $request->Alert;
+        $data['download_limit']= $request->download_limit;
+        $data['threshold'] =$request->threshold;
+        $data['job_time'] = $request->job_time;
+        $data['job_intervel'] = $request->job_intervel;
+        $data['start_time'] = date('Y-m-d H:i:s', strtotime($request->start_time));
+        $data['status'] = $request->status;
+        CronJob::updateOrCreate(['id' => $request->id],$data);
+
+        return response()->json(['message'=>'updated_successfully','success'=>true]);
     }
 
     /**

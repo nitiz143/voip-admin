@@ -25,5 +25,9 @@ class Billing extends Model
         'outbound_discount_plan',
         'inbound_discount_plan',
     ];
+    public function clients()
+    {
+        return $this->belongsTo(Client::class);
+    }
 
 }

@@ -6,14 +6,18 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "barryvdh/laravel-dompdf": "^2.0",
         "doctrine/dbal": "^3.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "jeremykenedy/laravel-logger": "^6.0",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
+        "league/flysystem-aws-s3-v3": "*",
         "league/flysystem-sftp": "~1.1",
+        "openspout/openspout": "^4.15",
         "rap2hpoutre/fast-excel": "^3.2",
         "spatie/laravel-schedule-monitor": "^2",
         "yajra/laravel-datatables-oracle": "~9.0"

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ExportHistory;
+use App\Models\CallHistory;
 
 class Client extends Model
 {
@@ -62,4 +64,24 @@ class Client extends Model
         'balance_threshold',
         'billing_status',
      ];
+
+     public function billing()
+    {
+        return $this->hasMany(Billing::class,'account_id');
+    }
+    public function export_history()
+    {
+        return $this->hasMany(ExportHistory::class);
+    }
+    public function export_csv_history()
+    {
+        return $this->hasMany(ExportCsvXlsxHistory::class);
+    }
+
+    public function call_history()
+    {
+        return $this->hasMany(CallHistory::class);
+    }
+
+   
 }

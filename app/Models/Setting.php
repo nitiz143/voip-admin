@@ -15,6 +15,7 @@ class Setting extends Model
         'username',
         'password',
         'csv_path',
+        'version',
    
     ];
 }

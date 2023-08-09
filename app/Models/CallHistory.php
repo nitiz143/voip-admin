@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Client;
+
 
 class CallHistory extends Model
 {
@@ -61,8 +63,19 @@ class CallHistory extends Model
         'cdrlevel',
         'agentcdr_id',
         'transactionid',
+        'account_id',
+        'callerrtpip',
+        'calleertpip',
+        'calleroriginalcallid',
+        'calleroriginalinfo',
+        'sipreasonheader',
+        'recordstarttime',
+        'flownofirst',
     ];
-}
+    public function clients() {
+        return $this->belongsTo(Client::class,'account_id','id');
+    }
+} 
 
 
 

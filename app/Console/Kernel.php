@@ -7,6 +7,7 @@ use Spatie\ScheduleMonitor\Models\MonitoredScheduledTaskLogItem;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\CronJob;
 use Log;
+use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -14,6 +15,9 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //Commands\Cron_job::class,
         Commands\CsvImportCron::class,
+        Commands\DownloadCsvImportCron::class,
+        Commands\AccountCron::class,
+        Commands\InvoiceCreateCron::class,
     ];
     /**
      * Define the application's command schedule.
@@ -23,25 +27,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-       // $schedule->command('Cron:job')->everyMinute();
 
-        $tasks = CronJob::all();
 
-        foreach ($tasks as $task) {
 
-            $frequency = $task->job_time;
-            if($task->cron_type == 'Download VOS SFTP File'){
-                $schedule->command('csvImport:cron')->$frequency();
-                $schedule->command('download:cron')->$frequency();
-            }
-
-            //else{
-            //     $schedule->call(function() use($task) {
-            //         /*  Run your task here */
-            //         Log::info($task->job_title.' '.\Carbon\Carbon::now());
-            //     })->monitorName($task->job_title)->$frequency();
-            // }
-        }
+        $schedule->command('csvImport:cron')->everyTenMinutes();
+        $schedule->command('download:cron')->cron('*/15 * * * *')->withoutOverlapping();
+        $schedule->command('account:cron')->cron('*/15 * * * *')->withoutOverlapping();
+        $schedule->command('invoice_create:cron')->everyFiveMinutes()->withoutOverlapping();
+      //  $schedule->command('Billing:cron')->everyFiveMinutes();
     }
 
     /**
