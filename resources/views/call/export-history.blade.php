@@ -74,9 +74,9 @@
                                         <option value="Negative-Report">Negative Report</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <a type="submit" class="btn btn-sm btn-primary  mt-4 ml-2 w-10 export" data-type="all_invoice_export">Invoice generate</a>
-                                    <a type="submit"  class="btn btn-primary btn-sm btn-icon  mt-2 ml-2 " id="filter_data" ><i class="entypo-search" ></i>Filter</a>
+                                <div class="form-group mt-4">
+                                    <a type="submit" class="btn btn-md btn-primary mt-2 ml-2 w-10 export" data-type="all_invoice_export">Invoice generate</a>
+                                    <a type="submit"  class="btn btn-primary btn-md btn-icon mt-2 ml-2 " id="filter_data" ><i class="entypo-search" ></i>Filter</a>
                                 </div>
                             </form>
                         </div>

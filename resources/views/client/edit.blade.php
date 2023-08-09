@@ -577,26 +577,25 @@
                                                     name="customer_authentication_rule"
                                                     id="customer_authentication_rule">
                                                     <option selected disabled>--Select Authentication Rule--</option>
-                                                    <option value="0" {{$user->customer_authentication_rule == 0 ?
+                                                    {{-- <option value="0" {{$user->customer_authentication_rule == 0 ?
                                                         'selected' : ''}}>Account Name-Account Number</option>
                                                     <option value="1" {{$user->customer_authentication_rule == 1 ?
-                                                        'selected' : ''}}>Account Number-Account Name</option>
+                                                        'selected' : ''}}>Account Number-Account Name</option> --}}
                                                     <option value="2" {{$user->customer_authentication_rule == 2 ?
                                                         'selected' : ''}}>Account Name</option>
                                                     <option value="3" {{$user->customer_authentication_rule == 3 ?
                                                         'selected' : ''}}>Account Number</option>
-                                                    <option value="4" {{$user->customer_authentication_rule == 4 ?
+                                                    {{-- <option value="4" {{$user->customer_authentication_rule == 4 ?
                                                         'selected' : ''}}>IP</option>
                                                     <option value="5" {{$user->customer_authentication_rule == 5 ?
-                                                        'selected' : ''}}>Cli</option>
+                                                        'selected' : ''}}>Cli</option> --}}
                                                     <option value="6" {{$user->customer_authentication_rule == 6 ?
                                                         'selected' : ''}}>Other</option>
 
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-xl-6 {{$user->customer_authentication_rule != 6 ? 'd-none' : ''}}"
-                                            id="customer_authentication_value_div">
+                                        <div class="col-xl-6" id="customer_authentication_value_div">
                                             <div class="form-group">
                                                 <label for="customer_authentication_value">Value</label>
                                                 <input type="text" class="form-control" id="city"
@@ -617,24 +616,24 @@
                                                 <select class="custom-select form-control"
                                                     name="vendor_authentication_rule" id="vendor_authentication_rule">
                                                     <option selected disabled>--Select Authentication Rule--</option>
-                                                    <option value="0" {{$user->vendor_authentication_rule == 0 ?
+                                                    {{-- <option value="0" {{$user->vendor_authentication_rule == 0 ?
                                                         'selected' : ''}}>Account Name-Account Number</option>
                                                     <option value="1" {{$user->vendor_authentication_rule == 1 ?
-                                                        'selected' : ''}}>Account Number-Account Name</option>
+                                                        'selected' : ''}}>Account Number-Account Name</option> --}}
                                                     <option value="2" {{$user->vendor_authentication_rule == 2 ?
                                                         'selected' : ''}}>Account Name</option>
                                                     <option value="3" {{$user->vendor_authentication_rule == 3 ?
                                                         'selected' : ''}}>Account Number</option>
-                                                    <option value="4" {{$user->vendor_authentication_rule == 4 ?
+                                                    {{-- <option value="4" {{$user->vendor_authentication_rule == 4 ?
                                                         'selected' : ''}}>IP</option>
                                                     <option value="5" {{$user->vendor_authentication_rule == 5 ?
-                                                        'selected' : ''}}>Cli</option>
+                                                        'selected' : ''}}>Cli</option> --}}
                                                     <option value="6" {{$user->vendor_authentication_rule == 6 ?
                                                         'selected' : ''}}>Other</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-xl-6 {{$user->vendor_authentication_rule != 6 ? 'd-none' : ''}}"
+                                        <div class="col-xl-6 "
                                             id="vendor_authentication_value_div">
                                             <div class="form-group">
                                                 <label for="vendor_authentication_value">Value</label>

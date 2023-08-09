@@ -441,7 +441,6 @@ class CallController extends Controller
     }
 
     public function export_history_xlsx(Request $request){
-
         if($request->report == 'Account-Manage'){
             $validator = Validator::make($request->all(), [
                 'report' => 'required',
@@ -552,7 +551,8 @@ class CallController extends Controller
             ->make(true);
         }
         $Accounts = Client::where("customer", "=",1)->get();
-        return view("call.export-csv-history",compact('Accounts'));
+        $VAccounts = Client::where("vendor", "=",1)->get();
+        return view("call.export-csv-history",compact('Accounts','VAccounts'));
     }
     public function download_csv_export_history(Request $request){
         $data = ExportCsvXlsxHistory::where('id',$request->id)->first();
