@@ -104,12 +104,14 @@
     }
     </style>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition layout-top-nav">
+  <div class="wrapper">
 
     @include('includes.header')
-    @include('includes.sidebar')
+    {{-- @include('includes.sidebar') --}}
     @yield('content')
     @include('includes.footer')
+  </div>
 
 
     <!-- jQuery -->
@@ -127,6 +129,8 @@
 <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- ChartJS -->
 <script src="{{asset('assets/plugins/chart.js/Chart.min.js')}}"></script>
+
+<script src="{{asset('assets/dist/js/adminlte.min.js')}}"></script>
 <!-- Sparkline -->
 <script src="{{asset('assets/plugins/sparklines/sparkline.js')}}"></script>
 <!-- JQVMap -->

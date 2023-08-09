@@ -6,11 +6,11 @@
 </style>
 <div class="content-wrapper mt-3">
     <section class="content-header">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row mb-2">
                 <div class="col-sm-4">
                     <div class="header mt-2">
-                        <h4 class="title ">CDR</h4>
+                        <h4 class="title ">Call History</h4>
                     </div>
                 </div>
                 <div class="col-sm-8">
@@ -22,7 +22,7 @@
         </div><!-- /.container-fluid -->
     </section>
     <section class="content">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
