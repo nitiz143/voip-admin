@@ -57,7 +57,7 @@ class InvoiceGenrateJob implements ShouldQueue
             }
 
             if(!empty( $AccountID )) {
-                $query->where('call_histories.account_id', $AccountID);
+                $query->where('call_histories.vendor_account_id', $AccountID);
             }
            
             $invoices = $query->get();

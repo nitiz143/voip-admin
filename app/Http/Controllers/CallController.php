@@ -116,7 +116,7 @@ class CallController extends Controller
                 $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
             if(!empty($request->VAccount)){
-                $data->where('account_id', $request->VAccount);
+                $data->where('vendor_account_id', $request->VAccount);
                 $data = $data->get();
             }else{
                 $data = [];
@@ -124,7 +124,7 @@ class CallController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
-                    $account = Client::where('id',$row->account_id)->first();
+                    $account = Client::where('id',$row->vendor_account_id)->first();
                     return  !empty($account->account_name) ? $account->account_name : "";
                 })
                 ->addColumn('Connect_time', function($row){
@@ -350,7 +350,6 @@ class CallController extends Controller
 
     }
     public function invoice_export(Request $request){
-    
             $validator = Validator::make($request->all(), [
                 'AccountID' => 'required',
                 'report' => 'required',
@@ -388,11 +387,23 @@ class CallController extends Controller
     public function export_history(Request $request){
         if ($request->ajax()) {
             $data = ExportHistory::query();
-            if(($request->has('StartDate') && $request->has('EndDate'))){
-                $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
+            if($request->ActiveTab ==1){
+                if(($request->has('StartDate') && $request->has('EndDate'))){
+                    $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
+                }
+                if(!empty($request->Account)){
+                    $data->where('client_id', $request->Account);
+                }
+                $data->where('report_type','!=','Vendor-Summary')->where('report_type','!=','Vendor-Hourly');
             }
-            if(!empty($request->Account)){
-                $data->where('client_id', $request->Account);
+            if($request->ActiveTab ==2){
+                if(($request->has('StartDate') && $request->has('EndDate'))){
+                    $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
+                }
+                if(!empty($request->Account)){
+                    $data->where('client_id', $request->Account);
+                }
+                $data->where('report_type','!=','Customer-Summary')->where('report_type','!=','Customer-Hourly');
             }
             if(!empty($request->Report)){
                 $data->where('report_type', $request->Report);
@@ -424,7 +435,8 @@ class CallController extends Controller
             ->make(true);
         }
         $Accounts = Client::where("customer", "=",1)->get();
-        return view("call.export-history",compact('Accounts'));
+        $VAccounts = Client::where("vendor", "=",1)->get();
+        return view("call.export-history",compact('Accounts','VAccounts'));
     }
     public function download_export_history(Request $request){
         $invoice = ExportHistory::where('id',$request->id)->first();
@@ -464,6 +476,7 @@ class CallController extends Controller
         $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : "0";
         $data['user_id'] = Auth::user()->id;
         $data['type'] = "Excel-report";
+        $data['report_type'] = $request->report;
         $data['status'] = 'pending';
         $code = random_int(100000, 999999);
         $data['file_name'] = date('YmdHis').'-'.$code.".xlsx";
@@ -526,6 +539,22 @@ class CallController extends Controller
     public function export_csv_history(Request $request){
         if ($request->ajax()) {
             $data = ExportCsvXlsxHistory::query();
+            if($request->ActiveTab == 1){
+                if(!empty($request->Account)){
+                    $data->where('client_id', $request->Account);
+                }
+                $data->where('report_type','!=','Vendor-Summary')->where('report_type','!=','Vendor-Hourly');
+            }
+            if($request->ActiveTab == 2){
+                if(!empty($request->Account)){
+                    $data->where('client_id', $request->Account);
+                }
+                $data->where('report_type','!=','Customer-Summary')->where('report_type','!=','Customer-Hourly');
+            }
+            if(!empty($request->Report)){
+                $data->where('report_type', $request->Report);
+            }
+            $data = $data->get();
             return Datatables::of($data)
             ->addColumn('created_at', function($row){
                 return Carbon::parse($row->created_at)->format('d/m/Y H:i:s');

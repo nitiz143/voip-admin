@@ -25,13 +25,13 @@
             </li>
         @endif
         <li class="nav-item">
-            <a href="{{url('/cdr-show')}}" class="nav-link {{ Request::is('cdr_show','cdr_show/*','Upload-CDR') ? 'active' : '' }} ">Call-history</a>
+            <a href="{{route('cdr_show.index')}}" class="nav-link {{ Request::is('cdr_show','cdr_show/*','Upload-CDR') ? 'active' : '' }} ">Call-history</a>
         </li>
         <li class="nav-item">
-            <a href="{{url('/export-history')}}" class="nav-link {{ Request::is('export-history','export-history/*') ? 'active' : '' }}">Invoices</a>
+            <a href="{{route('export.history')}}" class="nav-link {{ Request::is('export_history','export_history/*') ? 'active' : '' }}">Invoices</a>
         </li>
         <li class="nav-item">
-            <a href="{{url('/export-csv-history')}}" class="nav-link {{ Request::is('export-csv-history') ? 'active' : '' }} ">Report</a>
+            <a href="{{route('export-csv.history')}}" class="nav-link {{ Request::is('export_csv_history') ? 'active' : '' }} ">Report</a>
         </li>
         <li class="nav-item">
             <a href="{{url('/client')}}" class="nav-link {{ Request::is('client','client/*','client-customer/*','client-vendor/*') ? 'active' : '' }}">Account</a>
@@ -42,7 +42,7 @@
         <li class="nav-item">
         <a href="{{url('/cron')}}" class="nav-link {{ Request::is('cron','cron/*') ? 'active' : '' }} ">Cron Job</a>
         </li>
-        <li class="nav-item dropdown {{ Request::is('trunks','trunks/*','setting','setting/*') ? 'menu-is-opening menu-open' : '' }}">
+        <li class="nav-item dropdown {{ Request::is('trunks','trunks/*','setting','setting/*') ? 'show' : '' }}">
         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Settings</a>
         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
         <li><a href="{{url('/trunks')}}" class="dropdown-item {{ Request::is('trunks','trunks/*') ? 'active' : '' }}">Trunks </a></li>

@@ -71,6 +71,7 @@ class CallHistory extends Model
         'sipreasonheader',
         'recordstarttime',
         'flownofirst',
+        'vendor_account_id',
     ];
     public function clients() {
         return $this->belongsTo(Client::class,'account_id','id');

@@ -269,10 +269,10 @@ class DownloadCsvXlsx implements ShouldQueue
                 }
 
                 if(!empty( $AccountID )) {
-                    $query->where('call_histories.account_id', $AccountID);
+                    $query->where('call_histories.vendor_account_id', $AccountID);
                 }
-            
                 $invoices = $query->get();
+                dd( $invoices );
                 $downloads = $invoices->groupBy('agentaccount');
 
                 $list =array();
@@ -394,17 +394,22 @@ class DownloadCsvXlsx implements ShouldQueue
                     
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
+                            $fee_count[] = $invoice->fee;
                             if($invoice->feetime != 0) {
                                 $completed_count[] = $invoice->feetime;
                             }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
+                            $agentfee_count[] = $invoice->agentfee;
                             if($invoice->agentfeetime != 0) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
-                        
-                        
+                        $margin_time = array_sum($Duration_count)-array_sum( $Agent_Duration_count);
+                        $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
+                        $timepersec3 = array_sum($fee_count)+array_sum( $agentfee_count)/array_sum($Duration_count)+array_sum( $Agent_Duration_count);
+                        $persec =  round($timepersec3, 7);
+                        $margin_per_min= $persec*60;
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                         $sec = "";
                         if(array_sum($completed_count) != 0 && count($completed_count) != 0){
@@ -426,8 +431,8 @@ class DownloadCsvXlsx implements ShouldQueue
                         $data['Rev/Min'] = !empty($customer_fee) ? '$'.$customer_fee : "$ 0.00";
                         $data['Cost'] =  '$'.$value->sum('agentfee');
                         $data['Cost/Min'] = !empty($agent_fee) ? '$'.$agent_fee : "$ 0.00";
-                        $data['Margin'] = "";
-                        $data['Mar/Min'] ="";
+                        $data['Margin'] =  !empty($margin) ? '$'.$margin : "$ 0.00";
+                        $data['Mar/Min'] =!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";
                         $data['Mar%'] ="";
                         $data['CustProductGroup'] = "";
                         $data['VendProductGroup'] = "";
@@ -485,7 +490,7 @@ class DownloadCsvXlsx implements ShouldQueue
                     }
     
                     if(!empty( $AccountID )) {
-                        $query->where('call_histories.account_id', $AccountID);
+                        $query->where('call_histories.vendor_account_id', $AccountID);
                     }
                 
                     $invoices = $query->get();
@@ -886,7 +891,7 @@ class DownloadCsvXlsx implements ShouldQueue
                 }
 
                 if(!empty( $AccountID )) {
-                    $query->where('call_histories.account_id', $AccountID);
+                    $query->where('call_histories.vendor_account_id', $AccountID);
                 }
             
                 $invoices = $query->get();
@@ -1109,7 +1114,7 @@ class DownloadCsvXlsx implements ShouldQueue
                     }
     
                     if(!empty( $AccountID )) {
-                        $query->where('call_histories.account_id', $AccountID);
+                        $query->where('call_histories.vendor_account_id', $AccountID);
                     }
                 
                     $invoices = $query->get();
