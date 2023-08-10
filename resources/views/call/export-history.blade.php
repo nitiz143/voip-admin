@@ -2,7 +2,7 @@
 @section('content')
 <div class="content-wrapper mt-3" >
     <section class="content-header">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row mb-2">
                 <div class="col-sm-6">
 
@@ -23,12 +23,12 @@
         </div>
     @endif
     <section class="content">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h1 class="card-title ">Export History</h1>
+                            <h1 class="card-title ">Invoices</h1>
                         </div>
                         <div class="container-fluid  ml-2 mt-4">
                             <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter">
