@@ -75,7 +75,9 @@ class DownloadCsvXlsx implements ShouldQueue
                         $Duration_count = array();
                         $completed_count = array();
                         $Agent_Duration_count = array();
-                        $completed_agent_count =array();
+                        $completed_agent_count = array();
+                        $fee_count = array();
+                        $agentfee_count =array();
                         $customer_fee ="";
                         if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
                             $timepersec = $value->sum('fee')/$value->sum('feetime');
@@ -91,17 +93,21 @@ class DownloadCsvXlsx implements ShouldQueue
                         }
                     
                         foreach ($value as $invoice){
+                            //customer
                             $Duration_count[] = $invoice->feetime;
+                            $fee_count[] = $invoice->fee;
                             if($invoice->feetime != 0) {
                                 $completed_count[] = $invoice->feetime;
                             }
-
+                            //vendor
                             $Agent_Duration_count[] = $invoice->agentfeetime;
+                            $agentfee_count[] = $invoice->agentfee;
                             if($invoice->agentfeetime != 0) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
-                        
+                        $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
+                        $margin_per_min = $customer_fee - $agent_fee;
                         
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                         $sec = "";
@@ -120,13 +126,13 @@ class DownloadCsvXlsx implements ShouldQueue
                         $data['ACD'] = !empty($sec) ? \Str::limit($sec,5) :"0";
                         $data['Raw Dur'] = !empty($Duration) ?$Duration :"";
                         $data['Rnd Dur'] =   !empty($Duration) ? $Duration :"";
-                        $data['Revenue'] = '$'.$value->sum('fee');
-                        $data['Rev/Min'] = !empty($customer_fee) ? '$'.$customer_fee : "$ 0.00";
-                        $data['Cost'] =  '$'.$value->sum('agentfee');
-                        $data['Cost/Min'] = !empty($agent_fee) ? '$'.$agent_fee : "$ 0.00";
-                        $data['Margin'] = "";
-                        $data['Mar/Min'] ="";
-                        $data['Mar%'] ="";
+                        $data['Revenue'] = '$'.sprintf('%0.2f', $value->sum('fee'));
+                        $data['Rev/Min'] = !empty($customer_fee) ? '$'.sprintf('%0.2f', $customer_fee) : "$ 0.00";
+                        $data['Cost'] =  '$'.sprintf('%0.2f', $value->sum('agentfee'));
+                        $data['Cost/Min'] = !empty($agent_fee) ? '$'.sprintf('%0.2f', $agent_fee) : "$ 0.00";
+                        $data['Margin'] = !empty($margin) ? '$'.sprintf('%0.2f', $margin) : "$ 0.00";
+                        $data['Mar/Min'] =!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";
+                        $data['Mar%'] =  \Str::limit(($margin/$value->count() * 100),5).'%';
                         $data['CustProductGroup'] = "";
                         $data['VendProductGroup'] = "";
                         $list[]= $data;
@@ -219,8 +225,8 @@ class DownloadCsvXlsx implements ShouldQueue
                         $data['ACD'] = !empty($sec) ? \Str::limit($sec,5) :"0";
                         $data['Raw Dur'] = !empty($Duration) ?$Duration :"";
                         $data['Rnd Dur'] =   !empty($Duration) ? $Duration :"";
-                        $data['Revenue'] = '$'.$value->sum('fee');
-                        $data['Rev/Min'] = !empty($fee) ? '$'.$fee : "$ 0.00";
+                        $data['Revenue'] = '$'.sprintf('%0.2f', $value->sum('fee'));
+                        $data['Rev/Min'] = !empty($fee) ? '$'.sprintf('%0.2f', $fee) : "$ 0.00";
                         $data['Margin'] ="";
                         $data['Mar/Min'] ="";
                         $data['Mar%'] ="";
@@ -272,7 +278,6 @@ class DownloadCsvXlsx implements ShouldQueue
                     $query->where('call_histories.vendor_account_id', $AccountID);
                 }
                 $invoices = $query->get();
-                dd( $invoices );
                 $downloads = $invoices->groupBy('agentaccount');
 
                 $list =array();
@@ -316,8 +321,8 @@ class DownloadCsvXlsx implements ShouldQueue
                         $data['ACD'] = !empty($sec) ? \Str::limit($sec,5) :"0";
                         $data['Raw Dur'] = !empty($Duration) ?$Duration :"";
                         $data['Rnd Dur'] =   !empty($Duration) ? $Duration :"";
-                        $data['Cost'] =  '$'.$value->sum('agentfee');
-                        $data['Cost/Min'] = !empty($agent_fee) ? '$'.$agent_fee : "$ 0.00";
+                        $data['Cost'] =  '$'.sprintf('%0.2f', $value->sum('agentfee')) ;
+                        $data['Cost/Min'] = !empty($agent_fee) ? '$'.sprintf('%0.2f', $agent_fee) : "$ 0.00";
                         $data['Margin'] ="";
                         $data['Mar/Min'] ="";
                         $data['Mar%'] ="";
@@ -376,6 +381,8 @@ class DownloadCsvXlsx implements ShouldQueue
                         $completed_count = array();
                         $Agent_Duration_count = array();
                         $completed_agent_count =array();
+                        $fee_count = array();
+                        $agentfee_count =array();
                         
                         $customer_fee ="";
                         if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
@@ -405,11 +412,8 @@ class DownloadCsvXlsx implements ShouldQueue
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
-                        $margin_time = array_sum($Duration_count)-array_sum( $Agent_Duration_count);
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                        $timepersec3 = array_sum($fee_count)+array_sum( $agentfee_count)/array_sum($Duration_count)+array_sum( $Agent_Duration_count);
-                        $persec =  round($timepersec3, 7);
-                        $margin_per_min= $persec*60;
+                        $margin_per_min = $customer_fee -  $agent_fee;
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                         $sec = "";
                         if(array_sum($completed_count) != 0 && count($completed_count) != 0){
@@ -427,13 +431,13 @@ class DownloadCsvXlsx implements ShouldQueue
                         $data['ACD'] = !empty($sec) ? \Str::limit($sec,5) :"0";
                         $data['Raw Dur'] = !empty($Duration) ?$Duration :"";
                         $data['Rnd Dur'] =   !empty($Duration) ? $Duration :"";
-                        $data['Revenue'] = '$'.$value->sum('fee');
-                        $data['Rev/Min'] = !empty($customer_fee) ? '$'.$customer_fee : "$ 0.00";
-                        $data['Cost'] =  '$'.$value->sum('agentfee');
-                        $data['Cost/Min'] = !empty($agent_fee) ? '$'.$agent_fee : "$ 0.00";
-                        $data['Margin'] =  !empty($margin) ? '$'.$margin : "$ 0.00";
+                        $data['Revenue'] = '$'.sprintf('%0.2f', $value->sum('fee'));
+                        $data['Rev/Min'] = !empty($customer_fee) ? '$'.sprintf('%0.2f', $customer_fee) : "$ 0.00";
+                        $data['Cost'] =  '$'.sprintf('%0.2f', $value->sum('agentfee'));
+                        $data['Cost/Min'] = !empty($agent_fee) ? '$'.sprintf('%0.2f', $agent_fee) : "$ 0.00";
+                        $data['Margin'] = !empty($margin) ? '$'.sprintf('%0.2f', $margin) : "$ 0.00";
                         $data['Mar/Min'] =!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";
-                        $data['Mar%'] ="";
+                        $data['Mar%'] =  \Str::limit(($margin/$value->count() * 100),5).'%';
                         $data['CustProductGroup'] = "";
                         $data['VendProductGroup'] = "";
                         $list[]= $data;
@@ -532,8 +536,8 @@ class DownloadCsvXlsx implements ShouldQueue
                             $data['ACD'] = !empty($sec) ? \Str::limit($sec,5) :"0";
                             $data['Raw Dur'] = !empty($Duration) ?$Duration :"";
                             $data['Rnd Dur'] =   !empty($Duration) ? $Duration :"";
-                            $data['Cost'] =  '$'.$value->sum('agentfee');
-                            $data['Cost/Min'] = !empty($agent_fee) ? '$'.$agent_fee : "$ 0.00";
+                            $data['Cost'] =  '$'.sprintf('%0.2f', $value->sum('agentfee'));
+                            $data['Cost/Min'] = !empty($agent_fee) ? '$'.sprintf('%0.2f', $agent_fee) : "$ 0.00";
                             $data['Margin'] ="";
                             $data['Mar/Min'] ="";
                             $data['Mar%'] ="";
@@ -629,8 +633,8 @@ class DownloadCsvXlsx implements ShouldQueue
                             $data['ACD'] = !empty($sec) ? \Str::limit($sec,5) :"0";
                             $data['Raw Dur'] = !empty($Duration) ?$Duration :"";
                             $data['Rnd Dur'] =   !empty($Duration) ? $Duration :"";
-                            $data['Revenue'] = '$'.$value->sum('fee');
-                            $data['Rev/Min'] = !empty($fee) ? '$'.$fee : "$ 0.00";
+                            $data['Revenue'] = '$'.sprintf('%0.2f', $value->sum('fee'));
+                            $data['Rev/Min'] = !empty($fee) ? '$'.sprintf('%0.2f', $fee) : "$ 0.00";
                             $data['Margin'] ="";
                             $data['Mar/Min'] ="";
                             $data['Mar%'] ="";
@@ -698,13 +702,17 @@ class DownloadCsvXlsx implements ShouldQueue
                         $completed_count = array();
                         $Agent_Duration_count = array();
                         $completed_agent_count =array();
+                        $fee_count = array();
+                        $agentfee_count =array();
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
+                            $fee_count[] = $invoice->fee;
                             if($invoice->feetime != 0) {
                                 $completed_count[] = $invoice->feetime;
                             }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
+                            $agentfee_count[] = $invoice->agentfee;
                             if($invoice->agentfeetime != 0) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
@@ -722,6 +730,9 @@ class DownloadCsvXlsx implements ShouldQueue
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee = $persec2*60;
                         }
+                        $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
+                        $margin_per_min = $customer_fee -  $agent_fee;
+
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                         $sec = "";
                         if(array_sum($completed_count) != 0 && count($completed_count) != 0){
@@ -743,9 +754,9 @@ class DownloadCsvXlsx implements ShouldQueue
                         $data['Rev/Min'] = !empty($customer_fee) ? '$'.$customer_fee : "$ 0.00";
                         $data['Cost'] =  '$'.$value->sum('agentfee');
                         $data['Cost/Min'] = !empty($agent_fee) ? '$'.$agent_fee : "$ 0.00";
-                        $data['Margin'] = "";
-                        $data['Mar/Min'] ="";
-                        $data['Mar%'] ="";
+                        $data['Margin'] = !empty($margin) ? '$'.$margin : "$ 0.00";
+                        $data['Mar/Min'] =!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";
+                        $data['Mar%'] =  \Str::limit(($margin/$value->count() * 100),5).'%';
                         $data['CustProductGroup'] = "";
                         $data['VendProductGroup'] = "";
                         $list[]= $data; 
@@ -993,9 +1004,7 @@ class DownloadCsvXlsx implements ShouldQueue
                     $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
                 }
 
-                // if(!empty( $AccountID )) {
-                //     $query->where('call_histories.account_id', $AccountID);
-                // }
+               
             
                 $invoices = $query->get();
                 $downloads = $invoices->groupBy('customeraccount');
@@ -1007,6 +1016,8 @@ class DownloadCsvXlsx implements ShouldQueue
                         $completed_count = array();
                         $Agent_Duration_count = array();
                         $completed_agent_count =array();
+                        $fee_count = array();
+                        $agentfee_count =array();
                         $customer_fee ="";
                         if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
                             $timepersec = $value->sum('fee')/$value->sum('feetime');
@@ -1023,16 +1034,19 @@ class DownloadCsvXlsx implements ShouldQueue
                     
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
+                            $fee_count[] = $invoice->fee;
                             if($invoice->feetime != 0) {
                                 $completed_count[] = $invoice->feetime;
                             }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
+                            $agentfee_count[] = $invoice->agentfee;
                             if($invoice->agentfeetime != 0) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
-                        
+                        $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
+                        $margin_per_min = $customer_fee -  $agent_fee;
                         
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                         $sec = "";
@@ -1055,9 +1069,9 @@ class DownloadCsvXlsx implements ShouldQueue
                         $data['Rev/Min'] = !empty($customer_fee) ? '$'.$customer_fee : "$ 0.00";
                         $data['Cost'] =  '$'.$value->sum('agentfee');
                         $data['Cost/Min'] = !empty($agent_fee) ? '$'.$agent_fee : "$ 0.00";
-                        $data['Margin'] = "";
-                        $data['Mar/Min'] ="";
-                        $data['Mar%'] ="";
+                        $data['Margin'] = !empty($margin) ? '$'.$margin : "$ 0.00";
+                        $data['Mar/Min'] =!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";
+                        $data['Mar%'] =  \Str::limit(($margin/$value->count() * 100),5).'%';
                         $data['CustProductGroup'] = "";
                         $data['VendProductGroup'] = "";
                         $list[]= $data;

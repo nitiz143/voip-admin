@@ -89,8 +89,6 @@
                                                         <option value="Negative-Report">Negative Report</option>
                                                     </select>
                                                 </div>
-                                                
-                                            
                                                 <div class="form-group mt-4">
                                                     <input type="hidden" id="ActiveTab" name="ActiveTab" value="1">
                                                     <a href="#" class="btn btn-primary save-collection btn-md mt-2"  id="ToolTables_table-4_0">
@@ -147,8 +145,6 @@
                                                         <option value="Negative-Report">Negative Report</option>
                                                     </select>
                                                 </div>
-                                                
-                                            
                                                 <div class="form-group mt-4">
                                                     <input type="hidden" id="ActiveTab" name="ActiveTab" value="2">
                                                     <a href="#" class="btn btn-primary save-collection btn-md mt-2"  id="ToolTables_table-4_0">

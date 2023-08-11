@@ -25,13 +25,13 @@
                     </li>
                 @endif
                 <li class="nav-item">
-                    <a href="{{url('/cdr-show')}}" class="nav-link {{ Request::is('cdr_show','cdr_show/*','Upload-CDR') ? 'active' : '' }} ">Call-history</a>
+                    <a href="{{route('cdr_show.index')}}" class="nav-link {{ Request::is('cdr_show','cdr_show/*','Upload-CDR') ? 'active' : '' }} ">Call-history</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{url('/export-history')}}" class="nav-link {{ Request::is('export-history','export-history/*') ? 'active' : '' }}">Invoices</a>
+                    <a href="{{route('export.history')}}" class="nav-link {{ Request::is('export_history','export_history/*') ? 'active' : '' }}">Invoices</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{url('/export-csv-history')}}" class="nav-link {{ Request::is('export-csv-history') ? 'active' : '' }} ">Report</a>
+                    <a href="{{route('export-csv.history')}}" class="nav-link {{ Request::is('export_csv_history') ? 'active' : '' }} ">Report</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{url('/client')}}" class="nav-link {{ Request::is('client','client/*','client-customer/*','client-vendor/*') ? 'active' : '' }}">Account</a>

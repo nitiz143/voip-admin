@@ -519,6 +519,7 @@ class CallController extends Controller
         $data['client_id'] = !empty($request->AccountID) ? $request->AccountID : "0";
         $data['user_id'] = Auth::user()->id;
         $data['type'] = "Csv-report";
+        $data['report_type'] = $request->report;
         $data['status'] = 'pending';
         $code = random_int(100000,999999);
         $data['file_name'] = date('YmdHis').'-'.$code.".csv";

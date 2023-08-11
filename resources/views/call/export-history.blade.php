@@ -33,10 +33,10 @@
                         <div class="card-body">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item invoice_pdf">
-                                  <a class="nav-link active" id="home-tab" data-id="1" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Customer</a>
+                                    <a class="nav-link active" id="home-tab" data-id="1" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Customer</a>
                                 </li>
                                 <li class="nav-item invoice_pdf">
-                                  <a class="nav-link" id="profile-tab" data-id="2"  data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Vendor</a>
+                                    <a class="nav-link" id="profile-tab" data-id="2"  data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Vendor</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="myTabContent">
@@ -142,7 +142,6 @@
                                                 <input type="hidden" id="ActiveTab" name="ActiveTab" value="2">
                                                 <a type="submit"  class="btn btn-primary btn-md btn-icon mt-2 " id="filter_data" ><i class="entypo-search" ></i>Filter</a>
                                                 <a type="submit" class="btn btn-md btn-primary mt-2 ml-1  export" data-type="all_invoice_export">generate</a>
-                                              
                                             </div>
                                         </form>
                                     </div>
