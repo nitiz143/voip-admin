@@ -85,8 +85,8 @@
                                                         <option value="Customer-Hourly">Customer Hourly</option>
                                                         <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
                                                         <option value="Account-Manage">Account Manage</option>
-                                                        <option value="Margin-Report">Margin Report</option>
-                                                        <option value="Negative-Report">Negative Report</option>
+                                                        <option value="Customer-Margin-Report">Margin Report</option>
+                                                        <option value="Customer-Negative-Report">Negative Report</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group mt-4">
@@ -141,8 +141,8 @@
                                                         <option value="Vendor-Hourly">Vendor Hourly</option>
                                                         <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
                                                         <option value="Account-Manage">Account Manage</option>
-                                                        <option value="Margin-Report">Margin Report</option>
-                                                        <option value="Negative-Report">Negative Report</option>
+                                                        <option value="Vendor-Margin-Report">Margin Report</option>
+                                                        <option value="Vendor-Negative-Report">Negative Report</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group mt-4">
@@ -311,8 +311,9 @@
                 }
             });
         });
-        $('#ToolTables_table-4_1').on("click",function(e){
+        $(document).on('click','#ToolTables_table-4_1',function(e) {
             e.preventDefault();
+            var ref_this = $("ul.nav li.nav-item a.nav-link.active");
             if(ref_this.data('id') == 1){
                 var form = $('#cdr_filter').serialize();
             }
