@@ -82,7 +82,7 @@
                                                     <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
                                                     <option value="Account-Manage">Account Manage</option>
                                                     <option value="Margin-Report">Margin Report</option>
-                                                    <option value="Negative-Report">Negative Report</option>
+                                                    <option value="Customer-Negative-Report">Negative Report</option>
                                                 </select>
                                             </div>
                                             <div class="form-group mt-4 d-flex">
@@ -135,7 +135,7 @@
                                                     <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
                                                     <option value="Account-Manage">Account Manage</option>
                                                     <option value="Margin-Report">Margin Report</option>
-                                                    <option value="Negative-Report">Negative Report</option>
+                                                    <option value="Vendor-Negative-Report">Negative Report</option>
                                                 </select>
                                             </div>
                                             <div class="form-group mt-4 d-flex">

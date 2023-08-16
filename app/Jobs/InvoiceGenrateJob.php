@@ -55,9 +55,13 @@ class InvoiceGenrateJob implements ShouldQueue
                 $end = $end*1000;
                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
-
-            if(!empty( $AccountID )) {
-                $query->where('call_histories.vendor_account_id', $AccountID);
+            if($Report != 'Account-Manage') {
+                if(!empty( $AccountID )) {
+                    $query->where('call_histories.vendor_account_id', $AccountID);
+                }
+            }
+            if($Report == 'Vendor-Negative-Report') {
+                $query->where('call_histories.agentfee', '<=', 0);
             }
            
             $invoices = $query->get();
@@ -92,8 +96,13 @@ class InvoiceGenrateJob implements ShouldQueue
                 $end = $end*1000;
                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
-            if(!empty( $AccountID )) {
-                $query->where('call_histories.account_id', $AccountID);
+            if($Report != 'Account-Manage') {
+                if(!empty( $AccountID )) {
+                    $query->where('call_histories.account_id', $AccountID);
+                }
+            }
+            if($Report == 'Customer-Negative-Report'){
+                $query->where('call_histories.fee','<=', 0);
             }
             $invoices = $query->get();
             $count_duration=[];

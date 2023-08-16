@@ -387,7 +387,7 @@ class CallController extends Controller
     public function export_history(Request $request){
         if ($request->ajax()) {
             $data = ExportHistory::query();
-            if($request->ActiveTab ==1){
+            if($request->ActiveTab == 1){
                 if(($request->has('StartDate') && $request->has('EndDate'))){
                     $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
                 }
@@ -396,7 +396,7 @@ class CallController extends Controller
                 }
                 $data->where('report_type','!=','Vendor-Summary')->where('report_type','!=','Vendor-Hourly');
             }
-            if($request->ActiveTab ==2){
+            if($request->ActiveTab == 2){
                 if(($request->has('StartDate') && $request->has('EndDate'))){
                     $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
                 }
@@ -422,6 +422,18 @@ class CallController extends Controller
                }
                return $badge;
             })
+            ->addColumn('report_type', function($row){
+                if($row->report_type == "Vendor-Negative-Report"){
+                     $report = 'Negative-Report';
+                }
+                elseif($row->report_type == "Customer-Negative-Report"){
+                    $report = 'Negative-Report';
+                }
+                else{
+                    $report = $row->report_type;
+                }
+                return $report;
+             })
             ->addColumn('client', function($row){
                 return !empty($row->clients->company) ? $row->clients->company : "";
             })
