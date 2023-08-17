@@ -10,8 +10,8 @@
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse order-3 justify-content-between" id="navbarCollapse">
-            <div class=" mt-3 pb-3 mb-3 d-flex">
-                <div class="image mt-3">
+            <div class="d-flex">
+                <div class="image">
                     <img src="{{asset('assets/dist/img/download.png')}}" height="60" width="160" >
                 </div>
             </div>

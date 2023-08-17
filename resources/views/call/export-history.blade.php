@@ -349,7 +349,7 @@
                 }
                 $searchFilter.StartDate += ' '+starttime;
                 $searchFilter.EndDate += ' '+$("#cdr_filter_1 [name='EndTime']").val();
-                $searchFilter.ActiveTab = $("#cdr_filter input[name='ActiveTab']").val();
+                $searchFilter.ActiveTab = $("#cdr_filter_1 input[name='ActiveTab']").val();
 
             }
           

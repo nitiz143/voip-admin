@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/export-history', 'App\Http\Controllers\CallController@export_history')->name('export.history');
     Route::get('/export-csv-history', 'App\Http\Controllers\CallController@export_csv_history')->name('export-csv.history');
     Route::get('/export-csv-history-download/{type}/{id}','App\Http\Controllers\CallController@download_csv_export_history');
+    Route::get('/csv_view', 'App\Http\Controllers\CallController@csv_view');
 
     Route::get('/export-history-download/{id}','App\Http\Controllers\CallController@download_export_history');
     Route::get('/export-history/csv','App\Http\Controllers\CallController@export_history_csv');
