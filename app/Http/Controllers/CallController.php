@@ -613,6 +613,25 @@ class CallController extends Controller
         }
     }
     public function csv_view(Request $request){
+        if($request->report == 'Account-Manage'){
+            $validator = Validator::make($request->all(), [
+                'report' => 'required',
+            ]);
+        }
+        else{
+            $validator = Validator::make($request->all(), [
+                'AccountID' => 'required',
+                'report' => 'required',
+            ]);
+        }
+        if ($validator->fails())
+        {
+            $response = \Response::json([
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+            ]);
+            return $response;
+        }
         $type = $request->type;
         $AccountID = $request->Account;
         $StartDate = $request->StartDate ;
@@ -636,8 +655,7 @@ class CallController extends Controller
             if($Report == 'Vendor-Negative-Report') {
                 $query->where('call_histories.agentfee', '<=', 0);
             }
-           
-            $invoices = $query->paginate(15);
+            $invoices = $query->get();
             $count_duration=[];
             $count_vendor_duration=[];
             $total_vendor_cost ="";
@@ -690,8 +708,7 @@ class CallController extends Controller
                     $count_vendor_duration[] =  $invoice->agentfeetime;
                 }
             }
-            $invoices = $invoices->groupBy('customeraccount')->paginate(15);
-   
+            $invoices = $invoices->groupBy('customeraccount');
             $account ="";
             if(!empty($AccountID)){
                 $account = Client::where('id',$AccountID)->with('billing')->first();

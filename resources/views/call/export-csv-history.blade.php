@@ -383,6 +383,14 @@
                     $.notify("Please Select a End date", "Error");
                     return false;
                 }
+                if(typeof $searchFilter.Report  == 'undefined' || $searchFilter.Report.trim() == ''){
+                    $.notify("Please Select a Report", "Error");
+                    return false;
+                }
+                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
+                    $.notify("Please Select a Account", "Error");
+                    return false;
+                }
                 $searchFilter.StartDate += ' '+starttime;
                 $searchFilter.EndDate += ' '+$("#cdr_filter [name='EndTime']").val();
                 $searchFilter.ActiveTab = $("#cdr_filter input[name='ActiveTab']").val();
@@ -406,6 +414,14 @@
                 }
                 if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
                     $.notify("Please Select a End date", "Error");
+                    return false;
+                }
+                if(typeof $searchFilter.Report  == 'undefined' || $searchFilter.Report.trim() == ''){
+                    $.notify("Please Select a Report", "Error");
+                    return false;
+                }
+                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
+                    $.notify("Please Select a Account", "Error");
                     return false;
                 }
                 $searchFilter.StartDate += ' '+starttime;
@@ -464,6 +480,14 @@
                 }
                 if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
                     $.notify("Please Select a End date", "Error");
+                    return false;
+                }
+                if(typeof $searchFilter.Report  == 'undefined' || $searchFilter.Report.trim() == ''){
+                    $.notify("Please Select a Report", "Error");
+                    return false;
+                }
+                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
+                    $.notify("Please Select a Account", "Error");
                     return false;
                 }
                 $searchFilter.StartDate += ' '+starttime;
