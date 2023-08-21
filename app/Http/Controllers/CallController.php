@@ -15,6 +15,8 @@ use App\Models\ExportHistory;
 use App\Jobs\InvoiceGenrateJob;
 use App\Jobs\DownloadCsvXlsx;
 use App\Models\ExportCsvXlsxHistory;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use App\Utils\RandomUtil;
 use Carbon\Carbon;
 use DateTime;
@@ -613,15 +615,15 @@ class CallController extends Controller
         }
     }
     public function csv_view(Request $request){
-        if($request->report == 'Account-Manage'){
+        if($request->Report == 'Account-Manage'){
             $validator = Validator::make($request->all(), [
-                'report' => 'required',
+                'Report' => 'required',
             ]);
         }
         else{
             $validator = Validator::make($request->all(), [
-                'AccountID' => 'required',
-                'report' => 'required',
+                'Account' => 'required',
+                'Report' => 'required',
             ]);
         }
         if ($validator->fails())
@@ -670,6 +672,14 @@ class CallController extends Controller
                 }
             }
             $invoices = $invoices->groupBy('agentaccount');
+            $totalGroup = count($invoices);
+            $perPage = 5;
+            $page = Paginator::resolveCurrentPage('page');
+
+            $invoices = new LengthAwarePaginator( $invoices->forPage($page, $perPage), $totalGroup, $perPage, $page, [
+                'path' => Paginator::resolveCurrentPath(),
+                'pageName' => 'page',
+            ]);
             $account ="";
             if(!empty($AccountID)){
                 $account = Client::where('id',$AccountID)->with('billing')->first();
@@ -709,6 +719,14 @@ class CallController extends Controller
                 }
             }
             $invoices = $invoices->groupBy('customeraccount');
+            $totalGroup = count( $invoices);
+            $perPage = 5;
+            $page = Paginator::resolveCurrentPage('page');
+
+            $invoices = new LengthAwarePaginator( $invoices->forPage($page, $perPage), $totalGroup, $perPage, $page, [
+                'path' => Paginator::resolveCurrentPath(),
+                'pageName' => 'page',
+            ]);
             $account ="";
             if(!empty($AccountID)){
                 $account = Client::where('id',$AccountID)->with('billing')->first();

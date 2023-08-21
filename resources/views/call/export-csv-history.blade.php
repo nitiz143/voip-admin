@@ -522,5 +522,162 @@
             });
         });
 </script>
+<script type="text/javascript">
+  
+    $(window).on('hashchange', function() {
+        var ref_this = $("ul.nav li.nav-item a.nav-link.active");
+        if(ref_this.data('id') == 1){
+            if (window.location.hash) {
+                var page = window.location.hash.replace('#', '');
+                if (page == Number.NaN || page <= 0) {
+                    return false;
+                }
+            }
+        }
+        if(ref_this.data('id') == 2){
+            if (window.location.hash) {
+                var page = window.location.hash.replace('#', '');
+                if (page == Number.NaN || page <= 0) {
+                    return false;
+                }
+            }
+        }
+        
+    });
+    $(document).on('click', '.nav-link',function(event){
+        event.preventDefault();
+        if($(this).data('id') == 1){
+            var customerPage = localStorage.getItem("customer_page");
+            customerPage = parseInt(customerPage) + 1;
+            var value1 = '.pagination li:nth-child(' +  customerPage + ')';
+            $('.pagination li').removeClass('active');
+            $(value1).addClass('active');
+        }
+        if($(this).data('id') == 2){
+            var vendorPage = localStorage.getItem("Vendor_page");
+            vendorPage = parseInt(vendorPage) + 1;
+            var value = '.pagination li:nth-child(' + vendorPage + ')';
+            $('.pagination li').removeClass('active');
+            $(value).addClass('active');
+        }
+    });
+      
+    $(document).ready(function()
+    {
+        $(document).on('click', '.pagination a',function(event)
+        {
+            $('li').removeClass('active');
+            $(this).parent('li').addClass('active');
+            event.preventDefault();
+      
+            var myurl = $(this).attr('href');
+            var page=$(this).attr('href').split('page=')[1];
+      
+            var $searchFilter = {};
+            var ref_this = $("ul.nav li.nav-item a.nav-link.active");
+            if(ref_this.data('id') == 1){
+                var starttime = $("#cdr_filter input[name='StartTime']").val();
+                if(starttime =='00:00:01'){
+                    starttime = '00:00:00';
+                }
+                $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
+                $searchFilter.Report = $("#cdr_filter select[name='report']").val();
+                $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
+                $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
+                $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
+                // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
+                if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
+                    $.notify("Please Select a Start date", "Error");
+                    return false;
+                }
+                if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
+                    $.notify("Please Select a End date", "Error");
+                    return false;
+                }
+                if(typeof $searchFilter.Report  == 'undefined' || $searchFilter.Report.trim() == ''){
+                    $.notify("Please Select a Report", "Error");
+                    return false;
+                }
+                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
+                    $.notify("Please Select a Account", "Error");
+                    return false;
+                }
+                $searchFilter.StartDate += ' '+starttime;
+                $searchFilter.EndDate += ' '+$("#cdr_filter [name='EndTime']").val();
+                $searchFilter.ActiveTab = $("#cdr_filter input[name='ActiveTab']").val();
+                $searchFilter.type = "Customer";
+
+            }
+            if(ref_this.data('id') == 2){
+                var starttime = $("#cdr_filter_1 input[name='StartTime']").val();
+                if(starttime =='00:00:01'){
+                    starttime = '00:00:00';
+                }
+                $searchFilter.Account = $("#cdr_filter_1 select[name='AccountID']").val();
+                $searchFilter.Report = $("#cdr_filter_1 select[name='report']").val();
+                $searchFilter.StartDate = $("#cdr_filter_1 input[name='StartDate']").val();
+                $searchFilter.EndDate = $("#cdr_filter_1 input[name='EndDate']").val();
+                $searchFilter.starttime = $("#cdr_filter_1 input[name='StartTime']").val();
+                // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
+                if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
+                    $.notify("Please Select a Start date", "Error");
+                    return false;
+                }
+                if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
+                    $.notify("Please Select a End date", "Error");
+                    return false;
+                }
+                if(typeof $searchFilter.Report  == 'undefined' || $searchFilter.Report.trim() == ''){
+                    $.notify("Please Select a Report", "Error");
+                    return false;
+                }
+                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
+                    $.notify("Please Select a Account", "Error");
+                    return false;
+                }
+                $searchFilter.StartDate += ' '+starttime;
+                $searchFilter.EndDate += ' '+$("#cdr_filter_1 [name='EndTime']").val();
+                $searchFilter.ActiveTab = $("#cdr_filter_1 input[name='ActiveTab']").val();
+                $searchFilter.type = "Vendor";
+            }
+            $.ajax({
+                url: myurl,
+                type: "get",
+                data:{
+                    'Account': $searchFilter.Account,
+                    'StartDate' : $searchFilter.StartDate ,
+                    'EndDate' : $searchFilter.EndDate,
+                    'Report' :  $searchFilter.Report,
+                    'ActiveTab' :  $searchFilter.ActiveTab,
+                    'type' : $searchFilter.type 
+                },
+                datatype: "html",
+            })
+            .done(function(data){
+
+                if(ref_this.data('id') == 2){
+                    $('#tables_data_1').html(data),
+                    location.hash = "Vendor_page?"+page;
+                    localStorage.setItem('Vendor_page',page);
+
+
+                }   
+                if(ref_this.data('id') == 1){
+                    $('#tables_data').html(data),
+                    location.hash = "customer_page?"+page;
+                    localStorage.setItem('customer_page', page);
+
+
+                }      
+            })
+            .fail(function(jqXHR, ajaxOptions, thrownError){
+                alert('No response from server');
+            });
+        });
+    });
+      
+   
+      
+    </script>
 
 @endsection

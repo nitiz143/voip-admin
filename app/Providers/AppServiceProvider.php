@@ -26,9 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrap();
         Storage::extend('sftp', function ($app, $config) {
             return new Filesystem(new SftpAdapter($config));
         });
-        Paginator::useBootstrap();
     }
 }
