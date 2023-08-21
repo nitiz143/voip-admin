@@ -43,23 +43,23 @@
                 <a href="{{url('/cron')}}" class="nav-link {{ Request::is('cron','cron/*') ? 'active' : '' }} ">Cron Job</a>
                 </li>
                 <li class="nav-item dropdown {{ Request::is('trunks','trunks/*','setting','setting/*') ? 'menu-is-opening menu-open' : '' }}">
-                <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Settings</a>
-                <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                <li><a href="{{url('/trunks')}}" class="dropdown-item {{ Request::is('trunks','trunks/*') ? 'active' : '' }}">Trunks </a></li>
-                <li><a href="{{url('/setting')}}" class="dropdown-item {{ Request::is('setting','setting/*') ? 'active' : '' }} ">Settings</a></li>
-                <li class="dropdown-divider"></li>
-                @if(Auth::user()->role  == 'Admin')
-                    @php
-                        $company = App\Models\Company::first();
-                    @endphp
-                    @if(!empty($company))
-                        <li class="nav-item">
-                            <a href="{{route('company.edit',$company->id)}}" class="nav-link {{ Request::is('company','company/*') ? 'active' : ''}}">Company</a>
-                        </li>
-                    @endif
-                @endif
-                
-                </ul>
+                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Settings</a>
+                    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                        <li><a href="{{url('/trunks')}}" class="dropdown-item {{ Request::is('trunks','trunks/*') ? 'active' : '' }}">Trunks </a></li>
+                        <li><a href="{{url('/setting')}}" class="dropdown-item {{ Request::is('setting','setting/*') ? 'active' : '' }} ">Settings</a></li>
+                        <li class="dropdown-divider"></li>
+                        @if(Auth::user()->role  == 'Admin')
+                            @php
+                                $company = App\Models\Company::first();
+                            @endphp
+                            @if(!empty($company))
+                                <li class="nav-item">
+                                    <a href="{{route('company.edit',$company->id)}}" class="nav-link {{ Request::is('company','company/*') ? 'active' : ''}}">Company</a>
+                                </li>
+                            @endif
+                        @endif
+                        
+                    </ul>
                 </li>
             </ul>
             <ul class="navbar-nav">
