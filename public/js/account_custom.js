@@ -350,7 +350,7 @@ function save(formdata, url,method) {
 }
 
 $("#customer_authentication_rule").change(function() {
-    if($(this).val() == 6){
+    if($(this).val() == 6 || $(this).val() == 2 || $(this).val() == 3){
         $('#customer_authentication_value_div').removeClass('d-none');
     }else{
         $('#customer_authentication_value_div').addClass('d-none');
@@ -358,7 +358,7 @@ $("#customer_authentication_rule").change(function() {
 });
 
 $("#vendor_authentication_rule").change(function() {
-    if($(this).val() == 6){
+    if($(this).val() == 6 || $(this).val() == 2 || $(this).val() == 3){
         $('#vendor_authentication_value_div').removeClass('d-none');
     }else{
         $('#vendor_authentication_value_div').addClass('d-none');

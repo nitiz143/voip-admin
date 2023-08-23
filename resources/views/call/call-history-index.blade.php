@@ -8,24 +8,26 @@
     <section class="content-header">
         <div class="container">
             <div class="row mb-2">
-                <div class="col-sm-4">
-                    <div class="header mt-2">
-                        <h4 class="title ">Call History</h4>
-                    </div>
+                <div class="col-sm-6">
+
                 </div>
-                <div class="col-sm-8">
-                    <ol class="breadcrumb float-sm-right">
-                        <a href="{{ route('cdr.create') }}" class="btn btn-primary mb-4 float-right w-10" id="createzoneModal">Import</a>
-                    </ol>
+                <div class="col-sm-6">
+                 
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
     <section class="content">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title ">Call History</h4>
+                            <div class="float-right">
+                                <a href="{{ route('cdr.create') }}" class="btn btn-primary  w-10" id="createzoneModal">Import</a>
+                            </div>
+                        </div> 
                         <div class="card-body">
                             <div class="panel panel-primary">
                                 <div class=" tab-menu-heading">
@@ -43,7 +45,7 @@
                                 </div>
                                 <div class="tab-content">
                                     <div id="home" class="tab-pane fade in active show">
-                                        <div class="container-fluid  ml-2">
+                                        <div class="container-fluid  ml-2 mt-3">
                                             <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-3" method="post" id="cdr_filter">
                                                 <input type="hidden" name="type" class="form-control"  value="Customer"  />
                                                 <div class="form-group" style="max-width: 300px;">

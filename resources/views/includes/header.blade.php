@@ -10,14 +10,14 @@
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse order-3 justify-content-between" id="navbarCollapse">
-            {{-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class=" mt-3 pb-3 mb-3 d-flex">
                 <div class="image mt-3">
-                    <img src="{{asset('assets/dist/img/avatar5.png')}}" class="animation__shake" height="60" width="60">
+                    <img src="{{asset('assets/dist/img/download.png')}}" height="60" width="160" >
                 </div>
-            </div> --}}
+            </div>
             <ul class="navbar-nav">
                 <li class="nav-item"> 
-                <a href="/home" class="nav-link {{ Request::is('home') ? 'active' : '' }}">Home</a>
+                    <a href="/home" class="nav-link {{ Request::is('home') ? 'active' : '' }}">Home</a>
                 </li>
                 @if (auth()->user()->role == 'Admin'||auth()->user()->role == 'Super Admin'||auth()->user()->role == 'NOC Admin'||auth()->user()->role == 'Sales Admin'||auth()->user()->role == 'Rate Admin'||auth()->user()->role == 'Billing Admin')   
                     <li class="nav-item">
@@ -25,13 +25,13 @@
                     </li>
                 @endif
                 <li class="nav-item">
-                    <a href="{{url('/cdr-show')}}" class="nav-link {{ Request::is('cdr_show','cdr_show/*','Upload-CDR') ? 'active' : '' }} ">Call-history</a>
+                    <a href="{{route('cdr_show.index')}}" class="nav-link {{ Request::is('cdr_show','cdr_show/*','Upload-CDR') ? 'active' : '' }} ">Call-history</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{url('/export-history')}}" class="nav-link {{ Request::is('export-history','export-history/*') ? 'active' : '' }}">Invoices</a>
+                    <a href="{{route('export.history')}}" class="nav-link {{ Request::is('export_history','export_history/*') ? 'active' : '' }}">Invoices</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{url('/export-csv-history')}}" class="nav-link {{ Request::is('export-csv-history') ? 'active' : '' }} ">Report</a>
+                    <a href="{{route('export-csv.history')}}" class="nav-link {{ Request::is('export_csv_history') ? 'active' : '' }} ">Report</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{url('/client')}}" class="nav-link {{ Request::is('client','client/*','client-customer/*','client-vendor/*') ? 'active' : '' }}">Account</a>
@@ -40,7 +40,7 @@
                     <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/*','getClient/*','comment/*') ? 'active' : '' }} ">CRM</a>
                 </li>
                 <li class="nav-item">
-                <a href="{{url('/cron')}}" class="nav-link {{ Request::is('cron','cron/*') ? 'active' : '' }} ">Cron Job</a>
+                    <a href="{{url('/cron')}}" class="nav-link {{ Request::is('cron','cron/*') ? 'active' : '' }} ">Cron Job</a>
                 </li>
                 <li class="nav-item dropdown {{ Request::is('trunks','trunks/*','setting','setting/*') ? 'menu-is-opening menu-open' : '' }}">
                     <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Settings</a>
@@ -58,7 +58,6 @@
                                 </li>
                             @endif
                         @endif
-                        
                     </ul>
                 </li>
             </ul>
@@ -78,15 +77,15 @@
                     </a>
                     <div class="dropdown-menu  dropdown-menu-right ">
                         <div class="dropdown-header noti-title">
-                        <h6 class="text-overflow m-0">{{ (auth()->user()->name) }}</h6>
+                            <h6 class="text-overflow m-0">{{ (auth()->user()->name) }}</h6>
                         </div>
                         <div class="dropdown-divider"></div> 
                         <a href="{{route('logout')}}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
-                        <i class="ni ni-user-run"></i>
-                        <span>Logout</span>
-                        <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            {{ csrf_field() }}
-                        </form>
+                            <i class="ni ni-user-run"></i>
+                            <span>Logout</span>
+                            <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
                         </a>
                     </div>
                 </li>
