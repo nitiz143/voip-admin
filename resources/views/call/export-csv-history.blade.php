@@ -5,7 +5,7 @@
     #tables_data .table td {white-space: nowrap !important; overflow: hidden !important;  }
     #tables_data_1 .table {border-collapse:collapse !important; table-layout:fixed  ; }
     #tables_data_1 .table td {white-space: nowrap !important; overflow: hidden !important;  }
- </style>
+</style>
 <div class="content-wrapper mt-3" >
     <section class="content-header">
         <div class="container">
@@ -43,13 +43,13 @@
                             <div class="panel panel-primary">
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item csv-xlsx">
-                                      <a class="nav-link active" data-id="1" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Customer</a>
+                                      <a class="nav-link check-active active" data-id="1" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Customer</a>
                                     </li>
                                     <li class="nav-item csv-xlsx">
-                                      <a class="nav-link" id="profile-tab" data-id="2"  data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Vendor</a>
+                                      <a class="nav-link check-active" id="profile-tab" data-id="2"  data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Vendor</a>
                                     </li>
                                     <li class="nav-item csv-xlsx">
-                                    <a class="nav-link" id="download-tab" data-id="3"  data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Download</a>
+                                    <a class="nav-link check-active" id="download-tab" data-id="3"  data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Download History</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="myTabContent">
@@ -57,6 +57,31 @@
                                         <div class="container-fluid  ml-2 mt-3">
                                             <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter">
                                                 <input type="hidden" name="type" class="form-control"  value="Customer"  />
+                                                <div class="form-group customer_Account">
+                                                    <label class="control-label" for="field-1">Customer Name</label>
+                                                    <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
+                                                        @if(!empty($Accounts))
+                                                            <option value="">Select</option>
+                                                            @foreach ( $Accounts as $Account )
+                                                                <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label class="control-label" for="field-1">Report Name</label>
+                                                    <select class="form-control" id="report" allowClear="true" name="report"
+                                                    style="width: 138px;">
+                                                        <option value="">Select</option>
+                                                        <option value="Customer-Summary">Customer Summary</option>
+                                                        <option value="Customer-Hourly">Customer Hourly</option>
+                                                        <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
+                                                        <option value="Account-Manage">Account Manage</option>
+                                                        <option value="Customer-Margin-Report">Margin Report</option>
+                                                        <option value="Customer-Negative-Report">Negative Report</option>
+                                                    </select>
+                                                </div>
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="control-label small_label" for="field-1">Start Date</label>
                                                     <div class="d-flex gap-1">
@@ -74,31 +99,7 @@
                                                         <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
                                                     </div>
                                                 </div>
-                                                <div class="form-group customer_Account">
-                                                    <label class="control-label" for="field-1">Customers List</label>
-                                                    <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
-                                                        @if(!empty($Accounts))
-                                                            <option value="">Select</option>
-                                                            @foreach ( $Accounts as $Account )
-                                                                <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                </div>
-                                                
-                                                <div class="form-group">
-                                                    <label class="control-label" for="field-1">Report</label>
-                                                    <select class="form-control" id="report" allowClear="true" name="report"
-                                                    style="width: 138px;">
-                                                        <option value="">Select</option>
-                                                        <option value="Customer-Summary">Customer Summary</option>
-                                                        <option value="Customer-Hourly">Customer Hourly</option>
-                                                        <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
-                                                        <option value="Account-Manage">Account Manage</option>
-                                                        <option value="Customer-Margin-Report">Margin Report</option>
-                                                        <option value="Customer-Negative-Report">Negative Report</option>
-                                                    </select>
-                                                </div>
+                                               
                                                 <div class="form-group mt-4">
                                                     <input type="hidden" id="ActiveTab" name="ActiveTab" value="1">
                                                     <a href="" class="btn btn-primary mb-4 w-10 mt-2" id="view_data"><i class="fas fa-eye"></i></a>
@@ -118,6 +119,29 @@
                                         <div class="container-fluid  ml-2 mt-3">
                                             <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter_1">
                                                 <input type="hidden" name="type" class="form-control"  value="Vendor"  />
+                                                <div class="form-group vendor_Account">
+                                                    <label class="control-label" for="field-1">Vendor Name</label>
+                                                    <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
+                                                        @if(!empty($VAccounts))
+                                                            <option value="">Select</option>
+                                                            @foreach ( $VAccounts as $Account )
+                                                                <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label" for="field-1">Report Name</label>
+                                                    <select class="form-control" id="report" allowClear="true" name="report" style="width: 138px;">
+                                                        <option value="">Select</option>
+                                                        <option value="Vendor-Summary">Vendor Summary</option>
+                                                        <option value="Vendor-Hourly">Vendor Hourly</option>
+                                                        <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
+                                                        <option value="Account-Manage">Account Manage</option>
+                                                        <option value="Vendor-Margin-Report">Margin Report</option>
+                                                        <option value="Vendor-Negative-Report">Negative Report</option>
+                                                    </select>
+                                                </div>
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="control-label small_label" for="field-1">Start Date</label>
                                                     <div class="d-flex gap-1">
@@ -135,29 +159,7 @@
                                                         <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
                                                     </div>
                                                 </div>
-                                                <div class="form-group vendor_Account">
-                                                    <label class="control-label" for="field-1">Vendor List</label>
-                                                    <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
-                                                        @if(!empty($VAccounts))
-                                                            <option value="">Select</option>
-                                                            @foreach ( $VAccounts as $Account )
-                                                                <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label" for="field-1">Report</label>
-                                                    <select class="form-control" id="report" allowClear="true" name="report" style="width: 138px;">
-                                                        <option value="">Select</option>
-                                                        <option value="Vendor-Summary">Vendor Summary</option>
-                                                        <option value="Vendor-Hourly">Vendor Hourly</option>
-                                                        <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
-                                                        <option value="Account-Manage">Account Manage</option>
-                                                        <option value="Vendor-Margin-Report">Margin Report</option>
-                                                        <option value="Vendor-Negative-Report">Negative Report</option>
-                                                    </select>
-                                                </div>
+                                                
                                                 <div class="form-group mt-4">
                                                     <input type="hidden" id="ActiveTab" name="ActiveTab" value="2">
                                                     <a href="" class="btn btn-primary mb-4  w-10 mt-2" id="view_data"><i class="fas fa-eye"></i></a>
@@ -178,23 +180,6 @@
                                         <div class="container-fluid  ml-2 mt-3">
                                             <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter_2">
                                                 <input type="hidden" name="type" class="form-control"  value="Customer"  />
-                                                <div class="form-group" style="max-width: 300px;">
-                                                    <label class="control-label small_label" for="field-1">Start Date</label>
-                                                    <div class="d-flex gap-1">
-                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker4"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
-                            
-                                                        <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
-                                                    </div>
-                                                </div>
-                                                <div class="form-group" style="max-width: 300px;">
-                                                    <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
-                                                    <div class="d-flex gap-1">
-                                                        <input type="text" name="EndDate" 
-                                                        id="datepicker5" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
-                                                    
-                                                        <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
-                                                    </div>
-                                                </div>
                                                 <div class="form-group customer_Account">
                                                     <label class="control-label" for="field-1">Account List</label>
                                                     <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
@@ -239,6 +224,24 @@
                                                         </optgroup>
                                                     </select>
                                                 </div>
+                                                <div class="form-group" style="max-width: 300px;">
+                                                    <label class="control-label small_label" for="field-1">Start Date</label>
+                                                    <div class="d-flex gap-1">
+                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker4"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
+                            
+                                                        <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style="max-width: 300px;">
+                                                    <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
+                                                    <div class="d-flex gap-1">
+                                                        <input type="text" name="EndDate" 
+                                                        id="datepicker5" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
+                                                    
+                                                        <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
+                                                    </div>
+                                                </div>
+                                                
                                                 <div class="form-group mt-4">
                                                     <input type="hidden" id="ActiveTab" name="ActiveTab" value="3">
                                                     <a href="" class="btn btn-primary mb-4 w-10 mt-2" id="filter">Filter</a>
@@ -280,19 +283,67 @@
     $(document).ready(function() {
         
         var myDate = new Date();
-        $('#datepicker').datepicker();
+        $('#datepicker').datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker').datepicker('setDate', myDate);
-        $('#datepicker1').datepicker();
+        $('#datepicker1').datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker1').datepicker('setDate', myDate);
 
-        $('#datepicker2').datepicker();
+        $('#datepicker2').datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker2').datepicker('setDate', myDate);
-        $('#datepicker3').datepicker();
+        $('#datepicker3').datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker3').datepicker('setDate', myDate);
 
-        $('#datepicker4').datepicker();
+        $('#datepicker4').datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker4').datepicker('setDate', myDate);
-        $('#datepicker5').datepicker();
+        $('#datepicker5').datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker5').datepicker('setDate', myDate);
         $('.timepicker').datetimepicker({
             format: 'HH:mm:ss'
@@ -544,7 +595,7 @@
         }
         
     });
-    $(document).on('click', '.nav-link',function(event){
+    $(document).on('click', '.check-active',function(event){
         event.preventDefault();
         if($(this).data('id') == 1){
             var customerPage = localStorage.getItem("customer_page");

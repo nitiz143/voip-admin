@@ -102,6 +102,9 @@
     .slider.round:before {
       border-radius: 50%;
     }
+    .main-footer{
+     text-align: center;
+    }
     </style>
 </head>
 <body class="hold-transition layout-top-nav">
