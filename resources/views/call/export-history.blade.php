@@ -44,11 +44,33 @@
                                     <div class="container-fluid  ml-1 mt-4">
                                         <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter">
                                             @csrf
-                                            <input type="hidden" name="type" class="form-control"  value="Customer"  />
+                                            <input type="hidden" name="type" class="form-control"  value="Customer"  /><div class="form-group customer_Account">
+                                                <label class="control-label" for="field-1"> Customer Name</label>
+                                                <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID" required>
+                                                    @if(!empty($Accounts))
+                                                        <option value="">Select</option>
+                                                        @foreach ( $Accounts as $Account )
+                                                            <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label" for="field-1">Report Name</label>
+                                                <select class="form-control" id="report" allowClear="true" name="report">
+                                                    <option value="">Select</option>
+                                                    <option value="Customer-Summary">Customer Summary</option>
+                                                    <option value="Customer-Hourly">Customer Hourly</option>
+                                                    <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
+                                                    <option value="Account-Manage">Account Manage</option>
+                                                    <option value="Margin-Report">Margin Report</option>
+                                                    <option value="Customer-Negative-Report">Negative Report</option>
+                                                </select>
+                                            </div>
                                             <div class="form-group" style="max-width: 300px;">
                                                 <label class="control-label small_label" for="field-1">Start Date</label>
                                                 <div class="d-flex gap-1">
-                                                    <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
+                                                    <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"/>
 
                                                     <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
                                                 </div>
@@ -62,29 +84,7 @@
                                                     <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
                                                 </div>
                                             </div>
-                                            <div class="form-group customer_Account">
-                                                <label class="control-label" for="field-1"> Customer List</label>
-                                                <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID" required>
-                                                    @if(!empty($Accounts))
-                                                        <option value="">Select</option>
-                                                        @foreach ( $Accounts as $Account )
-                                                            <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label" for="field-1">Report</label>
-                                                <select class="form-control" id="report" allowClear="true" name="report">
-                                                    <option value="">Select</option>
-                                                    <option value="Customer-Summary">Customer Summary</option>
-                                                    <option value="Customer-Hourly">Customer Hourly</option>
-                                                    <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
-                                                    <option value="Account-Manage">Account Manage</option>
-                                                    <option value="Margin-Report">Margin Report</option>
-                                                    <option value="Customer-Negative-Report">Negative Report</option>
-                                                </select>
-                                            </div>
+                                            
                                             <div class="form-group mt-4 d-flex">
                                                 <input type="hidden" id="ActiveTab" name="ActiveTab" value="1">
                                                 <a type="submit"  class="btn btn-primary btn-md btn-icon mt-2 " id="filter_data" ><i class="entypo-search" ></i>Filter</a>
@@ -98,6 +98,29 @@
                                         <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter_1">
                                             @csrf
                                             <input type="hidden" name="type" class="form-control"  value="Vendor"  />
+                                            <div class="form-group customer_Account">
+                                                <label class="control-label" for="field-1"> Vendor Name</label>
+                                                <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID" required>
+                                                    @if(!empty($VAccounts))
+                                                        <option value="">Select</option>
+                                                        @foreach ( $VAccounts as $Account )
+                                                            <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label" for="field-1">Report Name</label>
+                                                <select class="form-control" id="report" allowClear="true" name="report">
+                                                    <option value="">Select</option>
+                                                    <option value="Vendor-Summary">Vendor Summary</option>
+                                                    <option value="Vendor-Hourly">Vendor Hourly</option>
+                                                    <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
+                                                    <option value="Account-Manage">Account Manage</option>
+                                                    <option value="Margin-Report">Margin Report</option>
+                                                    <option value="Vendor-Negative-Report">Negative Report</option>
+                                                </select>
+                                            </div>
                                             <div class="form-group" style="max-width: 300px;">
                                                 <label class="control-label small_label" for="field-1">Start Date</label>
                                                 <div class="d-flex gap-1">
@@ -115,29 +138,7 @@
                                                     <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
                                                 </div>
                                             </div>
-                                            <div class="form-group customer_Account">
-                                                <label class="control-label" for="field-1"> Vendor List</label>
-                                                <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID" required>
-                                                    @if(!empty($VAccounts))
-                                                        <option value="">Select</option>
-                                                        @foreach ( $VAccounts as $Account )
-                                                            <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label" for="field-1">Report</label>
-                                                <select class="form-control" id="report" allowClear="true" name="report">
-                                                    <option value="">Select</option>
-                                                    <option value="Vendor-Summary">Vendor Summary</option>
-                                                    <option value="Vendor-Hourly">Vendor Hourly</option>
-                                                    <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
-                                                    <option value="Account-Manage">Account Manage</option>
-                                                    <option value="Margin-Report">Margin Report</option>
-                                                    <option value="Vendor-Negative-Report">Negative Report</option>
-                                                </select>
-                                            </div>
+                                           
                                             <div class="form-group mt-4 d-flex">
                                                 <input type="hidden" id="ActiveTab" name="ActiveTab" value="2">
                                                 <a type="submit"  class="btn btn-primary btn-md btn-icon mt-2 " id="filter_data" ><i class="entypo-search" ></i>Filter</a>
@@ -175,14 +176,46 @@
 <script>
     $(document).ready(function() {
         var myDate = new Date();
-        $('#datepicker').datepicker();
+        $('#datepicker').datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker').datepicker('setDate', myDate);
-        $('#datepicker1').datepicker();
+        $('#datepicker1').datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker1').datepicker('setDate', myDate);
 
-        $('#datepicker2').datepicker();
+        $('#datepicker2').datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker2').datepicker('setDate', myDate);
-        $('#datepicker3').datepicker();
+        $('#datepicker3').datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker3').datepicker('setDate', myDate);
         $('.timepicker').datetimepicker({
             format: 'HH:mm:ss'

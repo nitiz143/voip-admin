@@ -19,11 +19,12 @@
                 <li class="nav-item"> 
                     <a href="/home" class="nav-link {{ Request::is('home') ? 'active' : '' }}">Home</a>
                 </li>
-                @if (auth()->user()->role == 'Admin'||auth()->user()->role == 'Super Admin'||auth()->user()->role == 'NOC Admin'||auth()->user()->role == 'Sales Admin'||auth()->user()->role == 'Rate Admin'||auth()->user()->role == 'Billing Admin')   
-                    <li class="nav-item">
-                        <a href="{{url('/users')}}" class="nav-link {{ Request::is('users','users/*') ? 'active' : '' }} ">Users</a>
-                    </li>
-                @endif
+                <li class="nav-item">
+                    <a href="{{url('/client')}}" class="nav-link {{ Request::is('client','client/*','client-customer/*','client-vendor/*') ? 'active' : '' }}">Account</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('export-csv.history')}}" class="nav-link {{ Request::is('export-csv-history') ? 'active' : '' }} ">Report</a>
+                </li>
                 <li class="nav-item">
                     <a href="{{route('cdr_show.index')}}" class="nav-link {{ Request::is('cdr-show','cdr-show/*','Upload-CDR') ? 'active' : '' }} ">Call-history</a>
                 </li>
@@ -31,16 +32,16 @@
                     <a href="{{route('export.history')}}" class="nav-link {{ Request::is('export-history','export-history/*') ? 'active' : '' }}">Invoices</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('export-csv.history')}}" class="nav-link {{ Request::is('export-csv-history') ? 'active' : '' }} ">Report</a>
+                    <a href="{{url('/cron')}}" class="nav-link {{ Request::is('cron','cron/*') ? 'active' : '' }} ">Cron Job</a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{url('/client')}}" class="nav-link {{ Request::is('client','client/*','client-customer/*','client-vendor/*') ? 'active' : '' }}">Account</a>
-                </li>
+            
+                @if (auth()->user()->role == 'Admin'||auth()->user()->role == 'Super Admin'||auth()->user()->role == 'NOC Admin'||auth()->user()->role == 'Sales Admin'||auth()->user()->role == 'Rate Admin'||auth()->user()->role == 'Billing Admin')   
+                    <li class="nav-item">
+                        <a href="{{url('/users')}}" class="nav-link {{ Request::is('users','users/*') ? 'active' : '' }} ">Users</a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a href="{{url('/crm')}}" class="nav-link {{ Request::is('crm','crm/*','getClient/*','comment/*') ? 'active' : '' }} ">CRM</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{url('/cron')}}" class="nav-link {{ Request::is('cron','cron/*') ? 'active' : '' }} ">Cron Job</a>
                 </li>
                 <li class="nav-item dropdown {{ Request::is('trunks','trunks/*','setting','setting/*') ? 'menu-is-opening menu-open' : '' }}">
                     <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Settings</a>
