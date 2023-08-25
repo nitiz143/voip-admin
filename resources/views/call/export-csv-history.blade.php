@@ -1,10 +1,10 @@
 @extends('layouts.dashboard')
 @section('content')
 <style>
-    #tables_data .table {border-collapse:collapse !important; table-layout:fixed  ; }
-    #tables_data .table td {white-space: nowrap !important; overflow: hidden !important;  }
-    #tables_data_1 .table {border-collapse:collapse !important; table-layout:fixed  ; }
-    #tables_data_1 .table td {white-space: nowrap !important; overflow: hidden !important;  }
+   .for-scroll{
+        overflow: auto;
+        overscroll-behavior-x: auto;
+    }
 </style>
 <div class="content-wrapper mt-3" >
     <section class="content-header">
@@ -85,18 +85,14 @@
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="control-label small_label" for="field-1">Start Date</label>
                                                     <div class="d-flex gap-1">
-                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
-                            
-                                                        <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
+                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03"  />
                                                     </div>
                                                 </div>
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
                                                     <div class="d-flex gap-1">
                                                         <input type="text" name="EndDate" 
-                                                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
-                                                    
-                                                        <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
+                                                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03" />
                                                     </div>
                                                 </div>
                                                
@@ -145,18 +141,14 @@
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="control-label small_label" for="field-1">Start Date</label>
                                                     <div class="d-flex gap-1">
-                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker2"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
-                            
-                                                        <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
+                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker2"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03"  />
                                                     </div>
                                                 </div>
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
                                                     <div class="d-flex gap-1">
                                                         <input type="text" name="EndDate" 
-                                                        id="datepicker3" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
-                                                    
-                                                        <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
+                                                        id="datepicker3" class="form-control datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03" />
                                                     </div>
                                                 </div>
                                                 
@@ -227,18 +219,14 @@
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="control-label small_label" for="field-1">Start Date</label>
                                                     <div class="d-flex gap-1">
-                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker4"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
-                            
-                                                        <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
+                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker4"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03"  />
                                                     </div>
                                                 </div>
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
                                                     <div class="d-flex gap-1">
                                                         <input type="text" name="EndDate" 
-                                                        id="datepicker5" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
-                                                    
-                                                        <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
+                                                        id="datepicker5" class="form-control datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03" />
                                                     </div>
                                                 </div>
                                                 
@@ -283,71 +271,70 @@
     $(document).ready(function() {
         
         var myDate = new Date();
-        $('#datepicker').datepicker({
+        $('#datepicker').datetimepicker({
             showOtherMonths: true,
             selectOtherMonths: true,
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            //gotoCurrent: true,
+            format: 'yyyy-mm-dd HH:ii:ss',
            orientation: "bottom" // add this
         });
-        $('#datepicker').datepicker('setDate', myDate);
-        $('#datepicker1').datepicker({
+        $('#datepicker').datetimepicker('setDate', myDate );
+        $('#datepicker1').datetimepicker({
             showOtherMonths: true,
             selectOtherMonths: true,
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            //gotoCurrent: true,
+            format: 'yyyy-mm-dd HH:ii:ss',
            orientation: "bottom" // add this
         });
-        $('#datepicker1').datepicker('setDate', myDate);
+        $('#datepicker1').datetimepicker('setDate', myDate);
 
-        $('#datepicker2').datepicker({
+        $('#datepicker2').datetimepicker({
             showOtherMonths: true,
             selectOtherMonths: true,
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            //gotoCurrent: true,
+            format: 'yyyy-mm-dd HH:ii:ss',
            orientation: "bottom" // add this
         });
-        $('#datepicker2').datepicker('setDate', myDate);
-        $('#datepicker3').datepicker({
+        $('#datepicker2').datetimepicker('setDate', myDate);
+        $('#datepicker3').datetimepicker({
             showOtherMonths: true,
             selectOtherMonths: true,
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            //gotoCurrent: true,
+            format: 'yyyy-mm-dd HH:ii:ss',
            orientation: "bottom" // add this
+           
         });
-        $('#datepicker3').datepicker('setDate', myDate);
+        $('#datepicker3').datetimepicker('setDate', myDate);
 
-        $('#datepicker4').datepicker({
+        $('#datepicker4').datetimepicker({
             showOtherMonths: true,
             selectOtherMonths: true,
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            //gotoCurrent: true,
+            format: 'yyyy-mm-dd HH:ii:ss',
            orientation: "bottom" // add this
         });
-        $('#datepicker4').datepicker('setDate', myDate);
-        $('#datepicker5').datepicker({
+        $('#datepicker4').datetimepicker('setDate', myDate);
+        $('#datepicker5').datetimepicker({
             showOtherMonths: true,
             selectOtherMonths: true,
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            //gotoCurrent: true,
+            format: 'yyyy-mm-dd HH:ii:ss',
            orientation: "bottom" // add this
         });
-        $('#datepicker5').datepicker('setDate', myDate);
-        $('.timepicker').datetimepicker({
-            format: 'HH:mm:ss'
-        });
+        $('#datepicker5').datetimepicker('setDate', myDate);
+        
     });
     
 
@@ -416,16 +403,11 @@
             var $searchFilter = {};
             var ref_this = $("ul.nav li.nav-item a.nav-link.active");
             if(ref_this.data('id') == 1){
-                var starttime = $("#cdr_filter input[name='StartTime']").val();
-                if(starttime =='00:00:01'){
-                    starttime = '00:00:00';
-                }
+              
                 $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
                 $searchFilter.Report = $("#cdr_filter select[name='report']").val();
                 $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
                 $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
-                $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
-                // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
                 if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
                     $.notify("Please Select a Start date", "Error");
                     return false;
@@ -442,23 +424,16 @@
                     $.notify("Please Select a Account", "Error");
                     return false;
                 }
-                $searchFilter.StartDate += ' '+starttime;
-                $searchFilter.EndDate += ' '+$("#cdr_filter [name='EndTime']").val();
                 $searchFilter.ActiveTab = $("#cdr_filter input[name='ActiveTab']").val();
                 $searchFilter.type = "Customer";
 
             }
             if(ref_this.data('id') == 2){
-                var starttime = $("#cdr_filter_1 input[name='StartTime']").val();
-                if(starttime =='00:00:01'){
-                    starttime = '00:00:00';
-                }
+               
                 $searchFilter.Account = $("#cdr_filter_1 select[name='AccountID']").val();
                 $searchFilter.Report = $("#cdr_filter_1 select[name='report']").val();
                 $searchFilter.StartDate = $("#cdr_filter_1 input[name='StartDate']").val();
                 $searchFilter.EndDate = $("#cdr_filter_1 input[name='EndDate']").val();
-                $searchFilter.starttime = $("#cdr_filter_1 input[name='StartTime']").val();
-                // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
                 if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
                     $.notify("Please Select a Start date", "Error");
                     return false;
@@ -475,8 +450,6 @@
                     $.notify("Please Select a Account", "Error");
                     return false;
                 }
-                $searchFilter.StartDate += ' '+starttime;
-                $searchFilter.EndDate += ' '+$("#cdr_filter_1 [name='EndTime']").val();
                 $searchFilter.ActiveTab = $("#cdr_filter_1 input[name='ActiveTab']").val();
                 $searchFilter.type = "Vendor";
             }
@@ -515,16 +488,11 @@
             var ref_this = $("ul.nav li.nav-item a.nav-link.active");
         
             if(ref_this.data('id') == 3){
-                var starttime = $("#cdr_filter_2 input[name='StartTime']").val();
-                if(starttime =='00:00:01'){
-                    starttime = '00:00:00';
-                }
+               
                 $searchFilter.Account = $("#cdr_filter_2 select[name='AccountID']").val();
                 $searchFilter.Report = $("#cdr_filter_2 select[name='report']").val();
                 $searchFilter.StartDate = $("#cdr_filter_2 input[name='StartDate']").val();
                 $searchFilter.EndDate = $("#cdr_filter_2 input[name='EndDate']").val();
-                $searchFilter.starttime = $("#cdr_filter_2 input[name='StartTime']").val();
-                // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
                 if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
                     $.notify("Please Select a Start date", "Error");
                     return false;
@@ -541,8 +509,6 @@
                     $.notify("Please Select a Account", "Error");
                     return false;
                 }
-                $searchFilter.StartDate += ' '+starttime;
-                $searchFilter.EndDate += ' '+$("#cdr_filter_2 [name='EndTime']").val();
                 $searchFilter.ActiveTab = $("#cdr_filter_2 input[name='ActiveTab']").val();
 
             }
@@ -627,16 +593,11 @@
             var $searchFilter = {};
             var ref_this = $("ul.nav li.nav-item a.nav-link.active");
             if(ref_this.data('id') == 1){
-                var starttime = $("#cdr_filter input[name='StartTime']").val();
-                if(starttime =='00:00:01'){
-                    starttime = '00:00:00';
-                }
+             
                 $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
                 $searchFilter.Report = $("#cdr_filter select[name='report']").val();
                 $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
                 $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
-                $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
-                // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
                 if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
                     $.notify("Please Select a Start date", "Error");
                     return false;
@@ -653,23 +614,16 @@
                     $.notify("Please Select a Account", "Error");
                     return false;
                 }
-                $searchFilter.StartDate += ' '+starttime;
-                $searchFilter.EndDate += ' '+$("#cdr_filter [name='EndTime']").val();
                 $searchFilter.ActiveTab = $("#cdr_filter input[name='ActiveTab']").val();
                 $searchFilter.type = "Customer";
 
             }
             if(ref_this.data('id') == 2){
-                var starttime = $("#cdr_filter_1 input[name='StartTime']").val();
-                if(starttime =='00:00:01'){
-                    starttime = '00:00:00';
-                }
+               
                 $searchFilter.Account = $("#cdr_filter_1 select[name='AccountID']").val();
                 $searchFilter.Report = $("#cdr_filter_1 select[name='report']").val();
                 $searchFilter.StartDate = $("#cdr_filter_1 input[name='StartDate']").val();
                 $searchFilter.EndDate = $("#cdr_filter_1 input[name='EndDate']").val();
-                $searchFilter.starttime = $("#cdr_filter_1 input[name='StartTime']").val();
-                // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
                 if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
                     $.notify("Please Select a Start date", "Error");
                     return false;
@@ -686,8 +640,6 @@
                     $.notify("Please Select a Account", "Error");
                     return false;
                 }
-                $searchFilter.StartDate += ' '+starttime;
-                $searchFilter.EndDate += ' '+$("#cdr_filter_1 [name='EndTime']").val();
                 $searchFilter.ActiveTab = $("#cdr_filter_1 input[name='ActiveTab']").val();
                 $searchFilter.type = "Vendor";
             }
