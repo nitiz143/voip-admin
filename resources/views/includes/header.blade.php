@@ -78,7 +78,9 @@
                     </a>
                     <div class="dropdown-menu  dropdown-menu-right ">
                         <div class="dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">{{ (auth()->user()->name) }}</h6>
+                            <a href="{{route('profile')}}" class="dropdown-item">
+                                <span>{{ (auth()->user()->name) }}</span>
+                            </a>
                         </div>
                         <div class="dropdown-divider"></div> 
                         <a href="{{route('logout')}}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
