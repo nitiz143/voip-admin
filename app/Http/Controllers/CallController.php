@@ -15,6 +15,8 @@ use App\Models\ExportHistory;
 use App\Jobs\InvoiceGenrateJob;
 use App\Jobs\DownloadCsvXlsx;
 use App\Models\ExportCsvXlsxHistory;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use App\Utils\RandomUtil;
 use Carbon\Carbon;
 use DateTime;
@@ -552,17 +554,11 @@ class CallController extends Controller
     public function export_csv_history(Request $request){
         if ($request->ajax()) {
             $data = ExportCsvXlsxHistory::query();
-            if($request->ActiveTab == 1){
-                if(!empty($request->Account)){
-                    $data->where('client_id', $request->Account);
-                }
-                $data->where('report_type','!=','Vendor-Summary')->where('report_type','!=','Vendor-Hourly');
+            if(($request->has('StartDate') && $request->has('EndDate'))){
+                $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
             }
-            if($request->ActiveTab == 2){
-                if(!empty($request->Account)){
-                    $data->where('client_id', $request->Account);
-                }
-                $data->where('report_type','!=','Customer-Summary')->where('report_type','!=','Customer-Hourly');
+            if(!empty($request->Account)){
+                $data->where('client_id', $request->Account);
             }
             if(!empty($request->Report)){
                 $data->where('report_type', $request->Report);
@@ -618,6 +614,126 @@ class CallController extends Controller
             }
         }
     }
+    public function csv_view(Request $request){
+        if($request->Report == 'Account-Manage'){
+            $validator = Validator::make($request->all(), [
+                'Report' => 'required',
+            ]);
+        }
+        else{
+            $validator = Validator::make($request->all(), [
+                'Account' => 'required',
+                'Report' => 'required',
+            ]);
+        }
+        if ($validator->fails())
+        {
+            $response = \Response::json([
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+            ]);
+            return $response;
+        }
+        $type = $request->type;
+        $AccountID = $request->Account;
+        $StartDate = $request->StartDate ;
+        $EndDate = $request->EndDate;
+        $Report = $request->Report;
+        
+        if($type == "Vendor"){   
+            $query = CallHistory::query('*');
+            if((!empty( $StartDate ) && !empty( $EndDate ))){
+                $start =  strtotime($StartDate);
+                $start = $start*1000;
+                $end = strtotime($EndDate);
+                $end = $end*1000;
+                $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+            }
+            if($Report != 'Account-Manage') {
+                if(!empty( $AccountID )) {
+                    $query->where('call_histories.vendor_account_id', $AccountID);
+                }
+            }
+            if($Report == 'Vendor-Negative-Report') {
+                $query->where('call_histories.agentfee', '<=', 0);
+            }
+            $invoices = $query->get();
+            $count_duration=[];
+            $count_vendor_duration=[];
+            $total_vendor_cost ="";
+            $total_cost = "";
+            $calls = $invoices->count();
+            if(!empty($invoices)){
+                $total_cost = $invoices->sum('fee');
+                $total_vendor_cost = $invoices->sum('agentfee');
+                foreach ($invoices as $key => $invoice) {
+                    $count_duration[] =   $invoice->feetime;
+                    $count_vendor_duration[] =  $invoice->agentfeetime;
+                }
+            }
+            $invoices = $invoices->groupBy('agentaccount');
+            $totalGroup = count($invoices);
+            $perPage = 5;
+            $page = Paginator::resolveCurrentPage('page');
 
+            $invoices = new LengthAwarePaginator( $invoices->forPage($page, $perPage), $totalGroup, $perPage, $page, [
+                'path' => Paginator::resolveCurrentPath(),
+                'pageName' => 'page',
+            ]);
+            $account ="";
+            if(!empty($AccountID)){
+                $account = Client::where('id',$AccountID)->with('billing')->first();
+            }
+            $user = "Vendor";
+            return view('csv_view', compact('invoices','Report','total_cost','user','account','count_duration','calls','StartDate','EndDate','total_vendor_cost','count_vendor_duration'));
+        }  
+        if($type == "Customer"){
+            $query = CallHistory::query('*');
+            if((!empty( $StartDate ) && !empty( $EndDate ))){
+                $start =  strtotime($StartDate);
+                $start = $start*1000;
+                $end = strtotime($EndDate);
+                $end = $end*1000;
+                $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+            }
+            if($Report != 'Account-Manage') {
+                if(!empty( $AccountID )) {
+                    $query->where('call_histories.account_id', $AccountID);
+                }
+            }
+            if($Report == 'Customer-Negative-Report'){
+                $query->where('call_histories.fee','<=', 0);
+            }
+            $invoices = $query->get();
+            $count_duration=[];
+            $count_vendor_duration=[];
+            $total_cost = "";
+            $total_vendor_cost ="";
+            $calls = $invoices->count();
+            if(!empty( $invoices)){
+                $total_cost = $invoices->sum('fee');
+                $total_vendor_cost = $invoices->sum('agentfee');
+                foreach ($invoices as $key => $invoice) {
+                    $count_duration[] =   $invoice->feetime;
+                    $count_vendor_duration[] =  $invoice->agentfeetime;
+                }
+            }
+            $invoices = $invoices->groupBy('customeraccount');
+            $totalGroup = count( $invoices);
+            $perPage = 5;
+            $page = Paginator::resolveCurrentPage('page');
+
+            $invoices = new LengthAwarePaginator( $invoices->forPage($page, $perPage), $totalGroup, $perPage, $page, [
+                'path' => Paginator::resolveCurrentPath(),
+                'pageName' => 'page',
+            ]);
+            $account ="";
+            if(!empty($AccountID)){
+                $account = Client::where('id',$AccountID)->with('billing')->first();
+            }
+            $user = "Customer";
+            return view('csv_view', compact('invoices','Report','total_cost','user','account','count_duration','StartDate','EndDate','calls','total_vendor_cost','count_vendor_duration'));
+        }
+    }
 
 }

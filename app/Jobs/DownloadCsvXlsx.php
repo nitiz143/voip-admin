@@ -346,7 +346,6 @@ class DownloadCsvXlsx implements ShouldQueue
                         if(array_sum($completed_agent_count) != 0 && count($completed_agent_count) != 0){
                             $sec =  array_sum($completed_agent_count) /  count($completed_agent_count);
                         }
-                        $country = Country::where('phonecode',$value[0]['callerareacode'])->first();
                         $data['VendAccountCode'] = !empty($value[0]['agentaccount']) ? $value[0]['agentaccount'] :"";
                         $data['Vendor'] =   !empty($value[0]['agentname']) ? $value[0]['agentname'] :"";
                         $data['Attempts'] =  $value->count() ;
@@ -983,7 +982,6 @@ class DownloadCsvXlsx implements ShouldQueue
                             if(array_sum($completed_agent_count) != 0 && count($completed_agent_count) != 0){
                                 $sec =  array_sum($completed_agent_count) /  count($completed_agent_count);
                             }
-                            $country = Country::where('phonecode',$value[0]['callerareacode'])->first();
                             $data['VendAccountCode'] = !empty($value[0]['agentaccount']) ? $value[0]['agentaccount'] :"";
                             $data['Vendor'] =   !empty($value[0]['agentname']) ? $value[0]['agentname'] :"";
                             $data['Attempts'] =  $value->count() ;
@@ -1440,7 +1438,6 @@ class DownloadCsvXlsx implements ShouldQueue
                         if(array_sum($completed_agent_count) != 0 && count($completed_agent_count) != 0){
                             $sec =  array_sum($completed_agent_count) /  count($completed_agent_count);
                         }
-                        $country = Country::where('phonecode',$value[0]['callerareacode'])->first();
                         $data['VendAccountCode'] = !empty($value[0]['agentaccount']) ? $value[0]['agentaccount'] :"";
                         $data['Vendor'] =   !empty($value[0]['agentname']) ? $value[0]['agentname'] :"";
                         $data['Attempts'] =  $value->count() ;
@@ -1776,7 +1773,6 @@ class DownloadCsvXlsx implements ShouldQueue
                         if(array_sum($completed_agent_count) != 0 && count($completed_agent_count) != 0){
                             $sec =  array_sum($completed_agent_count) /  count($completed_agent_count);
                         }
-                        $country = Country::where('phonecode',$value[0]['callerareacode'])->first();
                         $data['VendAccountCode'] = !empty($value[0]['agentaccount']) ? $value[0]['agentaccount'] :"";
                         $data['Vendor'] =   !empty($value[0]['agentname']) ? $value[0]['agentname'] :"";
                         $data['Attempts'] =  $value->count() ;
@@ -1964,7 +1960,6 @@ class DownloadCsvXlsx implements ShouldQueue
                         if(array_sum($completed_agent_count) != 0 && count($completed_agent_count) != 0){
                             $sec =  array_sum($completed_agent_count) /  count($completed_agent_count);
                         }
-                        $country = Country::where('phonecode',$value[0]['callerareacode'])->first();
                         $data['VendAccountCode'] = !empty($value[0]['agentaccount']) ? $value[0]['agentaccount'] :"";
                         $data['Vendor'] =   !empty($value[0]['agentname']) ? $value[0]['agentname'] :"";
                         $data['Attempts'] =  $value->count() ;
@@ -2077,7 +2072,6 @@ class DownloadCsvXlsx implements ShouldQueue
                             if(array_sum($completed_agent_count) != 0 && count($completed_agent_count) != 0){
                                 $sec =  array_sum($completed_agent_count) /  count($completed_agent_count);
                             }
-                            $country = Country::where('phonecode',$value[0]['callerareacode'])->first();
                             $data['VendAccountCode'] = !empty($value[0]['agentaccount']) ? $value[0]['agentaccount'] :"";
                             $data['Vendor'] =   !empty($value[0]['agentname']) ? $value[0]['agentname'] :"";
                             $data['Attempts'] =  $value->count() ;

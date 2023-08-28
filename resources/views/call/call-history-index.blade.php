@@ -48,23 +48,6 @@
                                         <div class="container-fluid  ml-2 mt-3">
                                             <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-3" method="post" id="cdr_filter">
                                                 <input type="hidden" name="type" class="form-control"  value="Customer"  />
-                                                <div class="form-group" style="max-width: 300px;">
-                                                    <label class="control-label small_label" for="field-1">Start Date</label>
-                                                    <div class="d-flex gap-1">
-                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
-                            
-                                                        <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
-                                                    </div>
-                                                </div>
-                                                <div class="form-group" style="max-width: 300px;">
-                                                    <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
-                                                    <div class="d-flex gap-1">
-                                                        <input type="text" name="EndDate" 
-                                                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
-                                                    
-                                                        <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
-                                                    </div>
-                                                </div>
                                                 <div class="form-group customer_Account">
                                                     <label class="control-label" for="field-1">Customer Account List</label>
                                                     <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID" required>
@@ -87,6 +70,25 @@
                                                         @endif
                                                     </select>
                                                 </div>
+                                                <div class="form-group" style="max-width: 300px;">
+                                                    <label class="control-label small_label" for="field-1">Start Date</label>
+                                                    <div class="d-flex gap-1">
+                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
+                            
+                                                        <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style="max-width: 300px;">
+                                                    <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
+                                                    <div class="d-flex gap-1">
+                                                        <input type="text" name="EndDate" 
+                                                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
+                                                    
+                                                        <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
+                                                    </div>
+                                                </div>
+                                               
+                                                
                                                 {{-- <div class="form-group">
                                                     <label class="control-label" for="field-1">Report</label>
                                                     <select class="form-control" id="report" allowClear="true" name="report">
@@ -634,9 +636,27 @@
     });
     $(document).ready(function() {
         var myDate = new Date();
-        $('#datepicker').datepicker();
+        $('#datepicker').datepicker({
+            dateFormat: "mm/dd/yy",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker').datepicker('setDate', myDate);
-        $('#datepicker1').datepicker();
+        $('#datepicker1').datepicker({
+            dateFormat: "mm/dd/yy",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            //gotoCurrent: true,
+           orientation: "bottom" // add this
+        });
         $('#datepicker1').datepicker('setDate', myDate);
         $('.timepicker').datetimepicker({
             format: 'HH:mm:ss'
@@ -658,7 +678,6 @@
     });
 
 
-    
 
 </script>
 
