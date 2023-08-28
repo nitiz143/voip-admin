@@ -59,7 +59,7 @@
 
                         <!-- /.card-body -->
                     </div>
-        <!-- /.card -->
+                    <!-- /.card -->
                 </div>
             </div>
         </div>
