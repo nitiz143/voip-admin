@@ -1,5 +1,5 @@
 
-   <div class="container">
+   <div class="container for-scroll">
         <div class="col-md-12">
             @if(!empty($Report))
                 @if($Report == 'Customer/Vendor-Report')

@@ -13,10 +13,12 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+  <link rel="stylesheet" href="{{asset('assets/bootstrap5/css/bootstrap-datetimepicker.css')}}" />
   <link
   href=
 "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
   rel="stylesheet">
+ 
 
 
 
@@ -105,6 +107,7 @@
     .main-footer{
      text-align: center;
     }
+    .datetimepicker-days table thead tr th.switch {display:revert !important;}
     </style>
 </head>
 <body class="hold-transition layout-top-nav">
@@ -167,9 +170,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap4-duallistbox/4.0.2/jquery.bootstrap-duallistbox.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-<script src=
-"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
-  </script>
+<script src="{{asset('assets/bootstrap5/js/bootstrap-datetimepicker.js')}}"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
 <!---notify---------->
