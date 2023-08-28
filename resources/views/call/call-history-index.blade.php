@@ -1,9 +1,6 @@
 @extends('layouts.dashboard')
+
 @section('content')
-<style>
-   .table-1 {border-collapse:collapse !important; table-layout:fixed  ; }
-   .table-1 td {white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
-</style>
 <div class="content-wrapper mt-3">
     <section class="content-header">
         <div class="container">
@@ -230,6 +227,8 @@
                         "bDestroy": true, // Destroy when resubmit form
                         "bProcessing": true,
                         "bServerSide": true,
+                        "scrollY": "100%",
+                        "scrollX": true,
                         "ajax": {
                             "url" : "{{ route('cdr_show.index') }}",
                             "data" : function ( d ){
@@ -302,6 +301,16 @@
                         }else{
                             $(".table-1").find('tfoot').find('tr').html('');
                         }
+                    },
+                    fnInitComplete: function(){
+                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
+                        $('.dataTables_scrollFoot').css('overflow', 'auto');
+                        $('.dataTables_scrollFoot').on('scroll', function () {
+                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
+                        });
+                    },
+                    drawCallback: function( settings ) {
+                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
                     }
                 });
             }
@@ -311,6 +320,8 @@
                     "bDestroy": true, // Destroy when resubmit form
                     "bProcessing": true,
                     "bServerSide": true,
+                    "scrollY": "100%",
+                "scrollX": true,
                     "ajax": {
                         "url" : "{{ route('vendorCdr.index') }}",
                         "data" : function ( d ){
@@ -384,7 +395,17 @@
                        }else{
                            $(".table-1").find('tfoot').find('tr').html('');
                        }
-                   }
+                   },
+                   fnInitComplete: function(){
+                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
+                        $('.dataTables_scrollFoot').css('overflow', 'auto');
+                        $('.dataTables_scrollFoot').on('scroll', function () {
+                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
+                        });
+                    },
+                    drawCallback: function( settings ) {
+                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
+                    }
                 });
             }
         });
@@ -427,6 +448,8 @@
                     "bDestroy": true, // Destroy when resubmit form
                     "bProcessing": true,
                     "bServerSide": true,
+                    "scrollY": "100%",
+                "scrollX": true,
                     "ajax": {
                         url : "{{ route('cdr_show.index') }}",
                         "data" : function ( d ){
@@ -500,7 +523,17 @@
                     }else{
                         $(".table-1").find('tfoot').find('tr').html('');
                     }
-                }
+                },
+                fnInitComplete: function(){
+                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
+                        $('.dataTables_scrollFoot').css('overflow', 'auto');
+                        $('.dataTables_scrollFoot').on('scroll', function () {
+                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
+                        });
+                    },
+                    drawCallback: function( settings ) {
+                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
+                    }
             });
         });
         $('#vendor').on('click', function() {
@@ -536,6 +569,8 @@
             var table_vendor = $('.table-1').DataTable({
                 "bDestroy": true, // Destroy when resubmit form
                 "bProcessing": true,
+                "scrollY": "100%",
+                "scrollX": true,
                 "bServerSide": true,
                 "ajax": {
                     "url" : "{{ route('vendorCdr.index') }}",
@@ -610,7 +645,17 @@
                     }else{
                         $(".table-1").find('tfoot').find('tr').html('');
                     }
-                }
+                },
+                fnInitComplete: function(){
+                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
+                        $('.dataTables_scrollFoot').css('overflow', 'auto');
+                        $('.dataTables_scrollFoot').on('scroll', function () {
+                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
+                        });
+                    },
+                    drawCallback: function( settings ) {
+                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
+                    }
             });
         });
     });
