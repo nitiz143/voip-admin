@@ -178,7 +178,7 @@
                                         @endphp
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
-                                        <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5).'%'}} </td>
+                                        <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}} </td>
                                         <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{!empty($Duration) ? $Duration :""}}</td>
@@ -186,7 +186,7 @@
                                         <td>{{!empty($customer_fee) ? '$'.sprintf('%0.2f', $customer_fee) : "$ 0.00"}}</td>
                                         <td>{{!empty($margin) ? '$'.sprintf('%0.2f', $margin) : "$ 0.00";}}</td>
                                         <td>{{!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";}}</td>
-                                        <td>{{\Str::limit(($margin/$values->count() * 100),5).'%';}}</td>
+                                        <td>{{\Str::limit(($margin/$values->count() * 100),5)}}</td>
                                         <td></td>
                                         <td></td>
                                     </tr>
@@ -262,7 +262,7 @@
                                         @endphp
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_agent_count) ? count($completed_agent_count) : ""}}</td>
-                                        <td>{{\Str::limit((count($completed_agent_count)/$values->count() * 100),5).'%'}} </td>
+                                        <td>{{\Str::limit((count($completed_agent_count)/$values->count() * 100),5)}} </td>
                                         <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{ !empty($Duration) ? $Duration :""}}</td>
@@ -270,7 +270,7 @@
                                         <td>{{ !empty($agent_fee) ? '$'.sprintf('%0.2f', $agent_fee) : "$ 0.00"}}</td>
                                         <td>{{!empty($margin) ? '$'.sprintf('%0.2f', $margin) : "$ 0.00";}}</td>
                                         <td>{{!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";}}</td>
-                                        <td>{{\Str::limit(($margin/$values->count() * 100),5).'%';}}</td>
+                                        <td>{{\Str::limit(($margin/$values->count() * 100),5)}}</td>
                                         <td></td>
                                         <td></td>
                                     </tr>
@@ -363,7 +363,7 @@
                                     @endphp
                                     <td>{{$values->count()}}</td>
                                     <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
-                                    <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5).'%'}} </td>
+                                    <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}} </td>
                                     <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
                                     <td>{{!empty($Duration) ?$Duration :""}}</td>
                                     <td>{{ !empty($Duration) ? $Duration :""}}</td>
@@ -373,7 +373,7 @@
                                     <td>{{!empty($agent_fee) ? '$'.sprintf('%0.2f', $agent_fee) : "$ 0.00";}}</td>
                                     <td>{{!empty($margin) ? '$'.sprintf('%0.2f', $margin) : "$ 0.00";}}</td>
                                     <td>{{!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";}}</td>
-                                    <td>{{\Str::limit(($margin/$values->count() * 100),5).'%';}}</td>
+                                    <td>{{\Str::limit(($margin/$values->count() * 100),5)}}</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -454,7 +454,7 @@
                                         @endphp
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
-                                        <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5).'%'}} </td>
+                                        <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}} </td>
                                         <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{ !empty($Duration) ? $Duration :""}}</td>
@@ -462,7 +462,7 @@
                                         <td>{{ !empty($customer_fee) ? '$'.sprintf('%0.2f', $customer_fee) : "$ 0.00"}}</td>
                                         <td>{{!empty($margin) ? '$'.sprintf('%0.2f', $margin) : "$ 0.00";}}</td>
                                         <td>{{!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";}}</td>
-                                        <td>{{\Str::limit(($margin/$values->count() * 100),5).'%';}}</td>
+                                        <td>{{\Str::limit(($margin/$values->count() * 100),5)}}</td>
                                         <td></td>
                                         <td></td>
                                     </tr>
@@ -538,7 +538,7 @@
                                         @endphp
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_agent_count) ? count($completed_agent_count) : ""}}</td>
-                                        <td>{{\Str::limit((count($completed_agent_count)/$values->count() * 100),5).'%'}} </td>
+                                        <td>{{\Str::limit((count($completed_agent_count)/$values->count() * 100),5)}} </td>
                                         <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{ !empty($Duration) ? $Duration :""}}</td>
@@ -546,7 +546,7 @@
                                         <td>{{ !empty($agent_fee) ? '$'.sprintf('%0.2f', $agent_fee) : "$ 0.00"}}</td>
                                         <td>{{!empty($margin) ? '$'.sprintf('%0.2f', $margin) : "$ 0.00";}}</td>
                                         <td>{{!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";}}</td>
-                                        <td>{{\Str::limit(($margin/$values->count() * 100),5).'%';}}</td>
+                                        <td>{{\Str::limit(($margin/$values->count() * 100),5)}}</td>
                                         <td></td>
                                         <td></td>
                                     </tr>
@@ -627,7 +627,7 @@
                                         @endphp
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
-                                        <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5).'%'}} </td>
+                                        <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}} </td>
                                         <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{ !empty($Duration) ? $Duration :""}}</td>
@@ -635,7 +635,7 @@
                                         <td>{{ !empty($customer_fee) ? '$'.sprintf('%0.2f', $customer_fee) : "$ 0.00"}}</td>
                                         <td>{{!empty($margin) ? '$'.sprintf('%0.2f', $margin) : "$ 0.00";}}</td>
                                         <td>{{!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";}}</td>
-                                        <td>{{\Str::limit(($margin/$values->count() * 100),5).'%';}}</td>
+                                        <td>{{\Str::limit(($margin/$values->count() * 100),5)}}</td>
                                         <td></td>
                                         <td></td>
                                     </tr>
@@ -711,7 +711,7 @@
                                         @endphp
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_agent_count) ? count($completed_agent_count) : ""}}</td>
-                                        <td>{{\Str::limit((count($completed_agent_count)/$values->count() * 100),5).'%'}} </td>
+                                        <td>{{\Str::limit((count($completed_agent_count)/$values->count() * 100),5)}} </td>
                                         <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{ !empty($Duration) ? $Duration :""}}</td>
@@ -719,7 +719,7 @@
                                         <td>{{ !empty($agent_fee) ? '$'.sprintf('%0.2f', $agent_fee) : "$ 0.00"}}</td>
                                         <td>{{!empty($margin) ? '$'.sprintf('%0.2f', $margin) : "$ 0.00";}}</td>
                                         <td>{{!empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";}}</td>
-                                        <td>{{\Str::limit(($margin/$values->count() * 100),5).'%';}}</td>
+                                        <td>{{\Str::limit(($margin/$values->count() * 100),5)}}</td>
                                         <td></td>
                                         <td></td>
                                     </tr>
@@ -781,7 +781,7 @@
                                         @endphp
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
-                                        <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5).'%'}} </td>
+                                        <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}} </td>
                                         <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{ !empty($Duration) ? $Duration :""}}</td>
@@ -849,7 +849,7 @@
                                         @endphp
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_agent_count) ? count($completed_agent_count) : ""}}</td>
-                                        <td>{{\Str::limit((count($completed_agent_count)/$values->count() * 100),5).'%'}} </td>
+                                        <td>{{\Str::limit((count($completed_agent_count)/$values->count() * 100),5)}} </td>
                                         <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{ !empty($Duration) ? $Duration :""}}</td>
