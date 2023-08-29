@@ -50,14 +50,16 @@ class CsvImportCron extends Command
     public function handle()
     {
         $tasks = CronJob::where('cron_type','Download VOS SFTP File')->first();
-       
+
         $created_at  = Carbon::now();
         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
        // try{
-             $settings = Setting::all();
+             $settings = Setting::get();
 
                 if($settings->isNotEmpty()){
+
                     foreach ($settings as $setting) {
+                        dd($setting->protocol);
                         if($setting->protocol == 1){
                             Config::set('filesystems.disks.ftp.host',$setting->host);
                             Config::set('filesystems.disks.ftp.username',$setting->username);
@@ -74,12 +76,12 @@ class CsvImportCron extends Command
                             Config::set('filesystems.disks.sftp.root',$setting->csv_path);
                             $disk = Storage::disk('sftp');
                         }
-                      
-                        // import file                        
+
+                        // import file
                         $files = collect($disk->files('/'))->sortKeysDesc();
                         if(!empty($files)){
                             // get latest file
-                         $newest = $files->first();                  
+                         $newest = $files->first();
                             if(!empty($newest)){
                                     if($setting->protocol == 1){
                                         Storage::put('voip/'.$newest, Storage::disk('ftp')->get($newest),'public');
@@ -97,7 +99,7 @@ class CsvImportCron extends Command
                                         ];
                                         CsvImport::create($data);
                                     }
-                                    
+
                                     // if(!empty($tasks->success_email)){
                                     //     Mail::raw("This Job is run Sucessfully", function($message) use ($tasks)
                                     //     {
@@ -106,7 +108,7 @@ class CsvImportCron extends Command
                                     //     });
                                     // }
                                     $updated_at  = Carbon::now();
-                                    CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at,'start_time' => ''));
+                                    CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at));
                                 }
                         }
                         $disk->getDriver()->getAdapter()->disconnect();
