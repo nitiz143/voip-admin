@@ -126,7 +126,9 @@ var table = $('.data-table').DataTable({
                        ' your file deleted',
                         'success'
                     )
-                } else if (
+                } 
+                
+                else if (
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
@@ -137,7 +139,10 @@ var table = $('.data-table').DataTable({
                     )
 
                 }
+
+               
             });
+            
     });
 
 </script>
