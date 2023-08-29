@@ -42,8 +42,8 @@ class DownloadCsvXlsx implements ShouldQueue
     public function handle()
     {
         $AccountID = $this->data['AccountID'];
-        $StartDate = $this->data['StartDate'] .' '. $this->data['StartTime'];
-        $EndDate = $this->data['EndDate'] .' '. $this->data['EndTime'];
+        $StartDate = $this->data['StartDate'] ;
+        $EndDate = $this->data['EndDate'] ;
         $Report =  $this->data['report'];
 
         $start =  strtotime($StartDate);
@@ -110,7 +110,7 @@ class DownloadCsvXlsx implements ShouldQueue
                             }
                         }
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                        $margin_per_min = $customer_fee - $agent_fee;
+                        $margin_per_min = (int)$customer_fee - (int)$agent_fee;
                         
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                         $sec = "";
@@ -339,7 +339,7 @@ class DownloadCsvXlsx implements ShouldQueue
                         }
                         
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                        $margin_per_min = $customer_fee - $agent_fee;
+                        $margin_per_min = (int)$customer_fee - (int)$agent_fee;
 
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Agent_Duration_count) / 60 ), array_sum($Agent_Duration_count) % 60 );
                         $sec = "";
@@ -445,7 +445,7 @@ class DownloadCsvXlsx implements ShouldQueue
                             }
                         }
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                        $margin_per_min = $customer_fee - $agent_fee;
+                        $margin_per_min = (int)$customer_fee - (int)$agent_fee;
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                         $sec = "";
                         if(array_sum($completed_count) != 0 && count($completed_count) != 0){
@@ -673,7 +673,7 @@ class DownloadCsvXlsx implements ShouldQueue
                         }
                         
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                        $margin_per_min = $customer_fee - $agent_fee;
+                        $margin_per_min = (int)$customer_fee - (int)$agent_fee;
 
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Agent_Duration_count) / 60 ), array_sum($Agent_Duration_count) % 60 );
                         $sec = "";
@@ -975,7 +975,7 @@ class DownloadCsvXlsx implements ShouldQueue
                             }
                             
                             $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                            $margin_per_min = $customer_fee - $agent_fee;
+                            $margin_per_min = (int)$customer_fee - (int)$agent_fee;
                             
                             $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Agent_Duration_count) / 60 ), array_sum($Agent_Duration_count) % 60 );
                             $sec = "";
@@ -1087,7 +1087,7 @@ class DownloadCsvXlsx implements ShouldQueue
                             }
 
                             $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                            $margin_per_min = $fee - $agent_fee;
+                            $margin_per_min = (int)$fee - (int)$agent_fee;
 
                             $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                             $sec = "";
@@ -1202,7 +1202,7 @@ class DownloadCsvXlsx implements ShouldQueue
                             $agent_fee = $persec2*60;
                         }
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                        $margin_per_min = $customer_fee - $agent_fee;
+                        $margin_per_min = (int)$customer_fee - (int)$agent_fee;
 
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                         $sec = "";
@@ -1321,7 +1321,7 @@ class DownloadCsvXlsx implements ShouldQueue
                         }
 
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                        $margin_per_min = $customer_fee-$agent_fee;
+                        $margin_per_min = (int)$customer_fee-(int)$agent_fee;
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                         $sec = "";
                         if(array_sum($completed_count) != 0 && count($completed_count) != 0){
@@ -1536,7 +1536,7 @@ class DownloadCsvXlsx implements ShouldQueue
                             }
                         }
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                        $margin_per_min = $customer_fee - $agent_fee;
+                        $margin_per_min = (int)$customer_fee - (int)$agent_fee;
                         
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                         $sec = "";
@@ -1656,7 +1656,7 @@ class DownloadCsvXlsx implements ShouldQueue
                         }
 
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                        $margin_per_min = $customer_fee-$agent_fee;
+                        $margin_per_min = (int)$customer_fee-(int)$agent_fee;
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                         $sec = "";
                         if(array_sum($completed_count) != 0 && count($completed_count) != 0){
@@ -2064,7 +2064,7 @@ class DownloadCsvXlsx implements ShouldQueue
                             }
                             
                             $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                            $margin_per_min = $customer_fee - $agent_fee;
+                            $margin_per_min = (int)$customer_fee -(int)$agent_fee;
 
                             
                             $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Agent_Duration_count) / 60 ), array_sum($Agent_Duration_count) % 60 );
@@ -2178,7 +2178,7 @@ class DownloadCsvXlsx implements ShouldQueue
                             }
                             
                             $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                            $margin_per_min = $customer_fee - $agent_fee;
+                            $margin_per_min = (int)$customer_fee - (int)$agent_fee;
 
                            
                             $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );

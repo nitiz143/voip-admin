@@ -77,16 +77,19 @@
                         </div>
                     </a>
                     <div class="dropdown-menu  dropdown-menu-right ">
-                        <div class="dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">{{ (auth()->user()->name) }}</h6>
+                        <div class="dropdown-header noti-title px-0 text-start">
+                            <a href="{{route('profile')}}" class="dropdown-item">
+                                <i class="fa fa-user pe-1" aria-hidden="true"></i>
+                                    <span>{{ (auth()->user()->name) }}</span>
+                            </a>
                         </div>
                         <div class="dropdown-divider"></div> 
                         <a href="{{route('logout')}}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
-                            <i class="ni ni-user-run"></i>
-                            <span>Logout</span>
-                            <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                {{ csrf_field() }}
-                            </form>
+                            <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                                <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
                         </a>
                     </div>
                 </li>

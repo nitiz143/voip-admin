@@ -1,9 +1,6 @@
 @extends('layouts.dashboard')
+
 @section('content')
-<style>
-   .table-1 {border-collapse:collapse !important; table-layout:fixed  ; }
-   .table-1 td {white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
-</style>
 <div class="content-wrapper mt-3">
     <section class="content-header">
         <div class="container">
@@ -73,18 +70,14 @@
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="control-label small_label" for="field-1">Start Date</label>
                                                     <div class="d-flex gap-1">
-                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03"  />
-                            
-                                                        <input type="text" name="StartTime" data-minute-step="5" data-show-meridian="false" data-default-time="00:00:00" value="00:00:00" data-show-seconds="true" data-template="dropdown" class="form-control timepicker" >
+                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03"  />
                                                     </div>
                                                 </div>
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
                                                     <div class="d-flex gap-1">
                                                         <input type="text" name="EndDate" 
-                                                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd" value="2023-03-03" data-enddate="2023-03-03" />
-                                                    
-                                                        <input type="text" name="EndTime" data-minute-step="5" data-show-meridian="false" data-default-time="23:59:59" value="23:59:59" data-show-seconds="true" data-template="dropdown" class="form-control timepicker">
+                                                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03" />
                                                     </div>
                                                 </div>
                                                
@@ -195,10 +188,7 @@
         var TotalCost = 0;
         $("#cdr_filter").submit(function(e) {
             e.preventDefault();
-            var starttime = $("#cdr_filter input[name='StartTime']").val();
-            if(starttime =='00:00:01'){
-                starttime = '00:00:00';
-            }
+            
             $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
             $searchFilter.VAccount = $("#cdr_filter select[name='VAccountID']").val();
             $searchFilter.Gateway = $("#cdr_filter select[name='GatewayID']").val();
@@ -208,8 +198,7 @@
             $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
             $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
             $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
-            $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
-            // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
+          
             if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
                 $.notify("Please Select a Start date", "Error");
                 return false;
@@ -230,8 +219,7 @@
                     return false;
                 }
             }
-            $searchFilter.StartDate += ' '+starttime;
-            $searchFilter.EndDate += ' '+$("#cdr_filter [name='EndTime']").val();
+           
             $searchFilter.ActiveTab = $("#cdr_filter input[name='ActiveTab']").val();
 
             if($searchFilter.ActiveTab == "1"){
@@ -239,6 +227,8 @@
                         "bDestroy": true, // Destroy when resubmit form
                         "bProcessing": true,
                         "bServerSide": true,
+                        "scrollY": "100%",
+                        "scrollX": true,
                         "ajax": {
                             "url" : "{{ route('cdr_show.index') }}",
                             "data" : function ( d ){
@@ -311,6 +301,16 @@
                         }else{
                             $(".table-1").find('tfoot').find('tr').html('');
                         }
+                    },
+                    fnInitComplete: function(){
+                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
+                        $('.dataTables_scrollFoot').css('overflow', 'auto');
+                        $('.dataTables_scrollFoot').on('scroll', function () {
+                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
+                        });
+                    },
+                    drawCallback: function( settings ) {
+                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
                     }
                 });
             }
@@ -320,6 +320,8 @@
                     "bDestroy": true, // Destroy when resubmit form
                     "bProcessing": true,
                     "bServerSide": true,
+                    "scrollY": "100%",
+                "scrollX": true,
                     "ajax": {
                         "url" : "{{ route('vendorCdr.index') }}",
                         "data" : function ( d ){
@@ -393,7 +395,17 @@
                        }else{
                            $(".table-1").find('tfoot').find('tr').html('');
                        }
-                   }
+                   },
+                   fnInitComplete: function(){
+                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
+                        $('.dataTables_scrollFoot').css('overflow', 'auto');
+                        $('.dataTables_scrollFoot').on('scroll', function () {
+                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
+                        });
+                    },
+                    drawCallback: function( settings ) {
+                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
+                    }
                 });
             }
         });
@@ -410,10 +422,7 @@
             var TotalDuration = 0;
             var TotalCost = 0; 
 
-            var starttime = $("#cdr_filter input[name='StartTime']").val();
-            if(starttime =='00:00:01'){
-                starttime = '00:00:00';
-            }
+          
             $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
             $searchFilter.VAccount = $("#cdr_filter select[name='VAccountID']").val();
             $searchFilter.Gateway = $("#cdr_filter select[name='GatewayID']").val();
@@ -423,8 +432,7 @@
             $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
             $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
             $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
-            $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
-            // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
+           
             if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
                 $.notify("Please Select a Start date", "Error");
                 return false;
@@ -433,14 +441,15 @@
                 $.notify("Please Select a End date", "Error");
                 return false;
             }
-            $searchFilter.StartDate += ' '+starttime;
-            $searchFilter.EndDate += ' '+$("#cdr_filter [name='EndTime']").val();
+    
             $searchFilter.ActiveTab = $("#cdr_filter input[name='ActiveTab']").val();
 
             var table_customer = $('.table-1').DataTable({
                     "bDestroy": true, // Destroy when resubmit form
                     "bProcessing": true,
                     "bServerSide": true,
+                    "scrollY": "100%",
+                "scrollX": true,
                     "ajax": {
                         url : "{{ route('cdr_show.index') }}",
                         "data" : function ( d ){
@@ -514,7 +523,17 @@
                     }else{
                         $(".table-1").find('tfoot').find('tr').html('');
                     }
-                }
+                },
+                fnInitComplete: function(){
+                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
+                        $('.dataTables_scrollFoot').css('overflow', 'auto');
+                        $('.dataTables_scrollFoot').on('scroll', function () {
+                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
+                        });
+                    },
+                    drawCallback: function( settings ) {
+                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
+                    }
             });
         });
         $('#vendor').on('click', function() {
@@ -526,10 +545,7 @@
             var TotalDuration = 0;
             var TotalCost = 0; 
 
-            var starttime = $("#cdr_filter input[name='StartTime']").val();
-            if(starttime =='00:00:01'){
-                starttime = '00:00:00';
-            }
+          
             $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
             $searchFilter.VAccount = $("#cdr_filter select[name='VAccountID']").val();
             $searchFilter.Gateway = $("#cdr_filter select[name='GatewayID']").val();
@@ -539,8 +555,7 @@
             $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
             $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
             $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
-            $searchFilter.starttime = $("#cdr_filter input[name='StartTime']").val();
-            // $searchFilter.End_time = $("#cdr_filter input[name='EndTime']").val();
+           
             if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
                 $.notify("Please Select a Start date", "Error");
                 return false;
@@ -549,13 +564,13 @@
                 $.notify("Please Select a End date", "Error");
                 return false;
             }
-            $searchFilter.StartDate += ' '+starttime;
-            $searchFilter.EndDate += ' '+$("#cdr_filter [name='EndTime']").val();
             $searchFilter.ActiveTab = $("#cdr_filter input[name='ActiveTab']").val();
 
             var table_vendor = $('.table-1').DataTable({
                 "bDestroy": true, // Destroy when resubmit form
                 "bProcessing": true,
+                "scrollY": "100%",
+                "scrollX": true,
                 "bServerSide": true,
                 "ajax": {
                     "url" : "{{ route('vendorCdr.index') }}",
@@ -630,37 +645,43 @@
                     }else{
                         $(".table-1").find('tfoot').find('tr').html('');
                     }
-                }
+                },
+                fnInitComplete: function(){
+                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
+                        $('.dataTables_scrollFoot').css('overflow', 'auto');
+                        $('.dataTables_scrollFoot').on('scroll', function () {
+                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
+                        });
+                    },
+                    drawCallback: function( settings ) {
+                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
+                    }
             });
         });
     });
     $(document).ready(function() {
         var myDate = new Date();
-        $('#datepicker').datepicker({
-            dateFormat: "mm/dd/yy",
+        $('#datepicker').datetimepicker({
             showOtherMonths: true,
             selectOtherMonths: true,
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            //gotoCurrent: true,
+            format: 'yyyy-mm-dd HH:ii:ss',
            orientation: "bottom" // add this
         });
-        $('#datepicker').datepicker('setDate', myDate);
-        $('#datepicker1').datepicker({
-            dateFormat: "mm/dd/yy",
+        $('#datepicker').datetimepicker('setDate', myDate);
+        $('#datepicker1').datetimepicker({
             showOtherMonths: true,
             selectOtherMonths: true,
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            //gotoCurrent: true,
-           orientation: "bottom" // add this
+            format: 'yyyy-mm-dd HH:ii:ss',
+            orientation: "bottom" // add this
         });
-        $('#datepicker1').datepicker('setDate', myDate);
-        $('.timepicker').datetimepicker({
-            format: 'HH:mm:ss'
-        });
+        $('#datepicker1').datetimepicker('setDate', myDate);
+       
     });
    
 

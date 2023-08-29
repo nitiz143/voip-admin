@@ -1,11 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<style>
-    table {border-collapse:collapse; table-layout:fixed; }
-   table td {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-   table th {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-</style>
+
 <div class="content-wrapper mt-3">
     <section class="content-header">
         <div class="container">
@@ -130,7 +126,9 @@ var table = $('.data-table').DataTable({
                        ' your file deleted',
                         'success'
                     )
-                } else if (
+                } 
+                
+                else if (
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
@@ -141,7 +139,10 @@ var table = $('.data-table').DataTable({
                     )
 
                 }
+
+               
             });
+            
     });
 
 </script>

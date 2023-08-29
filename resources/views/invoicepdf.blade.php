@@ -451,7 +451,7 @@
                                             @endphp
 
                                             <td>{{!empty($completed_count) ? count($completed_count) : "0"}}</td>
-                                            <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}%</td>
+                                            <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}</td>
                                             <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}} </td>
                                             <td>{{$Duration}}</td>
                                             <td>{{$Duration}}</td>
@@ -526,7 +526,7 @@
                                                 @endphp
 
                                                 <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
-                                                <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}%</td>
+                                                <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}</td>
                                                 <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}} </td>
                                                 <td>{{$Duration}}</td>
                                                 <td>{{$Duration}}</td>
@@ -663,7 +663,7 @@
                                                 }
                                             @endphp
                                             <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
-                                            <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}%</td>
+                                            <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}</td>
                                             <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}} </td>
                                             <td>{{$Duration}}</td>
                                             <td>{{$Duration}}</td>
@@ -737,7 +737,7 @@
                                             @endphp
 
                                             <td>{{!empty($completed_count) ? count($completed_count) : "0"}}</td>
-                                            <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}%</td>
+                                            <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}</td>
                                             <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}} </td>
                                             <td>{{$Duration}}</td>
                                             <td>{{$Duration}}</td>
@@ -812,7 +812,7 @@
                                                 @endphp
 
                                                 <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
-                                                <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}%</td>
+                                                <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}</td>
                                                 <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}} </td>
                                                 <td>{{$Duration}}</td>
                                                 <td>{{$Duration}}</td>
@@ -875,7 +875,7 @@
                                                 @endphp
     
                                                 <td>{{!empty($completed_count) ? count($completed_count) : "0"}}</td>
-                                                <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}%</td>
+                                                <td>{{\Str::limit((count($completed_count)/$values->count() * 100),5)}}</td>
                                                 <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}} </td>
                                                 <td>{{$Duration}}</td>
                                                 <td>{{$Duration}}</td>
