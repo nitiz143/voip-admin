@@ -32,10 +32,10 @@ class Kernel extends ConsoleKernel
 
 
 
-        $schedule->command('csvImport:cron')->everyMinute(15)->withoutOverlapping();
-        $schedule->command('download:cron')->everyMinute(18)->withoutOverlapping();
-        $schedule->command('account:cron')->everyMinute(20)->withoutOverlapping();
-        $schedule->command('vendor:cron')->everyMinute(20)->withoutOverlapping();
+        $schedule->command('csvImport:cron')->everyMinute(15)->name('csvImport')->withoutOverlapping();
+        $schedule->command('download:cron')->everyMinute(18)->name('download')->withoutOverlapping();
+        $schedule->command('account:cron')->everyMinute(20)->name('account')->withoutOverlapping();
+        $schedule->command('vendor:cron')->everyMinute(20)->name('vendor')->withoutOverlapping();
         $schedule->command('invoice_create:cron')->daily();
       //  $schedule->command('Billing:cron')->everyFiveMinutes();
     }
