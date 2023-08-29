@@ -21,16 +21,6 @@ class Kernel extends ConsoleKernel
         Commands\VendorCron::class,
 
     ];
-    protected $scheduleFrequencyMethods = [
-        'everyNMinutes' => '*/:interval * * * *',
-    ];
-
-    public function everyNMinutes($interval, $command)
-    {
-        return $this->exec(
-            $this->createSchedule(Closure::class, $command)->cron(str_replace(':interval', $interval, '*/:interval * * * *'))
-        );
-    }
     /**
      * Define the application's command schedule.
      *
@@ -42,10 +32,10 @@ class Kernel extends ConsoleKernel
 
 
 
-        $schedule->everyNMinutes(15,'csvImport:cron')->withoutOverlapping();
-        $schedule->everyNMinutes(18,'download:cron')->withoutOverlapping();
-        $schedule->everyNMinutes(20,'account:cron')->withoutOverlapping();
-        $schedule->everyNMinutes(20,'vendor:cron')->withoutOverlapping();
+        $schedule->command('csvImport:cron')->everyMinute(15)->withoutOverlapping();
+        $schedule->command('download:cron')->everyMinute(18)->withoutOverlapping();
+        $schedule->command('account:cron')->everyMinute(20)->withoutOverlapping();
+        $schedule->command('vendor:cron')->everyMinute(20)->withoutOverlapping();
         $schedule->command('invoice_create:cron')->daily();
       //  $schedule->command('Billing:cron')->everyFiveMinutes();
     }
