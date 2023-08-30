@@ -88,7 +88,7 @@
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
                                         <td>{{\Str::limit((count($completed_count)/$values->count() * 100))}} </td>
-                                        <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
+                                        <td>{{!empty($sec) ? \Str::limit($sec) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{ !empty($Duration) ? $Duration :""}}</td>
                                         <td>{{'$'.sprintf('%0.2f', $values->sum('fee'))}}</td>
@@ -263,7 +263,7 @@
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_agent_count) ? count($completed_agent_count) : ""}}</td>
                                         <td>{{\Str::limit((count($completed_agent_count)/$values->count() * 100))}} </td>
-                                        <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
+                                        <td>{{!empty($sec) ? \Str::limit($sec) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{ !empty($Duration) ? $Duration :""}}</td>
                                         <td>{{'$'.sprintf('%0.2f', $values->sum('agentfee'))}}</td>
@@ -364,7 +364,7 @@
                                     <td>{{$values->count()}}</td>
                                     <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
                                     <td>{{\Str::limit((count($completed_count)/$values->count() * 100))}} </td>
-                                    <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
+                                    <td>{{!empty($sec) ? \Str::limit($sec) :"0"}}</td>
                                     <td>{{!empty($Duration) ?$Duration :""}}</td>
                                     <td>{{ !empty($Duration) ? $Duration :""}}</td>
                                     <td>{{'$'.sprintf('%0.2f', $values->sum('fee'))}}</td>
@@ -539,7 +539,7 @@
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_agent_count) ? count($completed_agent_count) : ""}}</td>
                                         <td>{{\Str::limit((count($completed_agent_count)/$values->count() * 100))}} </td>
-                                        <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
+                                        <td>{{!empty($sec) ? \Str::limit($sec) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{ !empty($Duration) ? $Duration :""}}</td>
                                         <td>{{'$'.sprintf('%0.2f', $values->sum('agentfee'))}}</td>
@@ -628,7 +628,7 @@
                                         <td>{{$values->count()}}</td>
                                         <td>{{!empty($completed_count) ? count($completed_count) : ""}}</td>
                                         <td>{{\Str::limit((count($completed_count)/$values->count() * 100))}} </td>
-                                        <td>{{!empty($sec) ? \Str::limit($sec,5) :"0"}}</td>
+                                        <td>{{!empty($sec) ? \Str::limit($sec) :"0"}}</td>
                                         <td>{{!empty($Duration) ?$Duration :""}}</td>
                                         <td>{{ !empty($Duration) ? $Duration :""}}</td>
                                         <td>{{'$'.sprintf('%0.2f', $values->sum('fee'))}}</td>

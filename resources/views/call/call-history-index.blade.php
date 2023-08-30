@@ -1,6 +1,12 @@
 @extends('layouts.dashboard')
 
 @section('content')
+<style>
+   .for-scroll{
+        overflow: auto;
+        overscroll-behavior-x: auto;
+    }
+</style>
 <div class="content-wrapper mt-3">
     <section class="content-header">
         <div class="container">
@@ -105,10 +111,10 @@
                                             </form>
                                         </div>
                                         <div class="panel-body tabs-menu-body">
-                                            <div class="row">
+                                            <div class="row for-scroll">
                                                 <div class="col-sm-12">
                                                     <div class="panel-body mt-3">
-                                                        <table class="table table-1 w-100 data-table  table-bordered">
+                                                        <table class="table table-1 data-table   table-bordered">
                                                             <thead>
                                                                 <tr>
                                                                     <th>ID</th>
@@ -227,8 +233,6 @@
                         "bDestroy": true, // Destroy when resubmit form
                         "bProcessing": true,
                         "bServerSide": true,
-                        "scrollY": "100%",
-                        "scrollX": true,
                         "ajax": {
                             "url" : "{{ route('cdr_show.index') }}",
                             "data" : function ( d ){
@@ -301,16 +305,6 @@
                         }else{
                             $(".table-1").find('tfoot').find('tr').html('');
                         }
-                    },
-                    fnInitComplete: function(){
-                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
-                        $('.dataTables_scrollFoot').css('overflow', 'auto');
-                        $('.dataTables_scrollFoot').on('scroll', function () {
-                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
-                        });
-                    },
-                    drawCallback: function( settings ) {
-                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
                     }
                 });
             }
@@ -320,8 +314,7 @@
                     "bDestroy": true, // Destroy when resubmit form
                     "bProcessing": true,
                     "bServerSide": true,
-                    "scrollY": "100%",
-                "scrollX": true,
+
                     "ajax": {
                         "url" : "{{ route('vendorCdr.index') }}",
                         "data" : function ( d ){
@@ -395,17 +388,7 @@
                        }else{
                            $(".table-1").find('tfoot').find('tr').html('');
                        }
-                   },
-                   fnInitComplete: function(){
-                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
-                        $('.dataTables_scrollFoot').css('overflow', 'auto');
-                        $('.dataTables_scrollFoot').on('scroll', function () {
-                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
-                        });
-                    },
-                    drawCallback: function( settings ) {
-                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
-                    }
+                   }
                 });
             }
         });
@@ -448,8 +431,6 @@
                     "bDestroy": true, // Destroy when resubmit form
                     "bProcessing": true,
                     "bServerSide": true,
-                    "scrollY": "100%",
-                "scrollX": true,
                     "ajax": {
                         url : "{{ route('cdr_show.index') }}",
                         "data" : function ( d ){
@@ -523,17 +504,7 @@
                     }else{
                         $(".table-1").find('tfoot').find('tr').html('');
                     }
-                },
-                fnInitComplete: function(){
-                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
-                        $('.dataTables_scrollFoot').css('overflow', 'auto');
-                        $('.dataTables_scrollFoot').on('scroll', function () {
-                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
-                        });
-                    },
-                    drawCallback: function( settings ) {
-                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
-                    }
+                }
             });
         });
         $('#vendor').on('click', function() {
@@ -569,9 +540,8 @@
             var table_vendor = $('.table-1').DataTable({
                 "bDestroy": true, // Destroy when resubmit form
                 "bProcessing": true,
-                "scrollY": "100%",
-                "scrollX": true,
                 "bServerSide": true,
+
                 "ajax": {
                     "url" : "{{ route('vendorCdr.index') }}",
                     "data" : function ( d ){
@@ -645,17 +615,7 @@
                     }else{
                         $(".table-1").find('tfoot').find('tr').html('');
                     }
-                },
-                fnInitComplete: function(){
-                        $('.dataTables_scrollBody').css({'overflow': 'hidden','border':'0'});
-                        $('.dataTables_scrollFoot').css('overflow', 'auto');
-                        $('.dataTables_scrollFoot').on('scroll', function () {
-                            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
-                        });
-                    },
-                    drawCallback: function( settings ) {
-                        setTimeout(function(){$('.DTFC_LeftBodyWrapper, .DTFC_LeftBodyLiner').height($('.dataTables_scrollBody').height());},0);
-                    }
+                }
             });
         });
     });
