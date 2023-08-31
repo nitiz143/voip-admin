@@ -50,11 +50,11 @@ class DownloadCsvImportCron extends Command
         $value = CsvImport::where('status',1)->get();
         if(!empty($value)){
             foreach ($value as $key => $csvImport) {
-                $settings = Setting::where('id',$csvImport->setting_id)->first();
-                if($settings->version == '1'){
-                    if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){               
+
+                if($csvImport->setting_id == '1'){
+                    if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-                            return $line; 
+                            return $line;
                         });
                         if(!empty($callarr)){
                             foreach($callarr as $i=>$call){
@@ -123,11 +123,10 @@ class DownloadCsvImportCron extends Command
                             CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at,'start_time' => ''));
                         }
                     }
-                }
-                if($settings->version == '2'){
-                    if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){               
+                }elseif($csvImport->setting_id == '2'){
+                    if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-                            return $line; 
+                            return $line;
                         });
                         if(!empty($callarr)){
                             foreach($callarr as $i=>$call){
@@ -193,8 +192,8 @@ class DownloadCsvImportCron extends Command
                                     'transactionid'=>$call[59] ? $call[59] : '0',
                                             'flownofirst'=>$call[60] ? $call[60] : '0',
                                 ];
-                               
-                              
+
+
                             }
                             if(!empty($history)){
                                 CallHistory::insert($history);
