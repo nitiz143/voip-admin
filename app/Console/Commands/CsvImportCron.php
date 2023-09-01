@@ -59,7 +59,7 @@ class CsvImportCron extends Command
                 if($settings->isNotEmpty()){
 
                     foreach ($settings as $setting) {
-                        //dd($setting->protocol);
+                      
                         if($setting->protocol == 1){
                             Config::set('filesystems.disks.ftp.host',$setting->host);
                             Config::set('filesystems.disks.ftp.username',$setting->username);
@@ -97,6 +97,7 @@ class CsvImportCron extends Command
                                             'version' => $setting->version,
                                             'setting_id' => $setting->id,
                                         ];
+                                        // dd($data);
                                         CsvImport::create($data);
                                     }
 

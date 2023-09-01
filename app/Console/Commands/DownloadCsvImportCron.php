@@ -49,9 +49,10 @@ class DownloadCsvImportCron extends Command
         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
         $value = CsvImport::where('status',1)->get();
         if(!empty($value)){
+            $history = [];
             foreach ($value as $key => $csvImport) {
-
-                if($csvImport->setting_id == '1'){
+               
+                if($csvImport->version == 1){
                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
                             return $line;
@@ -117,13 +118,13 @@ class DownloadCsvImportCron extends Command
                                 CallHistory::insert($history);
                                 $getcsv = CsvImport::find($csvImport->id);
                                 $getcsv->update(['status' => 2]);
-                               // Storage::disk('public')->delete($csvImport->csv_file);
+                                Storage::disk('public')->delete($csvImport->csv_file);
                             }
                             $updated_at  = Carbon::now();
                             CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at,'start_time' => ''));
                         }
                     }
-                }elseif($csvImport->setting_id == '2'){
+                }elseif($csvImport->version == 2){
                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
                             return $line;
@@ -188,11 +189,13 @@ class DownloadCsvImportCron extends Command
 
 
                             }
+                          
                             if(!empty($history)){
-                                CallHistory::insert($history);
+                                $datas = CallHistory::insert($history);
+                                // dd($history);
                                 $getcsv = CsvImport::find($csvImport->id);
                                 $getcsv->update(['status' => 2]);
-                               // Storage::disk('public')->delete($csvImport->csv_file);
+                                Storage::disk('public')->delete($csvImport->csv_file);
                             }
                             $updated_at  = Carbon::now();
                             CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at,'start_time' => ''));
