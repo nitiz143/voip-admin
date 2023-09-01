@@ -170,7 +170,7 @@
                                     </div>
                                     <div class="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">
                                         <div class="container-fluid  ml-2 mt-3">
-                                            <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter_2">
+                                            {{-- <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter_2">
                                                 <input type="hidden" name="type" class="form-control"  value="Customer"  />
                                                 <div class="form-group customer_Account">
                                                     <label class="control-label" for="field-1">Account List</label>
@@ -234,7 +234,7 @@
                                                     <input type="hidden" id="ActiveTab" name="ActiveTab" value="3">
                                                     <a href="" class="btn btn-primary mb-4 w-10 mt-2" id="filter">Filter</a>
                                                 </div>
-                                            </form>
+                                            </form> --}}
                                         </div>
                                         <table class="table  w-100 table-bordered data-table">
                                             <thead>
@@ -482,36 +482,7 @@
             });
         });
 
-        $(document).on("click", "#filter",function(e) {
-            e.preventDefault();
-            var $searchFilter = {};
-            var ref_this = $("ul.nav li.nav-item a.nav-link.active");
-        
-            if(ref_this.data('id') == 3){
-               
-                $searchFilter.Account = $("#cdr_filter_2 select[name='AccountID']").val();
-                $searchFilter.Report = $("#cdr_filter_2 select[name='report']").val();
-                $searchFilter.StartDate = $("#cdr_filter_2 input[name='StartDate']").val();
-                $searchFilter.EndDate = $("#cdr_filter_2 input[name='EndDate']").val();
-                if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
-                    $.notify("Please Select a Start date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
-                    $.notify("Please Select a End date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Report  == 'undefined' || $searchFilter.Report.trim() == ''){
-                    $.notify("Please Select a Report", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
-                    $.notify("Please Select a Account", "Error");
-                    return false;
-                }
-                $searchFilter.ActiveTab = $("#cdr_filter_2 input[name='ActiveTab']").val();
 
-            }
           
             var table = $('.data-table').DataTable({
                 "bDestroy": true, // Destroy when resubmit form
@@ -520,13 +491,7 @@
                 ajax:
                     {
                     "url": "{{ route('export-csv.history')}}",
-                    "data" : function ( d ){
-                        d.Account= $searchFilter.Account ?? "",
-                        d.StartDate =  $searchFilter.StartDate ?? "",
-                        d.EndDate = $searchFilter.EndDate ?? "",
-                        d.Report =   $searchFilter.Report ?? "",
-                        d.ActiveTab =   $searchFilter.ActiveTab ?? ""
-                    },
+                    
                 },
                 columns: [
                     {data:'id',name:'id'},
@@ -537,7 +502,7 @@
                     {data:'action',name:'action', orderable: false, searchable: false},
                 ]
             });
-        });
+     
 </script>
 <script type="text/javascript">
   

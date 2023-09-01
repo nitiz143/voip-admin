@@ -554,15 +554,15 @@ class CallController extends Controller
     public function export_csv_history(Request $request){
         if ($request->ajax()) {
             $data = ExportCsvXlsxHistory::query();
-            if(($request->has('StartDate') && $request->has('EndDate'))){
-                $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
-            }
-            if(!empty($request->Account)){
-                $data->where('client_id', $request->Account);
-            }
-            if(!empty($request->Report)){
-                $data->where('report_type', $request->Report);
-            }
+            // if(($request->has('StartDate') && $request->has('EndDate'))){
+            //     $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
+            // }
+            // if(!empty($request->Account)){
+            //     $data->where('client_id', $request->Account);
+            // }
+            // if(!empty($request->Report)){
+            //     $data->where('report_type', $request->Report);
+            // }
             $data = $data->get();
             return Datatables::of($data)
             ->addColumn('created_at', function($row){
