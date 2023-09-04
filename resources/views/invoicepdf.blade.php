@@ -207,13 +207,19 @@
                                                     $completed_count = array();
                                                     foreach ($values as $invoice){
                                                         $Duration_count[] = $invoice->feetime;
-                                                        if($invoice->feetime != 0) {
+                                                        if($invoice->feetime != 0 && $invoice->feetime != null) {
                                                             $completed_count[] = $invoice->feetime;
                                                         }
                                                     }
                                                     $fee ="";
-                                                    if($values->sum('fee') != 0 && $values->sum('feetime') != 0){
-                                                        $timepersec = $values->sum('fee')/$values->sum('feetime');
+                                                    $totalSum = $values->filter(function ($value) {
+                                                        // Check if the 'feetime' property is numeric
+                                                        return is_numeric($value->feetime);
+                                                    })->sum('feetime');
+
+
+                                                    if($values->sum('fee') != 0 && $totalSum  != 0){
+                                                        $timepersec = $values->sum('fee')/$totalSum ;
                                                         $persec =  round($timepersec, 7);
                                                         $fee= $persec*60;
                                                     }
@@ -285,16 +291,22 @@
                                                     $completed_count = array();
                                                     foreach ($values as $invoice){
                                                         $Duration_count[] = $invoice->agentfeetime;
-                                                        if($invoice->agentfeetime != 0) {
+                                                        if($invoice->agentfeetime != 0 && $invoice->agentfeetime != null) {
                                                             $completed_count[] = $invoice->agentfeetime;
                                                         }
                                                     }
                                                     $agentfee ="";
-                                                    if($values->sum('agentfee') != 0 && $values->sum('agentfeetime') != 0){
-                                                        $timepersec = $values->sum('agentfee')/$values->sum('agentfeetime');
-                                                        $persec =  round($timepersec, 7);
-                                                        $agentfee= $persec*60;
+                                                        
+                                                    $totalagentSum = $values->filter(function ($value) {
+                                                        // Check if the 'feetime' property is numeric
+                                                        return is_numeric($value->agentfeetime);
+                                                    })->sum('agentfeetime');
+                                                    if($values->sum('agentfee') > 0 && $totalagentSum > 0){
+                                                        $timepersec2 = $values->sum('agentfee')/$totalagentSum;
+                                                        $persec2 =  round($timepersec2, 7);
+                                                        $agentfee= $persec2*60;
                                                     }
+                                        
                                                     $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                                     $sec = "";
                                                     if(array_sum($completed_count) != 0 && count($completed_count) != 0){
@@ -359,13 +371,19 @@
                                                 $completed_count = array();
                                                 foreach ($values as $invoice){
                                                     $Duration_count[] = $invoice->feetime;
-                                                    if($invoice->feetime != 0) {
+                                                    if($invoice->feetime != 0 && $invoice->feetime != null) {
                                                         $completed_count[] = $invoice->feetime;
                                                     }
                                                 }
                                                 $fee ="";
-                                                if($values->sum('fee') != 0 && $values->sum('feetime') != 0){
-                                                    $timepersec = $values->sum('fee')/$values->sum('feetime');
+                                                $totalSum = $values->filter(function ($value) {
+                                                    // Check if the 'feetime' property is numeric
+                                                    return is_numeric($value->feetime);
+                                                })->sum('feetime');
+
+
+                                                if($values->sum('fee') != 0 && $totalSum  != 0){
+                                                    $timepersec = $values->sum('fee')/$totalSum ;
                                                     $persec =  round($timepersec, 7);
                                                     $fee= $persec*60;
                                                 }
@@ -433,16 +451,22 @@
                                                 $completed_count = array();
                                                 foreach ($values as $invoice){
                                                     $Duration_count[] = $invoice->agentfeetime;
-                                                    if($invoice->agentfeetime != 0) {
+                                                    if($invoice->agentfeetime != 0 && $invoice->agentfeetime != null) {
                                                         $completed_count[] = $invoice->agentfeetime;
                                                     }
                                                 }
                                                 $agentfee ="";
-                                                if($values->sum('agentfee') != 0 && $values->sum('agentfeetime') != 0){
-                                                    $timepersec = $values->sum('agentfee')/$values->sum('feetime');
-                                                    $persec =  round($timepersec, 7);
-                                                    $agentfee= $persec*60;
+                                                        
+                                                $totalagentSum = $values->filter(function ($value) {
+                                                    // Check if the 'feetime' property is numeric
+                                                    return is_numeric($value->agentfeetime);
+                                                })->sum('agentfeetime');
+                                                if($values->sum('agentfee') > 0 && $totalagentSum > 0){
+                                                    $timepersec2 = $values->sum('agentfee')/$totalagentSum;
+                                                    $persec2 =  round($timepersec2, 7);
+                                                    $agentfee= $persec2*60;
                                                 }
+                                        
                                                 $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                                 $sec = "";
                                                 if(array_sum($completed_count) != 0 && count($completed_count) != 0){
@@ -508,15 +532,21 @@
                                                     $completed_count = array();
                                                     foreach ($values as $invoice){
                                                         $Duration_count[] = $invoice->feetime;
-                                                        if($invoice->feetime != 0) {
+                                                        if($invoice->feetime != 0 && $invoice->feetime != null) {
                                                             $completed_count[] = $invoice->feetime;
                                                         }
-                                                        $fee ="";
-                                                        if($values->sum('fee') != 0 && $values->sum('feetime') != 0){
-                                                            $timepersec = $values->sum('fee')/$values->sum('feetime');
-                                                            $persec =  round($timepersec, 7);
-                                                            $fee= $persec*60;
-                                                        }
+                                                    }
+                                                    $fee ="";
+                                                    $totalSum = $values->filter(function ($value) {
+                                                        // Check if the 'feetime' property is numeric
+                                                        return is_numeric($value->feetime);
+                                                    })->sum('feetime');
+
+
+                                                    if($values->sum('fee') != 0 && $totalSum  != 0){
+                                                        $timepersec = $values->sum('fee')/$totalSum ;
+                                                        $persec =  round($timepersec, 7);
+                                                        $fee= $persec*60;
                                                     }
                                                     $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                                     $sec = "";
@@ -571,16 +601,23 @@
                                                     $completed_count = array();
                                                     foreach ($values as $invoice){
                                                         $Duration_count[] = $invoice->agentfeetime;
-                                                        if($invoice->agentfeetime != 0) {
+                                                        if($invoice->agentfeetime != 0 && $invoice->agentfeetime != null) {
                                                             $completed_count[] = $invoice->agentfeetime;
                                                         }
-                                                        $agentfee ="";
-                                                        if($values->sum('agentfee') != 0 && $values->sum('agentfeetime') != 0){
-                                                            $timepersec = $values->sum('agentfee')/$values->sum('feetime');
-                                                            $persec =  round($timepersec, 7);
-                                                            $agentfee= $persec*60;
-                                                        }
+                                                
                                                     }
+                                                    $agentfee ="";
+                                                    
+                                                    $totalagentSum = $values->filter(function ($value) {
+                                                        // Check if the 'feetime' property is numeric
+                                                        return is_numeric($value->agentfeetime);
+                                                    })->sum('agentfeetime');
+                                                    if($values->sum('agentfee') > 0 && $totalagentSum > 0){
+                                                        $timepersec2 = $values->sum('agentfee')/$totalagentSum;
+                                                        $persec2 =  round($timepersec2, 7);
+                                                        $agentfee= $persec2*60;
+                                                    }
+                                        
                                                     $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                                     $sec = "";
                                                     if(array_sum($completed_count) != 0 && count($completed_count) != 0){
@@ -646,13 +683,19 @@
                                                 $completed_count = array();
                                                 foreach ($values as $invoice){
                                                     $Duration_count[] = $invoice->feetime;
-                                                    if($invoice->feetime != 0) {
+                                                    if($invoice->feetime != 0 && $invoice->feetime != null) {
                                                         $completed_count[] = $invoice->feetime;
                                                     }
                                                 }
                                                 $fee ="";
-                                                if($values->sum('fee') != 0 && $values->sum('feetime') != 0){
-                                                    $timepersec = $values->sum('fee')/$values->sum('feetime');
+                                                $totalSum = $values->filter(function ($value) {
+                                                    // Check if the 'feetime' property is numeric
+                                                    return is_numeric($value->feetime);
+                                                })->sum('feetime');
+
+
+                                                if($values->sum('fee') != 0 && $totalSum  != 0){
+                                                    $timepersec = $values->sum('fee')/$totalSum ;
                                                     $persec =  round($timepersec, 7);
                                                     $fee= $persec*60;
                                                 }
@@ -719,16 +762,22 @@
                                                 $completed_count = array();
                                                 foreach ($values as $invoice){
                                                     $Duration_count[] = $invoice->agentfeetime;
-                                                    if($invoice->agentfeetime != 0) {
+                                                    if($invoice->agentfeetime != 0 && $invoice->agentfeetime != null) {
                                                         $completed_count[] = $invoice->agentfeetime;
                                                     }
                                                 }
                                                 $agentfee ="";
-                                                if($values->sum('agentfee') != 0 && $values->sum('agentfeetime') != 0){
-                                                    $timepersec = $values->sum('agentfee')/$values->sum('feetime');
-                                                    $persec =  round($timepersec, 7);
-                                                    $agentfee= $persec*60;
+                                                
+                                                $totalagentSum = $values->filter(function ($value) {
+                                                    // Check if the 'feetime' property is numeric
+                                                    return is_numeric($value->agentfeetime);
+                                                })->sum('agentfeetime');
+                                                if($values->sum('agentfee') > 0 && $totalagentSum > 0){
+                                                    $timepersec2 = $values->sum('agentfee')/$totalagentSum;
+                                                    $persec2 =  round($timepersec2, 7);
+                                                    $agentfee= $persec2*60;
                                                 }
+                                        
                                                 $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                                 $sec = "";
                                                 if(array_sum($completed_count) != 0 && count($completed_count) != 0){
@@ -794,15 +843,22 @@
                                                     $completed_count = array();
                                                     foreach ($values as $invoice){
                                                         $Duration_count[] = $invoice->feetime;
-                                                        if($invoice->feetime != 0) {
+                                                        if($invoice->feetime != 0 && $invoice->feetime != null) {
                                                             $completed_count[] = $invoice->feetime;
                                                         }
-                                                        $fee ="";
-                                                        if($values->sum('fee') != 0 && $values->sum('feetime') != 0){
-                                                            $timepersec = $values->sum('fee')/$values->sum('feetime');
-                                                            $persec =  round($timepersec, 7);
-                                                            $fee= $persec*60;
-                                                        }
+                                                       
+                                                    }
+                                                    $fee ="";
+                                                    $totalSum = $values->filter(function ($value) {
+                                                        // Check if the 'feetime' property is numeric
+                                                        return is_numeric($value->feetime);
+                                                    })->sum('feetime');
+
+
+                                                    if($values->sum('fee') != 0 && $totalSum  != 0){
+                                                        $timepersec = $values->sum('fee')/$totalSum ;
+                                                        $persec =  round($timepersec, 7);
+                                                        $fee= $persec*60;
                                                     }
                                                     $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                                     $sec = "";
@@ -857,16 +913,23 @@
                                                     $completed_count = array();
                                                     foreach ($values as $invoice){
                                                         $Duration_count[] = $invoice->agentfeetime;
-                                                        if($invoice->agentfeetime != 0) {
+                                                        if($invoice->agentfeetime != 0 && $invoice->agentfeetime != null) {
                                                             $completed_count[] = $invoice->agentfeetime;
                                                         }
-                                                        $agentfee ="";
-                                                        if($values->sum('agentfee') != 0 && $values->sum('agentfeetime') != 0){
-                                                            $timepersec = $values->sum('agentfee')/$values->sum('feetime');
-                                                            $persec =  round($timepersec, 7);
-                                                            $agentfee= $persec*60;
-                                                        }
+                                                       
                                                     }
+                                                    $agentfee ="";
+                                                    
+                                                    $totalagentSum = $values->filter(function ($value) {
+                                                        // Check if the 'feetime' property is numeric
+                                                        return is_numeric($value->agentfeetime);
+                                                    })->sum('agentfeetime');
+                                                    if($values->sum('agentfee') > 0 && $totalagentSum > 0){
+                                                        $timepersec2 = $values->sum('agentfee')/$totalagentSum;
+                                                        $persec2 =  round($timepersec2, 7);
+                                                        $agentfee= $persec2*60;
+                                                    }
+                                        
                                                     $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                                     $sec = "";
                                                     if(array_sum($completed_count) != 0 && count($completed_count) != 0){

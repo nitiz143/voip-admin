@@ -79,19 +79,27 @@ class DownloadCsvXlsx implements ShouldQueue
                         $fee_count = array();
                         $agentfee_count =array();
                         $customer_fee ="";
-                        if($value->sum('fee') > 0 && $value->sum('feetime') > 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $customer_fee= $persec*60;
                         }
 
                         $agent_fee ="";
-                        if($value->sum('agentfee') > 0 && $value->sum('agentfeetime') > 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee= $persec2*60;
                         }
-                    
                         foreach ($value as $invoice){
                             //customer
                             $Duration_count[] = $invoice->feetime;
@@ -101,11 +109,11 @@ class DownloadCsvXlsx implements ShouldQueue
                             if($invoice->fee > 0) {
                                 $fee_count[] = $invoice->fee;
                             }
-                            if($invoice->feetime > 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
                             $Agent_Duration_count[] = $invoice->agentfeetime;
-                            if($invoice->agentfeetime > 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
@@ -199,18 +207,31 @@ class DownloadCsvXlsx implements ShouldQueue
                         $fee_count = array();
                         $agentfee_count =array();
                         $fee ="";
-                        if($value->sum('fee') > 0 && $value->sum('feetime') > 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $fee= $persec*60;
                         }
+
                         $agent_fee ="";
-                        if($value->sum('agentfee') > 0 && $value->sum('agentfeetime') > 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee= $persec2*60;
                         }
 
+
+                       
+                       
                        
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
@@ -221,7 +242,7 @@ class DownloadCsvXlsx implements ShouldQueue
                             if($invoice->fee > 0) {
                                 $fee_count[] = $invoice->fee;
                             }
-                            if($invoice->feetime != 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
                         }
@@ -307,19 +328,27 @@ class DownloadCsvXlsx implements ShouldQueue
                         $agentfee_count =array();
 
                         $customer_fee ="";
-                        if($value->sum('fee') > 0 && $value->sum('feetime') > 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $customer_fee= $persec*60;
                         }
 
                         $agent_fee ="";
-                        if($value->sum('agentfee') > 0 && $value->sum('agentfeetime') > 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee= $persec2*60;
                         }
-                    
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
                             if($invoice->agentfee > 0) {
@@ -328,12 +357,9 @@ class DownloadCsvXlsx implements ShouldQueue
                             if($invoice->fee > 0) {
                                 $fee_count[] = $invoice->fee;
                             }
-                            if($invoice->feetime  > 0) {
-                                $completed_count[] = $invoice->feetime;
-                            }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
-                            if($invoice->agentfeetime  > 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
@@ -417,16 +443,24 @@ class DownloadCsvXlsx implements ShouldQueue
                         $agentfee_count =array();
                         
                         $customer_fee ="";
-                        if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $customer_fee= $persec*60;
                         }
 
-
                         $agent_fee ="";
-                        if($value->sum('agentfee') != 0 && $value->sum('agentfeetime') != 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee= $persec2*60;
                         }
@@ -434,13 +468,13 @@ class DownloadCsvXlsx implements ShouldQueue
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
                             $fee_count[] = $invoice->fee;
-                            if($invoice->feetime != 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
                             $agentfee_count[] = $invoice->agentfee;
-                            if($invoice->agentfeetime != 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
@@ -533,14 +567,24 @@ class DownloadCsvXlsx implements ShouldQueue
                         $fee_count = array();
                         $agentfee_count =array();
                         $fee ="";
-                        if($value->sum('fee') > 0 && $value->sum('feetime') > 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $fee= $persec*60;
                         }
+
                         $agent_fee ="";
-                        if($value->sum('agentfee') > 0 && $value->sum('agentfeetime') > 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee= $persec2*60;
                         }
@@ -555,7 +599,7 @@ class DownloadCsvXlsx implements ShouldQueue
                             if($invoice->fee > 0) {
                                 $fee_count[] = $invoice->fee;
                             }
-                            if($invoice->feetime != 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
                         }
@@ -639,21 +683,28 @@ class DownloadCsvXlsx implements ShouldQueue
                         $completed_agent_count =array();
                         $fee_count = array();
                         $agentfee_count =array();
-
                         $customer_fee ="";
-                        if($value->sum('fee') > 0 && $value->sum('feetime') > 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $customer_fee= $persec*60;
                         }
 
                         $agent_fee ="";
-                        if($value->sum('agentfee') > 0 && $value->sum('agentfeetime') > 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee= $persec2*60;
                         }
-                    
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
                             if($invoice->agentfee > 0) {
@@ -662,12 +713,12 @@ class DownloadCsvXlsx implements ShouldQueue
                             if($invoice->fee > 0) {
                                 $fee_count[] = $invoice->fee;
                             }
-                            if($invoice->feetime  > 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
-                            if($invoice->agentfeetime  > 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
@@ -751,16 +802,22 @@ class DownloadCsvXlsx implements ShouldQueue
                         $completed_count = array();
                     
                         $fee ="";
-                        if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $fee= $persec*60;
                         }
 
+
                        
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
-                            if($invoice->feetime != 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
                         }
@@ -843,21 +900,26 @@ class DownloadCsvXlsx implements ShouldQueue
                         $completed_agent_count =array();
                        
 
+
                         $agent_fee ="";
-                        if($value->sum('agentfee') != 0 && $value->sum('agentfeetime') != 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee= $persec2*60;
                         }
                     
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
-                            if($invoice->feetime != 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
-                            if($invoice->agentfeetime != 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
@@ -943,15 +1005,24 @@ class DownloadCsvXlsx implements ShouldQueue
                             $agentfee_count =array();
     
                             $customer_fee ="";
-                            if($value->sum('fee') > 0 && $value->sum('feetime') > 0){
-                                $timepersec = $value->sum('fee')/$value->sum('feetime');
+                            $totalSum = $value->filter(function ($item) {
+                                // Check if the 'feetime' property is numeric
+                                return is_numeric($item->feetime);
+                            })->sum('feetime');
+    
+                            if($value->sum('fee') > 0 && $totalSum > 0){
+                                $timepersec = $value->sum('fee')/$totalSum;
                                 $persec =  round($timepersec, 7);
                                 $customer_fee= $persec*60;
                             }
     
                             $agent_fee ="";
-                            if($value->sum('agentfee') > 0 && $value->sum('agentfeetime') > 0){
-                                $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                            $totalagentSum = $value->filter(function ($item) {
+                                // Check if the 'feetime' property is numeric
+                                return is_numeric($item->agentfeetime);
+                            })->sum('agentfeetime');
+                            if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                                $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                                 $persec2 =  round($timepersec2, 7);
                                 $agent_fee= $persec2*60;
                             }
@@ -964,12 +1035,12 @@ class DownloadCsvXlsx implements ShouldQueue
                                 if($invoice->fee > 0) {
                                     $fee_count[] = $invoice->fee;
                                 }
-                                if($invoice->feetime  > 0) {
+                                if($invoice->feetime != 0 && $invoice->feetime != null) {
                                     $completed_count[] = $invoice->feetime;
                                 }
     
                                 $Agent_Duration_count[] = $invoice->agentfeetime;
-                                if($invoice->agentfeetime  > 0) {
+                                if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                     $completed_agent_count[] = $invoice->agentfeetime;
                                 }
                             }
@@ -1054,19 +1125,32 @@ class DownloadCsvXlsx implements ShouldQueue
                             $completed_agent_count =array();
                             $fee_count = array();
                             $agentfee_count =array();
-                            $agent_fee ="";
-                            if($value->sum('agentfee') > 0 && $value->sum('agentfeetime') > 0){
-                                $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
-                                $persec2 =  round($timepersec2, 7);
-                                $agent_fee= $persec2*60;
-                            }
                             $fee ="";
-                            if($value->sum('fee') > 0 && $value->sum('feetime') > 0){
-                                $timepersec = $value->sum('fee')/$value->sum('feetime');
+
+                            $totalSum = $value->filter(function ($item) {
+                                // Check if the 'feetime' property is numeric
+                                return is_numeric($item->feetime);
+                            })->sum('feetime');
+
+                            if($value->sum('fee') > 0 && $totalSum > 0){
+                                $timepersec = $value->sum('fee')/$totalSum;
                                 $persec =  round($timepersec, 7);
                                 $fee= $persec*60;
                             }
 
+                            $agent_fee ="";
+
+                            $totalagentSum = $value->filter(function ($item) {
+                                // Check if the 'feetime' property is numeric
+                                return is_numeric($item->agentfeetime);
+                            })->sum('agentfeetime');
+                            if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                                $timepersec2 = $value->sum('agentfee')/$totalagentSum;
+                                $persec2 =  round($timepersec2, 7);
+                                $agent_fee= $persec2*60;
+                            }
+
+                    
                         
                             foreach ($value as $invoice){
                                 $Duration_count[] = $invoice->feetime;
@@ -1076,12 +1160,12 @@ class DownloadCsvXlsx implements ShouldQueue
                                 if($invoice->fee > 0) {
                                     $fee_count[] = $invoice->fee;
                                 }
-                                if($invoice->feetime  > 0) {
+                                if($invoice->feetime != 0 && $invoice->feetime != null) {
                                     $completed_count[] = $invoice->feetime;
                                 }
     
                                 $Agent_Duration_count[] = $invoice->agentfeetime;
-                                if($invoice->agentfeetime  > 0) {
+                                if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                     $completed_agent_count[] = $invoice->agentfeetime;
                                 }
                             }
@@ -1178,28 +1262,38 @@ class DownloadCsvXlsx implements ShouldQueue
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
                             $fee_count[] = $invoice->fee;
-                            if($invoice->feetime != 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
                             $agentfee_count[] = $invoice->agentfee;
-                            if($invoice->agentfeetime != 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         
                         }
-                        if($value->sum('fee') > 0 && $value->sum('feetime') > 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $customer_fee= $persec*60;
                         }
 
-                    
-                        if($value->sum('agentfee') > 0 && $value->sum('agentfeetime') > 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('feetime');
+
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
-                            $agent_fee = $persec2*60;
+                            $agent_fee= $persec2*60;
                         }
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
                         $margin_per_min = (int)$customer_fee - (int)$agent_fee;
@@ -1300,24 +1394,36 @@ class DownloadCsvXlsx implements ShouldQueue
                             if($invoice->agentfee >= 0) {
                                 $agentfee_count[] = $invoice->agentfee;
                             }
-                            if($invoice->feetime > 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
                             $Agent_Duration_count[] = $invoice->agentfeetime;
                             
-                            if($invoice->agentfeetime > 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
-                        if($value->sum('fee') > 0 && $value->sum('feetime') > 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $customer_fee= $persec*60;
                         }
-                        if($value->sum('agentfee') > 0 && $value->sum('agentfeetime') > 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('feetime');
+
+
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
-                            $agent_fee = $persec2*60;
+                            $agent_fee= $persec2*60;
                         }
 
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
@@ -1400,15 +1506,24 @@ class DownloadCsvXlsx implements ShouldQueue
                         $Agent_Duration_count = array();
                         $completed_agent_count =array();
                         $customer_fee ="";
-                        if($value->sum('fee') >= 0 && $value->sum('feetime') >= 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $customer_fee= $persec*60;
                         }
 
                         $agent_fee ="";
-                        if($value->sum('agentfee') >= 0 && $value->sum('agentfeetime') >= 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee= $persec2*60;
                         }
@@ -1422,12 +1537,12 @@ class DownloadCsvXlsx implements ShouldQueue
                             if($invoice->agentfee >= 0) {
                                 $agentfee_count[] = $invoice->agentfee;
                             }
-                            if($invoice->feetime >= 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
-                            if($invoice->agentfeetime >= 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
@@ -1438,6 +1553,9 @@ class DownloadCsvXlsx implements ShouldQueue
                         if(array_sum($completed_agent_count) != 0 && count($completed_agent_count) != 0){
                             $sec =  array_sum($completed_agent_count) /  count($completed_agent_count);
                         }
+
+                        $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
+                        $margin_per_min = (int)$customer_fee - (int)$agent_fee;
                         $data['VendAccountCode'] = !empty($value[0]['agentaccount']) ? $value[0]['agentaccount'] :"";
                         $data['Vendor'] =   !empty($value[0]['agentname']) ? $value[0]['agentname'] :"";
                         $data['Attempts'] =  $value->count() ;
@@ -1509,29 +1627,38 @@ class DownloadCsvXlsx implements ShouldQueue
                         $fee_count = array();
                         $agentfee_count =array();
                         $customer_fee ="";
-                        if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $customer_fee= $persec*60;
                         }
 
                         $agent_fee ="";
-                        if($value->sum('agentfee') != 0 && $value->sum('agentfeetime') != 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee= $persec2*60;
                         }
-                    
+
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
                             $fee_count[] = $invoice->fee;
-                            if($invoice->feetime != 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
                             $agentfee_count[] = $invoice->agentfee;
-                            if($invoice->agentfeetime != 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
@@ -1635,26 +1762,36 @@ class DownloadCsvXlsx implements ShouldQueue
                             if($invoice->agentfee >= 0) {
                                 $agentfee_count[] = $invoice->agentfee;
                             }
-                            if($invoice->feetime > 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
                             $Agent_Duration_count[] = $invoice->agentfeetime;
                             
-                            if($invoice->agentfeetime > 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
-                        if($value->sum('fee') > 0 && $value->sum('feetime') > 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $customer_fee= $persec*60;
                         }
-                        if($value->sum('agentfee') > 0 && $value->sum('agentfeetime') > 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('feetime');
-                            $persec2 =  round($timepersec2, 7);
-                            $agent_fee = $persec2*60;
-                        }
 
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
+                            $persec2 =  round($timepersec2, 7);
+                            $agent_fee= $persec2*60;
+                        }
                         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
                         $margin_per_min = (int)$customer_fee-(int)$agent_fee;
                         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
@@ -1735,19 +1872,27 @@ class DownloadCsvXlsx implements ShouldQueue
                         $Agent_Duration_count = array();
                         $completed_agent_count =array();
                         $customer_fee ="";
-                        if($value->sum('fee') >= 0 && $value->sum('feetime') >= 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $customer_fee= $persec*60;
                         }
 
                         $agent_fee ="";
-                        if($value->sum('agentfee') >= 0 && $value->sum('agentfeetime') >= 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee= $persec2*60;
                         }
-                    
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
 
@@ -1757,12 +1902,12 @@ class DownloadCsvXlsx implements ShouldQueue
                             if($invoice->agentfee >= 0) {
                                 $agentfee_count[] = $invoice->agentfee;
                             }
-                            if($invoice->feetime >= 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
-                            if($invoice->agentfeetime >= 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
@@ -1843,8 +1988,13 @@ class DownloadCsvXlsx implements ShouldQueue
                         $completed_count = array();
                     
                         $fee ="";
-                        if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
-                            $timepersec = $value->sum('fee')/$value->sum('feetime');
+                        $totalSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->feetime);
+                        })->sum('feetime');
+
+                        if($value->sum('fee') > 0 && $totalSum > 0){
+                            $timepersec = $value->sum('fee')/$totalSum;
                             $persec =  round($timepersec, 7);
                             $fee= $persec*60;
                         }
@@ -1852,7 +2002,7 @@ class DownloadCsvXlsx implements ShouldQueue
                        
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
-                            if($invoice->feetime != 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
                         }
@@ -1936,20 +2086,24 @@ class DownloadCsvXlsx implements ShouldQueue
                        
 
                         $agent_fee ="";
-                        if($value->sum('agentfee') != 0 && $value->sum('agentfeetime') != 0){
-                            $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                        $totalagentSum = $value->filter(function ($item) {
+                            // Check if the 'feetime' property is numeric
+                            return is_numeric($item->agentfeetime);
+                        })->sum('agentfeetime');
+                        if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                            $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                             $persec2 =  round($timepersec2, 7);
                             $agent_fee= $persec2*60;
                         }
                     
                         foreach ($value as $invoice){
                             $Duration_count[] = $invoice->feetime;
-                            if($invoice->feetime != 0) {
+                            if($invoice->feetime != 0 && $invoice->feetime != null) {
                                 $completed_count[] = $invoice->feetime;
                             }
 
                             $Agent_Duration_count[] = $invoice->agentfeetime;
-                            if($invoice->agentfeetime != 0) {
+                            if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                 $completed_agent_count[] = $invoice->agentfeetime;
                             }
                         }
@@ -2032,15 +2186,24 @@ class DownloadCsvXlsx implements ShouldQueue
                             $Agent_Duration_count = array();
                             $completed_agent_count =array();
                             $customer_fee ="";
-                            if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
-                                $timepersec = $value->sum('fee')/$value->sum('feetime');
+                            $totalSum = $value->filter(function ($item) {
+                                // Check if the 'feetime' property is numeric
+                                return is_numeric($item->feetime);
+                            })->sum('feetime');
+    
+                            if($value->sum('fee') > 0 && $totalSum > 0){
+                                $timepersec = $value->sum('fee')/$totalSum;
                                 $persec =  round($timepersec, 7);
                                 $customer_fee= $persec*60;
                             }
     
                             $agent_fee ="";
-                            if($value->sum('agentfee') != 0 && $value->sum('agentfeetime') != 0){
-                                $timepersec2 = $value->sum('agentfee')/$value->sum('agentfeetime');
+                            $totalagentSum = $value->filter(function ($item) {
+                                // Check if the 'feetime' property is numeric
+                                return is_numeric($item->agentfeetime);
+                            })->sum('agentfeetime');
+                            if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                                $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                                 $persec2 =  round($timepersec2, 7);
                                 $agent_fee= $persec2*60;
                             }
@@ -2053,12 +2216,12 @@ class DownloadCsvXlsx implements ShouldQueue
                                 if($invoice->fee > 0) {
                                     $fee_count[] = $invoice->fee;
                                 }
-                                if($invoice->feetime  > 0) {
+                                if($invoice->feetime != 0 && $invoice->feetime != null) {
                                     $completed_count[] = $invoice->feetime;
                                 }
     
                                 $Agent_Duration_count[] = $invoice->agentfeetime;
-                                if($invoice->agentfeetime  > 0) {
+                                if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                     $completed_agent_count[] = $invoice->agentfeetime;
                                 }
                             }
@@ -2140,17 +2303,25 @@ class DownloadCsvXlsx implements ShouldQueue
                     if(!$downloads->isEmpty()){
                         foreach ( $downloads as $key => $value) {
 
-                            if($value->sum('fee') != 0 && $value->sum('feetime') != 0){
-                                $timepersec = $value->sum('fee')/$value->sum('feetime');
+                            $totalSum = $value->filter(function ($item) {
+                                // Check if the 'feetime' property is numeric
+                                return is_numeric($item->feetime);
+                            })->sum('feetime');
+    
+                            if($value->sum('fee') > 0 && $totalSum > 0){
+                                $timepersec = $value->sum('fee')/$totalSum;
                                 $persec =  round($timepersec, 7);
                                 $customer_fee= $persec*60;
                             }
-
-                        
-                            if($value->sum('agentfee') != 0 && $value->sum('agentfeetime') != 0){
-                                $timepersec2 = $value->sum('agentfee')/$value->sum('feetime');
+    
+                            $totalagentSum = $value->filter(function ($item) {
+                                // Check if the 'feetime' property is numeric
+                                return is_numeric($item->agentfeetime);
+                            })->sum('agentfeetime');
+                            if($value->sum('agentfee') > 0 && $totalagentSum > 0){
+                                $timepersec2 = $value->sum('agentfee')/$totalagentSum;
                                 $persec2 =  round($timepersec2, 7);
-                                $agent_fee = $persec2*60;
+                                $agent_fee= $persec2*60;
                             }
                             $Duration_count = array();
                             $completed_count = array();
@@ -2167,12 +2338,12 @@ class DownloadCsvXlsx implements ShouldQueue
                                 if($invoice->fee > 0) {
                                     $fee_count[] = $invoice->fee;
                                 }
-                                if($invoice->feetime  > 0) {
+                                if($invoice->feetime != 0 && $invoice->feetime != null) {
                                     $completed_count[] = $invoice->feetime;
                                 }
     
                                 $Agent_Duration_count[] = $invoice->agentfeetime;
-                                if($invoice->agentfeetime  > 0) {
+                                if($invoice->agentfeetime  != 0 && $invoice->agentfeetime != null) {
                                     $completed_agent_count[] = $invoice->agentfeetime;
                                 }
                             }
