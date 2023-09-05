@@ -16,12 +16,11 @@ class MyCustomMail extends Mailable
      *
      * @return void
      */
-    public $startDate;
-    public $endDate;
+    public $data;
 
-    public function __construct()
+    public function __construct($data)
     {
-        
+        $this->data = $data;
     }
 
     /**
@@ -31,7 +30,7 @@ class MyCustomMail extends Mailable
      */
     public function build()
     {
-        return $this->view('email');
+        return $this->view('email')->with('data', $this->data);
        
     }
 }

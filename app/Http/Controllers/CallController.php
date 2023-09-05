@@ -24,7 +24,7 @@ use Date;
 use File;
 use Auth;
 use Illuminate\Support\Facades\Mail;
-
+use App\Models\Billing;
 use App\Mail\MyCustomMail; 
 
 
@@ -459,14 +459,19 @@ class CallController extends Controller
         return view("call.export-history",compact('Accounts','VAccounts'));
     }
 
-    public function email_export_history(Request $request){
+    public function email_export_history(Request $request) {
 
-        // $startDate = Mail:: where('id',$request->billing_startdate)->get(); // Replace with your start date
-        // $endDate =  Mail:: where('id',$request->last_charge_date)->get();
-        $data = ExportCsvXlsxHistory::where('id',$request->id)->query();  
-        $mail = Client::where('id', $request->id)->get();
+        // $startDate = 'billing_startdate' // Replace with your start date
+        // $endDate = 
         
-        Mail::to('recipient@example.com')->send(new MyCustomMail($mail,$data));
+       
+
+        $history = ExportHistory::where('id',$request->id)->first();  
+        $data = Billing::where('account_id',$history->client_id)->first();
+        $client = Client::where("id",$history->client_id)->first();
+
+        
+        Mail::to($client->email)->send(new MyCustomMail($data));
         
     }
     
