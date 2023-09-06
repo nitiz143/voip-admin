@@ -23,6 +23,11 @@ use DateTime;
 use Date;
 use File;
 use Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Billing;
+use App\Mail\MyCustomMail; 
+
+
 
 class CallController extends Controller
 {
@@ -441,7 +446,8 @@ class CallController extends Controller
             })
             ->addIndexColumn()
             ->addColumn('action', function($row){
-                $btn = '<a href="'.url('/export-history-download',$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+                $btn = '<a href="'.url('/export-history-download',$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>
+               <a href="'.url('/export-history-email',$row->id).'" class="email btn btn-primary btn-sm " id="email"  data-id ="'.$row->id.'">Send Email</a>';
 
                 return $btn;
             })
@@ -452,6 +458,25 @@ class CallController extends Controller
         $VAccounts = Client::where("vendor", "=",1)->get();
         return view("call.export-history",compact('Accounts','VAccounts'));
     }
+
+    public function email_export_history(Request $request) {
+
+        // $startDate = 'billing_startdate' // Replace with your start date
+        // $endDate = 
+        
+       
+
+        $history = ExportHistory::where('id',$request->id)->first();  
+        $data = Billing::where('account_id',$history->client_id)->first();
+        $client = Client::where("id",$history->client_id)->first();
+
+        
+        Mail::to($client->email)->send(new MyCustomMail($data));
+        
+    }
+    
+
+
     public function download_export_history(Request $request){
         $invoice = ExportHistory::where('id',$request->id)->first();
 
@@ -588,6 +613,8 @@ class CallController extends Controller
             ->rawColumns(['action','status'])
             ->make(true);
         }
+     
+
         $Accounts = Client::where("customer", "=",1)->get();
         $VAccounts = Client::where("vendor", "=",1)->get();
         return view("call.export-csv-history",compact('Accounts','VAccounts'));
