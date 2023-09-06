@@ -41,14 +41,16 @@ class CallController extends Controller
                 $start = $start*1000;
                 $end = strtotime($request->input('EndDate'));
                 $end = $end*1000;
+
                 $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
             if(!empty($request->Account)){
                 $data->where('account_id', $request->Account);
-                $data = $data->get();
+                $data = $data;
             }else{
                 $data = [];
             }
+          
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
@@ -124,7 +126,7 @@ class CallController extends Controller
             }
             if(!empty($request->VAccount)){
                 $data->where('vendor_account_id', $request->VAccount);
-                $data = $data->get();
+                $data = $data;
             }else{
                 $data = [];
             }
@@ -415,7 +417,7 @@ class CallController extends Controller
             if(!empty($request->Report)){
                 $data->where('report_type', $request->Report);
             }
-                $data = $data->get();
+                $data = $data;
             return Datatables::of($data)
             
             ->addColumn('created_at', function($row){
@@ -588,7 +590,7 @@ class CallController extends Controller
             // if(!empty($request->Report)){
             //     $data->where('report_type', $request->Report);
             // }
-            $data = $data->get();
+            $data = $data;
             return Datatables::of($data)
             ->addColumn('created_at', function($row){
                 return Carbon::parse($row->created_at)->format('d/m/Y H:i:s');
