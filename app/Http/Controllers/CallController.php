@@ -463,13 +463,10 @@ class CallController extends Controller
 
         // $startDate = 'billing_startdate' // Replace with your start date
         // $endDate = 
-        
        
-
         $history = ExportHistory::where('id',$request->id)->first();  
         $data = Billing::where('account_id',$history->client_id)->first();
-        $client = Client::where("id",$history->client_id)->first();
-
+        $client = Client::where('id',$history->client_id)->first();
         
         Mail::to($client->email)->send(new MyCustomMail($data));
         
