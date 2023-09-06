@@ -466,6 +466,7 @@
                 type: 'get',
                 success: function (data)
                 {
+                    $('#tables_data_1').html();
                     if(ref_this.data('id') == 2){
                         $('#tables_data_1').html(data)
                     }   

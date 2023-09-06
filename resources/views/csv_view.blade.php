@@ -80,16 +80,22 @@
                                                 if($invoice->fee > 0) {
                                                     $fee_count[] = $invoice->fee;
                                                 }
-                                                if($invoice->feetime > 0) {
+                                                if($invoice->feetime > 0 && $invoice->feetime != null) {
                                                     $completed_count[] = $invoice->feetime;
                                                 }
                                                 $Agent_Duration_count[] = $invoice->agentfeetime;
-                                                if($invoice->agentfeetime > 0) {
+                                                if($invoice->agentfeetime > 0 && $invoice->agentfeetime != null) {
                                                     $completed_agent_count[] = $invoice->agentfeetime;
                                                 }
                                             }
                                             $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
-                                            $margin_per_min = $customer_fee - $agent_fee;
+                                            $margin_per_min = (int)$customer_fee - (int)$agent_fee;
+                                            $total_margin_time = $totalSum-$totalagentSum;
+                                            if( $margin > 0 &&  $total_margin_time > 0){
+                                                $timepersec3 = $margin/ $total_margin_time;
+                                                $persec3 =  round($timepersec3, 7);
+                                                $margin_per_min= $persec3*60;
+                                            }
                                             
                                             $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Duration_count) / 60 ), array_sum($Duration_count) % 60 );
                                             $sec = "";
@@ -179,7 +185,7 @@
                                     
                                             foreach ($values as $invoice){
                                                 $Duration_count[] = $invoice->feetime;
-                                                if($invoice->feetime != 0) {
+                                                if($invoice->feetime > 0 && $invoice->feetime != null) {
                                                     $completed_count[] = $invoice->feetime;
                                                 }
                                                 if($invoice->agentfee > 0) {
@@ -273,7 +279,7 @@
 
                                             foreach ($values as $invoice){
                                                 $Agent_Duration_count[] = $invoice->agentfeetime;
-                                                if($invoice->agentfeetime  > 0) {
+                                                if($invoice->agentfeetime > 0 && $invoice->agentfeetime != null) {
                                                     $completed_agent_count[] = $invoice->agentfeetime;
                                                 }
                                                 if($invoice->agentfee > 0) {
@@ -386,11 +392,11 @@
                                             if($invoice->fee > 0) {
                                                 $fee_count[] = $invoice->fee;
                                             }
-                                            if($invoice->feetime > 0) {
+                                            if($invoice->feetime > 0 && $invoice->feetime != null) {
                                                 $completed_count[] = $invoice->feetime;
                                             }
                                             $Agent_Duration_count[] = $invoice->agentfeetime;
-                                            if($invoice->agentfeetime > 0) {
+                                            if($invoice->agentfeetime > 0 && $invoice->agentfeetime != null) {
                                                 $completed_agent_count[] = $invoice->agentfeetime;
                                             }
                                         }
@@ -483,10 +489,10 @@
                                     
                                             foreach ($values as $invoice){
                                                 $Duration_count[] = $invoice->feetime;
-                                                if($invoice->feetime != 0) {
+                                                if($invoice->feetime > 0 && $invoice->feetime != null) {
                                                     $completed_count[] = $invoice->feetime;
                                                 }
-                                                if($invoice->agentfee > 0) {
+                                                if($invoice->agentfee > 0 ) {
                                                     $agentfee_count[] = $invoice->agentfee;
                                                 }
                                                 if($invoice->fee > 0) {
@@ -577,7 +583,7 @@
 
                                             foreach ($values as $invoice){
                                                 $Agent_Duration_count[] = $invoice->agentfeetime;
-                                                if($invoice->agentfeetime  > 0) {
+                                                if($invoice->agentfeetime > 0 && $invoice->agentfeetime != null) {
                                                     $completed_agent_count[] = $invoice->agentfeetime;
                                                 }
                                                 if($invoice->agentfee > 0) {
@@ -677,7 +683,7 @@
                                     
                                             foreach ($values as $invoice){
                                                 $Duration_count[] = $invoice->feetime;
-                                                if($invoice->feetime != 0) {
+                                                if($invoice->feetime > 0 && $invoice->feetime != null) {
                                                     $completed_count[] = $invoice->feetime;
                                                 }
                                                 if($invoice->agentfee > 0) {
@@ -772,7 +778,7 @@
 
                                             foreach ($values as $invoice){
                                                 $Agent_Duration_count[] = $invoice->agentfeetime;
-                                                if($invoice->agentfeetime  > 0) {
+                                                if($invoice->agentfeetime > 0 && $invoice->agentfeetime != null) {
                                                     $completed_agent_count[] = $invoice->agentfeetime;
                                                 }
                                                 if($invoice->agentfee > 0) {
@@ -849,12 +855,12 @@
                                         
                                             foreach ($values as $invoice){
                                                 $Duration_count[] = $invoice->feetime;
-                                                if($invoice->feetime != 0) {
+                                                if($invoice->feetime > 0 && $invoice->feetime != null) {
                                                     $completed_count[] = $invoice->feetime;
                                                 }
 
                                                 $Agent_Duration_count[] = $invoice->agentfeetime;
-                                                if($invoice->agentfeetime != 0) {
+                                                if($invoice->agentfeetime > 0 && $invoice->agentfeetime != null) {
                                                     $completed_agent_count[] = $invoice->agentfeetime;
                                                 }
                                             }
@@ -921,12 +927,12 @@
                                         
                                             foreach ($values as $invoice){
                                                 $Duration_count[] = $invoice->feetime;
-                                                if($invoice->feetime != 0) {
+                                                if($invoice->feetime > 0 && $invoice->feetime != null) {
                                                     $completed_count[] = $invoice->feetime;
                                                 }
 
                                                 $Agent_Duration_count[] = $invoice->agentfeetime;
-                                                if($invoice->agentfeetime != 0) {
+                                                if($invoice->agentfeetime > 0 && $invoice->agentfeetime != null) {
                                                     $completed_agent_count[] = $invoice->agentfeetime;
                                                 }
                                             }

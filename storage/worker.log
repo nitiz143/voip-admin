@@ -1,943 +1,108 @@
-[2023-08-30 00:00:03][383] Processing: App\Jobs\InvoiceGenrateJob
-[2023-08-30 00:00:04][383] Processed:  App\Jobs\InvoiceGenrateJob
-[2023-08-31 01:00:02][384] Processing: App\Jobs\InvoiceGenrateJob
-[2023-08-31 01:00:03][384] Processed:  App\Jobs\InvoiceGenrateJob
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ErrorException 
-
-  include(/var/www/html/mindgrap/vendor/composer/../../app/Console/Commands/DownloadCsvImportCron.php): Failed to open stream: No such file or directory
-
-  at vendor/composer/ClassLoader.php:578
-    574▕          * @param  string $file
-    575▕          * @return void
-    576▕          */
-    577▕         self::$includeFile = static function($file) {
-  ➜ 578▕             include $file;
-    579▕         };
-    580▕     }
-    581▕ }
-    582▕
-
-      [2m+2 vendor frames [22m
-  3   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+9 vendor frames [22m
-  13  artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-
-   ParseError 
-
-  syntax error, unexpected token "foreach"
-
-  at app/Console/Commands/DownloadCsvImportCron.php:53
-     49▕         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
-     50▕         $value = CsvImport::where('status',1)->get();
-     51▕         if(!empty($value)){
-     52▕             $history
-  ➜  53▕             foreach ($value as $key => $csvImport) {
-     54▕                
-     55▕                 if($csvImport->version == 1){
-     56▕                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
-     57▕                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
-
-      [2m+1 vendor frames [22m
-  2   [internal]:0
-      Composer\Autoload\ClassLoader::loadClass()
-
-      [2m+1 vendor frames [22m
-  4   app/Console/Kernel.php:50
-      Illuminate\Foundation\Console\Kernel::load()
-[2023-09-01 01:00:03][1] Processing: App\Jobs\InvoiceGenrateJob
-[2023-09-01 01:00:03][1] Processed:  App\Jobs\InvoiceGenrateJob
-[2023-09-01 01:00:04][2] Processing: App\Jobs\InvoiceGenrateJob
-[2023-09-01 01:00:04][2] Processed:  App\Jobs\InvoiceGenrateJob
-
-   Symfony\Component\Process\Exception\ProcessTimedOutException 
-
-  The process "'/usr/bin/php8.1' 'artisan' 'queue:work' '--once' '--name=default' '--queue=default' '--backoff=0' '--memory=128' '--sleep=3' '--tries=1'" exceeded the timeout of 60 seconds.
-
-  at /var/www/html/mindgrap/vendor/symfony/process/Process.php:1204
-    1200▕ 
-    1201▕         if (null !== $this->timeout && $this->timeout < microtime(true) - $this->starttime) {
-    1202▕             $this->stop(0);
-    1203▕ 
-  ➜ 1204▕             throw new ProcessTimedOutException($this, ProcessTimedOutException::TYPE_GENERAL);
-    1205▕         }
-    1206▕ 
-    1207▕         if (null !== $this->idleTimeout && $this->idleTimeout < microtime(true) - $this->lastOutputTime) {
-    1208▕             $this->stop(0);
-
-      [2m+18 vendor frames [22m
-  19  /var/www/html/mindgrap/artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
-
-   Symfony\Component\Process\Exception\ProcessTimedOutException 
-
-  The process "'/usr/bin/php8.1' 'artisan' 'queue:work' '--once' '--name=default' '--queue=default' '--backoff=0' '--memory=128' '--sleep=3' '--tries=1'" exceeded the timeout of 60 seconds.
-
-  at /var/www/html/mindgrap/vendor/symfony/process/Process.php:1204
-    1200▕ 
-    1201▕         if (null !== $this->timeout && $this->timeout < microtime(true) - $this->starttime) {
-    1202▕             $this->stop(0);
-    1203▕ 
-  ➜ 1204▕             throw new ProcessTimedOutException($this, ProcessTimedOutException::TYPE_GENERAL);
-    1205▕         }
-    1206▕ 
-    1207▕         if (null !== $this->idleTimeout && $this->idleTimeout < microtime(true) - $this->lastOutputTime) {
-    1208▕             $this->stop(0);
-
-      [2m+18 vendor frames [22m
-  19  /var/www/html/mindgrap/artisan:37
-      Illuminate\Foundation\Console\Kernel::handle()
+[2023-09-02 01:00:04][5] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-02 01:00:04][5] Processed:  App\Jobs\InvoiceGenrateJob
+[2023-09-03 01:00:05][6] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-03 01:00:05][6] Processed:  App\Jobs\InvoiceGenrateJob
+[2023-09-03 01:00:05][7] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-03 01:00:05][7] Processed:  App\Jobs\InvoiceGenrateJob
+[2023-09-04 01:00:06][8] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-04 01:00:06][8] Processed:  App\Jobs\InvoiceGenrateJob
+[2023-09-05 01:00:06][9] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-05 01:00:06][9] Processed:  App\Jobs\InvoiceGenrateJob
+[2023-09-06 01:00:04][10] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-06 01:00:04][10] Processed:  App\Jobs\InvoiceGenrateJob
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41

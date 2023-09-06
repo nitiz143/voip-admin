@@ -82,6 +82,7 @@ class CsvImportCron extends Command
                         if(!empty($files)){
                             // get latest file
                          $newest = $files->first();
+                   
                             if(!empty($newest)){
                                     if($setting->protocol == 1){
                                         Storage::put('voip/'.$newest, Storage::disk('ftp')->get($newest),'public');
@@ -90,6 +91,7 @@ class CsvImportCron extends Command
                                     }
                                     // check if file already exist
                                     $csvImport = CsvImport::where('csv_file',$newest)->first();
+                             
                                     if(empty($csvImport)){
                                         $data = [
                                             'status' => 1,
@@ -97,7 +99,7 @@ class CsvImportCron extends Command
                                             'version' => $setting->version,
                                             'setting_id' => $setting->id,
                                         ];
-                                        // dd($data);
+                                      
                                         CsvImport::create($data);
                                     }
 
