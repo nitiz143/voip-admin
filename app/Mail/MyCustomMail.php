@@ -17,10 +17,12 @@ class MyCustomMail extends Mailable
      * @return void
      */
     public $data;
+    public $history;
 
-    public function __construct($data)
+    public function __construct($data,$history)
     {
         $this->data = $data;
+        $this->history = $history;
     }
 
     /**
@@ -30,7 +32,11 @@ class MyCustomMail extends Mailable
      */
     public function build()
     {
-        return $this->view('email')->with('data', $this->data);
+        return $this->view('email')->with('data', $this->data)->subject('PDF Attachment')
+        ->attach(storage_path('/app/voip/pdf/'.$this->history->file_name), [
+            'as' =>  $this->history->file_name,
+            'mime' => 'application/pdf',
+        ]);
        
     }
 }

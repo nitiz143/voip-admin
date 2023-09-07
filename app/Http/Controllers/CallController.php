@@ -470,7 +470,9 @@ class CallController extends Controller
         $data = Billing::where('account_id',$history->client_id)->first();
         $client = Client::where('id',$history->client_id)->first();
         
-        Mail::to($client->email)->send(new MyCustomMail($data));
+        Mail::to($client->email)->send(new MyCustomMail($data,$history));
+        return redirect()->back()->with('success', 'Email Send Succesfully');   
+
         
     }
     

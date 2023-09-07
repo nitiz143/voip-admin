@@ -71,14 +71,14 @@
                                             <div class="form-group" style="max-width: 300px;">
                                                 <label class="control-label small_label" for="field-1">Start Date</label>
                                                 <div class="d-flex gap-1">
-                                                    <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2021-04-16 14:45:00" data-enddate="2021-04-16 14:45:00"/>
+                                                    <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd hh:mm:ss" value="2021-04-16 14:45:00" data-enddate="2021-04-16 14:45:00"/>
                                                 </div>
                                             </div>
                                             <div class="form-group" style="max-width: 300px;">
                                                 <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
                                                 <div class="d-flex gap-1">
                                                     <input type="text" name="EndDate"
-                                                    id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2021-04-16 14:45:00" data-enddate="2021-04-16 14:45:00" />
+                                                    id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd hh:mm:ss" value="2021-04-16 14:45:00" data-enddate="2021-04-16 14:45:00" />
                                                 </div>
                                             </div>
                                             
@@ -175,7 +175,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
             //gotoCurrent: true,
            orientation: "bottom" // add this
         });
@@ -186,7 +186,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
             //gotoCurrent: true,
            orientation: "bottom" // add this
         });
@@ -198,7 +198,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
             //gotoCurrent: true,
            orientation: "bottom" // add this
         });
@@ -209,7 +209,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
             //gotoCurrent: true,
            orientation: "bottom" // add this
         });

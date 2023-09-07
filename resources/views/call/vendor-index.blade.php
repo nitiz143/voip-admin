@@ -341,7 +341,7 @@ $("#btnModeClose").on("click", function (e) {
 
 
         $('.timepicker').datetimepicker({
-            format: 'HH:mm:ss'
+            format: 'hh:mm:ss'
         });
     });
 
