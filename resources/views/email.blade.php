@@ -3,15 +3,29 @@
 <p>Billing_cycle: {{ $data['billing_cycle'] }}</p>
 
     @if($data['billing_cycle'] == "quarterly")
-        <p>next_invoice_date: {{ date('Y-m-d', strtotime($data['next_invoice_date']. ' + 3 month ')); }}</p>
+        
+        <p>Start_invoice_date: {{ $data['last_invoice_date'] }}</p>
+        <p>last_invoice_date: {{ date('Y-m-d', strtotime($data['last_invoice_date'].' + 3 month')); }}</p>
+
+
     @elseif($data['billing_cycle'] == "monthly")
-        <p>next_invoice_date: {{ date('Y-m-d', strtotime($data['next_invoice_date']. ' + 1 month ')); }}</p>
+        <p>Start_invoice_date: {{ $data['last_invoice_date'] }}</p>
+        <p>last_invoice_date: {{ date('Y-m-d', strtotime($data['last_invoice_date'].' + 1 month')); }}</p>
+
     @elseif($data['billing_cycle'] == "yearly")
-        <p>next_invoice_date: {{ date('Y-m-d', strtotime($data['next_invoice_date']. ' + 1 year ')); }}</p>
+        <p>Start_invoice_date: {{ $data['last_invoice_date'] }}</p>
+        <p>last_invoice_date: {{ date('Y-m-d', strtotime($data['last_invoice_date'].' + 1 year')); }}</p>
+
     @elseif($data['billing_cycle'] == "weekly")
-        <p>next_invoice_date: {{ date('Y-m-d', strtotime($data['next_invoice_date']. ' + 1 week ')); }}</p>
+        <p>Start_invoice_date: {{ $data['last_invoice_date'] }}</p>
+        <p>last_invoice_date: {{ date('Y-m-d', strtotime($data['last_invoice_date'].' + 1 week')); }}</p>
+
     @elseif($data['billing_cycle'] == "daily")
-        <p>next_invoice_date: {{ date('Y-m-d', strtotime($data['next_invoice_date']. ' + 1 day ')); }}</p>
+        <p>Start_invoice_date: {{ $data['last_invoice_date'] }}</p>
+        <p>last_invoice_date: {{ date('Y-m-d', strtotime($data['last_invoice_date'].' + 1 day ')); }}</p>
+
     @else
-        <p>{{ $data->date('Y-m-d', strtotime($data['next_invoice_date']. ' + 1 days')); }}</p>
+        <p>Start_invoice_date: {{ $data['last_invoice_date'] }}</p>
+        <p>last_invoice_date: {{ date('Y-m-d', strtotime($data['last_invoice_date'].' + 1 days ')); }}</p>
+
     @endif

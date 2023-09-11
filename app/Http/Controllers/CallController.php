@@ -423,6 +423,9 @@ class CallController extends Controller
             ->addColumn('created_at', function($row){
                 return Carbon::parse($row->created_at)->format('d/m/Y H:i:s');
             })
+            ->addColumn('send_at', function($row){
+                return Carbon::parse($row->send_at)->format('d/m/Y H:i:s');
+            })
             ->addColumn('status', function($row){
                if($row->status == "pending"){
                     $badge = '<span class="badge badge-warning">Pending</span>';
@@ -466,11 +469,19 @@ class CallController extends Controller
         // $startDate = 'billing_startdate' // Replace with your start date
         // $endDate = 
        
-        $history = ExportHistory::where('id',$request->id)->first();  
+        $history = ExportHistory::where('id',$request->id)->first(); 
+       
+       
         $data = Billing::where('account_id',$history->client_id)->first();
         $client = Client::where('id',$history->client_id)->first();
         
-        Mail::to($client->email)->send(new MyCustomMail($data,$history));
+        $mail = Mail::to($client->email)->send(new MyCustomMail($data,$history));
+
+        if ($mail > 0) {
+            $history->send_at =\Carbon\Carbon::now()->format('d-m-y');
+            $history->update();
+        }
+        
         return redirect()->back()->with('success', 'Email Send Succesfully');   
 
         

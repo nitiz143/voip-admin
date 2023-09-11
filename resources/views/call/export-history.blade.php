@@ -149,6 +149,7 @@
                                         <th>Report type</th>
                                         <th>Status</th>
                                         <th>Created At</th>
+                                        <th>Send At</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -245,6 +246,7 @@
                 {data:'report_type',name:'report_type'},
                 {data:'status',name:'status'},
                 {data:'created_at',name:'created_at'},
+                {data:'send_at',name:'send_at'},
                 {data:'action',name:'action', orderable: false, searchable: false},
             ]
         });
@@ -291,6 +293,7 @@
                     {data:'report_type',name:'report_type'},
                     {data:'status',name:'status'},
                     {data:'created_at',name:'created_at'},
+                    {data:'send_at',name:'send_at'},
                     {data:'action',name:'action', orderable: false, searchable: false},
                 ]
             });
@@ -391,6 +394,7 @@
                     {data:'report_type',name:'report_type'},
                     {data:'status',name:'status'},
                     {data:'created_at',name:'created_at'},
+                    {data:'send_at',name:'send_at'},
                     {data:'action',name:'action', orderable: false, searchable: false},
                 ]
             });
