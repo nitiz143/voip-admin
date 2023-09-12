@@ -378,6 +378,7 @@ class CallController extends Controller
             $data['report_type'] = $request->report;
             $data['status'] = 'pending';
             $data['Invoice_no'] =  RandomUtil::randomString('Invoice_');
+         
             $code = random_int(100000, 999999);
             $data['file_name'] = date('YmdHis').'-'.$code.".pdf";
             $exporthistory = ExportHistory::create($data);
@@ -466,16 +467,14 @@ class CallController extends Controller
 
     public function email_export_history(Request $request) {
 
-        // $startDate = 'billing_startdate' // Replace with your start date
-        // $endDate = 
        
         $history = ExportHistory::where('id',$request->id)->first(); 
        
        
-        $data = Billing::where('account_id',$history->client_id)->first();
+        // $data = Billing::where('account_id',$history->client_id)->first();
         $client = Client::where('id',$history->client_id)->first();
         
-        $mail = Mail::to($client->email)->send(new MyCustomMail($data,$history));
+        $mail = Mail::to($client->email)->send(new MyCustomMail($history));
 
         if ($mail > 0) {
             $history->send_at =\Carbon\Carbon::now()->format('d-m-y');

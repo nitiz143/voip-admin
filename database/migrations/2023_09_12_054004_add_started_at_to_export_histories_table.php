@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStartedAtToCsvImportsTable extends Migration
+class AddStartedAtToExportHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class AddStartedAtToCsvImportsTable extends Migration
      */
     public function up()
     {
-        Schema::table('csv_imports', function (Blueprint $table) {
-            $table->integer('started_at')->nullable();
-            $table->integer('ended_at')->nullable();
-
+        Schema::table('export_histories', function (Blueprint $table) {
+            $table->string('started_at')->nullable();
+            $table->string('ended_at')->nullable();
         });
     }
 
@@ -27,11 +26,9 @@ class AddStartedAtToCsvImportsTable extends Migration
      */
     public function down()
     {
-        Schema::table('csv_imports', function (Blueprint $table) {
+        Schema::table('export_histories', function (Blueprint $table) {
             $table->dropColumn('started_at');
             $table->dropColumn('ended_at');
-
-
         });
     }
 }

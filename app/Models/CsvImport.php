@@ -9,6 +9,6 @@ class CsvImport extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'csv_file','status','version','setting_id','started_at','ended_at'
+        'csv_file','status','version','setting_id'
     ];
 }

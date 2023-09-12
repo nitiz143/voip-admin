@@ -133,6 +133,8 @@ class InvoiceGenrateJob implements ShouldQueue
             Storage::put('voip/pdf/'.$exporthistory_arr->file_name,$pdf->output(),'public');
             $exporthistory_arr['file'] =  $exporthistory_arr->file_name;
             $exporthistory_arr['status'] = 'complete';
+            $exporthistory_arr['started_at'] = $StartDate;
+            $exporthistory_arr['ended_at'] = $EndDate;
             $exporthistory_arr->save();
         } 
     }
