@@ -1,6 +1,12 @@
 @extends('layouts.dashboard')
 
 @section('content')
+<style>
+    #myTab{
+        margin-bottom: -12px;
+        border-bottom : 0px solid #fff;
+        }
+</style>
 
 <div class="content-wrapper mt-3">
     <section class="content-header">
@@ -23,191 +29,208 @@
                 <div class="col-md-12">
                             <!-- general form elements -->
                     <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">Lead Information</h3>
-                        </div>
                         <form action="{{ route('crm.store') }}" method="POST" id="form">
                             @csrf
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <input type="hidden" name="id">
-                                </div>
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label>Lead Owner<span style="color:red;">*</span></label>
-                                            <select class="custom-select form-control-border border-width-2" name="lead_owner" id="lead_owner">
-                                                @if($users->isNotEmpty())
-                                                <option value="">Select Lead Owner</option>
-                                                    @foreach ($users as $user )
-                                                        <option value="{{$user->id}}">{{$user->name}}&nbsp;&nbsp;({{$user->role}})</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </div>
+                            <div class="card-header">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Lead Information</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Address
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                               
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Lead Information</h3>
                                     </div>
-                                    <div class="col-xl-6">
+                       
+                                    <div class="card-body">
                                         <div class="form-group">
-                                            <label for="company">Company<span style="color:red;">*</span></label>
-                                            <input type="text" class="form-control" id="company" name="company">
+                                            <input type="hidden" name="id">
                                         </div>
-                                    </div>
-                                </div>
-                                <!----------2 row ---------->
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="firstname">First Name<span style="color:red;">*</span></label>
-                                            <input type="text" class="form-control" id="firstname" name="firstname">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>Lead Owner<span style="color:red;">*</span></label>
+                                                    <select class="custom-select form-control-border border-width-2" name="lead_owner" id="lead_owner">
+                                                        @if($users->isNotEmpty())
+                                                        <option value="">Select Lead Owner</option>
+                                                            @foreach ($users as $user )
+                                                                <option value="{{$user->id}}">{{$user->name}}&nbsp;&nbsp;({{$user->role}})</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="company">Company<span style="color:red;">*</span></label>
+                                                    <input type="text" class="form-control" id="company" name="company">
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="lastname">Last Name<span style="color:red;">*</span></label>
-                                            <input type="text" class="form-control" id="lastname" name="lastname">
+                                        <!----------2 row ---------->
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="firstname">First Name<span style="color:red;">*</span></label>
+                                                    <input type="text" class="form-control" id="firstname" name="firstname">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="lastname">Last Name<span style="color:red;">*</span></label>
+                                                    <input type="text" class="form-control" id="lastname" name="lastname">
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                    <!----------3 row ---------->
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="email">Email<span style="color:red;">*</span></label>
-                                            <input type="text" class="form-control" id="email" name="email">
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6">
+                                            <!----------3 row ---------->
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="email">Email<span style="color:red;">*</span></label>
+                                                    <input type="text" class="form-control" id="email" name="email">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
 
-                                    </div>
-                                </div>
-                                    <!----------4 row ---------->
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="phone">Phone</label>
-                                            <input type="text" class="form-control" id="phone" name="phone">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="fax">Fax</label>
-                                            <input type="text" class="form-control" id="fax" name="fax">
+                                            <!----------4 row ---------->
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="phone">Phone</label>
+                                                    <input type="text" class="form-control" id="phone" name="phone">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="fax">Fax</label>
+                                                    <input type="text" class="form-control" id="fax" name="fax">
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <!----------5 row ---------->
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="mobile">Mobile</label>
-                                            <input type="text" class="form-control" id="mobile" name="mobile">
+                                        <!----------5 row ---------->
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="mobile">Mobile</label>
+                                                    <input type="text" class="form-control" id="mobile" name="mobile">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="website">Website</label>
+                                                    <input type="text" class="form-control" id="website" name="website">
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="website">Website</label>
-                                            <input type="text" class="form-control" id="website" name="website">
+                                        <!----------5 row ---------->
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>Lead Source</label>
+                                                    <select class="custom-select form-control-border border-width-2" name="lead_source" id="lead_source">
+                                                        <option selected disabled>--Select Lead Source--</option>
+                                                        <option value="Advertisment">Advertisment</option>
+                                                        <option value="Cold Call">Cold Call</option>
+                                                        <option value="Employee Referral">Employee Referral</option>
+                                                        <option value="Online Store">Online Store</option>
+                                                        <option value="Partner">Partner</option>
+                                                        <option value="Public Relations">Public Relations</option>
+                                                        <option value="Sales Mail Alias">Sales Mail Alias</option>
+                                                        <option value="Saminer Partner">Saminer Partner</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label >Lead Status</label>
+                                                    <select class="custom-select form-control-border border-width-2" name="lead_status" id="lead_status">
+                                                        <option selected disabled>--Select Lead Status--</option>
+                                                        <option value="Attempted to Contact">Attempted to Contact</option>
+                                                        <option value="Contact Future">Contact Future</option>
+                                                        <option value="Contacted">Contacted</option>
+                                                        <option value="Junk Leak">Junk Leak</option>
+                                                        <option value="Not Contacted ">Not Contacted</option>
+                                                        <option value="Pre Qualified ">Pre Qualified</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <!----------5 row ---------->
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label>Lead Source</label>
-                                            <select class="custom-select form-control-border border-width-2" name="lead_source" id="lead_source">
-                                                <option selected disabled>--Select Lead Source--</option>
-                                                <option value="Advertisment">Advertisment</option>
-                                                <option value="Cold Call">Cold Call</option>
-                                                <option value="Employee Referral">Employee Referral</option>
-                                                <option value="Online Store">Online Store</option>
-                                                <option value="Partner">Partner</option>
-                                                <option value="Public Relations">Public Relations</option>
-                                                <option value="Sales Mail Alias">Sales Mail Alias</option>
-                                                <option value="Saminer Partner">Saminer Partner</option>
-                                            </select>
+                                        <!----------6 row ---------->
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="rating">Rating</label>
+                                                    <select class="custom-select form-control-border border-width-2" name="rating" id="rating">
+                                                        <option selected disabled>--Select Rating--</option>
+                                                        <option value="Aquired">Aquired</option>
+                                                        <option value="Active">Active</option>
+                                                        <option value="Market Failed">Market Failed</option>
+                                                        <option value="Project Cencel">Project Cencel</option>
+                                                        <option value="Shutdown">Shutdown</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="employee">No. of Employees</label>
+                                                    <input type="text" class="form-control" id="employee" name="employee">
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label >Lead Status</label>
-                                            <select class="custom-select form-control-border border-width-2" name="lead_status" id="lead_status">
-                                                <option selected disabled>--Select Lead Status--</option>
-                                                <option value="Attempted to Contact">Attempted to Contact</option>
-                                                <option value="Contact Future">Contact Future</option>
-                                                <option value="Contacted">Contacted</option>
-                                                <option value="Junk Leak">Junk Leak</option>
-                                                <option value="Not Contacted ">Not Contacted</option>
-                                                <option value="Pre Qualified ">Pre Qualified</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!----------6 row ---------->
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="rating">Rating</label>
-                                            <select class="custom-select form-control-border border-width-2" name="rating" id="rating">
-                                                <option selected disabled>--Select Rating--</option>
-                                                <option value="Aquired">Aquired</option>
-                                                <option value="Active">Active</option>
-                                                <option value="Market Failed">Market Failed</option>
-                                                <option value="Project Cencel">Project Cencel</option>
-                                                <option value="Shutdown">Shutdown</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="employee">No. of Employees</label>
-                                            <input type="text" class="form-control" id="employee" name="employee">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!----------7 row ---------->
-                                <div class="row">
-                                    <div class="col-xl-6">
+                                        <!----------7 row ---------->
+                                        <div class="row">
+                                            <div class="col-xl-6">
 
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="skype_id">Skype ID</label>
-                                            <input type="text" class="form-control" id="skype_id" name="skype_id">
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="skype_id">Skype ID</label>
+                                                    <input type="text" class="form-control" id="skype_id" name="skype_id">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!----------8 row ---------->
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label for="status">Status</label>
+                                                <select class="custom-select form-control-border border-width-2" name="status" id="status">
+                                                    <option selected disabled>--Select Status--</option>
+                                                    <option value="0">Active</option>
+                                                    <option value="1">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label for="vat_number">VAT Number</label>
+                                                <input type="text" class="form-control" id="vat_number" name="vat_number">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!----------8 row ---------->
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="status">Status</label>
-                                            <select class="custom-select form-control-border border-width-2" name="status" id="status">
-                                                <option selected disabled>--Select Status--</option>
-                                                <option value="0">Active</option>
-                                                <option value="1">Inactive</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <label for="vat_number">VAT Number</label>
-                                            <input type="text" class="form-control" id="vat_number" name="vat_number">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!----------9 row ---------->
-                                <div class="row">
-                                    <div class="col-xl-12">
-                                        <div class="form-group">
-                                            <label for="description">Description</label>
-                                            <textarea class="form-control" id="description" name="description">
-                                            </textarea>
+                                    <!----------9 row ---------->
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <div class="form-group">
+                                                <label for="description">Description</label>
+                                                <textarea class="form-control" id="description" name="description">
+                                                </textarea>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.card-body -->
+                                <!-- /.card-body -->
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"> 
                             <div class="card-body">
                                 <h4>Address</h4>
                                 <hr>
@@ -498,6 +521,8 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <button type="submit" id="submit" class="btn btn-primary">Submit</button>
