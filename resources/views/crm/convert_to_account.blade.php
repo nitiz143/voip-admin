@@ -306,7 +306,7 @@
                                     </div>
                                 </div>
                                 {{-- address information section --}}
-                                <div class="tab-pane fade show active card-body" id="address" role="tabpanel" aria-labelledby="address-tab">
+                                <div class="tab-pane fade card-body" id="address" role="tabpanel" aria-labelledby="address-tab">
                                     <div class="card-header">
                                         <h3 class="card-title">Address Information</h3>
                                     </div>
