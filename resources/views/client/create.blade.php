@@ -50,6 +50,10 @@
                                     <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">Address Information</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link" id="authentication-tab" data-toggle="tab" href="#authentication" role="tab" aria-controls="authentication" aria-selected="false">Authentication Rule
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link" id="Billing-tab" data-toggle="tab" href="#Billing" role="tab" aria-controls="Billing" aria-selected="false">Billing
                                         </a>
                                     </li>
@@ -615,6 +619,82 @@
                                         </div>
                                     </div>
                                 </div>
+                            <div class="tab-pane fade" id="authentication" role="tabpanel" aria-labelledby="authentication-tab">
+                                <div class="card-header">
+                                    <div class="card-body">
+                                        <div class="col-xl-6">
+                                            {{-- <h3 class="card-title">Authentication Rule</h3> --}}
+                                        </div>
+                                        <div class="row mb-5 border">
+                                            <div class="col-xl-6 pt-2">
+                                                <div class="form-check form-switch ">
+                                                    <label for="customer">Customer</label>
+                                                    <input class="form-check-input" style="margin-left: 0.5em;"
+                                                        type="checkbox" id="customer" name="customer" value="1">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 pt-2">
+                                                <div class="form-check form-switch ">
+                                                    <label for="Vendor">Vendor</label>
+                                                    <input class="form-check-input" style="margin-left: 0.5em;" type="checkbox" id="Vendor"
+                                                        name="Vendor" value="1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row border">
+                                            <div class="row">
+                                                <h5 style="padding:10px;">Customer Details</h5>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>Authentication Rule</label>
+                                                    <select class="custom-select form-control"
+                                                        name="customer_authentication_rule"
+                                                        id="customer_authentication_rule">
+                                                        <option selected disabled>--Select Authentication Rule--</option>
+                                                        <option value="2">Account Name</option>
+                                                        <option value="3">Account Number</option> 
+                                                        <option value="6">Other</option> 
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6" id="customer_authentication_value_div">
+                                                <div class="form-group">
+                                                    <label for="customer_authentication_value">Value</label>
+                                                    <input type="text" class="form-control" id="city"
+                                                        name="customer_authentication_value"
+                                                        value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row border">
+                                            <div class="row">
+                                                <h5 style="padding:10px;">Vendor Details</h5>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>Authentication Rule</label>
+                                                    <select class="custom-select form-control"
+                                                        name="vendor_authentication_rule" id="vendor_authentication_rule">
+                                                        <option selected disabled>--Select Authentication Rule--</option>
+                                                        <option value="2">Account Name</option> 
+                                                        <option value="3">Account Number</option> 
+                                                        <option value="6">Other</option> 
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6" id="vendor_authentication_value_div">
+                                                <div class="form-group">
+                                                    <label for="vendor_authentication_value">Value</label>
+                                                    <input type="text" class="form-control" id="vendor_authentication_value" name="vendor_authentication_value" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                                 <div class="tab-pane fade" id="Billing" role="tabpanel" aria-labelledby="Billing-tab">
                                     <div class="card-header">
                                         <div class="row">
