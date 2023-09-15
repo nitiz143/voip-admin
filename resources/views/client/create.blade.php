@@ -34,7 +34,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                
                     <form action="{{ route('client.store') }}" method="POST" id="Clientform">
                         @csrf
                         <div class="card card-primary">
@@ -60,7 +59,6 @@
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade active show" id="account" role="tabpanel" aria-labelledby="account-details">
                                     <div class="card-body">
-                                        
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
@@ -306,7 +304,6 @@
                                                 <div class="form-group">
                                                     <label for="description">Description</label>
                                                     <textarea class="form-control" id="description" name="description" value="">
-                                                            
                                                     </textarea>
                                                 </div>
                                             </div>
@@ -315,7 +312,6 @@
                                 </div>
                                         {{-- address information section --}}
                                 <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
-                        
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-xl-6">

@@ -3,6 +3,9 @@
 @section('content')
 
 <style>
+    .form-check {
+        padding-left: 0.25rem !important;
+    }
     #myTab{
         margin-bottom: -12px;
         border-bottom : 0px solid #fff;
@@ -35,7 +38,8 @@
                             <div class="card-header">
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Account Details</a>
+                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Account Details
+                                        </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">Address Information
@@ -302,7 +306,7 @@
                                     </div>
                                 </div>
                                 {{-- address information section --}}
-                                <div class="tab-pane fade show active" id="address" role="tabpanel" aria-labelledby="address-tab">
+                                <div class="tab-pane fade show active card-body" id="address" role="tabpanel" aria-labelledby="address-tab">
                                     <div class="card-header">
                                         <h3 class="card-title">Address Information</h3>
                                     </div>
@@ -773,7 +777,7 @@
                                     </div>
                                 </div>
                             </div>
-                         </div> 
+                         {{-- </div>  --}}
 
                     
                             <div class="card-footer">

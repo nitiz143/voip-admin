@@ -12,7 +12,7 @@
         <div class="collapse navbar-collapse order-3 justify-content-between" id="navbarCollapse">
             <div class="d-flex">
                 <div class="image">
-                    <img src="{{asset('assets/dist/img/sparkbill.png')}}" height="60" width="160" >
+                    <img src="{{asset('assets/dist/img/sparkbill.png')}}" height="70" width="70" >
                 </div>
             </div>
             <ul class="navbar-nav">
