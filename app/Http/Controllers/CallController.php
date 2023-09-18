@@ -617,7 +617,7 @@ class CallController extends Controller
             })
             ->addIndexColumn()
             ->addColumn('action', function($row){
-                $btn = '<a href="'.url('/export-csv-history-download',$row->type."/".$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+                $btn = '<a href="'.url('/export-csv-history-download',$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
 
                 return $btn;
             })
@@ -631,8 +631,9 @@ class CallController extends Controller
         return view("call.export-csv-history",compact('Accounts','VAccounts'));
     }
     public function download_csv_export_history(Request $request){
+       
         $data = ExportCsvXlsxHistory::where('id',$request->id)->first();
-        if($request->type =="Excel-report"){
+        if($data->type =="Excel-report"){
             if(file_exists( public_path('storage/excel_files/'.$data->file_name))) {
                 $file= public_path('storage/excel_files/'.$data->file_name);
                 $headers = array('Content-Type: application/xlsx',);
