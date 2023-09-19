@@ -33,6 +33,8 @@ class CallController extends Controller
 {
     public function index(Request $request)
     {
+        
+
         if ($request->ajax()) {
             
             $data = CallHistory::query();
@@ -44,6 +46,21 @@ class CallController extends Controller
 
                 $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+
+
+
+
+            if($request->billingtype == 'one') {
+                $data->where( 'feetime', ">", "0"); 
+
+            }
+            // else {
+            //     $data->where('feetime' ,">", "0"); 
+            // }
+
+                        
+
+
             if(!empty($request->Account)){
                 $data->where('account_id', $request->Account);
                 $data = $data;
@@ -124,6 +141,15 @@ class CallController extends Controller
                 $end = $end*1000;
                 $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+
+            if($request->billingtype == 'one') {
+                $data->where( 'agentfeetime', ">", "0"); 
+
+            }
+            // else {
+            //     $data->where('agentfeetime' ,">", "0"); 
+            // }
+
             if(!empty($request->VAccount)){
                 $data->where('vendor_account_id', $request->VAccount);
                 $data = $data;
@@ -163,7 +189,12 @@ class CallController extends Controller
                     }
                 })
                 ->addColumn('billing_duration', function($row){
-                    return   $row->feetime;
+                   
+                    if(!empty($row->agentfeetime)){
+                        return  $row->agentfeetime;
+                    }else{
+                        return 0;
+                    }
                 })
                 ->addColumn('Prefix', function($row){
                         $Prefix = $row->callerareacode;
