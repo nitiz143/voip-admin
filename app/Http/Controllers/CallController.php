@@ -33,6 +33,8 @@ class CallController extends Controller
 {
     public function index(Request $request)
     {
+        
+
         if ($request->ajax()) {
             
             $data = CallHistory::query();
@@ -44,6 +46,21 @@ class CallController extends Controller
 
                 $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+
+
+
+
+            if($request->billingtype == 'one') {
+                $data->where( 'feetime', ">", "0"); 
+
+            }
+            // else {
+            //     $data->where('feetime' ,">", "0"); 
+            // }
+
+                        
+
+
             if(!empty($request->Account)){
                 $data->where('account_id', $request->Account);
                 $data = $data;
@@ -124,6 +141,15 @@ class CallController extends Controller
                 $end = $end*1000;
                 $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+
+            if($request->billingtype == 'one') {
+                $data->where( 'agentfeetime', ">", "0"); 
+
+            }
+            // else {
+            //     $data->where('agentfeetime' ,">", "0"); 
+            // }
+
             if(!empty($request->VAccount)){
                 $data->where('vendor_account_id', $request->VAccount);
                 $data = $data;
@@ -163,7 +189,12 @@ class CallController extends Controller
                     }
                 })
                 ->addColumn('billing_duration', function($row){
-                    return   $row->feetime;
+                   
+                    if(!empty($row->agentfeetime)){
+                        return  $row->agentfeetime;
+                    }else{
+                        return 0;
+                    }
                 })
                 ->addColumn('Prefix', function($row){
                         $Prefix = $row->callerareacode;
@@ -617,7 +648,7 @@ class CallController extends Controller
             })
             ->addIndexColumn()
             ->addColumn('action', function($row){
-                $btn = '<a href="'.url('/export-csv-history-download',$row->type."/".$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+                $btn = '<a href="'.url('/export-csv-history-download',$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
 
                 return $btn;
             })
@@ -631,8 +662,9 @@ class CallController extends Controller
         return view("call.export-csv-history",compact('Accounts','VAccounts'));
     }
     public function download_csv_export_history(Request $request){
+       
         $data = ExportCsvXlsxHistory::where('id',$request->id)->first();
-        if($request->type =="Excel-report"){
+        if($data->type =="Excel-report"){
             if(file_exists( public_path('storage/excel_files/'.$data->file_name))) {
                 $file= public_path('storage/excel_files/'.$data->file_name);
                 $headers = array('Content-Type: application/xlsx',);
