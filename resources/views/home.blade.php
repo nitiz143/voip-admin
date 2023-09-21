@@ -87,11 +87,41 @@
                     </div>
 
                 </div>
+            <div class="panel-body tabs-menu-body">
+              <div class="row for-scroll">
+                  <div class="col-sm-12">
+                      <div class="panel-body mt-3">
+                          <table class="table table-1 data-table   table-bordered" id="yourTable">
+                              <thead>
+                                  <tr>
+                                      <th>ID</th>
+                                      <th>Account Name</th>
+                                      <th>Connect Time</th>
+                                      <th>Disconnect Time</th>
+                                      <th>Billed Duration (sec)</th>
+                                      <th>Cost</th>
+                                      <th>Avg. Rate/Min</th>
+                                      <th>CLI</th>
+                                      <th>CLD</th>
+                                      <th>Country-code</th>
+                                      <th>Action</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+              
+                              </tbody>
+                              <tfoot>
+                                  <tr>
+                                  </tr>
+                              </tfoot>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
 
+ 
 
-
-
-            </div>
             {{-- <div class="container-fluid">
       <!-- Small boxes (Stat box) -->
       <div class="row">
@@ -845,6 +875,7 @@
     <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+{{-- @endsection --}}
 @endsection
 @section('page_js')
     <script src="{{ asset('assets/plugins/raphael/raphael.min.js') }}"></script>
@@ -953,4 +984,28 @@
             })
         })
     </script>
+
+<script>
+  $(document).ready(function () {
+      $('#yourTable').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ url('null_record') }}",
+          columns: [
+            {data:'id',name:'id'},
+            {data:'account',name:'account'},
+            {data:'Connect_time',name:'Connect_time'},
+            {data:'Disconnect_time',name:'Disconnect_time'},
+            {data:'billing_duration',name:'billing_duration'},
+            {data:'Cost',name:'Cost'},
+            {data:'Avrage_cost',name:'Avrage_cost'},
+            {data:'callere164',name:'callere164'},
+            {data:'calleee164',name:'calleee164'},
+            {data:'Prefix',name:'Prefix'},
+            {data:'action',name:'action', orderable: false, searchable: false},
+          ]
+      });
+  });
+</script>
+
 @endsection

@@ -55,9 +55,6 @@ class CallController extends Controller
             //     $data->where('feetime' ,">", "0"); 
             // }
 
-                        
-
-
             if(!empty($request->Account)){
                 $data->where('account_id', $request->Account);
                 $data = $data;
