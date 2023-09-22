@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Client;
 use App\Models\CallHistory;
@@ -12,6 +13,8 @@ use App\Models\CallHistory;
 // use DateTime;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+// use App\Models\User;
+
 
 
 
@@ -98,6 +101,45 @@ class HomeController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+    }
+
+    public function auth_record(Request $request)
+    {
+
+        if ($request->ajax()) {
+            
+            $data = Client::where([['Vendor', 2],['customer', 2]]);
+            return Datatables::of($data)
+            ->addColumn('status', function($row){
+                return  $row->status == 0 ? __('Active') : __('Inactive');
+
+            })
+            ->addColumn('created_at', function($row){
+                return Carbon::parse($row->created_at)->format('d/m/Y H:i:s');
+
+            })
+            ->addColumn('updated_at', function($row){
+                return Carbon::parse($row->updated_at)->format('d/m/Y H:i:s');
+
+            })
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $customer ="";
+                    $Vendor = "";
+                    // if($row->customer == 1){
+                    //     $customer = '<a href="'.route('client.customer',$row->id).'" class=" btn btn-warning btn-sm Customer"  data-id ="'.$row->id.'"><i class="fa fa-user"></i></a> ';
+                    // }
+                    // if($row->Vendor == 1){
+                    //     $Vendor = '<a href="'.route('client.vendor',$row->id).'" class=" btn btn-info btn-sm Vendor"  data-id ="'.$row->id.'"><i class="fab fa-slideshare"></i></a> ';
+                    // }
+                    $btn = '<a href="'.route('client.edit',$row->id).'" class=" btn btn-primary btn-sm Edit"  data-id ="'.$row->id.'">Edit</a>&nbsp;&nbsp;';
+
+                        return $btn.$customer.$Vendor;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
     }
     
     public function profile()
