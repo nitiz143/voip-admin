@@ -88,10 +88,69 @@
 
                 </div>
 
+        <div class="card">
+          <div class="card-header">
+            <div class="panel-body tabs-menu-body">
+              <div class="row for-scroll">
+                  <div class="col-sm-12">
+                    <h4 class="modal-title">Not Assigned Account</h4>
+                      <div class="panel-body mt-3">
+                          <table class="table table-1 data-table   table-bordered" id="yourTable">
+                              <thead>
+                                  <tr>
+                                      <th>ID</th>
+                                      {{-- <th>Account Name</th> --}}
+                                      <th>Connect Time</th>
+                                      <th>Disconnect Time</th>
+                                      <th>Billed Duration (sec)</th>
+                                      <th>Cost</th>
+                                      <th>Avg. Rate/Min</th>
+                                      <th>CLI</th>
+                                      <th>CLD</th>
+                                      <th>Country-code</th>
+                                      {{-- <th>Action</th> --}}
+                                  </tr>
+                              </thead>
+                              <tbody>
+              
+                              </tbody>
+                              <tfoot>
+                                  <tr>
+                                  </tr>
+                              </tfoot>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
 
+      <div class="card">
+        <div class="card-header">
+          <div class="card-body">
+            <h4 class="modal-title">Not Checked Record</h4>
+            <table class="table table-bordered data-table" style="width: 100%" id="authtable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Company</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Created_at</th>
+                        <th>Updated_at</th>
+                        <th width="14%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-
-            </div>
+                </tbody>
+            </table>
+        </div><!-- /.card-body -->
+      </div>
+    </div>
             {{-- <div class="container-fluid">
       <!-- Small boxes (Stat box) -->
       <div class="row">
@@ -845,6 +904,7 @@
     <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+{{-- @endsection --}}
 @endsection
 @section('page_js')
     <script src="{{ asset('assets/plugins/raphael/raphael.min.js') }}"></script>
@@ -953,4 +1013,50 @@
             })
         })
     </script>
+
+<script>
+  $(document).ready(function () {
+      $('#yourTable').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ url('null-record') }}",
+          columns: [
+            {data:'id',name:'id'},
+            // {data:'account',name:'account'},
+            {data:'Connect_time',name:'Connect_time'},
+            {data:'Disconnect_time',name:'Disconnect_time'},
+            {data:'billing_duration',name:'billing_duration'},
+            {data:'Cost',name:'Cost'},
+            {data:'Avrage_cost',name:'Avrage_cost'},
+            {data:'callere164',name:'callere164'},
+            {data:'calleee164',name:'calleee164'},
+            {data:'Prefix',name:'Prefix'},
+            // {data:'action',name:'action', orderable: false, searchable: false},
+          ]
+      });
+    });
+     </script>
+
+<script>
+      $(document).ready(function () {
+          $('#authtable').DataTable({
+              processing: true,
+              serverSide: true,
+              ajax: "{{ url('unautherised-record') }}",
+              columns: [
+                {data:'id',name:'id'},
+                // {data:'account',name:'account'},
+                {data:'company',name:'company'},
+                {data:'firstname',name:'firstname'},
+                {data:'lastname',name:'lastname'},
+                {data:'email',name:'email'},
+                {data:'phone',name:'phone'},
+                {data:'created_at',name:'created_at'},
+                {data:'updated_at',name:'updated_at'},
+                {data:'action',name:'action', orderable: false, searchable: false},
+              ]
+          });
+      });
+</script>
+
 @endsection

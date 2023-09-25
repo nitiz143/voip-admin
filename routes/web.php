@@ -121,6 +121,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('rate-table/csv', [App\Http\Controllers\RateController::class, 'rate_export_csv'])->name('rates_csv');
 
 
+    Route::get('/null-record', [App\Http\Controllers\HomeController::class, 'null_record'])->name('null_record');
+    Route::get('/unautherised-record', [App\Http\Controllers\HomeController::class, 'auth_record'])->name('auth-record');
     Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
     Route::post('/profile-update', [App\Http\Controllers\HomeController::class, 'profileUpdate'])->name('profile-update');
 

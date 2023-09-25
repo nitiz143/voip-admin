@@ -47,9 +47,6 @@ class CallController extends Controller
                 $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
 
-
-
-
             if($request->billingtype == 'one') {
                 $data->where( 'feetime', ">", "0"); 
 
@@ -57,9 +54,6 @@ class CallController extends Controller
             // else {
             //     $data->where('feetime' ,">", "0"); 
             // }
-
-                        
-
 
             if(!empty($request->Account)){
                 $data->where('account_id', $request->Account);
@@ -107,6 +101,7 @@ class CallController extends Controller
                     }
                    
                 })->addColumn('billing_duration', function($row){
+
                     if(!empty($row->feetime)){
                         return  $row->feetime;
                     }else{
@@ -428,6 +423,7 @@ class CallController extends Controller
     public function export_history(Request $request){
         if ($request->ajax()) {
             $data = ExportHistory::query();
+
             if($request->ActiveTab == 1){
                 if(($request->has('StartDate') && $request->has('EndDate'))){
                     $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
@@ -621,6 +617,7 @@ class CallController extends Controller
     public function export_csv_history(Request $request){
         if ($request->ajax()) {
             $data = ExportCsvXlsxHistory::query();
+
             // if(($request->has('StartDate') && $request->has('EndDate'))){
             //     $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
             // }
@@ -719,6 +716,12 @@ class CallController extends Controller
                 $end = $end*1000;
                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+
+            if($request->billingtype == 'one') {
+                $query->where( 'agentfeetime', ">", "0"); 
+
+            }
+
             if($Report != 'Account-Manage') {
                 if(!empty( $AccountID )) {
                     $query->where('call_histories.vendor_account_id', $AccountID);
@@ -766,6 +769,13 @@ class CallController extends Controller
                 $end = $end*1000;
                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+
+            
+            if($request->billingtype == 'one') {
+                $query->where( 'feetime', ">", "0"); 
+
+            }
+
             if($Report != 'Account-Manage') {
                 if(!empty( $AccountID )) {
                     $query->where('call_histories.account_id', $AccountID);

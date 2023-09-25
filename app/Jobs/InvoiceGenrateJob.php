@@ -55,6 +55,12 @@ class InvoiceGenrateJob implements ShouldQueue
                 $end = $end*1000;
                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+
+            if($request->billingtype == 'one') {
+                $query->where( 'agentfeetime', ">", "0"); 
+
+            }
+
             if($Report != 'Account-Manage') {
                 if(!empty( $AccountID )) {
                     $query->where('call_histories.vendor_account_id', $AccountID);
@@ -96,6 +102,12 @@ class InvoiceGenrateJob implements ShouldQueue
                 $end = $end*1000;
                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+            if($request->billingtype == 'one') {
+                $query->where( 'feetime', ">", "0"); 
+
+            }
+
+
             if($Report != 'Account-Manage') {
                 if(!empty( $AccountID )) {
                     $query->where('call_histories.account_id', $AccountID);
