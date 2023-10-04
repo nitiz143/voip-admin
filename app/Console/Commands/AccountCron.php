@@ -61,6 +61,25 @@ class AccountCron extends Command
                         $callhistory[] = CallHistory::whereNull('account_id')->where('customeraccount',$account->customer_authentication_value)->update($data);
                     }
                 }
+
+                if(!empty($account->vendor_authentication_rule)){       
+  
+                    //for other
+                    if($account->vendor_authentication_rule == 6){
+                        $data['vendor_account_id'] =  $account->id;
+                        $callhistory[] = CallHistory::whereNull('vendor_account_id')->where('agentaccount',$account->vendor_authentication_value)->orwhere('agentname',$account->vendor_authentication_value)->update($data);
+                    }
+                    //for customername
+                    if($account->vendor_authentication_rule == 2){
+                        $data['vendor_account_id'] =  $account->id;
+                        $callhistory[] = CallHistory::whereNull('vendor_account_id')->where('agentname',$account->vendor_authentication_value)->update($data);
+                    }
+                    //for customeraccount
+                    if($account->vendor_authentication_rule == 3){
+                        $data['vendor_account_id'] =  $account->id;
+                        $callhistory[] = CallHistory::whereNull('vendor_account_id')->where('agentaccount',$account->vendor_authentication_value)->update($data);
+                    }
+                }
             
             }
             

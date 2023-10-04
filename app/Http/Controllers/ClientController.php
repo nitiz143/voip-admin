@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; 
 use Auth;
+use App\Jobs\AuthenticationTask;
 
 class ClientController extends Controller
 {
@@ -264,8 +265,7 @@ class ClientController extends Controller
             }
             elseif(!empty( $request->customer_authentication_value) && !empty( $request->vendor_authentication_value)) {
 
-                $data  = Client::where([['customer_authentication_value', $request->customer_authentication_value],['id',"!=",$request->id]])->first();
-                $data  = Client::where([['vendor_authentication_value', $request->vendor_authentication_value],['id',"!=",$request->id]])->first();
+                $data  = Client::where([['customer_authentication_value', $request->customer_authentication_value],['vendor_authentication_value', $request->vendor_authentication_value],['id',"!=",$request->id]])->first();
 
             }
             else {
@@ -284,6 +284,10 @@ class ClientController extends Controller
                 $user =  Client::updateOrCreate([
                     'id'   => $request->id,
                 ],$request->all());
+
+                $Csv = new AuthenticationTask($user);
+                dispatch($Csv);
+
                 if(!empty($request->billing_status) && $request->billing_status == 'active'){
                     $billingdata["account_id"] = $user->id;
                     $billingdata["billing_class"] = $request->billing_class;
