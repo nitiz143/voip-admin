@@ -24,7 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; 
 use Auth;
-use App\Jobs\AuthenticationTask;
+use App\Jobs\UpdateAccountCallHistory;
 
 class ClientController extends Controller
 {
@@ -259,22 +259,22 @@ class ClientController extends Controller
             return $response;
         }
 
-
+            $olddata ="";
             if(!empty( $request->customer_authentication_value)) {
-                $data  = Client::where([['customer_authentication_value', $request->customer_authentication_value],['id',"!=",$request->id]])->first();
+                $olddata  = Client::where([['customer_authentication_value', $request->customer_authentication_value],['id',"!=",$request->id]])->first();
             }
             elseif(!empty( $request->customer_authentication_value) && !empty( $request->vendor_authentication_value)) {
 
-                $data  = Client::where([['customer_authentication_value', $request->customer_authentication_value],['vendor_authentication_value', $request->vendor_authentication_value],['id',"!=",$request->id]])->first();
+                $olddata  = Client::where([['customer_authentication_value', $request->customer_authentication_value],['vendor_authentication_value', $request->vendor_authentication_value],['id',"!=",$request->id]])->first();
 
             }
             else {
-                $data  = Client::where([['vendor_authentication_value', $request->vendor_authentication_value],['id',"!=",$request->id]])->first();
+                $olddata  = Client::where([['vendor_authentication_value', $request->vendor_authentication_value],['id',"!=",$request->id]])->first();
             }
      
 
-            if(empty($data))
-            {
+            // if(empty($data))
+            // {
                 $request['reseller'] = $request->reseller ? $request->reseller : 2;
                 $request['Vendor'] = $request->Vendor ? $request->Vendor : 2;
                 $request['customer'] = $request->customer ? $request->customer : 2;
@@ -284,8 +284,7 @@ class ClientController extends Controller
                 $user =  Client::updateOrCreate([
                     'id'   => $request->id,
                 ],$request->all());
-
-                $Csv = new AuthenticationTask($user);
+                $Csv = new UpdateAccountCallHistory($user,$olddata);
                 dispatch($Csv);
 
                 if(!empty($request->billing_status) && $request->billing_status == 'active'){
@@ -319,12 +318,12 @@ class ClientController extends Controller
                 return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => route('client.index')]);
 
 
-            }
+            // }
 
-            else
-            {
-                return response()->json(['success' => false,'errors' => ['Name is used only one time']]);
-            }
+            // else
+            // {
+            //     return response()->json(['success' => false,'errors' => ['Name is used only one time']]);
+            // }
 
         
 
