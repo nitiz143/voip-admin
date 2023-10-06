@@ -284,8 +284,11 @@ class ClientController extends Controller
                 $user =  Client::updateOrCreate([
                     'id'   => $request->id,
                 ],$request->all());
-                $Csv = new UpdateAccountCallHistory($user,$olddata);
-                dispatch($Csv);
+                
+                if(!empty($olddata)){
+                    $Csv = new UpdateAccountCallHistory($user,$olddata);
+                    dispatch($Csv);
+                }
 
                 if(!empty($request->billing_status) && $request->billing_status == 'active'){
                     $billingdata["account_id"] = $user->id;
