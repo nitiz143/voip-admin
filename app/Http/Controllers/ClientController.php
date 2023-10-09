@@ -286,8 +286,10 @@ class ClientController extends Controller
                 ],$request->all());
                 
                 if(!empty($olddata)){
-                    $Csv = new UpdateAccountCallHistory($user,$olddata);
-                    dispatch($Csv);
+                    if($user != $olddata){
+                        $Csv = new UpdateAccountCallHistory($user,$olddata);
+                        dispatch($Csv);
+                    }
                 }
 
                 if(!empty($request->billing_status) && $request->billing_status == 'active'){
