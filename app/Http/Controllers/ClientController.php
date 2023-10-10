@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; 
 use Auth;
+use App\Jobs\UpdateAccountCallHistory;
 
 class ClientController extends Controller
 {
@@ -257,44 +258,79 @@ class ClientController extends Controller
                 ]);
             return $response;
         }
-        $request['reseller'] = $request->reseller ? $request->reseller : 2;
-        $request['Vendor'] = $request->Vendor ? $request->Vendor : 2;
-        $request['customer'] = $request->customer ? $request->customer : 2;
-        $request['billing_status'] =  $request->billing_status ? $request->billing_status : 'inactive';
-        // dd($request->all());
-        // $now = \Carbon\Carbon::now();
-        $user =  Client::updateOrCreate([
-            'id'   => $request->id,
-         ],$request->all());
-        if(!empty($request->billing_status) && $request->billing_status == 'active'){
-            $billingdata["account_id"] = $user->id;
-            $billingdata["billing_class"] = $request->billing_class;
-            $billingdata["billing_type"] = $request->billing_type;
-            $billingdata["billing_timezone"] = $request->billing_timezone;
-            $billingdata["billing_startdate"] = $request->billing_startdate;
-            $billingdata["billing_cycle"] = $request->billing_cycle;
-            if($request->billing_cycle == 'in_specific_days'){
-                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;
-            }elseif ($request->billing_cycle == 'monthly_anniversary') {
-                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_monthly;
-            }elseif ($request->billing_cycle == 'weekly') {
-                $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
-            }else{
-                $billingdata["billing_cycle_startday"] = NULL;
-            }
-            $billingdata["auto_pay"] = $request->auto_pay;
-            $billingdata["auto_pay_method"] = $request->auto_pay_method;
-            $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;
-            $billingdata["last_invoice_date"] = $request->last_invoice_date;
-            $billingdata["next_invoice_date"] = $request->next_invoice_date;
-            $billingdata["last_charge_date"] = $request->last_charge_date;
-            $billingdata["next_charge_date"] = $request->next_charge_date;
-            $billingdata["outbound_discount_plan"] = $request->outbound_discount_plan;
-            $billingdata["inbound_discount_plan"] = $request->inbound_discount_plan;
-            Billing::updateOrCreate(['id' => $request->billing_id],$billingdata);
-        }
 
-         return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => route('client.index')]);
+            $olddata ="";
+            if(!empty( $request->customer_authentication_value)) {
+                $olddata  = Client::where([['customer_authentication_value', $request->customer_authentication_value],['id',"!=",$request->id]])->first();
+            }
+            elseif(!empty( $request->customer_authentication_value) && !empty( $request->vendor_authentication_value)) {
+
+                $olddata  = Client::where([['customer_authentication_value', $request->customer_authentication_value],['vendor_authentication_value', $request->vendor_authentication_value],['id',"!=",$request->id]])->first();
+
+            }
+            else {
+                $olddata  = Client::where([['vendor_authentication_value', $request->vendor_authentication_value],['id',"!=",$request->id]])->first();
+            }
+     
+
+            // if(empty($data))
+            // {
+                $request['reseller'] = $request->reseller ? $request->reseller : 2;
+                $request['Vendor'] = $request->Vendor ? $request->Vendor : 2;
+                $request['customer'] = $request->customer ? $request->customer : 2;
+                $request['billing_status'] =  $request->billing_status ? $request->billing_status : 'inactive';
+                // dd($request->all());
+                // $now = \Carbon\Carbon::now();
+                $user =  Client::updateOrCreate([
+                    'id'   => $request->id,
+                ],$request->all());
+                
+                if(!empty($olddata)){
+                    if($user != $olddata){
+                        $Csv = new UpdateAccountCallHistory($user,$olddata);
+                        dispatch($Csv);
+                    }
+                }
+
+                if(!empty($request->billing_status) && $request->billing_status == 'active'){
+                    $billingdata["account_id"] = $user->id;
+                    $billingdata["billing_class"] = $request->billing_class;
+                    $billingdata["billing_type"] = $request->billing_type;
+                    $billingdata["billing_timezone"] = $request->billing_timezone;
+                    $billingdata["billing_startdate"] = $request->billing_startdate;
+                    $billingdata["billing_cycle"] = $request->billing_cycle;
+                    if($request->billing_cycle == 'in_specific_days'){
+                        $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_days;
+                    }elseif ($request->billing_cycle == 'monthly_anniversary') {
+                        $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday_for_monthly;
+                    }elseif ($request->billing_cycle == 'weekly') {
+                        $billingdata["billing_cycle_startday"] = $request->billing_cycle_startday;
+                    }else{
+                        $billingdata["billing_cycle_startday"] = NULL;
+                    }
+                    $billingdata["auto_pay"] = $request->auto_pay;
+                    $billingdata["auto_pay_method"] = $request->auto_pay_method;
+                    $billingdata["send_invoice_via_email"] = $request->send_invoice_via_email;
+                    $billingdata["last_invoice_date"] = $request->last_invoice_date;
+                    $billingdata["next_invoice_date"] = $request->next_invoice_date;
+                    $billingdata["last_charge_date"] = $request->last_charge_date;
+                    $billingdata["next_charge_date"] = $request->next_charge_date;
+                    $billingdata["outbound_discount_plan"] = $request->outbound_discount_plan;
+                    $billingdata["inbound_discount_plan"] = $request->inbound_discount_plan;
+                    Billing::updateOrCreate(['id' => $request->billing_id],$billingdata);
+                }
+
+                return response()->json(['message' =>  __('Updated Successfully'),'data' => $user,'success'=>true,'redirect_url' => route('client.index')]);
+
+
+            // }
+
+            // else
+            // {
+            //     return response()->json(['success' => false,'errors' => ['Name is used only one time']]);
+            // }
+
+        
 
 
     }
