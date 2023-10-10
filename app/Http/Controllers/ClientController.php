@@ -149,10 +149,31 @@ class ClientController extends Controller
             return $response;
         }
 
-        $client = Client::create($request->all());
-        if(!empty($client)){
+        $olddata ="";
+        if(!empty( $request->customer_authentication_value)) {
+            $olddata  = Client::where([['customer_authentication_value', $request->customer_authentication_value],['id',"!=",$request->id]])->first();
+        }
+        elseif(!empty( $request->customer_authentication_value) && !empty( $request->vendor_authentication_value)) {
+
+            $olddata  = Client::where([['customer_authentication_value', $request->customer_authentication_value],['vendor_authentication_value', $request->vendor_authentication_value],['id',"!=",$request->id]])->first();
+
+        }
+        else {
+            $olddata  = Client::where([['vendor_authentication_value', $request->vendor_authentication_value],['id',"!=",$request->id]])->first();
+        }
+
+        $user = Client::create($request->all());
+
+        if(!empty($olddata)){
+            if($user != $olddata){
+                $Csv = new UpdateAccountCallHistory($user,$olddata);
+                dispatch($Csv);
+            }
+        }
+
+        if(!empty($user)){
             if(!empty($request->billing_status) && $request->billing_status == 'active'){
-                $billingdata["account_id"] = $client->id;
+                $billingdata["account_id"] = $user->id;
                 $billingdata["billing_class"] = $request->billing_class;
                 $billingdata["billing_type"] = $request->billing_type;
                 $billingdata["billing_timezone"] = $request->billing_timezone;

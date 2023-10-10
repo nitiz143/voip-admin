@@ -127,6 +127,7 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::post('/profile-update', [App\Http\Controllers\HomeController::class, 'profileUpdate'])->name('profile-update');
 
 
+
     
     Route::group(['prefix' => 'activity', 'namespace' => 'jeremykenedy\LaravelLogger\App\Http\Controllers', 'middleware' => ['web', 'auth', 'activity']], function () {
 

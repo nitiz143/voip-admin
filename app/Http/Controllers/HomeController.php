@@ -35,10 +35,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        
-        return view('home');
+        $today = Carbon::today();
+        $Value = CallHistory::whereDate('created_at', $today)->get();
+        $totalCallValue =  $Value->count();
+        $todayConnectedCall = CallHistory::where([['feetime', '>','0'],['agentfeetime','>','0'],['created_at', $today]])->count();
+        $totalCustomers = Client::count();
+        $todayfailedcall = CallHistory::where([['feetime','' ],['agentfeetime',''],['created_at', $today]])->count();
+        return view('home',compact('totalCallValue','todayConnectedCall','totalCustomers','todayfailedcall'));
     }
 
     public function null_record(Request $request)
@@ -163,4 +168,6 @@ class HomeController extends Controller
             return response()->json(['message' =>  __('Profile Updated Successfully')]);
         }
     }
+
+    
 }
