@@ -22,7 +22,7 @@ use Illuminate\Support\Arr;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str; 
+use Illuminate\Support\Str;
 use Auth;
 use App\Jobs\UpdateAccountCallHistory;
 
@@ -248,7 +248,7 @@ class ClientController extends Controller
                 }
             }
         }
-       
+
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails())
         {
@@ -271,7 +271,7 @@ class ClientController extends Controller
             else {
                 $olddata  = Client::where([['vendor_authentication_value', $request->vendor_authentication_value],['id',"!=",$request->id]])->first();
             }
-     
+
 
             // if(empty($data))
             // {
@@ -284,9 +284,9 @@ class ClientController extends Controller
                 $user =  Client::updateOrCreate([
                     'id'   => $request->id,
                 ],$request->all());
-                
+
                 if(!empty($olddata)){
-                    if($user != $olddata){
+                    if($user->id != $olddata->id){
                         $Csv = new UpdateAccountCallHistory($user,$olddata);
                         dispatch($Csv);
                     }
@@ -330,7 +330,7 @@ class ClientController extends Controller
             //     return response()->json(['success' => false,'errors' => ['Name is used only one time']]);
             // }
 
-        
+
 
 
     }
@@ -502,7 +502,7 @@ class ClientController extends Controller
         if($request->name == "Blocking"){
             return view('client.vendor.blocking ');
         }
-      
+
         if($request->name == "Country"){
             $country = Country::query('')->get();
             $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
@@ -525,7 +525,7 @@ class ClientController extends Controller
             }
             return view('client.vendor.code ',compact('trunks','country'));
          }
-       
+
         if($request->name == "Preference"){
             $country = Country::query('')->get();
             $vender_trunks = VendorTrunk::where('vendor_id',$request->id)->get();
@@ -607,7 +607,7 @@ class ClientController extends Controller
                     ]);
                 return $response;
             }
-           
+
             $data = array();
             if(!empty($request->Trunks)){
                 $data['trunks'] = json_encode($request->Trunks);
@@ -619,7 +619,7 @@ class ClientController extends Controller
             }else{
                 $data['timezones'] = json_encode([]);
             }
-           
+
         if(!empty($request->customer)){
             foreach ($request->customer as $key => $value) {
                 $clients = Client::where("id", "=",$value)->first();
@@ -656,7 +656,7 @@ class ClientController extends Controller
                     ]);
                 return $response;
             }
-           
+
             $data = array();
             if(!empty($request->Trunks)){
                 $data['trunks'] = json_encode($request->Trunks);
@@ -668,7 +668,7 @@ class ClientController extends Controller
             }else{
                 $data['timezones'] = json_encode([]);
             }
-           
+
         if(!empty($request->vendor)){
             foreach ($request->vendor as $key => $value) {
                 $clients = Client::where("id", "=",$value)->first();
@@ -691,26 +691,26 @@ class ClientController extends Controller
 
 
     public function history_detail(Request $request){
-       
+
             $downloads = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('download_processes.id',$request->id)->first();
-            $clients = Client::where("id", "=",$request->client_id)->first();  
+            $clients = Client::where("id", "=",$request->client_id)->first();
             if(!empty($downloads->trunks)){
                 foreach (json_decode($downloads->trunks) as $trunk){
-                    $trunks[] = Trunk::where("id", "=",$trunk)->first();  
+                    $trunks[] = Trunk::where("id", "=",$trunk)->first();
                 }
-            } 
+            }
         return view('client.customer.detail',compact('downloads','clients','trunks'));
     }
 
     public function vendor_history_detail(Request $request){
-       
+
         $downloads = VendorDownloadProcess::leftjoin('users','users.id','=','vendor_download_processes.created_by')->select('vendor_download_processes.*','users.name as uname')->where('vendor_download_processes.id',$request->id)->first();
-        $clients = Client::where("id", "=",$request->client_id)->first();  
+        $clients = Client::where("id", "=",$request->client_id)->first();
         if(!empty($downloads->trunks)){
             foreach (json_decode($downloads->trunks) as $trunk){
-                $trunks[] = Trunk::where("id", "=",$trunk)->first();  
+                $trunks[] = Trunk::where("id", "=",$trunk)->first();
             }
-        } 
+        }
     return view('client.vendor.detail',compact('downloads','clients','trunks'));
 }
 
@@ -737,7 +737,7 @@ class ClientController extends Controller
             }
 
             if(!empty($value->client_id)){
-                $client = Client::where("id", "=",$value->client_id)->first();  
+                $client = Client::where("id", "=",$value->client_id)->first();
             }
 
             $data =array();
@@ -745,7 +745,7 @@ class ClientController extends Controller
             $data['created_at'] =  $value->created_at->format('d-m-Y H:i:s');
             $list[]= $data;
         }
-      
+
 
         return (new FastExcel($list))->download('Customer_history.xlsx');
     }
@@ -771,9 +771,9 @@ class ClientController extends Controller
                     $effective = "($value->effective)";
                 }
             }
-            
+
             if(!empty($value->client_id)){
-                $client = Client::where("id", "=",$value->client_id)->first();  
+                $client = Client::where("id", "=",$value->client_id)->first();
             }
 
             $data =array();
@@ -807,7 +807,7 @@ class ClientController extends Controller
                 }
             }
             if(!empty($value->client_id)){
-                $client = Client::where("id", "=",$value->client_id)->first();  
+                $client = Client::where("id", "=",$value->client_id)->first();
             }
 
             $data =array();
@@ -839,9 +839,9 @@ class ClientController extends Controller
                     $effective = "($value->effective)";
                 }
             }
-           
+
             if(!empty($value->client_id)){
-                $client = Client::where("id", "=",$value->client_id)->first();  
+                $client = Client::where("id", "=",$value->client_id)->first();
             }
 
             $data =array();
@@ -855,7 +855,7 @@ class ClientController extends Controller
     public function ajax_datagrid_blockbycountry(Request $request){
 
         if ($request->ajax()) {
-           
+
             if($request->Country != null){
                 $users = Country::where('id',$request->Country)->with(['BlockByCountries'=> function($q) use($request) {
                     // Query the name field in status table
@@ -869,11 +869,11 @@ class ClientController extends Controller
                 }]);
             }
             $users =  $users->get();
-            
+
             return Datatables::of($users)
             ->filter(function ($instance) use ($request) {
                 $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                    
+
                     if(!empty($request->Status)){
                         if($request->Status == "Blocked"){
                             $row = !empty($row['block_by_countries']);
@@ -887,10 +887,10 @@ class ClientController extends Controller
                             return $row;
                         }
                     }
-                   
+
                 });
             })
-          
+
             ->addColumn('status', function($row) use ($request) {
 
                 if(!empty($row->BlockByCountries[0]->CountryID) == $row->id)
@@ -903,7 +903,7 @@ class ClientController extends Controller
                         $value = "Not Blocked";
                         return $value;
                     }
-                       
+
                 }else{
                     $value = "Not Blocked";
                     return $value;
@@ -911,7 +911,7 @@ class ClientController extends Controller
 
             })
                 ->addColumn('action', function($row){
-                    
+
                         $btn = '<input type="checkbox" name="checkbox[]" value="'. $row->id.'" class="rowcheckbox" >';
 
                         return $btn;
@@ -919,8 +919,8 @@ class ClientController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-            
-        
+
+
     }
 
 
@@ -981,7 +981,7 @@ class ClientController extends Controller
                             return $response;
                         }
 
-                        
+
                     $unblock=  BlockByCountry::where([["client_id","=", $request->client_id],["CountryID","=",$Country_ID],["Trunk","=", $request->Trunk]])->first();
                     if(!empty($unblock)){
                         $unblock =  $unblock->delete();
@@ -990,13 +990,13 @@ class ClientController extends Controller
                         $response = \Response::json(['success' => null,'message' => 'Select Blocked Country']);
                         return $response;
                     }
-                   
+
                 }
                 $response = \Response::json(['success' => true,'message' => 'Unblocked sucessfully']);
                 return $response;
             }
         }
-        
+
     }
 
     public function ajax_datagrid_blockbycode(Request $request){
@@ -1020,11 +1020,11 @@ class ClientController extends Controller
             else{
                 $users =  $users->get();
             }
-            
+
             return Datatables::of($users)
             ->filter(function ($instance) use ($request) {
                 $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                                            
+
                     if(!empty($request->Status)){
                         if($request->Status == "Blocked"){
                             $row = !empty($row['block_by_codes']);
@@ -1038,10 +1038,10 @@ class ClientController extends Controller
                             return $row;
                         }
                     }
-                   
+
                 });
             })
-          
+
             ->addColumn('status', function($row) use ($request) {
 
                 if(!empty($row->BlockByCodes[0]->CodeID) == $row->id)
@@ -1054,7 +1054,7 @@ class ClientController extends Controller
                         $value = "Not Blocked";
                         return $value;
                     }
-                       
+
                 }else{
                     $value = "Not Blocked";
                     return $value;
@@ -1062,7 +1062,7 @@ class ClientController extends Controller
 
             })
                 ->addColumn('action', function($row){
-                    
+
                         $btn = '<input type="checkbox" name="checkbox[]" value="'. $row->id.'" class="rowcheckbox" >';
 
                         return $btn;
@@ -1128,7 +1128,7 @@ class ClientController extends Controller
                             return $response;
                         }
 
-                        
+
                     $unblock=  BlockByCode::where([["client_id","=", $request->client_id],["CodeID","=",$Code_ID],["Trunk","=", $request->Trunk]])->first();
                     if(!empty($unblock)){
                         $unblock =  $unblock->delete();
@@ -1137,7 +1137,7 @@ class ClientController extends Controller
                         $response = \Response::json(['success' => null,'message' => 'Select Blocked Country']);
                         return $response;
                     }
-                   
+
                 }
                 $response = \Response::json(['success' => true,'message' => 'Unblocked sucessfully']);
                 return $response;
@@ -1168,24 +1168,24 @@ class ClientController extends Controller
             else{
                 $users =  $users->get();
             }
-        
 
-       
+
+
             return Datatables::of($users)
-            
-            
+
+
             ->addColumn('preference', function($row) use ($request) {
                 return !empty($row->Perferences[0]->preference) ? $row->Perferences[0]->preference : "";
             })
             ->addColumn('checkbox', function($row){
-                
+
                 $id = !empty($row->Perferences[0]->id) ? $row->Perferences[0]->id : "";
                 $btn1 = '<input type="checkbox" name="checkbox[]" data-preference="'.$id.'" value="'. $row->id.'" class="rowcheckbox" >';
 
                 return $btn1 ;
 
             })
-        
+
             ->addColumn('action', function($row){
                 $id = !empty($row->Perferences[0]->id) ? $row->Perferences[0]->id : "";
                 $btn = '<a href="javascript:void(0)" data-id="'.$id.'" data-codeid="'.$row->id.'" id="View"  class="btn btn-default btn-sm edit"><i class="fa fa-pen"></i></a>';
@@ -1197,7 +1197,7 @@ class ClientController extends Controller
         }
     }
 
-   
+
     public function vendor_preference_store(Request $request){
         if(!empty($request->CodeID))
         {
@@ -1253,12 +1253,12 @@ class ClientController extends Controller
             $data['Description'] =  $value->destination;
             $list[]= $data;
         }
-    
+
         return (new FastExcel($list))->download('Vendor_preference.xlsx');
     }
 
     public function preference_csv(Request $request){
-       
+
         $list =array();
         $downloads = Codes::with(['Perferences'=> function($q) use($request) {
             // Query the name field in status table
@@ -1279,7 +1279,7 @@ class ClientController extends Controller
     public function ajax_datagrid_vendorHistory(Request $request){
         if ($request->ajax()) {
             $data = VendorDownloadProcess::leftjoin('users','users.id','=','vendor_download_processes.created_by')->select('vendor_download_processes.*','users.name as uname')->where('client_id',$request->id)->get();
-           
+
             return Datatables::of($data)
             ->addColumn('title', function($row)use($request){
                 $timezone = '';
@@ -1309,7 +1309,7 @@ class ClientController extends Controller
             })
             ->addIndexColumn()
             ->addColumn('action', function($row){
-                
+
                 $btn = '<a href="javascript:void(0)" data-id="'.$row->id.'" id="View"  class="btn btn-default btn-sm View"><i class="fa fa-eye"></i></a>
                 <a  href="" class="btn btn-success btn-sm btn-icon icon-left"><i class="entypo-down"></i>Download</a>';
 
@@ -1323,7 +1323,7 @@ class ClientController extends Controller
     public function ajax_datagrid_customerHistory(Request $request){
         if ($request->ajax()) {
             $data = DownloadProcess::leftjoin('users','users.id','=','download_processes.created_by')->select('download_processes.*','users.name as uname')->where('client_id',$request->id)->get();
-           
+
             return Datatables::of($data)
             ->addColumn('title', function($row)use($request){
                 $timezone = '';
@@ -1332,7 +1332,7 @@ class ClientController extends Controller
                     if($value == 1){
                         $timezone  = "(default)";
                     }
-                   
+
                 }
                 if(!empty($row->effective)){
                     if($row->effective == "CustomDate"){
@@ -1352,7 +1352,7 @@ class ClientController extends Controller
             })
             ->addIndexColumn()
             ->addColumn('action', function($row){
-                
+
                 $btn = '<a href="javascript:void(0)" data-id="'.$row->id.'" id="View"  class="btn btn-default btn-sm View"><i class="fa fa-eye"></i></a>
                 <a  href="" class="btn btn-success btn-sm btn-icon icon-left"><i class="entypo-down"></i>Download</a>';
 
