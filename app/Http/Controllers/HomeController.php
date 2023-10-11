@@ -38,12 +38,12 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $today = Carbon::today();
-        $Value = CallHistory::whereDate('created_at', $today)->get();
+        $Value = CallHistory::query('')->get();
         $totalCallValue =  $Value->count();
         $todayConnectedCall = CallHistory::where([['feetime', '>','0'],['agentfeetime','>','0'],['created_at', $today]])->count();
-        $totalCustomers = Client::count();
+        $totalCustomer = Client::count();
         $todayfailedcall = CallHistory::where([['feetime','' ],['agentfeetime',''],['created_at', $today]])->count();
-        return view('home',compact('totalCallValue','todayConnectedCall','totalCustomers','todayfailedcall'));
+        return view('home',compact('totalCallValue','todayConnectedCall','totalCustomer','todayfailedcall'));
     }
 
     public function null_record(Request $request)

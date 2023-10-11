@@ -45,7 +45,7 @@
 
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>{{ $todayConnectedCall }}<sup style="font-size: 20px">%</sup></h3>
+                                <h3>{{ $todayConnectedCall }}</h3>
                                 <p>Today Connected Call
                                 </p>
                             </div>
@@ -61,7 +61,7 @@
 
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3>{{ $totalCustomers }}</h3>
+                                <h3>{{ $totalCustomer }}</h3>
                                 <p>Total Customer 
                                 </p>
                             </div>
