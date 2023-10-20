@@ -36,11 +36,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/invoice_export', 'App\Http\Controllers\CallController@invoice_export');
     Route::get('/export-history', 'App\Http\Controllers\CallController@export_history')->name('export.history');
     Route::get('/export-csv-history', 'App\Http\Controllers\CallController@export_csv_history')->name('export-csv.history');
-    Route::get('/export-csv-history-download/{id}','App\Http\Controllers\CallController@download_csv_export_history');
+    Route::get('/export-csv-history-download/{type}/{id}','App\Http\Controllers\CallController@download_csv_export_history');
     Route::get('/csv_view', 'App\Http\Controllers\CallController@csv_view');
-
-
-    Route::get('/export-history-email/{id}','App\Http\Controllers\CallController@email_export_history');
 
     Route::get('/export-history-download/{id}','App\Http\Controllers\CallController@download_export_history');
     Route::get('/export-history/csv','App\Http\Controllers\CallController@export_history_csv');
@@ -121,11 +118,8 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('rate-table/csv', [App\Http\Controllers\RateController::class, 'rate_export_csv'])->name('rates_csv');
 
 
-    Route::get('/null-record', [App\Http\Controllers\HomeController::class, 'null_record'])->name('null_record');
-    Route::get('/unautherised-record', [App\Http\Controllers\HomeController::class, 'auth_record'])->name('auth-record');
     Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
     Route::post('/profile-update', [App\Http\Controllers\HomeController::class, 'profileUpdate'])->name('profile-update');
-
 
 
     
