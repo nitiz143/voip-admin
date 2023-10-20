@@ -1,0 +1,108 @@
+[2023-09-02 01:00:04][5] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-02 01:00:04][5] Processed:  App\Jobs\InvoiceGenrateJob
+[2023-09-03 01:00:05][6] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-03 01:00:05][6] Processed:  App\Jobs\InvoiceGenrateJob
+[2023-09-03 01:00:05][7] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-03 01:00:05][7] Processed:  App\Jobs\InvoiceGenrateJob
+[2023-09-04 01:00:06][8] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-04 01:00:06][8] Processed:  App\Jobs\InvoiceGenrateJob
+[2023-09-05 01:00:06][9] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-05 01:00:06][9] Processed:  App\Jobs\InvoiceGenrateJob
+[2023-09-06 01:00:04][10] Processing: App\Jobs\InvoiceGenrateJob
+[2023-09-06 01:00:04][10] Processed:  App\Jobs\InvoiceGenrateJob
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Warning:  require(/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php): Failed to open stream: No such file or directory in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/mindgrap/vendor/composer/../aws/aws-sdk-php/src/functions.php' (include_path='.:/usr/share/php') in /var/www/html/mindgrap/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /var/www/html/mindgrap/vendor/composer/autoload_real.php(45): ComposerAutoloaderInit126587bfded6f37923959582398f9950::{closure}()
+#1 /var/www/html/mindgrap/vendor/autoload.php(25): ComposerAutoloaderInit126587bfded6f37923959582398f9950::getLoader()
+#2 /var/www/html/mindgrap/artisan(18): require('...')
+#3 {main}
+  thrown in /var/www/html/mindgrap/vendor/composer/autoload_real.php on line 41

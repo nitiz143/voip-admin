@@ -49,9 +49,10 @@ class DownloadCsvImportCron extends Command
         CronJob::where('id',$tasks->id)->update(array('created_at'=>$created_at,'start_time' => $created_at,'updated_at' => NULL));
         $value = CsvImport::where('status',1)->get();
         if(!empty($value)){
+            $history = [];
             foreach ($value as $key => $csvImport) {
-
-                if($csvImport->setting_id == '1'){
+               
+                if($csvImport->version == 1){
                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
                             return $line;
@@ -123,7 +124,7 @@ class DownloadCsvImportCron extends Command
                             CronJob::where('id',$tasks->id)->update(array('updated_at'=>$updated_at,'start_time' => ''));
                         }
                     }
-                }elseif($csvImport->setting_id == '2'){
+                }elseif($csvImport->version == 2){
                     if(Storage::disk('public')->put($csvImport->csv_file, Storage::get('voip/'.$csvImport->csv_file))){
                         $callarr = (new FastExcel)->withoutHeaders()->import(Storage::disk('public')->path($csvImport->csv_file), function ($line) {
                             return $line;
@@ -131,72 +132,67 @@ class DownloadCsvImportCron extends Command
                         if(!empty($callarr)){
                             foreach($callarr as $i=>$call){
                                 $history[] = [
-                                    'callere164'=>$call[1] ? $call[1] : '0',
-                                    'calleraccesse164'=>$call[2] ? $call[2] : '0',
-                                    'calleee164'=>$call[3] ? $call[3] : '0',
-                                    'calleeaccesse164'=>$call[4] ? $call[4] : '0',
-                                    'callerip'=>$call[5] ? $call[5] : '0',
-                                           'callerrtpip'=>$call[6] ? $call[6] : '0',
-                                    'callercodec'=>$call[7] ? $call[7] : '0',
-                                    'callergatewayid'=>$call[8] ? $call[8] : '0',
-                                    'callerproductid'=>$call[9] ? $call[9] : '0',
-                                    'callertogatewaye164'=>$call[10] ? $call[10] : '0',
-                                    'callertype'=>$call[11] ? $call[11] : '0',
-                                    'calleeip'=>$call[12] ? $call[12] : '0',
-                                          'calleertpip'=>$call[13] ? $call[13] : '0',
-                                    'calleecodec'=>$call[14] ? $call[14] : '0',
-                                    'calleegatewayid'=>$call[15] ? $call[15] : '0',
-                                    'calleeproductid'=>$call[16] ? $call[16] : '0',
-                                    'calleetogatewaye164'=>$call[17] ? $call[17] : '0',
-                                    'calleetype'=>$call[18] ? $call[18] : '0',
-                                    'billingmode'=>$call[19] ? $call[19] : '0',
-                                    'calllevel'=>$call[20] ? $call[20] : '0',
-                                    'agentfeetime'=>$call[21] ? $call[21] : '0',
-                                    'starttime'=>$call[22] ? $call[22] : '0',
-                                    'stoptime'=>$call[23] ? $call[23] : '0',
-                                    'callerpdd'=>$call[24] ? $call[24] : '0',
-                                    'calleepdd'=>$call[25] ? $call[25] : '0',
-                                    'holdtime'=>$call[26] ? $call[26] : '0',
-                                    'callerareacode'=>$call[27] ? $call[27] : '0',
-                                    'feetime'=>$call[28] ? $call[28] : '0',
-                                    'fee'=>$call[29] ? $call[29] : '0',
-                                    'tax'=>$call[30] ? $call[30] : '0',
-                                    'suitefee'=>$call[31] ? $call[31] : '0',
-                                    'suitefeetime'=>$call[32] ? $call[32] : '0',
-                                    'incomefee'=>$call[33] ? $call[33] : '0',
-                                    'incometax'=>$call[34] ? $call[34] : '0',
-                                    'customeraccount'=>$call[35] ? $call[35] : '0',
-                                    'customername'=>$call[36] ? $call[36] : '0',
-                                    'calleeareacode'=>$call[37] ? $call[37] : '0',
-                                    'agentfee'=>$call[38] ? $call[38] : '0',
-                                    'agenttax'=>$call[39] ? $call[39] : '0',
-                                    'agentsuitefee'=>$call[40] ? $call[40] : '0',
-                                    'agentsuitefeetime'=>$call[41] ? $call[41] : '0',
-                                    'agentaccount'=>$call[42] ? $call[42] : '0',
-                                    'agentname'=>$call[43] ? $call[43] : '0',
-                                    'flowno'=>$call[44] ? $call[44] : '0',
-                                    'softswitchname'=>$call[45] ? $call[45] : '0',
-                                    'softswitchcallid'=>$call[46] ? $call[46] : '0',
-                                    'callercallid'=>$call[47] ? $call[47] : '0',
-                                            'calleroriginalcallid'=>$call[48] ? $call[48] : '0',
-                                    'calleecallid'=>$call[49] ? $call[49] : '',
-                                            'calleroriginalinfo'=>$call[50] ? $call[50] : '0',
-                                    'rtpforward'=>$call[51] ? $call[51] : '0',
-                                    'enddirection'=>$call[52] ? $call[52] : '0',
-                                    'endreason'=>$call[53] ? $call[53] : '0',
-                                    'billingtype'=>$call[54] ? $call[54] : '0',
-                                    'cdrlevel'=>$call[55] ? $call[55] : '0',
-                                    'agentcdr_id'=>$call[56] ? $call[56] : '0',
-                                            'sipreasonheader'=>$call[57] ? $call[57] : '0',
-                                            'recordstarttime'=>$call[58] ? $call[58] : '0',
-                                    'transactionid'=>$call[59] ? $call[59] : '0',
-                                            'flownofirst'=>$call[60] ? $call[60] : '0',
+                                    'callere164'=>$call[0] ? $call[0] : '',
+                                    'calleraccesse164'=>$call[1] ? $call[1] : '',
+                                    'calleee164'=>$call[2] ? $call[2] : '',
+                                    'calleeaccesse164'=>$call[3] ? $call[3] : '',
+                                    'callerip'=>$call[4] ? $call[4] : '',
+                                    'callercodec'=>$call[5] ? $call[5] : '',
+                                    'callergatewayid'=>$call[6] ? $call[6] : '',
+                                    'callerproductid'=>	$call[7] ? $call[7] : '',
+                                    'callertogatewaye164'=>$call[8] ? $call[8] : '',
+                                    'callertype'=>$call[9] ? $call[9] : '',
+                                    'calleeip'=>$call[10] ? $call[10] : '',
+                                    'calleecodec'=>$call[11] ? $call[11] : '',
+                                    'calleegatewayid'=>$call[12] ? $call[12] : '',
+                                    'calleeproductid'=>	$call[13] ? $call[13] : '',
+                                    'calleetogatewaye164'=>$call[14] ? $call[14] : '',
+                                    'calleetype'=>$call[15] ? $call[15] : '',
+                                    'billingmode'=>$call[16] ? $call[16] : '',
+                                    'calllevel'=>$call[17] ? $call[17] : '',
+                                    'agentfeetime'=>$call[18] ? $call[18] : '',
+                                    'starttime'=>$call[19] ? $call[19] : '',
+                                    'stoptime'=>$call[20] ? $call[20] : '',
+                                    'callerpdd'=>$call[21] ? $call[21] : '',
+                                    'calleepdd'=>$call[22] ? $call[22] : '',
+                                    'holdtime'=>$call[23] ? $call[23] : '',
+                                    'callerareacode'=>$call[24] ? $call[24] : '',
+                                    'feetime'=>$call[25] ? $call[25] : '',
+                                    'fee'=>$call[26] ? $call[26] : '',
+                                    'tax'=>$call[27] ? $call[27] : '',
+                                    'suitefee'=>$call[28] ? $call[28] : '',
+                                    'suitefeetime'=>$call[29] ? $call[29] : '',
+                                    'incomefee'=>$call[30] ? $call[30] : '',
+                                    'incometax'=>$call[31] ? $call[31] : '',
+                                    'customeraccount'=>$call[32] ? $call[32] : '',
+                                    'customername'=>$call[33] ? $call[33] : '',
+                                    'calleeareacode'=>$call[34] ? $call[34] : '',
+                                    'agentfee'=>$call[35] ? $call[35] : '',
+                                    'agenttax'=>$call[36] ? $call[36] : '',
+                                    'agentsuitefee'=>$call[37] ? $call[37] : '',
+                                    'agentsuitefeetime'=>$call[38] ? $call[38] : '',
+                                    'agentaccount'=>$call[39] ? $call[39] : '',
+                                    'agentname'=>$call[40] ? $call[40] : '',
+                                    'flowno'=>$call[41] ? $call[41] : '',
+                                    'softswitchname'=>$call[42] ? $call[42] : '',
+                                    'softswitchcallid'=>$call[43] ? $call[43] : '',
+                                    'callercallid'=>$call[44] ? $call[44] : '',
+                                    'calleecallid'=>$call[45] ? $call[45] : '',
+                                    'rtpforward'=>$call[46] ? $call[46] : '',
+                                    'enddirection'=>$call[47] ? $call[47] : '',
+                                    'endreason'=>$call[48] ? $call[48] : '',
+                                    'billingtype'=>$call[49] ? $call[49] : '',
+                                    'cdrlevel'=>$call[50] ? $call[50] : '',
+                                    'agentcdr_id'=>$call[51] ? $call[51] : '',
+                                    'transactionid'=>$call[52] ? $call[52] : '',
                                 ];
 
 
                             }
+                          
                             if(!empty($history)){
-                                CallHistory::insert($history);
+                                $datas = CallHistory::insert($history);
+                                // dd($history);
                                 $getcsv = CsvImport::find($csvImport->id);
                                 $getcsv->update(['status' => 2]);
                                 Storage::disk('public')->delete($csvImport->csv_file);

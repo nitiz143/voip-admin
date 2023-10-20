@@ -23,11 +23,18 @@ use DateTime;
 use Date;
 use File;
 use Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Billing;
+use App\Mail\MyCustomMail; 
+
+
 
 class CallController extends Controller
 {
     public function index(Request $request)
     {
+        
+
         if ($request->ajax()) {
             
             $data = CallHistory::query();
@@ -36,14 +43,25 @@ class CallController extends Controller
                 $start = $start*1000;
                 $end = strtotime($request->input('EndDate'));
                 $end = $end*1000;
+
                 $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+
+            if($request->billingtype == 'one') {
+                $data->where( 'feetime', ">", "0"); 
+
+            }
+            // else {
+            //     $data->where('feetime' ,">", "0"); 
+            // }
+
             if(!empty($request->Account)){
                 $data->where('account_id', $request->Account);
-                $data = $data->get();
+                $data = $data;
             }else{
                 $data = [];
             }
+          
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
@@ -83,6 +101,7 @@ class CallController extends Controller
                     }
                    
                 })->addColumn('billing_duration', function($row){
+
                     if(!empty($row->feetime)){
                         return  $row->feetime;
                     }else{
@@ -117,9 +136,18 @@ class CallController extends Controller
                 $end = $end*1000;
                 $data->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+
+            if($request->billingtype == 'one') {
+                $data->where( 'agentfeetime', ">", "0"); 
+
+            }
+            // else {
+            //     $data->where('agentfeetime' ,">", "0"); 
+            // }
+
             if(!empty($request->VAccount)){
                 $data->where('vendor_account_id', $request->VAccount);
-                $data = $data->get();
+                $data = $data;
             }else{
                 $data = [];
             }
@@ -156,7 +184,12 @@ class CallController extends Controller
                     }
                 })
                 ->addColumn('billing_duration', function($row){
-                    return   $row->feetime;
+                   
+                    if(!empty($row->agentfeetime)){
+                        return  $row->agentfeetime;
+                    }else{
+                        return 0;
+                    }
                 })
                 ->addColumn('Prefix', function($row){
                         $Prefix = $row->callerareacode;
@@ -371,6 +404,7 @@ class CallController extends Controller
             $data['report_type'] = $request->report;
             $data['status'] = 'pending';
             $data['Invoice_no'] =  RandomUtil::randomString('Invoice_');
+         
             $code = random_int(100000, 999999);
             $data['file_name'] = date('YmdHis').'-'.$code.".pdf";
             $exporthistory = ExportHistory::create($data);
@@ -389,6 +423,7 @@ class CallController extends Controller
     public function export_history(Request $request){
         if ($request->ajax()) {
             $data = ExportHistory::query();
+
             if($request->ActiveTab == 1){
                 if(($request->has('StartDate') && $request->has('EndDate'))){
                     $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
@@ -410,11 +445,14 @@ class CallController extends Controller
             if(!empty($request->Report)){
                 $data->where('report_type', $request->Report);
             }
-                $data = $data->get();
+                $data = $data;
             return Datatables::of($data)
             
             ->addColumn('created_at', function($row){
                 return Carbon::parse($row->created_at)->format('d/m/Y H:i:s');
+            })
+            ->addColumn('send_at', function($row){
+                return Carbon::parse($row->send_at)->format('d/m/Y H:i:s');
             })
             ->addColumn('status', function($row){
                if($row->status == "pending"){
@@ -441,7 +479,8 @@ class CallController extends Controller
             })
             ->addIndexColumn()
             ->addColumn('action', function($row){
-                $btn = '<a href="'.url('/export-history-download',$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+                $btn = '<a href="'.url('/export-history-download',$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>
+               <a href="'.url('/export-history-email',$row->id).'" class="email btn btn-primary btn-sm " id="email"  data-id ="'.$row->id.'">Send Email</a>';
 
                 return $btn;
             })
@@ -452,6 +491,30 @@ class CallController extends Controller
         $VAccounts = Client::where("vendor", "=",1)->get();
         return view("call.export-history",compact('Accounts','VAccounts'));
     }
+
+    public function email_export_history(Request $request) {
+
+       
+        $history = ExportHistory::where('id',$request->id)->first(); 
+       
+       
+        // $data = Billing::where('account_id',$history->client_id)->first();
+        $client = Client::where('id',$history->client_id)->first();
+        
+        $mail = Mail::to($client->email)->send(new MyCustomMail($history));
+
+        if ($mail > 0) {
+            $history->send_at =\Carbon\Carbon::now()->format('d-m-y');
+            $history->update();
+        }
+        
+        return redirect()->back()->with('success', 'Email Send Succesfully');   
+
+        
+    }
+    
+
+
     public function download_export_history(Request $request){
         $invoice = ExportHistory::where('id',$request->id)->first();
 
@@ -554,16 +617,17 @@ class CallController extends Controller
     public function export_csv_history(Request $request){
         if ($request->ajax()) {
             $data = ExportCsvXlsxHistory::query();
-            if(($request->has('StartDate') && $request->has('EndDate'))){
-                $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
-            }
-            if(!empty($request->Account)){
-                $data->where('client_id', $request->Account);
-            }
-            if(!empty($request->Report)){
-                $data->where('report_type', $request->Report);
-            }
-            $data = $data->get();
+
+            // if(($request->has('StartDate') && $request->has('EndDate'))){
+            //     $data->whereBetween('created_at', [$request->StartDate,$request->EndDate]);
+            // }
+            // if(!empty($request->Account)){
+            //     $data->where('client_id', $request->Account);
+            // }
+            // if(!empty($request->Report)){
+            //     $data->where('report_type', $request->Report);
+            // }
+            $data = $data;
             return Datatables::of($data)
             ->addColumn('created_at', function($row){
                 return Carbon::parse($row->created_at)->format('d/m/Y H:i:s');
@@ -581,20 +645,23 @@ class CallController extends Controller
             })
             ->addIndexColumn()
             ->addColumn('action', function($row){
-                $btn = '<a href="'.url('/export-csv-history-download',$row->type."/".$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+                $btn = '<a href="'.url('/export-csv-history-download',$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
 
                 return $btn;
             })
             ->rawColumns(['action','status'])
             ->make(true);
         }
+     
+
         $Accounts = Client::where("customer", "=",1)->get();
         $VAccounts = Client::where("vendor", "=",1)->get();
         return view("call.export-csv-history",compact('Accounts','VAccounts'));
     }
     public function download_csv_export_history(Request $request){
+       
         $data = ExportCsvXlsxHistory::where('id',$request->id)->first();
-        if($request->type =="Excel-report"){
+        if($data->type =="Excel-report"){
             if(file_exists( public_path('storage/excel_files/'.$data->file_name))) {
                 $file= public_path('storage/excel_files/'.$data->file_name);
                 $headers = array('Content-Type: application/xlsx',);
@@ -649,6 +716,12 @@ class CallController extends Controller
                 $end = $end*1000;
                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+
+            if($request->billingtype == 'one') {
+                $query->where( 'agentfeetime', ">", "0"); 
+
+            }
+
             if($Report != 'Account-Manage') {
                 if(!empty( $AccountID )) {
                     $query->where('call_histories.vendor_account_id', $AccountID);
@@ -696,6 +769,13 @@ class CallController extends Controller
                 $end = $end*1000;
                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
+
+            
+            if($request->billingtype == 'one') {
+                $query->where( 'feetime', ">", "0"); 
+
+            }
+
             if($Report != 'Account-Manage') {
                 if(!empty( $AccountID )) {
                     $query->where('call_histories.account_id', $AccountID);

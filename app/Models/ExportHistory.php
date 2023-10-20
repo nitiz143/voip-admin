@@ -9,7 +9,7 @@ use App\Models\Client;
 class ExportHistory extends Model
 {
     use HasFactory;
-	protected $fillable = ['client_id','user_id','report_type','file_name','file','status','Invoice_no'];
+	protected $fillable = ['client_id','user_id','report_type','file_name','file','status','Invoice_no','send_at','started_at','ended_at'];
 
     public function clients() {
         return $this->belongsTo(Client::class,'client_id','id');

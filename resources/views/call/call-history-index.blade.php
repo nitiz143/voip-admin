@@ -73,17 +73,28 @@
                                                         @endif
                                                     </select>
                                                 </div>
+
+                                                <div class="form-group d-flex flex-column" style="max-width: 300px;">
+                                                    <label for="field-1">Billing Type</label>
+                                                    <select  name="billingtype"  class="form-control w-35">
+                                                        <option>Billing Type</option>
+                                                        <option value="zero"> Zero</option>
+                                                        <option value="one">Non-Zero</option>
+                                                    </select>
+                                                </div>
+
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="control-label small_label" for="field-1">Start Date</label>
                                                     <div class="d-flex gap-1">
-                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03"  />
+                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd hh:mm:ss" value="2023-03-03" data-enddate="2023-03-03"  />
                                                     </div>
                                                 </div>
+
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
                                                     <div class="d-flex gap-1">
                                                         <input type="text" name="EndDate" 
-                                                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03" />
+                                                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd hh:mm:ss" value="2023-03-03" data-enddate="2023-03-03" />
                                                     </div>
                                                 </div>
                                                
@@ -202,6 +213,7 @@
             $searchFilter.Cli = $("#cdr_filter input[name='CLI']").val();
             $searchFilter.Cld = $("#cdr_filter input[name='CLD']").val();
             $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
+            $searchFilter.billingtype = $("#cdr_filter select[name='billingtype']").val();
             $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
             $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
           
@@ -245,6 +257,7 @@
                                 d.Cld = $searchFilter.Cld,
                                 d.Prefix = $searchFilter.Prefix,
                                 d.Tag = $searchFilter.Tag,
+                                d.billingtype = $searchFilter.billingtype,
                                 d.StartDate = $searchFilter.StartDate,
                                 d.EndDate = $searchFilter.EndDate
                             },
@@ -328,6 +341,7 @@
                             d.Cld= $searchFilter.Cld,
                             d.Prefix = $searchFilter.Prefix,
                             d.Tag= $searchFilter.Tag,
+                            d.billingtype = $searchFilter.billingtype,
                             d.StartDate =  $searchFilter.StartDate,
                             d.EndDate = $searchFilter.EndDate
                         },
@@ -413,6 +427,7 @@
             $searchFilter.Cli = $("#cdr_filter input[name='CLI']").val();
             $searchFilter.Cld = $("#cdr_filter input[name='CLD']").val();
             $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
+            $searchFilter.billingtype = $("#cdr_filter select[name='billingtype']").val();
             $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
             $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
            
@@ -444,6 +459,7 @@
                         d.Cld= $searchFilter.Cld ?? "",
                         d.Prefix = $searchFilter.Prefix ?? "",
                         d.Tag= $searchFilter.Tag ?? "",
+                        d.billingtype =  $searchFilter.billingtype ?? "",
                         d.StartDate =  $searchFilter.StartDate ?? "",
                         d.EndDate = $searchFilter.EndDate ?? ""
                 },
@@ -524,6 +540,7 @@
             $searchFilter.Cli = $("#cdr_filter input[name='CLI']").val();
             $searchFilter.Cld = $("#cdr_filter input[name='CLD']").val();
             $searchFilter.Prefix = $("#cdr_filter input[name='area_prefix']").val();
+            $searchFilter.billingtype = $("#cdr_filter select[name='billingtype']").val();
             $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
             $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
            
@@ -555,6 +572,7 @@
                         d.Cld= $searchFilter.Cld ?? "",
                         d.Prefix = $searchFilter.Prefix ?? "",
                         d.Tag= $searchFilter.Tag ?? "",
+                        d.billingtype =  $searchFilter.billingtype ?? "",
                         d.StartDate =  $searchFilter.StartDate ?? "",
                         d.EndDate = $searchFilter.EndDate ?? ""
                     }
@@ -627,7 +645,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
            orientation: "bottom" // add this
         });
         $('#datepicker').datetimepicker('setDate', myDate);
@@ -637,7 +655,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
             orientation: "bottom" // add this
         });
         $('#datepicker1').datetimepicker('setDate', myDate);

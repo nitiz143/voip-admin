@@ -82,17 +82,27 @@
                                                         <option value="Customer-Negative-Report">Negative Report</option>
                                                     </select>
                                                 </div>
+
+                                                <div class="form-group d-flex flex-column" style="max-width: 300px;">
+                                                    <label for="field-1">Billing Type</label>
+                                                    <select  name="billingtype"  class="form-control w-35">
+                                                        <option>Billing Type</option>
+                                                        <option value="zero"> Zero</option>
+                                                        <option value="one">Non-Zero</option>
+                                                    </select>
+                                                </div>
+
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="control-label small_label" for="field-1">Start Date</label>
                                                     <div class="d-flex gap-1">
-                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03"  />
+                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker"  data-date-format="yyyy-mm-dd hh:mm:ss" value="2023-03-03" data-enddate="2023-03-03"  />
                                                     </div>
                                                 </div>
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
                                                     <div class="d-flex gap-1">
                                                         <input type="text" name="EndDate" 
-                                                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03" />
+                                                        id="datepicker1" class="form-control datepicker"  data-date-format="yyyy-mm-dd hh:mm:ss" value="2023-03-03" data-enddate="2023-03-03" />
                                                     </div>
                                                 </div>
                                                
@@ -138,17 +148,27 @@
                                                         <option value="Vendor-Negative-Report">Negative Report</option>
                                                     </select>
                                                 </div>
+                                                
+                                                <div class="form-group d-flex flex-column" style="max-width: 300px;">
+                                                    <label for="field-1">Billing Type</label>
+                                                    <select  name="billingtype"  class="form-control w-35">
+                                                        <option>Billing Type</option>
+                                                        <option value="zero"> Zero</option>
+                                                        <option value="one">Non-Zero</option>
+                                                    </select>
+                                                </div>
+
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="control-label small_label" for="field-1">Start Date</label>
                                                     <div class="d-flex gap-1">
-                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker2"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03"  />
+                                                        <input type="text" name="StartDate" class="form-control datepicker w-35" id="datepicker2"  data-date-format="yyyy-mm-dd hh:mm:ss" value="2023-03-03" data-enddate="2023-03-03"  />
                                                     </div>
                                                 </div>
                                                 <div class="form-group" style="max-width: 300px;">
                                                     <label class="col-md-4 control-label small_label" for="field-1" style="padding-left: 0px;">End Date</label>
                                                     <div class="d-flex gap-1">
                                                         <input type="text" name="EndDate" 
-                                                        id="datepicker3" class="form-control datepicker"  data-date-format="yyyy-mm-dd HH:mm:ss" value="2023-03-03" data-enddate="2023-03-03" />
+                                                        id="datepicker3" class="form-control datepicker"  data-date-format="yyyy-mm-dd hh:mm:ss" value="2023-03-03" data-enddate="2023-03-03" />
                                                     </div>
                                                 </div>
                                                 
@@ -170,7 +190,7 @@
                                     </div>
                                     <div class="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">
                                         <div class="container-fluid  ml-2 mt-3">
-                                            <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter_2">
+                                            {{-- <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter_2">
                                                 <input type="hidden" name="type" class="form-control"  value="Customer"  />
                                                 <div class="form-group customer_Account">
                                                     <label class="control-label" for="field-1">Account List</label>
@@ -234,7 +254,7 @@
                                                     <input type="hidden" id="ActiveTab" name="ActiveTab" value="3">
                                                     <a href="" class="btn btn-primary mb-4 w-10 mt-2" id="filter">Filter</a>
                                                 </div>
-                                            </form>
+                                            </form> --}}
                                         </div>
                                         <table class="table  w-100 table-bordered data-table">
                                             <thead>
@@ -277,7 +297,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
            orientation: "bottom" // add this
         });
         $('#datepicker').datetimepicker('setDate', myDate );
@@ -287,7 +307,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
            orientation: "bottom" // add this
         });
         $('#datepicker1').datetimepicker('setDate', myDate);
@@ -298,7 +318,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
            orientation: "bottom" // add this
         });
         $('#datepicker2').datetimepicker('setDate', myDate);
@@ -308,7 +328,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
            orientation: "bottom" // add this
            
         });
@@ -320,7 +340,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
            orientation: "bottom" // add this
         });
         $('#datepicker4').datetimepicker('setDate', myDate);
@@ -330,7 +350,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
            orientation: "bottom" // add this
         });
         $('#datepicker5').datetimepicker('setDate', myDate);
@@ -406,6 +426,7 @@
               
                 $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
                 $searchFilter.Report = $("#cdr_filter select[name='report']").val();
+                $searchFilter.billingtype = $("#cdr_filter select[name='billingtype']").val();
                 $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
                 $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
                 if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
@@ -432,6 +453,7 @@
                
                 $searchFilter.Account = $("#cdr_filter_1 select[name='AccountID']").val();
                 $searchFilter.Report = $("#cdr_filter_1 select[name='report']").val();
+                $searchFilter.billingtype = $("#cdr_filter_1 select[name='billingtype']").val();
                 $searchFilter.StartDate = $("#cdr_filter_1 input[name='StartDate']").val();
                 $searchFilter.EndDate = $("#cdr_filter_1 input[name='EndDate']").val();
                 if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
@@ -457,6 +479,7 @@
                 url: "{{url('/csv_view')}}",
                 data:{
                     'Account': $searchFilter.Account,
+                    'billingtype': $searchFilter.billingtype,
                     'StartDate' : $searchFilter.StartDate ,
                     'EndDate' : $searchFilter.EndDate,
                     'Report' :  $searchFilter.Report,
@@ -466,6 +489,7 @@
                 type: 'get',
                 success: function (data)
                 {
+                    $('#tables_data_1').html();
                     if(ref_this.data('id') == 2){
                         $('#tables_data_1').html(data)
                     }   
@@ -482,36 +506,7 @@
             });
         });
 
-        $(document).on("click", "#filter",function(e) {
-            e.preventDefault();
-            var $searchFilter = {};
-            var ref_this = $("ul.nav li.nav-item a.nav-link.active");
-        
-            if(ref_this.data('id') == 3){
-               
-                $searchFilter.Account = $("#cdr_filter_2 select[name='AccountID']").val();
-                $searchFilter.Report = $("#cdr_filter_2 select[name='report']").val();
-                $searchFilter.StartDate = $("#cdr_filter_2 input[name='StartDate']").val();
-                $searchFilter.EndDate = $("#cdr_filter_2 input[name='EndDate']").val();
-                if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
-                    $.notify("Please Select a Start date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
-                    $.notify("Please Select a End date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Report  == 'undefined' || $searchFilter.Report.trim() == ''){
-                    $.notify("Please Select a Report", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
-                    $.notify("Please Select a Account", "Error");
-                    return false;
-                }
-                $searchFilter.ActiveTab = $("#cdr_filter_2 input[name='ActiveTab']").val();
 
-            }
           
             var table = $('.data-table').DataTable({
                 "bDestroy": true, // Destroy when resubmit form
@@ -520,13 +515,7 @@
                 ajax:
                     {
                     "url": "{{ route('export-csv.history')}}",
-                    "data" : function ( d ){
-                        d.Account= $searchFilter.Account ?? "",
-                        d.StartDate =  $searchFilter.StartDate ?? "",
-                        d.EndDate = $searchFilter.EndDate ?? "",
-                        d.Report =   $searchFilter.Report ?? "",
-                        d.ActiveTab =   $searchFilter.ActiveTab ?? ""
-                    },
+                    
                 },
                 columns: [
                     {data:'id',name:'id'},
@@ -537,7 +526,7 @@
                     {data:'action',name:'action', orderable: false, searchable: false},
                 ]
             });
-        });
+     
 </script>
 <script type="text/javascript">
   
@@ -596,6 +585,7 @@
              
                 $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
                 $searchFilter.Report = $("#cdr_filter select[name='report']").val();
+                $searchFilter.billingtype = $("#cdr_filter select[name='billingtype']").val();
                 $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
                 $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
                 if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
@@ -622,6 +612,7 @@
                
                 $searchFilter.Account = $("#cdr_filter_1 select[name='AccountID']").val();
                 $searchFilter.Report = $("#cdr_filter_1 select[name='report']").val();
+                $searchFilter.billingtype = $("#cdr_filter_1 select[name='billingtype']").val();
                 $searchFilter.StartDate = $("#cdr_filter_1 input[name='StartDate']").val();
                 $searchFilter.EndDate = $("#cdr_filter_1 input[name='EndDate']").val();
                 if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
@@ -648,6 +639,7 @@
                 type: "get",
                 data:{
                     'Account': $searchFilter.Account,
+                    'billingtype': $searchFilter.billingtype,
                     'StartDate' : $searchFilter.StartDate ,
                     'EndDate' : $searchFilter.EndDate,
                     'Report' :  $searchFilter.Report,
