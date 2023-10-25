@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "barryvdh/laravel-dompdf": "^2.0",
+        "consoletvs/charts": "6.*",
         "doctrine/dbal": "^3.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -19,7 +20,9 @@
         "league/flysystem-sftp": "~1.1",
         "openspout/openspout": "^4.15",
         "rap2hpoutre/fast-excel": "^3.2",
+        "saeedvaziry/laravel-monitoring": "^1.4",
         "spatie/laravel-schedule-monitor": "^2",
+        "spatie/laravel-server-monitor": "^1.9",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
