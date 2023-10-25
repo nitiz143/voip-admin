@@ -1022,7 +1022,7 @@
       $('#yourTable').DataTable({
           processing: true,
           serverSide: true,
-          ajax: "{{ url('null-record') }}",
+          ajax: "{{ url('null-record') }}" + account_id,
           columns: [
             {data:'id',name:'id'},
             // {data:'account',name:'account'},
@@ -1045,7 +1045,7 @@
           $('#authtable').DataTable({
               processing: true,
               serverSide: true,
-              ajax: "{{ url('unautherised-record') }}",
+              ajax: "{{ url('unautherised-record') }}" + account_id,
               columns: [
                 {data:'id',name:'id'},
                 // {data:'account',name:'account'},

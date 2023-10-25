@@ -227,7 +227,7 @@ class SettingController extends Controller
             $data =array();
             $data['Trunks'] =  $value->title;
             $data['area_prefix'] =  !empty($value->area_prefix) ? $value->area_prefix :"";
-            $data['rate_prefix'] =   !empty($value->rate_prefix) ? $value->rate_prefix :"";
+            $data['rate_prefix'] =  !empty($value->rate_prefix) ? $value->rate_prefix :"";
             $data['prefix'] =   !empty($value->prefix) ? $value->prefix :"";
 
             $list[]= $data;
@@ -242,7 +242,7 @@ class SettingController extends Controller
             $data =array();
             $data['Trunks'] =  $value->title;
             $data['area_prefix'] =  !empty($value->area_prefix) ? $value->area_prefix :"";
-            $data['rate_prefix'] =   !empty($value->rate_prefix) ? $value->rate_prefix :"";
+            $data['rate_prefix'] =  !empty($value->rate_prefix) ? $value->rate_prefix :"";
             $data['prefix'] =   !empty($value->prefix) ? $value->prefix :"";
 
             $list[]= $data;

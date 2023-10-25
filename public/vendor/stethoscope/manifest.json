@@ -1,0 +1,20 @@
+{
+  "resources/js/src/main.css": {
+    "file": "assets/main-eaa33fcb.css",
+    "src": "resources/js/src/main.css"
+  },
+  "resources/js/src/main.js": {
+    "css": [
+      "assets/main-eaa33fcb.css",
+      "assets/style-afda9228.css"
+    ],
+    "file": "assets/main-435aa290.js",
+    "isEntry": true,
+    "src": "resources/js/src/main.js"
+  },
+  "resources/js/src/style.css": {
+    "file": "assets/style-afda9228.css",
+    "isEntry": true,
+    "src": "resources/js/src/style.css"
+  }
+}
