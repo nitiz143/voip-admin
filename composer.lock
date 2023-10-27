@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4bc6acf6b585ffa77f699fcc9decf143",
+    "content-hash": "d7e7435c4cc899662f9242ca82ba5da7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4888,6 +4888,72 @@
                 }
             ],
             "time": "2023-04-02T09:23:15+00:00"
+        },
+        {
+            "name": "sarfraznawaz2005/meter",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sarfraznawaz2005/meter.git",
+                "reference": "09167d5ab51cc43dc82408e2d45af8202dbf9d84"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sarfraznawaz2005/meter/zipball/09167d5ab51cc43dc82408e2d45af8202dbf9d84",
+                "reference": "09167d5ab51cc43dc82408e2d45af8202dbf9d84",
+                "shasum": ""
+            },
+            "require": {
+                "balping/json-raw-encoder": "^1.0",
+                "consoletvs/charts": "6.*",
+                "illuminate/support": "~5|~6|~7|~8|~9",
+                "php": ">=7.3|>=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sarfraznawaz2005\\Meter\\MeterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Helpers.php"
+                ],
+                "psr-4": {
+                    "Sarfraznawaz2005\\Meter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sarfraz Ahmed",
+                    "email": "sarfraznawaz2005@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "laravel package to find performance bottlenecks in your laravel application.",
+            "homepage": "https://github.com/sarfraznawaz2005/meter",
+            "keywords": [
+                "database",
+                "health",
+                "laravel",
+                "log",
+                "meter",
+                "monitor",
+                "performance",
+                "queries",
+                "request"
+            ],
+            "support": {
+                "issues": "https://github.com/sarfraznawaz2005/meter/issues",
+                "source": "https://github.com/sarfraznawaz2005/meter/tree/1.3.0"
+            },
+            "time": "2022-12-15T15:40:32+00:00"
         },
         {
             "name": "spatie/blink",

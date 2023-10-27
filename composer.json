@@ -21,6 +21,7 @@
         "openspout/openspout": "^4.15",
         "rap2hpoutre/fast-excel": "^3.2",
         "saeedvaziry/laravel-monitoring": "^1.4",
+        "sarfraznawaz2005/meter": "^1.3",
         "spatie/laravel-schedule-monitor": "^2",
         "spatie/laravel-server-monitor": "^1.9",
         "yajra/laravel-datatables-oracle": "~9.0"
