@@ -25,7 +25,7 @@
         <section class="content">
             <div class="container">
 
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-lg-3 col-6">
 
                         <div class="small-box bg-info">
@@ -89,7 +89,11 @@
                         </div>
                     </div>
 
-                </div>
+                </div> --}}
+                
+                <div id="app" class="min-h-screen ht-auto">
+                  <app></app>
+              </div>
 
         <div class="card">
           <div class="card-header">
@@ -910,6 +914,8 @@
 {{-- @endsection --}}
 @endsection
 @section('page_js')
+<script src="{{ asset(mix('js/app.js', 'vendor/monitoring')) }}"></script>
+
     <script src="{{ asset('assets/plugins/raphael/raphael.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/jquery-mapael/maps/world_countries.min.js') }}"></script>

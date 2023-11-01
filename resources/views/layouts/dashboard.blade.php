@@ -108,7 +108,17 @@
      text-align: center;
     }
     .datetimepicker-days table thead tr th.switch {display:revert !important;}
+    .w-full.min-h-screen > div > div:first-child{
+                display: none
+            }
     </style>
+     <link href="{{ asset(mix('css/app.css', 'vendor/monitoring')) }}" rel="stylesheet" type="text/css">
+     <script>
+         window.app = {
+             prefix: '{{ config('monitoring.routes.prefix') }}'
+         }
+     </script>
+     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body class="hold-transition layout-top-nav">
   <div class="wrapper">

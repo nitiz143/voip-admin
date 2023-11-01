@@ -192,6 +192,8 @@ return [
     */
 
     'aliases' => [
+        'Monitoring' => \SaeedVaziry\Monitoring\Facades\Monitoring::class,
+
 
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
