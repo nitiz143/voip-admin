@@ -1,13 +1,6 @@
 <?php
 
 return [
-
-    [
-        // Example widget to show the total number of users
-       
-        // Add more widgets for the data you want to display.
-    ],
-    
     /*
      * The monitoring data will be collected under this name.
      * If you have running same source code on multiple servers then

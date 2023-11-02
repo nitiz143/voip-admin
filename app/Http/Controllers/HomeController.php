@@ -38,8 +38,9 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $today = Carbon::today();
-        $Value = CallHistory::query('')->get();
-        $totalCallValue =  $Value->count();
+       // $Value = CallHistory::query('')->get();
+    //    $totalCallValue =  $Value->count();
+        $totalCallValue = "";
         $todayConnectedCall = CallHistory::where([['feetime', '>','0'],['agentfeetime','>','0'],['created_at', $today]])->count();
         $totalCustomer = Client::count();
         $todayfailedcall = CallHistory::where([['feetime','' ],['agentfeetime',''],['created_at', $today]])->count();
@@ -49,9 +50,9 @@ class HomeController extends Controller
     public function null_record(Request $request)
     {
         if ($request->ajax()) {
-            
+
             $data = CallHistory::where([['account_id', null],['vendor_account_id', null]]);
-            
+
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('account', function($row){
@@ -85,11 +86,11 @@ class HomeController extends Controller
                     if(!empty($row->feetime)){
                         $timepersec = $row->fee/$row->feetime;
                         $persec =  round($timepersec, 7);
-                        return  '$'.$persec*60;                    
+                        return  '$'.$persec*60;
                     }else{
                         return '$0.00';
                     }
-                   
+
                 })->addColumn('billing_duration', function($row){
 
                     if(!empty($row->feetime)){
@@ -97,12 +98,12 @@ class HomeController extends Controller
                     }else{
                         return 0;
                     }
-                   
+
                 })
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-target="#ajaxModel" class="view btn btn-primary btn-sm view callhistoryForm" data-id="'.$row->id.'">View</a>' ;
                     return $btn;
-                }) 
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -112,7 +113,7 @@ class HomeController extends Controller
     {
 
         if ($request->ajax()) {
-            
+
             $data = Client::where([['Vendor', 2],['customer', 2]]);
             return Datatables::of($data)
             ->addColumn('status', function($row){
@@ -146,7 +147,7 @@ class HomeController extends Controller
         }
 
     }
-    
+
     public function profile()
     {
         $user = Auth::user();
@@ -169,5 +170,5 @@ class HomeController extends Controller
         }
     }
 
-    
+
 }
