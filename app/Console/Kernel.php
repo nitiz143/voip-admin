@@ -30,8 +30,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
-
-        $schedule->command('meter:servermonitor')->hourly(); // or daily
+        $schedule->command('monitoring:purge')->daily();
+        // $schedule->command('meter:servermonitor')->hourly(); // or daily
        // $schedule->command('csvImport:cron')->everyMinute(15)->name('csvImport')->withoutOverlapping();
         //$schedule->command('download:cron')->everyMinute(18)->name('download')->withoutOverlapping();
        // $schedule->command('account:cron')->everyMinute(20)->name('account')->withoutOverlapping();

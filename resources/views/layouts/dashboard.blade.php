@@ -111,6 +111,8 @@
     .w-full.min-h-screen > div > div:first-child{
                 display: none
             }
+    .ht-auto {min-height:auto !important;}
+            
     </style>
      <link href="{{ asset(mix('css/app.css', 'vendor/monitoring')) }}" rel="stylesheet" type="text/css">
      <script>
