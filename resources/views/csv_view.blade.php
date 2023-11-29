@@ -26,7 +26,7 @@
                             <th style="width:9%">{{ __('CustProductGroup') }}</th>
                             <th style="width:9%">{{ __('VendProductGroup') }}</th>
                         </tr>
-                        @if(!empty($invoices))
+                        {{-- @if(!empty($invoices))
                             @foreach($invoices as $key => $values)
 
                                 <tbody id="items">
@@ -121,7 +121,7 @@
                                     </tr>
                                 </tbody>
                             @endforeach
-                        @endif
+                        @endif --}}
                     </table>
                 @elseif ($Report == 'Customer-Hourly')
                     <table class="table w-100 table-bordered">
@@ -981,3 +981,5 @@
         </div>
     </div>
    
+    
+    

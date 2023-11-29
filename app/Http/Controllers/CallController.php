@@ -26,6 +26,7 @@ use Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Billing;
 use App\Mail\MyCustomMail; 
+use App\Models\Country;
 
 
 
@@ -653,13 +654,42 @@ class CallController extends Controller
             ->make(true);
         }
      
-
         $Accounts = Client::where("customer", "=",1)->get();
         $VAccounts = Client::where("vendor", "=",1)->get();
-        return view("call.export-csv-history",compact('Accounts','VAccounts'));
+
+            if($request->report == "Customer-Hourly"){
+                return view("call.Customer-Hourly",compact('Accounts','VAccounts'));
+            }
+
+            elseif($request->report == "Customer/Vendor-Report"){
+                return view("call.Customer/Vendor-Report",compact('Accounts','VAccounts'));
+                
+            }
+
+            elseif($request->report == "Account-Manage"){
+                return view("call.Account-Manage",compact('Accounts','VAccounts'));
+            }
+
+            elseif($request->report == "Customer-Margin-Report"){
+                return view("call.Margin-Report",compact('Accounts','VAccounts'));
+            }
+
+            elseif($request->report == "Customer-Negative-Report"){
+                return view("call.Negative-Report",compact('Accounts','VAccounts'));
+
+            }
+            else{
+                return view("call.export-csv-history",compact('Accounts','VAccounts'));
+            }
+
+                
+
+
+        // return view("call.export-csv-history",compact('Accounts','VAccounts'));
     }
+
+
     public function download_csv_export_history(Request $request){
-       
         $data = ExportCsvXlsxHistory::where('id',$request->id)->first();
         if($data->type =="Excel-report"){
             if(file_exists( public_path('storage/excel_files/'.$data->file_name))) {
@@ -682,138 +712,898 @@ class CallController extends Controller
         }
     }
     public function csv_view(Request $request){
-        if($request->Report == 'Account-Manage'){
-            $validator = Validator::make($request->all(), [
-                'Report' => 'required',
-            ]);
-        }
-        else{
-            $validator = Validator::make($request->all(), [
-                'Account' => 'required',
-                'Report' => 'required',
-            ]);
-        }
-        if ($validator->fails())
-        {
-            $response = \Response::json([
-                'success' => false,
-                'errors' => $validator->getMessageBag()->toArray()
-            ]);
-            return $response;
-        }
-        $type = $request->type;
-        $AccountID = $request->Account;
-        $StartDate = $request->StartDate ;
-        $EndDate = $request->EndDate;
-        $Report = $request->Report;
-        
-        if($type == "Vendor"){   
-            $query = CallHistory::query('*');
-            if((!empty( $StartDate ) && !empty( $EndDate ))){
-                $start =  strtotime($StartDate);
-                $start = $start*1000;
-                $end = strtotime($EndDate);
-                $end = $end*1000;
-                $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
-            }
-
-            if($request->billingtype == 'one') {
-                $query->where( 'agentfeetime', ">", "0"); 
-
-            }
-
-            if($Report != 'Account-Manage') {
-                if(!empty( $AccountID )) {
-                    $query->where('call_histories.vendor_account_id', $AccountID);
-                }
-            }
-            if($Report == 'Vendor-Negative-Report') {
-                $query->where('call_histories.agentfee', '<=', 0);
-            }
-            $invoices = $query->get();
-            $count_duration=[];
-            $count_vendor_duration=[];
-            $total_vendor_cost ="";
-            $total_cost = "";
-            $calls = $invoices->count();
-            if(!empty($invoices)){
-                $total_cost = $invoices->sum('fee');
-                $total_vendor_cost = $invoices->sum('agentfee');
-                foreach ($invoices as $key => $invoice) {
-                    $count_duration[] =   $invoice->feetime;
-                    $count_vendor_duration[] =  $invoice->agentfeetime;
-                }
-            }
-            $invoices = $invoices->groupBy('agentaccount');
-            $totalGroup = count($invoices);
-            $perPage = 5;
-            $page = Paginator::resolveCurrentPage('page');
-
-            $invoices = new LengthAwarePaginator( $invoices->forPage($page, $perPage), $totalGroup, $perPage, $page, [
-                'path' => Paginator::resolveCurrentPath(),
-                'pageName' => 'page',
-            ]);
-            $account ="";
-            if(!empty($AccountID)){
-                $account = Client::where('id',$AccountID)->with('billing')->first();
-            }
-            $user = "Vendor";
-            return view('csv_view', compact('invoices','Report','total_cost','user','account','count_duration','calls','StartDate','EndDate','total_vendor_cost','count_vendor_duration'));
-        }  
-        if($type == "Customer"){
-            $query = CallHistory::query('*');
-            if((!empty( $StartDate ) && !empty( $EndDate ))){
-                $start =  strtotime($StartDate);
-                $start = $start*1000;
-                $end = strtotime($EndDate);
-                $end = $end*1000;
-                $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
-            }
-
+       
             
+            $query = CallHistory::query();
+            if((!empty($request->StartDate) && !empty($request->EndDate))){
+                $start =  strtotime($request->StartDate);
+                $start = $start*1000;
+                $end = strtotime($request->EndDate);
+                $end = $end*1000;
+                $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+            }
+
             if($request->billingtype == 'one') {
+               
                 $query->where( 'feetime', ">", "0"); 
 
             }
 
-            if($Report != 'Account-Manage') {
+            if($request->Report != 'Account-Manage') {
                 if(!empty( $AccountID )) {
                     $query->where('call_histories.account_id', $AccountID);
                 }
             }
-            if($Report == 'Customer-Negative-Report'){
-                $query->where('call_histories.fee','<=', 0);
-            }
-            $invoices = $query->get();
-            $count_duration=[];
-            $count_vendor_duration=[];
-            $total_cost = "";
-            $total_vendor_cost ="";
-            $calls = $invoices->count();
-            if(!empty( $invoices)){
-                $total_cost = $invoices->sum('fee');
-                $total_vendor_cost = $invoices->sum('agentfee');
-                foreach ($invoices as $key => $invoice) {
-                    $count_duration[] =   $invoice->feetime;
-                    $count_vendor_duration[] =  $invoice->agentfeetime;
-                }
-            }
-            $invoices = $invoices->groupBy('customeraccount');
-            $totalGroup = count( $invoices);
-            $perPage = 5;
-            $page = Paginator::resolveCurrentPage('page');
+          
 
-            $invoices = new LengthAwarePaginator( $invoices->forPage($page, $perPage), $totalGroup, $perPage, $page, [
-                'path' => Paginator::resolveCurrentPath(),
-                'pageName' => 'page',
-            ]);
-            $account ="";
-            if(!empty($AccountID)){
-                $account = Client::where('id',$AccountID)->with('billing')->first();
+           
+            // $invoices = $query->get();
+            // $count_duration=[];
+            // $count_vendor_duration=[];
+            // $total_cost = "";
+            // $total_vendor_cost ="";
+            // $calls = $invoices->count();
+            // if(!empty( $invoices)){
+            //     $total_cost = $invoices->sum('fee');
+            //     $total_vendor_cost = $invoices->sum('agentfee');
+            //     foreach ($invoices as $key => $invoice) {
+            //         $count_duration[] =   $invoice->feetime;
+            //         $count_vendor_duration[] =  $invoice->agentfeetime;
+            //     }
+            // }
+            $invoices = $query->groupBy('customeraccount');
+            return Datatables::of($invoices)
+            ->addColumn('CustomerAccountCode', function($row){
+                return $row->customeraccount;
+            })
+            ->addColumn('Customer', function($row){
+            return  $row->customername;
+            })
+
+            ->addColumn('CustDestination', function($row){
+            $country = Country::where('phonecode',$row->callerareacode)->first();
+                return  !empty($country->name) ? $country->name:"";
+            })
+            ->addColumn('Attempts', function($row) use ($request){
+                return $row->Attempts($request);
+            })
+            ->addColumn('Completed', function($row) use ($request){
+                return $row->completed($request);
+            })
+            ->addColumn('ASR', function($row)use ($request){
+                return $row->ASR($request);
+            })
+            ->addColumn('ACD', function($row)use ($request){
+                return $row->ACD($request);
+            })
+            ->addColumn('Raw Dur', function($row)use ($request){
+                return $row->Raw_Dur($request);
+            })
+            ->addColumn('Rnd Dur', function($row)use ($request){
+                return $row->Rnd_Dur($request);
+            })
+            ->addColumn('Revenue', function($row)use ($request){
+                return $row->Revenue($request);
+            })
+            ->addColumn('Margin', function($row)use ($request){
+                return $row->Margin($request);
+            })
+            ->addColumn('Mar/Min', function($row)use ($request){
+                return $row->Mar_Min($request);
+            })
+            ->addColumn('Mar%', function($row)use ($request){
+                return $row->Mar($request);
+            })
+            
+            // ->addIndexColumn()
+            // ->addColumn('action', function($row){
+            //     $btn = '<a href="'.url('/export-csv-history-download',$row->type."/".$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+
+            //     return $btn;
+
+            // })
+            ->rawColumns(['action','status'])
+            ->make(true);
+
+    }
+
+
+
+
+    public function customer_hourly(Request $request){
+            
+        $query = CallHistory::query();
+        if((!empty($request->StartDate) && !empty($request->EndDate))){
+            $start =  strtotime($request->StartDate);
+            $start = $start*1000;
+            $end = strtotime($request->EndDate);
+            $end = $end*1000;
+            $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+        }
+
+        if($request->billingtype == 'one') {
+           
+            $query->where( 'feetime', ">", "0"); 
+
+        }
+
+        if($request->Report != 'Account-Manage') {
+            if(!empty( $AccountID )) {
+                $query->where('call_histories.account_id', $AccountID);
             }
-            $user = "Customer";
-            return view('csv_view', compact('invoices','Report','total_cost','user','account','count_duration','StartDate','EndDate','calls','total_vendor_cost','count_vendor_duration'));
+        }elseif($request->Report == 'Customer-Negative-Report'){
+            $query->where('call_histories.fee','<=', 0);
+        }
+
+        
+        $invoices = $query->groupBy('customeraccount');
+        return Datatables::of($invoices)
+        ->addColumn('CustomerAccountCode', function($row){
+            return $row->customeraccount;
+        })
+        ->addColumn('Customer', function($row){
+        return  $row->customername;
+        })
+
+        ->addColumn('CustDestination', function($row){
+        $country = Country::where('phonecode',$row->callerareacode)->first();
+            return  !empty($country->name) ? $country->name:"";
+        })
+        ->addColumn('Attempts', function($row) use ($request){
+            return $row->Attempts($request);
+        })
+        ->addColumn('Completed', function($row) use ($request){
+            return $row->completed($request);
+        })
+        ->addColumn('ASR', function($row)use ($request){
+            return $row->ASR($request);
+        })
+        ->addColumn('ACD', function($row)use ($request){
+            return $row->ACD($request);
+        })
+        ->addColumn('Raw Dur', function($row)use ($request){
+            return $row->Raw_Dur($request);
+        })
+        ->addColumn('Rnd Dur', function($row)use ($request){
+            return $row->Rnd_Dur($request);
+        })
+        ->addColumn('Revenue', function($row)use ($request){
+            return $row->Revenue($request);
+        })
+
+        ->addColumn('Rev/Min', function($row)use ($request){
+            return $row->Rev_Min($request);
+        })
+
+        ->addColumn('Margin', function($row)use ($request){
+            return $row->Margin($request);
+        })
+        ->addColumn('Mar/Min', function($row)use ($request){
+            return $row->Mar_Min($request);
+        })
+        ->addColumn('Mar%', function($row)use ($request){
+            return $row->Mar($request);
+        })
+        
+        // ->addIndexColumn()
+        // ->addColumn('action', function($row){
+        //     $btn = '<a href="'.url('/export-csv-history-download',$row->type."/".$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+
+        //     return $btn;
+
+        // })
+        ->rawColumns(['action','status'])
+        ->make(true);
+
+}
+
+
+
+
+public function vendor_report(Request $request){
+            
+    $query = CallHistory::query();
+    if((!empty($request->StartDate) && !empty($request->EndDate))){
+        $start =  strtotime($request->StartDate);
+        $start = $start*1000;
+        $end = strtotime($request->EndDate);
+        $end = $end*1000;
+        $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+    }
+
+    if($request->billingtype == 'one') {
+       
+        $query->where( 'feetime', ">", "0"); 
+
+    }
+
+    if($request->Report != 'Account-Manage') {
+        if(!empty( $AccountID )) {
+            $query->where('call_histories.account_id', $AccountID);
+        }
+    }elseif($request->Report == 'Customer-Negative-Report'){
+        $query->where('call_histories.fee','<=', 0);
+    }
+
+    
+    $invoices = $query->groupBy('customeraccount');
+    return Datatables::of($invoices)
+    ->addColumn('CustomerAccountCode', function($row){
+        return $row->customeraccount;
+    })
+    ->addColumn('Customer', function($row){
+    return  $row->customername;
+    })
+
+    ->addColumn('CustDestination', function($row){
+    $country = Country::where('phonecode',$row->callerareacode)->first();
+        return  !empty($country->name) ? $country->name:"";
+    })
+
+    ->addColumn('VendAccountCode', function($row) {
+        return  $row->agentaccount;
+        })
+
+    ->addColumn('Vendor', function($row) {
+        return  $row->agentname;
+        })
+
+    ->addColumn('Attempts', function($row) use ($request){
+        return $row->Attempts($request);
+    })
+    ->addColumn('Completed', function($row) use ($request){
+        return $row->completed($request);
+    })
+    ->addColumn('ASR', function($row)use ($request){
+        return $row->ASR($request);
+    })
+    ->addColumn('ACD', function($row)use ($request){
+        return $row->ACD($request);
+    })
+    ->addColumn('Raw Dur', function($row)use ($request){
+        return $row->Raw_Dur($request);
+    })
+    ->addColumn('Rnd Dur', function($row)use ($request){
+        return $row->Rnd_Dur($request);
+    })
+    ->addColumn('Revenue', function($row)use ($request){
+        return $row->Revenue($request);
+    })
+
+    ->addColumn('Rev/Min', function($row)use ($request){
+        return $row->Rev_Min($request);
+    })
+
+    ->addColumn('Cost', function($row)use ($request){
+        return $row->Cost($request);
+    })
+
+    ->addColumn('Cost/Min', function($row)use ($request){
+        return $row->Cost_Min($request);
+    })
+
+    ->addColumn('Margin', function($row)use ($request){
+        return $row->Margin($request);
+    })
+    ->addColumn('Mar/Min', function($row)use ($request){
+        return $row->Mar_Min($request);
+    })
+    ->addColumn('Mar%', function($row)use ($request){
+        return $row->Mar($request);
+    })
+    
+    // ->addIndexColumn()
+    // ->addColumn('action', function($row){
+    //     $btn = '<a href="'.url('/export-csv-history-download',$row->type."/".$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+
+    //     return $btn;
+
+    // })
+    ->rawColumns(['action','status'])
+    ->make(true);
+
+}
+
+
+
+public function account_manage(Request $request){
+            
+    $query = CallHistory::query();
+    if((!empty($request->StartDate) && !empty($request->EndDate))){
+        $start =  strtotime($request->StartDate);
+        $start = $start*1000;
+        $end = strtotime($request->EndDate);
+        $end = $end*1000;
+        $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+    }
+
+    if($request->billingtype == 'one') {
+       
+        $query->where( 'feetime', ">", "0"); 
+
+    }
+
+    if($request->Report != 'Account-Manage') {
+        if(!empty( $AccountID )) {
+            $query->where('call_histories.account_id', $AccountID);
+        }
+    }elseif($request->Report == 'Customer-Negative-Report'){
+        $query->where('call_histories.fee','<=', 0);
+    }
+
+    
+    $invoices = $query->groupBy('customeraccount');
+    return Datatables::of($invoices)
+    ->addColumn('CustomerAccountCode', function($row){
+        return $row->customeraccount;
+    })
+    ->addColumn('Customer', function($row){
+    return  $row->customername;
+    })
+
+    ->addColumn('CustDestination', function($row){
+    $country = Country::where('phonecode',$row->callerareacode)->first();
+        return  !empty($country->name) ? $country->name:"";
+    })
+
+    ->addColumn('VendAccountCode', function($row) {
+        return  $row->agentaccount;
+        })
+
+    ->addColumn('Vendor', function($row) {
+        return  $row->agentname;
+        })
+
+    ->addColumn('Attempts', function($row) use ($request){
+        return $row->Attempts($request);
+    })
+    ->addColumn('Completed', function($row) use ($request){
+        return $row->completed($request);
+    })
+    ->addColumn('ASR', function($row)use ($request){
+        return $row->ASR($request);
+    })
+    ->addColumn('ACD', function($row)use ($request){
+        return $row->ACD($request);
+    })
+    ->addColumn('Raw Dur', function($row)use ($request){
+        return $row->Raw_Dur($request);
+    })
+    ->addColumn('Rnd Dur', function($row)use ($request){
+        return $row->Rnd_Dur($request);
+    })
+    ->addColumn('Revenue', function($row)use ($request){
+        return $row->Revenue($request);
+    })
+
+    ->addColumn('Rev/Min', function($row)use ($request){
+        return $row->Rev_Min($request);
+    })
+
+    ->addColumn('Cost', function($row)use ($request){
+        return $row->Cost($request);
+    })
+
+    ->addColumn('Cost/Min', function($row)use ($request){
+        return $row->Cost_Min($request);
+    })
+
+    ->addColumn('Margin', function($row)use ($request){
+        return $row->Margin($request);
+    })
+    ->addColumn('Mar/Min', function($row)use ($request){
+        return $row->Mar_Min($request);
+    })
+    ->addColumn('Mar%', function($row)use ($request){
+        return $row->Mar($request);
+    })
+    
+    // ->addIndexColumn()
+    // ->addColumn('action', function($row){
+    //     $btn = '<a href="'.url('/export-csv-history-download',$row->type."/".$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+
+    //     return $btn;
+
+    // })
+    ->rawColumns(['action','status'])
+    ->make(true);
+
+}
+
+
+
+
+public function margin_report(Request $request){
+            
+    $query = CallHistory::query();
+    if((!empty($request->StartDate) && !empty($request->EndDate))){
+        $start =  strtotime($request->StartDate);
+        $start = $start*1000;
+        $end = strtotime($request->EndDate);
+        $end = $end*1000;
+        $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+    }
+
+    if($request->billingtype == 'one') {
+       
+        $query->where( 'feetime', ">", "0"); 
+
+    }
+
+    if($request->Report != 'Account-Manage') {
+        if(!empty( $AccountID )) {
+            $query->where('call_histories.account_id', $AccountID);
+        }
+    }elseif($request->Report == 'Customer-Negative-Report'){
+        $query->where('call_histories.fee','<=', 0);
+    }
+
+    
+    $invoices = $query->groupBy('customeraccount');
+    return Datatables::of($invoices)
+    ->addColumn('CustomerAccountCode', function($row){
+        return $row->customeraccount;
+    })
+    ->addColumn('Customer', function($row){
+    return  $row->customername;
+    })
+
+    ->addColumn('CustDestination', function($row){
+    $country = Country::where('phonecode',$row->callerareacode)->first();
+        return  !empty($country->name) ? $country->name:"";
+    })
+    ->addColumn('Attempts', function($row) use ($request){
+        return $row->Attempts($request);
+    })
+    ->addColumn('Completed', function($row) use ($request){
+        return $row->completed($request);
+    })
+    ->addColumn('ASR', function($row)use ($request){
+        return $row->ASR($request);
+    })
+    ->addColumn('ACD', function($row)use ($request){
+        return $row->ACD($request);
+    })
+    ->addColumn('Raw Dur', function($row)use ($request){
+        return $row->Raw_Dur($request);
+    })
+    ->addColumn('Rnd Dur', function($row)use ($request){
+        return $row->Rnd_Dur($request);
+    })
+    ->addColumn('Revenue', function($row)use ($request){
+        return $row->Revenue($request);
+    })
+
+    ->addColumn('Rev/Min', function($row)use ($request){
+        return $row->Rev_Min($request);
+    })
+
+    ->addColumn('Margin', function($row)use ($request){
+        return $row->Margin($request);
+    })
+    ->addColumn('Mar/Min', function($row)use ($request){
+        return $row->Mar_Min($request);
+    })
+    ->addColumn('Mar%', function($row)use ($request){
+        return $row->Mar($request);
+    })
+    
+    // ->addIndexColumn()
+    // ->addColumn('action', function($row){
+    //     $btn = '<a href="'.url('/export-csv-history-download',$row->type."/".$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+
+    //     return $btn;
+
+    // })
+    ->rawColumns(['action','status'])
+    ->make(true);
+
+}
+
+
+
+
+public function negative_report(Request $request){
+            
+    $query = CallHistory::query();
+    if((!empty($request->StartDate) && !empty($request->EndDate))){
+        $start =  strtotime($request->StartDate);
+        $start = $start*1000;
+        $end = strtotime($request->EndDate);
+        $end = $end*1000;
+        $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+    }
+
+  
+
+    if($request->Report != 'Account-Manage') {
+        if(!empty( $AccountID )) {
+            $query->where('call_histories.account_id', $AccountID);
         }
     }
+    if($request->Report == 'Customer-Negative-Report'){
+        $query->where('call_histories.fee','<', 0);
+    }
+
+    
+    $invoices = $query->groupBy('customeraccount');
+    return Datatables::of($invoices)
+    ->addColumn('CustomerAccountCode', function($row){
+        return $row->customeraccount;
+    })
+    ->addColumn('Customer', function($row){
+    return  $row->customername;
+    })
+
+    ->addColumn('CustDestination', function($row){
+    $country = Country::where('phonecode',$row->callerareacode)->first();
+        return  !empty($country->name) ? $country->name:"";
+    })
+    ->addColumn('Attempts', function($row) use ($request){
+        return $row->Attempts($request);
+    })
+    ->addColumn('Completed', function($row) use ($request){
+        return $row->completed($request);
+    })
+    ->addColumn('ASR', function($row)use ($request){
+        return $row->ASR($request);
+    })
+    ->addColumn('ACD', function($row)use ($request){
+        return $row->ACD($request);
+    })
+    ->addColumn('Raw Dur', function($row)use ($request){
+        return $row->Raw_Dur($request);
+    })
+    ->addColumn('Rnd Dur', function($row)use ($request){
+        return $row->Rnd_Dur($request);
+    })
+    ->addColumn('Revenue', function($row)use ($request){
+        return $row->Revenue($request);
+    })
+
+    ->addColumn('Rev/Min', function($row)use ($request){
+        return $row->Rev_Min($request);
+    })
+
+   
+    
+    // ->addIndexColumn()
+    // ->addColumn('action', function($row){
+    //     $btn = '<a href="'.url('/export-csv-history-download',$row->type."/".$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+
+    //     return $btn;
+
+    // })
+    ->rawColumns(['action','status'])
+    ->make(true);
+
+}
+
+
+    // public function csv_vendor(Request $request){
+    //     if ($request->ajax()) {
+    //         $type = $request->type;
+    //         $AccountID = $request->Account;
+    //         $StartDate = $request->StartDate ;
+    //         $EndDate = $request->EndDate;
+    //         $Report = $request->Report;
+    //         if($type == "Vendor"){   
+    //             $query = CallHistory::query('*');
+    //             if((!empty( $StartDate ) && !empty( $EndDate ))){
+    //                 $start =  strtotime($StartDate);
+    //                 $start = $start*1000;
+    //                 $end = strtotime($EndDate);
+    //                 $end = $end*1000;
+    //                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+    //             }
+    
+    //             if($request->billingtype == 'one') {
+    //                 $query->where( 'agentfeetime', ">", "0"); 
+    
+    //             }
+    
+    //             if($Report != 'Account-Manage') {
+    //                 if(!empty( $AccountID )) {
+    //                     $query->where('call_histories.vendor_account_id', $AccountID);
+    //                 }
+    //             }
+    //             if($Report == 'Vendor-Negative-Report') {
+    //                 $query->where('call_histories.agentfee', '<=', 0);
+    //             }
+    //             // $invoices = $query->get();
+    //         // $count_duration=[];
+    //         // $count_vendor_duration=[];
+    //         // $total_cost = "";
+    //         // $total_vendor_cost ="";
+    //         // $calls = $invoices->count();
+    //         // if(!empty( $invoices)){
+    //         //     $total_cost = $invoices->sum('fee');
+    //         //     $total_vendor_cost = $invoices->sum('agentfee');
+    //         //     foreach ($invoices as $key => $invoice) {
+    //         //         $count_duration[] =   $invoice->feetime;
+    //         //         $count_vendor_duration[] =  $invoice->agentfeetime;
+    //         //     }
+    //         // }
+       
+    //     }
+    //     $invoices = $query->groupBy('agentaccount')->get();
+    //     return Datatables::of($invoices)
+    //     ->addColumn('VendorAccountCode', function($row){
+    //         return $row->agentaccount;
+    //     })
+    //     ->addColumn('Vendor', function($row){
+    //     return  $row->agentname;
+    //     })
+
+    //     ->addColumn('Attempts', function($row){
+            
+    //     return $row->count();
+    //     })
+    //     ->addColumn('Completed', function($row){
+    //         $Agent_Duration_count[] = $row->agentfeetime;
+    //             if($row->agentfeetime > 0 && $row->agentfeetime != null) {
+    //                 $completed_agent_count[] = $row->agentfeetime;
+    //             }
+    //         return !empty($completed_agent_count) ? count($completed_agent_count) : "";
+    //     })
+    //     ->addColumn('ASR(%)', function($row){
+    //         $completed_agent_count =array();
+    //         $Agent_Duration_count[] = $row->agentfeetime;
+    //             if($row->agentfeetime > 0 && $row->agentfeetime != null) {
+    //                 $completed_agent_count[] = $row->agentfeetime;
+    //             }
+    //         return \Str::limit((count($completed_agent_count)/$row->count() * 100));
+    //     })
+    //     ->addColumn('ACD(Sec)', function($row){
+    //         $completed_agent_count =array();
+    //         $Agent_Duration_count[] = $row->agentfeetime;
+    //             if($row->agentfeetime > 0 && $row->agentfeetime != null) {
+    //                 $completed_agent_count[] = $row->agentfeetime;
+    //             }
+    //         $sec = "";
+    //             if(array_sum($completed_agent_count) != 0 && count($completed_agent_count) != 0){
+    //                 $sec =  array_sum($completed_agent_count) /  count($completed_agent_count);
+    //             }
+    //         return  !empty($sec) ? \Str::limit($sec) :"0";
+    //     })
+    //     ->addColumn('Raw Dur', function($row){
+    //             $Agent_Duration_count[] = $row->agentfeetime;
+    //             if($row->agentfeetime > 0 && $row->agentfeetime != null) {
+    //                 $completed_agent_count[] = $row->agentfeetime;
+    //             }
+                
+    //         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Agent_Duration_count) / 60 ), array_sum($Agent_Duration_count) % 60 );
+    //         return  !empty($Duration) ?$Duration :"";
+    //     })
+    //     ->addColumn('Rnd Dur', function($row){
+    //             $Agent_Duration_count[] = $row->agentfeetime;
+    //             if($row->agentfeetime > 0 && $row->agentfeetime != null) {
+    //                 $completed_agent_count[] = $row->agentfeetime;
+    //             }
+           
+    //         $Duration= sprintf( "%02.2d:%02.2d", floor( array_sum($Agent_Duration_count) / 60 ), array_sum($Agent_Duration_count) % 60 );
+    //         return !empty($Duration) ? $Duration :"";
+    //     })
+    //     ->addColumn('Cost', function($row){
+    //         return  '$'.sprintf('%0.2f', $row->sum('agentfee'));
+    //     })
+    //     ->addColumn('Cost/Min', function($row){
+            
+    //             $agent_fee ="";
+                
+    //             $totalagentSum = $row->sum('agentfeetime');
+    //             $timepersec2 = $row->sum('agentfee')/$totalagentSum;
+    //             $persec2 =  round($timepersec2, 7);
+    //             $agent_fee= $persec2*60;
+    //         return  !empty($agent_fee) ? '$'.sprintf('%0.2f', $agent_fee) : "$ 0.00";
+    //     })
+    //     ->addColumn('Margin', function($row){
+    //         $Agent_Duration_count[] = $row->agentfeetime;
+    //         $fee_count = array();
+    //         $agentfee_count =array();
+    //         if($row->agentfeetime > 0 && $row->agentfeetime != null) {
+    //             $completed_agent_count[] = $row->agentfeetime;
+    //         }
+    //         if($row->agentfee > 0) {
+    //             $agentfee_count[] = $row->agentfee;
+    //         }
+    //         if($row->fee > 0) {
+    //             $fee_count[] = $row->fee;
+    //         }
+
+    //             $margin =  array_sum($fee_count)-array_sum($agentfee_count);
+    //             return !empty($margin) ? '$'.sprintf('%0.2f', $margin) : "$ 0.00";
+    //     })
+    //     ->addColumn('Margin/Min', function($row){
+    //         $customer_fee ="";
+    //         $totalSum = $row->sum('feetime');
+    //             if($row->sum('fee') != 0 && $totalSum != 0){
+    //                 $timepersec = $row->sum('fee')/$totalSum;
+    //                 $persec =  round($timepersec, 7);
+    //                 $customer_fee= $persec*60;
+    //             }
+    //         $agent_fee ="";
+    //         $totalagentSum = $row->sum('agentfeetime');
+    //             if($row->sum('agentfee') > 0 && $totalagentSum >0){
+    //                 $timepersec2 = $row->sum('agentfee')/$totalagentSum;
+    //                 $persec2 =  round($timepersec2, 7);
+    //                 $agent_fee= $persec2*60;
+    //             }
+
+    //         $margin_per_min = (int)$customer_fee - (int)$agent_fee;
+    //         return  !empty($margin_per_min) ? '$'.$margin_per_min : "$ 0.00";
+    //     })
+    //     ->addColumn('Margin%', function($row){
+    //         $Agent_Duration_count[] = $row->agentfeetime;
+    //         $fee_count = array();
+    //         $agentfee_count =array();
+    //         if($row->agentfeetime > 0 && $row->agentfeetime != null) {
+    //             $completed_agent_count[] = $row->agentfeetime;
+    //         }
+    //         if($row->agentfee > 0) {
+    //             $agentfee_count[] = $row->agentfee;
+    //         }
+    //         if($row->fee > 0) {
+    //             $fee_count[] = $row->fee;
+    //         }
+            
+    //             $margin =  array_sum($fee_count)-array_sum($agentfee_count);
+
+    //         return  \Str::limit(($margin/$row->count() * 100));
+    //     })
+        
+    //     ->addIndexColumn()
+    //     ->addColumn('action', function($row){
+    //         $btn = '<a href="'.url('/export-csv-history-download',$row->type."/".$row->id).'" class="download btn btn-success btn-sm " id="download"  data-id ="'.$row->id.'">Download</a>';
+
+    //         return $btn;
+
+    //     })
+    //     ->rawColumns(['action','status'])
+    //     ->make(true);
+
+    //     }
+    // }
+
+
+
+
+
+
+
+    // public function csv_view(Request $request){
+    //     if($request->Report == 'Account-Manage'){
+    //         $validator = Validator::make($request->all(), [
+    //             'Report' => 'required',
+    //         ]);
+    //     }
+    //     else{
+    //         $validator = Validator::make($request->all(), [
+    //             'Account' => 'required',
+    //             'Report' => 'required',
+    //         ]);
+    //     }
+    //     if ($validator->fails())
+    //     {
+    //         $response = \Response::json([
+    //             'success' => false,
+    //             'errors' => $validator->getMessageBag()->toArray()
+    //         ]);
+    //         return $response;
+    //     }
+    //     $type = $request->type;
+    //     $AccountID = $request->Account;
+    //     $StartDate = $request->StartDate ;
+    //     $EndDate = $request->EndDate;
+    //     $Report = $request->Report;
+        
+    //     if($type == "Vendor"){   
+    //         $query = CallHistory::query('*');
+    //         if((!empty( $StartDate ) && !empty( $EndDate ))){
+    //             $start =  strtotime($StartDate);
+    //             $start = $start*1000;
+    //             $end = strtotime($EndDate);
+    //             $end = $end*1000;
+    //             $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+    //         }
+
+    //         if($request->billingtype == 'one') {
+    //             $query->where( 'agentfeetime', ">", "0"); 
+
+    //         }
+
+    //         if($Report != 'Account-Manage') {
+    //             if(!empty( $AccountID )) {
+    //                 $query->where('call_histories.vendor_account_id', $AccountID);
+    //             }
+    //         }
+    //         if($Report == 'Vendor-Negative-Report') {
+    //             $query->where('call_histories.agentfee', '<=', 0);
+    //         }
+    //         $invoices = $query->get();
+    //         $count_duration=[];
+    //         $count_vendor_duration=[];
+    //         $total_vendor_cost ="";
+    //         $total_cost = "";
+    //         $calls = $invoices->count();
+    //         if(!empty($invoices)){
+    //             $total_cost = $invoices->sum('fee');
+    //             $total_vendor_cost = $invoices->sum('agentfee');
+    //             foreach ($invoices as $key => $invoice) {
+    //                 $count_duration[] =   $invoice->feetime;
+    //                 $count_vendor_duration[] =  $invoice->agentfeetime;
+    //             }
+    //         }
+    //         $invoices = $invoices->groupBy('agentaccount');
+    //         $totalGroup = count($invoices);
+    //         $perPage = 5;
+    //         $page = Paginator::resolveCurrentPage('page');
+
+    //         $invoices = new LengthAwarePaginator( $invoices->forPage($page, $perPage), $totalGroup, $perPage, $page, [
+    //             'path' => Paginator::resolveCurrentPath(),
+    //             'pageName' => 'page',
+    //         ]);
+    //         $account ="";
+    //         if(!empty($AccountID)){
+    //             $account = Client::where('id',$AccountID)->with('billing')->first();
+    //         }
+    //         $user = "Vendor";
+    //         return view('csv_view', compact('invoices','Report','total_cost','user','account','count_duration','calls','StartDate','EndDate','total_vendor_cost','count_vendor_duration'));
+    //     }  
+    //     if($type == "Customer"){
+    //         $query = CallHistory::query('*');
+    //         if((!empty( $StartDate ) && !empty( $EndDate ))){
+    //             $start =  strtotime($StartDate);
+    //             $start = $start*1000;
+    //             $end = strtotime($EndDate);
+    //             $end = $end*1000;
+    //             $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+    //         }
+
+            
+    //         if($request->billingtype == 'one') {
+    //             $query->where( 'feetime', ">", "0"); 
+
+    //         }
+
+    //         if($Report != 'Account-Manage') {
+    //             if(!empty( $AccountID )) {
+    //                 $query->where('call_histories.account_id', $AccountID);
+    //             }
+    //         }
+    //         if($Report == 'Customer-Negative-Report'){
+    //             $query->where('call_histories.fee','<=', 0);
+    //         }
+    //         $invoices = $query->get();
+    //         $count_duration=[];
+    //         $count_vendor_duration=[];
+    //         $total_cost = "";
+    //         $total_vendor_cost ="";
+    //         $calls = $invoices->count();
+    //         if(!empty( $invoices)){
+    //             $total_cost = $invoices->sum('fee');
+    //             $total_vendor_cost = $invoices->sum('agentfee');
+    //             foreach ($invoices as $key => $invoice) {
+    //                 $count_duration[] =   $invoice->feetime;
+    //                 $count_vendor_duration[] =  $invoice->agentfeetime;
+    //             }
+    //         }
+    //         $invoices = $invoices->groupBy('customeraccount');
+    //         $totalGroup = count( $invoices);
+    //         $perPage = 5;
+    //         $page = Paginator::resolveCurrentPage('page');
+
+    //         $invoices = new LengthAwarePaginator( $invoices->forPage($page, $perPage), $totalGroup, $perPage, $page, [
+    //             'path' => Paginator::resolveCurrentPath(),
+    //             'pageName' => 'page',
+    //         ]);
+    //         $account ="";
+    //         if(!empty($AccountID)){
+    //             $account = Client::where('id',$AccountID)->with('billing')->first();
+    //         }
+    //         $user = "Customer";
+    //         return view('csv_view', compact('invoices','Report','total_cost','user','account','count_duration','StartDate','EndDate','calls','total_vendor_cost','count_vendor_duration'));
+    //     }
+    // }
 
 }

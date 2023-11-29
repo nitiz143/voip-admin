@@ -38,6 +38,15 @@ Route::group(['middleware' => ['auth','activity']], function () {
     Route::get('/export-csv-history', 'App\Http\Controllers\CallController@export_csv_history')->name('export-csv.history');
     Route::get('/export-csv-history-download/{id}','App\Http\Controllers\CallController@download_csv_export_history');
     Route::get('/csv_view', 'App\Http\Controllers\CallController@csv_view');
+    Route::get('/customer_hourly', 'App\Http\Controllers\CallController@customer_hourly');
+    Route::get('/vendor_report', 'App\Http\Controllers\CallController@vendor_report');
+    Route::get('/account_manage', 'App\Http\Controllers\CallController@account_manage');
+    Route::get('/margin_report', 'App\Http\Controllers\CallController@margin_report');
+    Route::get('/negative_report', 'App\Http\Controllers\CallController@negative_report');
+
+
+
+
 
 
     Route::get('/export-history-email/{id}','App\Http\Controllers\CallController@email_export_history');

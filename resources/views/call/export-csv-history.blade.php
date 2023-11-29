@@ -5,6 +5,7 @@
         overflow: auto;
         overscroll-behavior-x: auto;
     }
+    #tables_data, #tables_data_1 {overflow-x: scroll !important;}
 </style>
 <div class="content-wrapper mt-3" >
     <section class="content-header">
@@ -45,9 +46,9 @@
                                     <li class="nav-item csv-xlsx">
                                       <a class="nav-link check-active active" data-id="1" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Customer</a>
                                     </li>
-                                    <li class="nav-item csv-xlsx">
+                                    {{-- <li class="nav-item csv-xlsx">
                                       <a class="nav-link check-active" id="profile-tab" data-id="2"  data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Vendor</a>
-                                    </li>
+                                    </li> --}}
                                     <li class="nav-item csv-xlsx">
                                     <a class="nav-link check-active" id="download-tab" data-id="3"  data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Download History</a>
                                     </li>
@@ -61,7 +62,6 @@
                                                     <label class="control-label" for="field-1">Customer Name</label>
                                                     <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
                                                         @if(!empty($Accounts))
-                                                            <option value="">Select</option>
                                                             @foreach ( $Accounts as $Account )
                                                                 <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
                                                             @endforeach
@@ -71,9 +71,8 @@
                                                 
                                                 <div class="form-group">
                                                     <label class="control-label" for="field-1">Report Name</label>
-                                                    <select class="form-control" id="report" allowClear="true" name="report"
+                                                    <select class="form-control" id="Customerreport" allowClear="true" name="report"
                                                     style="width: 138px;">
-                                                        <option value="">Select</option>
                                                         <option value="Customer-Summary">Customer Summary</option>
                                                         <option value="Customer-Hourly">Customer Hourly</option>
                                                         <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
@@ -85,8 +84,7 @@
 
                                                 <div class="form-group d-flex flex-column" style="max-width: 300px;">
                                                     <label for="field-1">Billing Type</label>
-                                                    <select  name="billingtype"  class="form-control w-35">
-                                                        <option>Billing Type</option>
+                                                    <select id="billingtype" name="billingtype"  class="form-control w-35">
                                                         <option value="zero"> Zero</option>
                                                         <option value="one">Non-Zero</option>
                                                     </select>
@@ -119,7 +117,34 @@
                                             </form>
                                         </div>
                                         <div id="tables_data">
+                                            <table class="table table table-bordered" id="CustomerAccountCode">
+                                                <thead>
+                                                    <tr>
+                                                        <th>CustomerAccountCode</th>
+                                                        <th>Customer</th>
+                                                        <th>CustDestination</th>
+                                                        <th>Attempts</th>
+                                                        <th>Completed</th>
+                                                        <th>ASR(%)</th>
+                                                        <th>ACD(Sec)</th>
+                                                        <th>Raw Dur</th>
+                                                        <th>Rnd Dur</th>
+                                                        <th>Revenue</th>
+                                                        <th>Margin</th>
+                                                        <th>Margin/Min</th>
+                                                        <th>Margin%</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                
+                                                </tbody>
+                                                
+                                            </table>
+    
                                         </div>
+
+                                        
+
                                     </div>
                                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                         <div class="container-fluid  ml-2 mt-3">
@@ -129,7 +154,6 @@
                                                     <label class="control-label" for="field-1">Vendor Name</label>
                                                     <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
                                                         @if(!empty($VAccounts))
-                                                            <option value="">Select</option>
                                                             @foreach ( $VAccounts as $Account )
                                                                 <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
                                                             @endforeach
@@ -138,8 +162,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label" for="field-1">Report Name</label>
-                                                    <select class="form-control" id="report" allowClear="true" name="report" style="width: 138px;">
-                                                        <option value="">Select</option>
+                                                    <select class="form-control" allowClear="true" name="report" style="width: 138px;">
                                                         <option value="Vendor-Summary">Vendor Summary</option>
                                                         <option value="Vendor-Hourly">Vendor Hourly</option>
                                                         <option value="Customer/Vendor-Report">Customer/Vendor Report</option>
@@ -151,9 +174,8 @@
                                                 
                                                 <div class="form-group d-flex flex-column" style="max-width: 300px;">
                                                     <label for="field-1">Billing Type</label>
-                                                    <select  name="billingtype"  class="form-control w-35">
-                                                        <option>Billing Type</option>
-                                                        <option value="zero"> Zero</option>
+                                                    <select  name="billingtype" id="billingtype2" class="form-control w-35">
+                                                        <option value="zero">Zero</option>
                                                         <option value="one">Non-Zero</option>
                                                     </select>
                                                 </div>
@@ -186,6 +208,31 @@
                                             </form>
                                         </div>
                                         <div id="tables_data_1">
+                                            <table class="table table-1 table-bordered" id="VendorAccountCode">
+                                                <thead>
+                                                    <tr>
+                                                        <th>VendorAccountCode</th> 
+                                                        <th>Vendor</th>
+                                                        <th>Attempts</th>
+                                                        <th>Completed</th>
+                                                        <th>ASR(%)</th>
+                                                        <th>ACD(Sec)</th>
+                                                        <th>Raw Dur</th>
+                                                        <th>Rnd Dur</th>
+                                                        <th>Cost</th>
+                                                        <th>Cost/Min</th>
+                                                        <th>Margin</th>
+                                                        <th>Margin/Min</th>
+                                                        <th>Margin%</th>
+                                                        <th>Action</th>
+
+                                                </tr>
+                                            </thead>
+                                             <tbody>
+                                
+                                            </tbody>
+                                                
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">
@@ -256,6 +303,8 @@
                                                 </div>
                                             </form> --}}
                                         </div>
+
+
                                         <table class="table  w-100 table-bordered data-table">
                                             <thead>
                                                 <tr>
@@ -284,12 +333,19 @@
 
 
 @endsection
-@section('page_js')
+
+
+ @section('page_js')
+ <script src="{{asset('js/common.js')}}"></script>
+
+
 
 <script>
 
     $(document).ready(function() {
-        
+        // $('#Customerreport').change(function() {
+        //     window.location = "{{url('export-csv-history')}}?report="+$(this).val();
+        // });
         var myDate = new Date();
         $('#datepicker').datetimepicker({
             showOtherMonths: true,
@@ -356,9 +412,43 @@
         $('#datepicker5').datetimepicker('setDate', myDate);
         
     });
-    
 
-        $(document).on('click','#ToolTables_table-4_0',function(e) {
+
+   
+    $(document).ready(function () {
+        var table = initializeDataTable("{{ url('/csv_view')}}", [
+            {data:'CustomerAccountCode',name:'CustomerAccountCode'},
+            {data:'Customer',name:'Customer'},
+            {data:'CustDestination',name:'CustDestination'},
+            {data:'Attempts',name:'Attempts'},
+            {data:'Completed',name:'Completed'},
+            {data:'ASR',name:'ASR'},
+            {data:'ACD',name:'ACD'},
+            {data:'Raw Dur',name:'Raw Dur'},
+            {data:'Rnd Dur',name:'Rnd Dur'},
+            {data:'Revenue',name:'Revenue'},
+            {data:'Margin',name:'Margin'},
+            {data:'Mar/Min',name:'Mar/Min'},
+            {data:'Mar%',name:'Mar%'},
+        ], function (data) {
+            data.Account = $("#cdr_filter select[name='AccountID']").val();
+            data.StartDate = $("#cdr_filter input[name='StartDate']").val();
+            data.EndDate = $("#cdr_filter input[name='EndDate']").val();
+            data.Report = $("#cdr_filter select[name='report']").val();
+            data.ActiveTab = $("#cdr_filter input[name='ActiveTab']").val();
+            data.type = 'Customer';
+            data.billingtype = $("#cdr_filter select[name='billingtype']").val();
+        });
+
+        $("#view_data").click(function (e) {
+            e.preventDefault();
+            table.draw();
+        });
+    });
+
+    
+    
+    $(document).on('click','#ToolTables_table-4_0',function(e) {
             e.preventDefault();
             var ref_this = $("ul.nav li.nav-item a.nav-link.active");
             if(ref_this.data('id') == 1){
@@ -391,6 +481,7 @@
             });
         });
         $(document).on('click','#ToolTables_table-4_1',function(e) {
+            console.log();
             e.preventDefault();
             var ref_this = $("ul.nav li.nav-item a.nav-link.active");
             if(ref_this.data('id') == 1){
@@ -418,260 +509,29 @@
                 }
             });
         });
-        $(document).on("click", "#view_data",function(e) {
-            e.preventDefault();
-            var $searchFilter = {};
-            var ref_this = $("ul.nav li.nav-item a.nav-link.active");
-            if(ref_this.data('id') == 1){
-              
-                $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
-                $searchFilter.Report = $("#cdr_filter select[name='report']").val();
-                $searchFilter.billingtype = $("#cdr_filter select[name='billingtype']").val();
-                $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
-                $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
-                if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
-                    $.notify("Please Select a Start date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
-                    $.notify("Please Select a End date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Report  == 'undefined' || $searchFilter.Report.trim() == ''){
-                    $.notify("Please Select a Report", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
-                    $.notify("Please Select a Account", "Error");
-                    return false;
-                }
-                $searchFilter.ActiveTab = $("#cdr_filter input[name='ActiveTab']").val();
-                $searchFilter.type = "Customer";
-
-            }
-            if(ref_this.data('id') == 2){
-               
-                $searchFilter.Account = $("#cdr_filter_1 select[name='AccountID']").val();
-                $searchFilter.Report = $("#cdr_filter_1 select[name='report']").val();
-                $searchFilter.billingtype = $("#cdr_filter_1 select[name='billingtype']").val();
-                $searchFilter.StartDate = $("#cdr_filter_1 input[name='StartDate']").val();
-                $searchFilter.EndDate = $("#cdr_filter_1 input[name='EndDate']").val();
-                if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
-                    $.notify("Please Select a Start date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
-                    $.notify("Please Select a End date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Report  == 'undefined' || $searchFilter.Report.trim() == ''){
-                    $.notify("Please Select a Report", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
-                    $.notify("Please Select a Account", "Error");
-                    return false;
-                }
-                $searchFilter.ActiveTab = $("#cdr_filter_1 input[name='ActiveTab']").val();
-                $searchFilter.type = "Vendor";
-            }
-            $.ajax({
-                url: "{{url('/csv_view')}}",
-                data:{
-                    'Account': $searchFilter.Account,
-                    'billingtype': $searchFilter.billingtype,
-                    'StartDate' : $searchFilter.StartDate ,
-                    'EndDate' : $searchFilter.EndDate,
-                    'Report' :  $searchFilter.Report,
-                    'ActiveTab' :  $searchFilter.ActiveTab,
-                    'type' : $searchFilter.type 
-                },
-                type: 'get',
-                success: function (data)
-                {
-                    $('#tables_data_1').html();
-                    if(ref_this.data('id') == 2){
-                        $('#tables_data_1').html(data)
-                    }   
-                    if(ref_this.data('id') == 1){
-                        $('#tables_data').html(data)
-                    }                  
-                },
-
-                error: function(xhr) {
-                $('#global-loader').hide();
-                    // $.notify(xhr.responseText,'error'); // this line will save you tons of hours while debugging
-                    // do something here because of error
-                }
-            });
-        });
 
 
-          
+
+        $(document).ready(function() {
             var table = $('.data-table').DataTable({
-                "bDestroy": true, // Destroy when resubmit form
-                "bProcessing": true,
-                "bServerSide": true,
-                ajax:
-                    {
-                    "url": "{{ route('export-csv.history')}}",
-                    
-                },
-                columns: [
-                    {data:'id',name:'id'},
-                    {data:'client',name:'client'},
-                    {data:'type',name:'type'},
-                    {data:'status',name:'status'},
-                    {data:'created_at',name:'created_at'},
-                    {data:'action',name:'action', orderable: false, searchable: false},
-                ]
-            });
-     
-</script>
-<script type="text/javascript">
-  
-    $(window).on('hashchange', function() {
-        var ref_this = $("ul.nav li.nav-item a.nav-link.active");
-        if(ref_this.data('id') == 1){
-            if (window.location.hash) {
-                var page = window.location.hash.replace('#', '');
-                if (page == Number.NaN || page <= 0) {
-                    return false;
-                }
-            }
-        }
-        if(ref_this.data('id') == 2){
-            if (window.location.hash) {
-                var page = window.location.hash.replace('#', '');
-                if (page == Number.NaN || page <= 0) {
-                    return false;
-                }
-            }
-        }
-        
-    });
-    $(document).on('click', '.check-active',function(event){
-        event.preventDefault();
-        if($(this).data('id') == 1){
-            var customerPage = localStorage.getItem("customer_page");
-            customerPage = parseInt(customerPage) + 1;
-            var value1 = '.pagination li:nth-child(' +  customerPage + ')';
-            $('.pagination li').removeClass('active');
-            $(value1).addClass('active');
-        }
-        if($(this).data('id') == 2){
-            var vendorPage = localStorage.getItem("Vendor_page");
-            vendorPage = parseInt(vendorPage) + 1;
-            var value = '.pagination li:nth-child(' + vendorPage + ')';
-            $('.pagination li').removeClass('active');
-            $(value).addClass('active');
-        }
-    });
-      
-    $(document).ready(function()
-    {
-        $(document).on('click', '.pagination a',function(event)
-        {
-            $('li').removeClass('active');
-            $(this).parent('li').addClass('active');
-            event.preventDefault();
-      
-            var myurl = $(this).attr('href');
-            var page=$(this).attr('href').split('page=')[1];
-      
-            var $searchFilter = {};
-            var ref_this = $("ul.nav li.nav-item a.nav-link.active");
-            if(ref_this.data('id') == 1){
-             
-                $searchFilter.Account = $("#cdr_filter select[name='AccountID']").val();
-                $searchFilter.Report = $("#cdr_filter select[name='report']").val();
-                $searchFilter.billingtype = $("#cdr_filter select[name='billingtype']").val();
-                $searchFilter.StartDate = $("#cdr_filter input[name='StartDate']").val();
-                $searchFilter.EndDate = $("#cdr_filter input[name='EndDate']").val();
-                if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
-                    $.notify("Please Select a Start date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
-                    $.notify("Please Select a End date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Report  == 'undefined' || $searchFilter.Report.trim() == ''){
-                    $.notify("Please Select a Report", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
-                    $.notify("Please Select a Account", "Error");
-                    return false;
-                }
-                $searchFilter.ActiveTab = $("#cdr_filter input[name='ActiveTab']").val();
-                $searchFilter.type = "Customer";
-
-            }
-            if(ref_this.data('id') == 2){
-               
-                $searchFilter.Account = $("#cdr_filter_1 select[name='AccountID']").val();
-                $searchFilter.Report = $("#cdr_filter_1 select[name='report']").val();
-                $searchFilter.billingtype = $("#cdr_filter_1 select[name='billingtype']").val();
-                $searchFilter.StartDate = $("#cdr_filter_1 input[name='StartDate']").val();
-                $searchFilter.EndDate = $("#cdr_filter_1 input[name='EndDate']").val();
-                if(typeof $searchFilter.StartDate  == 'undefined' || $searchFilter.StartDate.trim() == ''){
-                    $.notify("Please Select a Start date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.EndDate  == 'undefined' || $searchFilter.EndDate.trim() == ''){
-                    $.notify("Please Select a End date", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Report  == 'undefined' || $searchFilter.Report.trim() == ''){
-                    $.notify("Please Select a Report", "Error");
-                    return false;
-                }
-                if(typeof $searchFilter.Account  == 'undefined' || $searchFilter.Account.trim() == ''){
-                    $.notify("Please Select a Account", "Error");
-                    return false;
-                }
-                $searchFilter.ActiveTab = $("#cdr_filter_1 input[name='ActiveTab']").val();
-                $searchFilter.type = "Vendor";
-            }
-            $.ajax({
-                url: myurl,
-                type: "get",
-                data:{
-                    'Account': $searchFilter.Account,
-                    'billingtype': $searchFilter.billingtype,
-                    'StartDate' : $searchFilter.StartDate ,
-                    'EndDate' : $searchFilter.EndDate,
-                    'Report' :  $searchFilter.Report,
-                    'ActiveTab' :  $searchFilter.ActiveTab,
-                    'type' : $searchFilter.type 
-                },
-                datatype: "html",
-            })
-            .done(function(data){
-
-                if(ref_this.data('id') == 2){
-                    $('#tables_data_1').html(data),
-                    location.hash = "Vendor_page?"+page;
-                    localStorage.setItem('Vendor_page',page);
-
-
-                }   
-                if(ref_this.data('id') == 1){
-                    $('#tables_data').html(data),
-                    location.hash = "customer_page?"+page;
-                    localStorage.setItem('customer_page', page);
-
-
-                }      
-            })
-            .fail(function(jqXHR, ajaxOptions, thrownError){
-                alert('No response from server');
-            });
-        });
-    });
-      
-   
+                        "bDestroy": true, // Destroy when resubmit form
+                        "bProcessing": true,
+                        "bServerSide": true,
+                        ajax:
+                            {
+                            "url": "{{ route('export-csv.history')}}",
+                            
+                        },
+                        columns: [
+                            {data:'id',name:'id'},
+                            {data:'client',name:'client'},
+                            {data:'type',name:'type'},
+                            {data:'status',name:'status'},
+                            {data:'created_at',name:'created_at'},
+                            {data:'action',name:'action', orderable: false, searchable: false},
+                        ]
+                    });
+                });
       
     </script>
 
