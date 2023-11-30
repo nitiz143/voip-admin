@@ -57,17 +57,6 @@
                                         <div class="container-fluid  ml-2 mt-3">
                                             <form novalidate class="form-horizontal form-groups-bordered validate d-flex gap-1" method="post" id="cdr_filter">
                                                 <input type="hidden" name="type" class="form-control"  value="Customer"  />
-                                                <div class="form-group customer_Account">
-                                                    <label class="control-label" for="field-1">Customer Name</label>
-                                                    <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
-                                                        @if(!empty($Accounts))
-                                                            <option value="">Select</option>
-                                                            @foreach ( $Accounts as $Account )
-                                                                <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                </div>
                                                 
                                                 <div class="form-group">
                                                     <label class="control-label" for="field-1">Report Name</label>
@@ -82,6 +71,20 @@
                                                         <option value="Customer-Negative-Report">Negative Report</option>
                                                     </select>
                                                 </div>
+                                                
+                                                <div class="form-group customer_Account">
+                                                    <label class="control-label" for="field-1">Customer Name</label>
+                                                    <select class="form-control" id="bulk_AccountID" allowClear="true" name="AccountID">
+                                                        @if(!empty($Accounts))
+                                                            <option value="">Select</option>
+                                                            @foreach ( $Accounts as $Account )
+                                                                <option value="{{$Account->id}}">{{$Account->firstname}}{{$Account->lastname}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                                
+                                                
 
                                                 <div class="form-group d-flex flex-column" style="max-width: 300px;">
                                                     <label for="field-1">Billing Type</label>
@@ -669,8 +672,17 @@
                 alert('No response from server');
             });
         });
+
+
+        // to make table header dynamic
+
+        $('#report').on('change', function(){
+            let reportName = $(this).val();
+            console.log('reportName', reportName);
+        });
     });
       
+
    
       
     </script>

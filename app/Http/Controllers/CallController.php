@@ -656,7 +656,8 @@ class CallController extends Controller
 
         $Accounts = Client::where("customer", "=",1)->get();
         $VAccounts = Client::where("vendor", "=",1)->get();
-        return view("call.export-csv-history",compact('Accounts','VAccounts'));
+        // return view("call.export-csv-history",compact('Accounts','VAccounts'));
+        return view("call.export-csv-history-rebuild",compact('Accounts','VAccounts'));
     }
     public function download_csv_export_history(Request $request){
        
@@ -814,6 +815,62 @@ class CallController extends Controller
             $user = "Customer";
             return view('csv_view', compact('invoices','Report','total_cost','user','account','count_duration','StartDate','EndDate','calls','total_vendor_cost','count_vendor_duration'));
         }
+    }
+
+    public function csv_view_rebuild(Request $request){
+        $query = CallHistory::get();
+        dd($query->toArray());
+        if(\request()->ajax()){
+            if($request->Report == 'Account-Manage'){
+                $validator = Validator::make($request->all(), [
+                    'Report' => 'required',
+                ]);
+            }
+            else{
+                $validator = Validator::make($request->all(), [
+                    'Account' => 'required',
+                    'Report' => 'required',
+                ]);
+            }
+            if ($validator->fails())
+            {
+                $response = \Response::json([
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ]);
+                return $response;
+            }
+            $type = $request->type;
+            $AccountID = $request->Account;
+            $StartDate = $request->StartDate ;
+            $EndDate = $request->EndDate;
+            $Report = $request->Report;
+            
+            if($type == "Vendor"){ 
+                $query = CallHistory::get();
+                dd($query);
+                if((!empty( $StartDate ) && !empty( $EndDate ))){
+                    $start =  strtotime($StartDate);
+                    $start = $start*1000;
+                    $end = strtotime($EndDate);
+                    $end = $end*1000;
+                    $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+                }
+
+                return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('account_code', function($row){
+                    if($request->billingtype == 'one') {
+                       return $row->where( 'agentfeetime', ">", "0"); 
+                    }
+                    // return $data;
+                })
+                // ->rawColumns(['action'])
+                ->make(true);
+            }
+        }
+        // return view('users');
+        return redirect()->refresh();
     }
 
 }
