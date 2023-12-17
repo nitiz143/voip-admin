@@ -26,7 +26,7 @@ use Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Billing;
 use App\Mail\MyCustomMail; 
-
+use App\Models\Country;
 
 
 class CallController extends Controller
@@ -728,9 +728,9 @@ class CallController extends Controller
                     $query->where('call_histories.vendor_account_id', $AccountID);
                 }
             }
-            if($Report == 'Vendor-Negative-Report') {
-                $query->where('call_histories.agentfee', '<=', 0);
-            }
+            // if($Report == 'Vendor-Negative-Report') {
+            //     $query->where('call_histories.agentfee', '<=', 0);
+            // }
             $invoices = $query->get();
             $count_duration=[];
             $count_vendor_duration=[];
@@ -771,7 +771,6 @@ class CallController extends Controller
                 $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
             }
 
-            
             if($request->billingtype == 'one') {
                 $query->where( 'feetime', ">", "0"); 
 
@@ -818,8 +817,7 @@ class CallController extends Controller
     }
 
     public function csv_view_rebuild(Request $request){
-        $query = CallHistory::get();
-        dd($query->toArray());
+        $query = CallHistory::select('*');
         if(\request()->ajax()){
             if($request->Report == 'Account-Manage'){
                 $validator = Validator::make($request->all(), [
@@ -845,32 +843,632 @@ class CallController extends Controller
             $StartDate = $request->StartDate ;
             $EndDate = $request->EndDate;
             $Report = $request->Report;
-            
-            if($type == "Vendor"){ 
-                $query = CallHistory::get();
-                dd($query);
-                if((!empty( $StartDate ) && !empty( $EndDate ))){
-                    $start =  strtotime($StartDate);
-                    $start = $start*1000;
-                    $end = strtotime($EndDate);
-                    $end = $end*1000;
-                    $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+            // dd($Report);
+            // if($type == "Customer"){
+                // if((!empty( $StartDate ) && !empty( $EndDate ))){
+                //     $start =  strtotime($StartDate);
+                //     $start = $start*1000;
+                //     $end = strtotime($EndDate);
+                //     $end = $end*1000;
+                //     $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+                // }
+                if($request->billingtype == 'one') {
+                    $query = $query->where( 'feetime', ">", "0"); 
                 }
-
-                return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('account_code', function($row){
-                    if($request->billingtype == 'one') {
-                       return $row->where( 'agentfeetime', ">", "0"); 
+                if($Report != 'Account-Manage') {
+                    if(!empty( $AccountID )) {
+                        $query = $query->where('call_histories.account_id', $AccountID);
                     }
-                    // return $data;
-                })
-                // ->rawColumns(['action'])
-                ->make(true);
+                }
+                if($Report == 'Customer-Negative-Report'){
+                    $query = $query->where('call_histories.fee','<=', 0);
+                }
+                $query = $query->get();
+                // dd($query->toArray());
+                if($Report  == "Customer-Summary"){
+
+                    return DataTables::of($query)
+                    ->addColumn('customerAccountCode', function($row){
+                        return $row->customeraccount;
+                    })
+                    ->addColumn('customer', function($row){
+                        return $row->customername;
+                    })
+                    ->addColumn('custDestination', function($row){
+                        return Country::where('phonecode',$row->callerareacode)->value('name');
+                    })
+                    ->addColumn('attempts', function($row){
+                        return $row->count();
+                    })
+                    ->addColumn('completed', function($row) use ($request) {
+                        return CallHistory::completed($row, $request);
+                    })
+                    ->addColumn('asr', function($row) use ($request) {
+                        return CallHistory::asrValue($row, $request);
+                    })
+                    ->addColumn('acd_sec', function($row) use ($request) {
+                        return CallHistory::acdSec($row, $request);
+                    })
+                    ->addColumn('raw_Dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
+                    })
+                    ->addColumn('rnd_Dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
+                    })
+                    ->addColumn('revenue', function($row) use ($request){
+                        return CallHistory::revenue($row, $request);
+                    })
+                    ->addColumn('revenue_min', function($row) use ($request){
+                        return CallHistory::revenueMin($row, $request);
+                    })
+                    ->addColumn('margin', function($row) use ($request){
+                        return CallHistory::margin($row, $request);
+                    })
+                    ->addColumn('margin_min', function($row) use ($request){
+                        return CallHistory::marginMin($row, $request);
+                    })
+                    ->addColumn('margin_percent', function($row) use ($request){
+                        return CallHistory::marginPercent($row, $request);
+                    })
+                    ->addColumn('cstProductGroup', function($row) use ($request){
+                        return '';
+                    })
+                    ->addColumn('vendProductGroup', function($row) use ($request){
+                        return '';
+                    })
+                    ->escapeColumns([])
+                    ->rawColumns(['customerAccountCode','customer','custDestination','attempts','completed','asr','acd_sec','raw_due','rnd_due','revenue','revenue_min','margin','margin_min','margin_percent','cstProductGroup','vendProductGroup'])
+                    ->make(true);
+                }
+                else if($Report == "Customer-Hourly"){
+                    return DataTables::of($query)
+                    ->addColumn('customerAccountCode', function($row){
+                        return $row->customeraccount;
+                    })
+                    ->addColumn('customer', function($row){
+                        return $row->customername;
+                    })
+                    ->addColumn('custDestination', function($row){
+                        return Country::where('phonecode',$row->callerareacode)->value('name');
+                    })
+                    ->addColumn('attempts', function($row){
+                        return $row->count();
+                    })
+                    ->addColumn('completed', function($row)  use ($request){
+                        return CallHistory::completed($row, $request);
+                    })
+                    ->addColumn('asr', function($row) use ($request){
+                        return CallHistory::asrValue($row, $request);
+                    })
+                    ->addColumn('acd_sec', function($row) use ($request){
+                        return CallHistory::acdSec($row, $request);
+                    })
+                    ->addColumn('raw_Dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
+                    })
+                    ->addColumn('rnd_Dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
+                    })
+                    ->addColumn('revenue', function($row) use ($request) {
+                        return CallHistory::revenue($row, $request);
+                    })
+                    ->addColumn('revenue_min', function($row) use ($request){
+                        return CallHistory::revenueMin($row, $request);
+                    })
+                    ->addColumn('margin', function($row) use ($request){
+                        return CallHistory::margin($row, $request);
+                    })
+                    ->addColumn('margin_min', function($row) use ($request){
+                        return CallHistory::marginMin($row, $request);
+                    })
+                    ->addColumn('margin_percent', function($row) use ($request){
+                        return CallHistory::marginPercent($row, $request);
+                    })
+                    ->addColumn('cstProductGroup', function($row) use ($request){
+                        return '';
+                    })
+                    ->addColumn('vendProductGroup', function($row) use ($request){
+                        return '';
+                    })
+                    ->escapeColumns([])
+                    ->rawColumns([
+                        'customerAccountCode','customer','custDestination','attempts','completed','asr','acd_sec','raw_Dur','rnd_Dur','revenue','revenue_min','margin','margin_min','margin_percent','cstProductGroup','vendProductGroup',
+                    ])
+                    ->make(true);
+                }
+                else if($Report == "Customer-Margin-Report"){
+                    return DataTables::of($query)
+                    ->addColumn('customerAccountCode', function($row){
+                        return $row->customeraccount;
+                    })
+                    ->addColumn('customer', function($row){
+                        return $row->customername;
+                    })
+                    ->addColumn('custDestination', function($row){
+                        return Country::where('phonecode',$row->callerareacode)->value('name');
+                    })
+                    ->addColumn('attempts', function($row){
+                        return $row->count();
+                    })
+                    ->addColumn('completed', function($row) use ($request){
+                        return CallHistory::completed($row, $request);
+                    })
+                    ->addColumn('asr', function($row) use ($request){
+                        return CallHistory::asrValue($row, $request);
+                    })
+                    ->addColumn('acd', function($row) use ($request){
+                        return CallHistory::acdSec($row, $request);
+                    })
+                    ->addColumn('raw_dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
+                    })
+                    ->addColumn('rnd_dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
+                    })
+                    ->addColumn('revenue', function($row) use ($request){
+                        return CallHistory::revenue($row, $request);
+                    })
+                    ->addColumn('revenue_min', function($row) use ($request){
+                        return CallHistory::revenueMin($row, $request);
+                    })
+                    ->addColumn('margin', function($row) use ($request){
+                        return CallHistory::margin($row, $request);
+                    })
+                    ->addColumn('margin_min', function($row) use ($request){
+                        return CallHistory::marginMin($row, $request);
+                    })
+                    ->addColumn('margin_percent', function($row) use ($request){
+                        return CallHistory::marginPercent($row, $request);
+                    })
+                    ->addColumn('cstProductGroup', function($row) use ($request){
+                        return '';
+                    })
+                    ->addColumn('vendProductGroup', function($row) use ($request){
+                        return '';
+                    })
+                    ->escapeColumns([])
+                    ->rawColumns([
+                        'customerAccountCode' ,'customer' ,'custDestination' ,'attempts' ,'completed' ,'asr' ,'acd' ,'raw_dur' ,'rnd_dur' ,'revenue' ,'revenue_min' ,'margin' ,'margin_min' ,'margin_percent' ,'cstProductGroup' ,'vendProductGroup' ,
+                    ])->make(true);
+                }
+                else if($Report == "Customer-Negative-Report"){
+                    return DataTables::of($query)
+                    ->addColumn('customerAccountCode', function($row) use ($request){
+                        return $row->customeraccount;
+                    })
+                    ->addColumn('customer', function($row) use ($request){
+                        return $row->customername;;
+                    })
+                    ->addColumn('attempts', function($row) use ($request){
+                        return $row->count();
+                    })
+                    ->addColumn('completed', function($row) use ($request){
+                        return CallHistory::completed($row, $request);
+                    })
+                    ->addColumn('asr', function($row) use ($request){
+                        return CallHistory::asrValue($row, $request);
+                    })
+                    ->addColumn('acd', function($row) use ($request){
+                        return CallHistory::acdSec($row, $request);
+                    })
+                    ->addColumn('raw_dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
+                    })
+                    ->addColumn('rnd_dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
+                    })
+                    ->addColumn('revenue', function($row) use ($request){
+                        return CallHistory::revenue($row, $request);
+                    })
+                    ->addColumn('revenue_min', function($row) use ($request){
+                        return CallHistory::revenueMin($row, $request);
+                    })
+                    ->addColumn('custProductGroup', function($row) use ($request){
+                        return '';
+                    })
+                    ->addColumn('vendProductGroup', function($row) use ($request){
+                        return '';
+                    })
+                    ->escapeColumns([])
+                    ->rawColumns([
+                        'customerAccountCode' ,'customer' ,'attempts' ,'completed' ,'asr' ,'acd' ,'raw_dur' ,'rnd_dur' ,'revenue' ,'revenue_min' ,'custProductGroup' ,'vendProductGroup' ,
+                    ])->make(true);
+                }
+                else if($Report == "Account-Manage"){
+                    return DataTables::of($query)
+                    ->addColumn('customerAccountCode', function($row){
+                        return 'customerAccountCode 4';
+                    })
+                    ->addColumn('customer', function($row){
+                        return 'customer';
+                    })
+                    ->addColumn('custDestination', function($row){
+                        return 'custDestination';
+                    })
+                    ->addColumn('vendAccountCode', function($row){
+                        return 'vendAccountCode';
+                    })
+                    ->addColumn('vendor', function($row){
+                        return 'vendor';
+                    })
+                    ->addColumn('attempts', function($row){
+                        return 'attempts';
+                    })
+                    ->addColumn('completed', function($row){
+                        return 'completed';
+                    })
+                    ->addColumn('asr', function($row){
+                        return 'asr';
+                    })
+                    ->addColumn('acd', function($row){
+                        return 'acd';
+                    })
+                    ->addColumn('raw_dur', function($row){
+                        return 'raw_dur';
+                    })
+                    ->addColumn('rnd_dur', function($row){
+                        return 'rnd_dur';
+                    })
+                    ->addColumn('revenue', function($row){
+                        return 'revenue';
+                    })
+                    ->addColumn('revenue_min', function($row){
+                        return 'revenue_min';
+                    })
+                    ->addColumn('cost', function($row){
+                        return 'cost';
+                    })
+                    ->addColumn('cost_min', function($row){
+                        return 'cost_min';
+                    })
+                    ->addColumn('margin', function($row){
+                        return 'margin';
+                    })
+                    ->addColumn('margin_min', function($row){
+                        return 'margin_min';
+                    })
+                    ->addColumn('margin_percent', function($row){
+                        return 'margin_percent';
+                    })
+                    ->addColumn('custProductGroup', function($row){
+                        return 'custProductGroup';
+                    })
+                    ->addColumn('vendProductGroup', function($row){
+                        return 'vendProductGroup';
+                    })
+                    ->escapeColumns([])
+                    ->rawColumns([
+                        'customerAccountCode' ,'customer' ,'custDestination' ,'vendAccountCode' ,'vendor' ,'attempts' ,'completed' ,'asr' ,'acd' ,'raw_dur' ,'rnd_dur' ,'revenue' ,'revenue_min' ,'cost' ,'cost_min' ,'margin' ,'margin_min' ,'margin_percent' ,'custProductGroup' ,'vendProductGroup' ,
+                    ])->make(true);
+                }
+                else if($Report == "Customer/Vendor-Report"){
+                    return DataTables::of($query)
+                    ->addColumn('customerAccountCode', function($row) {
+                        return 'customerAccountCode 5';
+                    })
+                    ->addColumn('customer', function($row) {
+                        return 'customer';
+                    })
+                    ->addColumn('custDestination', function($row) {
+                        return 'custDestination';
+                    })
+                    ->addColumn('vendAccountCode', function($row) {
+                        return 'vendAccountCode';
+                    })
+                    ->addColumn('vendor', function($row) {
+                        return 'vendor';
+                    })
+                    ->addColumn('attempts', function($row) {
+                        return 'attempts';
+                    })
+                    ->addColumn('completed', function($row) {
+                        return 'completed';
+                    })
+                    ->addColumn('asr', function($row) {
+                        return 'asr';
+                    })
+                    ->addColumn('acd', function($row) {
+                        return 'acd';
+                    })
+                    ->addColumn('raw_dur', function($row) {
+                        return 'raw_dur';
+                    })
+                    ->addColumn('rnd_dur', function($row) {
+                        return 'rnd_dur';
+                    })
+                    ->addColumn('revenue', function($row) {
+                        return 'revenue';
+                    })
+                    ->addColumn('revenue_min', function($row) {
+                        return 'revenue_min';
+                    })
+                    ->addColumn('cost', function($row) {
+                        return 'cost';
+                    })
+                    ->addColumn('cost_min', function($row) {
+                        return 'cost_min';
+                    })
+                    ->addColumn('margin', function($row) {
+                        return 'margin';
+                    })
+                    ->addColumn('margin_min', function($row) {
+                        return 'margin_min';
+                    })
+                    ->addColumn('margin_percent', function($row) {
+                        return 'margin_percent';
+                    })
+                    ->addColumn('custProductGroup', function($row) {
+                        return 'custProductGroup';
+                    })
+                    ->addColumn('vendProductGroup', function($row) {
+                        return 'vendProductGroup';
+                    })
+                    ->escapeColumns([])
+                    ->rawColumns([
+                        'customerAccountCode' ,'customer' ,'custDestination' ,'vendAccountCode' ,'vendor' ,'attempts' ,'completed' ,'asr' ,'acd' ,'raw_dur' ,'rnd_dur' ,'revenue' ,'revenue_min' ,'cost' ,'cost_min' ,'margin' ,'margin_min' ,'margin_percent' ,'custProductGroup' ,'vendProductGroup' ,
+                    ])->make(true);
+                }
+                // return redirect()->route('export-csv.history');
+            // }
+
+            // if($type == "Vendor"){ 
+                // $query = CallHistory::get();
+                // dd($query);
+                // if((!empty( $StartDate ) && !empty( $EndDate ))){
+                //     $start =  strtotime($StartDate);
+                //     $start = $start*1000;
+                //     $end = strtotime($EndDate);
+                //     $end = $end*1000;
+                //     $query->where([['starttime' ,'>=', $start],['stoptime', '<=',  $end]]);              
+                // }
+                else if($Report == "Vendor-Negative-Report"){
+                    return DataTables::of($query)
+                    ->addColumn('vendAccountCode', function($row){
+                        return 'vendAccountCode 6';
+                    })
+                    ->addColumn('vendor', function($row){
+                        return 'vendor';
+                    })
+                    ->addColumn('attempts', function($row){
+                        return 'attempts';
+                    })
+                    ->addColumn('completed', function($row){
+                        return 'completed';
+                    })
+                    ->addColumn('asr', function($row){
+                        return 'asr';
+                    })
+                    ->addColumn('acd', function($row){
+                        return 'acd';
+                    })
+                    ->addColumn('raw_dur', function($row){
+                        return 'raw_dur';
+                    })
+                    ->addColumn('rnd_dur', function($row){
+                        return 'rnd_dur';
+                    })
+                    ->addColumn('cost', function($row){
+                        return 'cost';
+                    })
+                    ->addColumn('cost_min', function($row){
+                        return 'cost_min';
+                    })
+                    ->addColumn('custProductGroup', function($row){
+                        return 'custProductGroup';
+                    })
+                    ->addColumn('vendProductGroup', function($row){
+                        return 'vendProductGroup';
+                    })
+                    ->escapeColumns([])
+                    ->rawColumns([
+                        'vendAccountCode' ,'vendor' ,'attempts' ,'completed' ,'asr' ,'acd' ,'raw_dur' ,'rnd_dur' ,'cost' ,'cost_min' ,'custProductGroup' ,'vendProductGroup' ,
+                    ])->make(true);
+                }
+                else if($Report == "Vendor-Margin-Report"){
+                    return DataTables::of($query)
+                    ->addColumn('vendorAccountCode', function($row){
+                        return 'vendorAccountCode 7';
+                    })
+                    ->addColumn('vendor', function($row){
+                        return 'vendor';
+                    })
+                    ->addColumn('attempts', function($row){
+                        return 'attempts';
+                    })
+                    ->addColumn('completed', function($row){
+                        return 'completed';
+                    })
+                    ->addColumn('asr', function($row){
+                        return 'asr';
+                    })
+                    ->addColumn('acd', function($row){
+                        return 'acd';
+                    })
+                    ->addColumn('raw_dur', function($row){
+                        return 'raw_dur';
+                    })
+                    ->addColumn('rnd_dur', function($row){
+                        return 'rnd_dur';
+                    })
+                    ->addColumn('cost', function($row){
+                        return 'cost';
+                    })
+                    ->addColumn('cost_min', function($row){
+                        return 'cost_min';
+                    })
+                    ->addColumn('margin', function($row){
+                        return 'margin';
+                    })
+                    ->addColumn('margin_min', function($row){
+                        return 'margin_min';
+                    })
+                    ->addColumn('margin_percent', function($row){
+                        return 'margin_percent';
+                    })
+                    ->addColumn('custProductGroup', function($row){
+                        return 'custProductGroup';
+                    })
+                    ->addColumn('vendProductGroup', function($row){
+                        return 'vendProductGroup';
+                    })
+                    ->escapeColumns([])
+                    ->rawColumns([
+                        'vendorAccountCode' ,'vendor' ,'attempts' ,'completed' ,'asr' ,'acd' ,'raw_dur' ,'rnd_dur' ,'cost' ,'cost_min' ,'margin' ,'margin_min' ,'margin_percent' ,'custProductGroup' ,'vendProductGroup' ,
+                    ])->make(true);
+                }
+                else if($Report == "Vendor-Summary" ){
+                    return DataTables::of($query)
+                    ->addColumn('vendorAccountCode', function($row){
+                        return 'vendorAccountCode 8';
+                    })
+                    ->addColumn('vendor', function($row){
+                        return 'vendor';
+                    })
+                    ->addColumn('attempts', function($row){
+                        return 'attempts';
+                    })
+                    ->addColumn('completed', function($row){
+                        return 'completed';
+                    })
+                    ->addColumn('asr', function($row){
+                        return 'asr';
+                    })
+                    ->addColumn('acd', function($row){
+                        return 'acd';
+                    })
+                    ->addColumn('raw_dur', function($row){
+                        return 'raw_dur';
+                    })
+                    ->addColumn('rnd_Dur', function($row){
+                        return 'rnd_Dur';
+                    })
+                    ->addColumn('cost', function($row){
+                        return 'cost';
+                    })
+                    ->addColumn('cost_min', function($row){
+                        return 'cost_min';
+                    })
+                    ->addColumn('margin', function($row){
+                        return 'margin';
+                    })
+                    ->addColumn('margin_min', function($row){
+                        return 'margin_min';
+                    })
+                    ->addColumn('margin_percent', function($row){
+                        return 'margin_percent';
+                    })
+                    ->addColumn('custProductGroup', function($row){
+                        return 'custProductGroup';
+                    })
+                    ->addColumn('vendProductGroup', function($row){
+                        return 'vendProductGroup';
+                    })
+                    ->escapeColumns([])
+                    ->rawColumns([
+                        'vendorAccountCode','vendor','attempts','completed','asr','acd','raw_dur','rnd_Dur','cost','cost_min','margin','margin_min','margin_percent','custProductGroup','vendProductGroup',
+                    ])->make(true);
+                }
+                else if($Report == "Vendor-Hourly"){
+                    return DataTables::of($query)
+                    ->addColumn('vendorAccountCode', function($row){
+                        return 'vendorAccountCode 9';
+                    })
+                    ->addColumn('vendor', function($row){
+                        return 'vendor';
+                    })
+                    ->addColumn('attempts', function($row){
+                        return 'attempts';
+                    })
+                    ->addColumn('completed', function($row){
+                        return 'completed';
+                    })
+                    ->addColumn('asr', function($row){
+                        return 'asr';
+                    })
+                    ->addColumn('acd', function($row){
+                        return 'acd';
+                    })
+                    ->addColumn('raw_dur', function($row){
+                        return 'raw_dur';
+                    })
+                    ->addColumn('rnd_dur', function($row){
+                        return 'rnd_dur';
+                    })
+                    ->addColumn('cost', function($row){
+                        return 'cost';
+                    })
+                    ->addColumn('cost_min', function($row){
+                        return 'cost_min';
+                    })
+                    ->addColumn('margin', function($row){
+                        return 'margin';
+                    })
+                    ->addColumn('margin_min', function($row){
+                        return 'margin_min';
+                    })
+                    ->addColumn('margin_percent', function($row){
+                        return 'margin_percent';
+                    })
+                    ->addColumn('custProductGroup', function($row){
+                        return 'custProductGroup';
+                    })
+                    ->addColumn('vendProductGroup', function($row){
+                        return 'vendProductGroup';
+                    })    
+                    ->escapeColumns([])
+                    ->rawColumns([
+                        'vendorAccountCode','vendor','attempts','completed','asr','acd','raw_dur','rnd_dur','cost','cost_min','margin','margin_min','margin_percent','custProductGroup','vendProductGroup',
+                    ])->make(true);
+                }else{
+
+                    return DataTables::of($query)
+                    ->addColumn('country', function($row){
+                        return 'country';
+                    })
+                    ->addColumn('total_calls', function($row){
+                        return 'total_calls';
+                    })
+                    ->addColumn('completed', function($row){
+                        return 'completed';
+                    })
+                    ->addColumn('asr', function($row){
+                        return 'asr';
+                    })
+                    ->addColumn('acd', function($row){
+                        return 'acd';
+                    })
+                    ->addColumn('duration', function($row){
+                        return 'duration';
+                    })
+                    ->addColumn('billed_duration', function($row){
+                        return 'billed_duration';
+                    })
+                    ->addColumn('avg_rate_min', function($row){
+                        return 'avg_rate_min';
+                    })
+                    ->addColumn('total_cost', function($row){
+                        return 'total_cost';
+                    })
+                    ->escapeColumns([])
+                    ->rawColumns([
+                        'country', 'total_calls','completed','asr','acd','duration','billed_duration','avg_rate_min', 'total_cost',
+                    ])->make(true);
+                // }
+                // return DataTables::of($data)
+                // ->addIndexColumn()
+                // ->addColumn('account_code', function($row){
+                //     if($request->billingtype == 'one') {
+                //        return $row->where( 'agentfeetime', ">", "0"); 
+                //     }
+                //     // return $data;
+                // })
+                // // ->rawColumns(['action'])
+                // ->make(true);
             }
         }
         // return view('users');
-        return redirect()->refresh();
+        // return redirect()->refresh();
+        return redirect()->route('export-csv.history');
     }
 
 }

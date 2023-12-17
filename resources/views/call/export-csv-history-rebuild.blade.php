@@ -189,8 +189,8 @@
                                                    
                                                 </div>
                                             </form>
-                                        </div>
-                                        <div id="tables_data" class="tables_data">
+                                            <div id="tables_data" class="tables_data">
+                                            </div>
                                         </div>
                                         <!-- <div id="tables_data_1">
                                         </div> -->
