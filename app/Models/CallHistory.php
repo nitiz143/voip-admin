@@ -100,6 +100,11 @@ class CallHistory extends Model
                 $completed_count[] = $query->feetime;
             }
         }
+        if($request->Report == "Account-manage"){
+            if($query->feetime > 0 && $query->feetime != null) {
+                $completed_count[] = $query->feetime;
+            }
+        }
         return $completed_count;
     }
 
@@ -131,6 +136,14 @@ class CallHistory extends Model
         }
 
         if($request->Report == "Customer-Negative-Report"){
+            if($query->feetime > 0 && $query->feetime != null) {
+                $completed_count[] = $query->feetime;
+            }
+            if(array_sum($completed_count) != 0 && count($completed_count) != 0){
+                return round(count($completed_count)/$query->count() * 100); 
+            }
+        }
+        if($request->Report == "Account-Manage"){
             if($query->feetime > 0 && $query->feetime != null) {
                 $completed_count[] = $query->feetime;
             }
@@ -337,6 +350,18 @@ class CallHistory extends Model
 
         $margin =  array_sum($fee_count)-array_sum( $agentfee_count);
         return round($margin/$query->count() * 100);
+    } 
+
+    public static function costMin($query,$request){
+        if($request->Report == "Account-Manage")
+        $customer_fee ="";
+        $totalSum = $query->sum('feetime');
+        if($query->sum('fee') > 0 && $totalSum > 0){
+            $timepersec = $query->sum('fee')/$totalSum;
+            $persec =  round($timepersec, 7);
+            $customer_fee= $persec*60;
+        }
+        return $customer_fee;
     }
     
 } 

@@ -863,7 +863,7 @@ class CallController extends Controller
                 if($Report == 'Customer-Negative-Report'){
                     $query = $query->where('call_histories.fee','<=', 0);
                 }
-                $query = $query->get();
+                // $query = $query;
                 // dd($query->toArray());
                 if($Report  == "Customer-Summary"){
 
@@ -1077,64 +1077,64 @@ class CallController extends Controller
                 else if($Report == "Account-Manage"){
                     return DataTables::of($query)
                     ->addColumn('customerAccountCode', function($row){
-                        return 'customerAccountCode 4';
+                        return $row->customeraccount;
                     })
                     ->addColumn('customer', function($row){
-                        return 'customer';
+                        return $row->customername;
                     })
                     ->addColumn('custDestination', function($row){
-                        return 'custDestination';
+                        return Country::where('phonecode',$row->callerareacode)->value('name');
                     })
                     ->addColumn('vendAccountCode', function($row){
-                        return 'vendAccountCode';
+                        return $row->agentaccount;
                     })
                     ->addColumn('vendor', function($row){
-                        return 'vendor';
+                        return $row->agentname;
                     })
                     ->addColumn('attempts', function($row){
-                        return 'attempts';
+                        return $row->count();
                     })
-                    ->addColumn('completed', function($row){
-                        return 'completed';
+                    ->addColumn('completed', function($row) use ($request){
+                        return CallHistory::completed($row , $request);
                     })
-                    ->addColumn('asr', function($row){
-                        return 'asr';
+                    ->addColumn('asr', function($row) use ($request){
+                        return CallHistory::asrValue($row, $request);
                     })
-                    ->addColumn('acd', function($row){
-                        return 'acd';
+                    ->addColumn('acd', function($row) use ($request) {
+                        return CallHistory::acdSec($row, $request);
                     })
-                    ->addColumn('raw_dur', function($row){
-                        return 'raw_dur';
+                    ->addColumn('raw_dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
                     })
-                    ->addColumn('rnd_dur', function($row){
-                        return 'rnd_dur';
+                    ->addColumn('rnd_dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
                     })
-                    ->addColumn('revenue', function($row){
-                        return 'revenue';
+                    ->addColumn('revenue', function($row) use ($request){
+                        return CallHistory::revenue($row, $request);
                     })
-                    ->addColumn('revenue_min', function($row){
-                        return 'revenue_min';
+                    ->addColumn('revenue_min', function($row) use ($request){
+                        return CallHistory::revenueMin($row, $request);
                     })
                     ->addColumn('cost', function($row){
-                        return 'cost';
+                        return $row->sum('fee');
                     })
-                    ->addColumn('cost_min', function($row){
-                        return 'cost_min';
+                    ->addColumn('cost_min', function($row) use ($request){
+                        return CallHistory::costMin($row , $request);
                     })
-                    ->addColumn('margin', function($row){
-                        return 'margin';
+                    ->addColumn('margin', function($row) use ($request){
+                        return CallHistory::margin($row, $request);
                     })
-                    ->addColumn('margin_min', function($row){
-                        return 'margin_min';
+                    ->addColumn('margin_min', function($row) use ($request){
+                        return CallHistory::marginMin($row, $request);
                     })
-                    ->addColumn('margin_percent', function($row){
-                        return 'margin_percent';
+                    ->addColumn('margin_percent', function($row) use ($request){
+                        return CallHistory::marginPercent($row, $request);
                     })
                     ->addColumn('custProductGroup', function($row){
-                        return 'custProductGroup';
+                        return '';
                     })
                     ->addColumn('vendProductGroup', function($row){
-                        return 'vendProductGroup';
+                        return '';
                     })
                     ->escapeColumns([])
                     ->rawColumns([
@@ -1144,64 +1144,64 @@ class CallController extends Controller
                 else if($Report == "Customer/Vendor-Report"){
                     return DataTables::of($query)
                     ->addColumn('customerAccountCode', function($row) {
-                        return 'customerAccountCode 5';
+                        return $row->customeraccount;
                     })
                     ->addColumn('customer', function($row) {
-                        return 'customer';
+                        return $row->customername;
                     })
                     ->addColumn('custDestination', function($row) {
-                        return 'custDestination';
+                        return Country::where('phonecode',$row->callerareacode)->value('name');
                     })
                     ->addColumn('vendAccountCode', function($row) {
-                        return 'vendAccountCode';
+                        return $row->agentaccount;
                     })
                     ->addColumn('vendor', function($row) {
-                        return 'vendor';
+                        return $row->agentname;
                     })
                     ->addColumn('attempts', function($row) {
-                        return 'attempts';
+                        return $row->count();
                     })
-                    ->addColumn('completed', function($row) {
-                        return 'completed';
+                    ->addColumn('completed', function($row) use ($request){
+                        return CallHistory::completed($row , $request);
                     })
-                    ->addColumn('asr', function($row) {
-                        return 'asr';
+                    ->addColumn('asr', function($row) use ($request){
+                        return CallHistory::asrValue($row, $request);
                     })
-                    ->addColumn('acd', function($row) {
-                        return 'acd';
+                    ->addColumn('acd', function($row) use ($request){
+                        return CallHistory::acdSec($row, $request);
                     })
-                    ->addColumn('raw_dur', function($row) {
-                        return 'raw_dur';
+                    ->addColumn('raw_dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
                     })
-                    ->addColumn('rnd_dur', function($row) {
-                        return 'rnd_dur';
+                    ->addColumn('rnd_dur', function($row) use ($request){
+                        return CallHistory::rawDur($row, $request);
                     })
-                    ->addColumn('revenue', function($row) {
-                        return 'revenue';
+                    ->addColumn('revenue', function($row) use ($request){
+                        return CallHistory::revenue($row, $request);
                     })
-                    ->addColumn('revenue_min', function($row) {
-                        return 'revenue_min';
+                    ->addColumn('revenue_min', function($row) use ($request){
+                        return CallHistory::revenueMin($row, $request);
                     })
                     ->addColumn('cost', function($row) {
-                        return 'cost';
+                        return $row->sum('fee');
                     })
-                    ->addColumn('cost_min', function($row) {
-                        return 'cost_min';
+                    ->addColumn('cost_min', function($row) use ($request){
+                        return CallHistory::costMin($row , $request);
                     })
-                    ->addColumn('margin', function($row) {
-                        return 'margin';
+                    ->addColumn('margin', function($row) use ($request){
+                        return CallHistory::margin($row, $request);
                     })
-                    ->addColumn('margin_min', function($row) {
-                        return 'margin_min';
+                    ->addColumn('margin_min', function($row) use ($request){
+                        return CallHistory::marginMin($row, $request);
                     })
-                    ->addColumn('margin_percent', function($row) {
-                        return 'margin_percent';
+                    ->addColumn('margin_percent', function($row) use ($request){
+                        return CallHistory::marginPercent($row, $request);
                     })
                     ->addColumn('custProductGroup', function($row) {
-                        return 'custProductGroup';
+                        return '';
                     })
                     ->addColumn('vendProductGroup', function($row) {
-                        return 'vendProductGroup';
+                        return '';
                     })
                     ->escapeColumns([])
                     ->rawColumns([
